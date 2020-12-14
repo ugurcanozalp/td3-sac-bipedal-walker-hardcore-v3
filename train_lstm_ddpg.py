@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from collections import deque
 from agent import Agent
 from ddpg import train_ddpg, test_ddpg
-from recurrent_models import Actor, Critic
+from archs.recurrent_models import Actor, Critic
 from env_wrappers import BoxToHistoryBox
 
 env_raw = gym.make('BipedalWalker-v3')

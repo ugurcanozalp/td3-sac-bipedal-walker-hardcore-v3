@@ -41,11 +41,11 @@ class Agent():
         #update critic
         next_actions = self.target_actor(next_states)
         Q_targets_next = self.target_critic(next_states, next_actions)
-        Q_targets = rewards + (self.gamma * Q_targets_next)
+        Q_targets = rewards + (self.gamma * Q_targets_next * done)
         Q_expected = self.train_critic(states, actions)
         
-        #critic_loss = torch.nn.MSELoss()(Q_expected, Q_targets)
-        critic_loss = torch.nn.SmoothL1Loss()(Q_expected, Q_targets)
+        critic_loss = torch.nn.MSELoss()(Q_expected, Q_targets)
+        #critic_loss = torch.nn.SmoothL1Loss()(Q_expected, Q_targets)
 
         self.critic_optim.zero_grad()
         critic_loss.backward()

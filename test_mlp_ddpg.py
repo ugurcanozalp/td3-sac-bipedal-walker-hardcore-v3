@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from collections import deque
 from agent import Agent
 from ddpg import train_ddpg, test_ddpg
-from mlp3_models import Actor, Critic
+from archs.mlp3_models import Actor, Critic
 
 env = gym.make('BipedalWalker-v3')
 agent = Agent(Actor, Critic, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1])

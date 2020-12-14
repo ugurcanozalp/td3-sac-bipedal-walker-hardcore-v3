@@ -26,10 +26,12 @@ def train_ddpg(env, agent, n_episodes=5000, max_t=1000, populate_episode=20, tra
             score += reward
             if done:
                 break 
+
         scores_deque.append(score)
         scores.append(score)
         print('\rEpisode {}\tAverage Score: {:.2f}\tScore: {:.2f}'.format(i_episode, np.mean(scores_deque), score), end="")
         if i_episode % 100 == 0:
+            test_ddpg(env, agent)
             torch.save(agent.train_actor.state_dict(), './models/'+trainer_name+'_ckpt_actor.pth')
             torch.save(agent.train_critic.state_dict(), './models/'+trainer_name+'_ckpt_critic.pth')
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_deque))) 
