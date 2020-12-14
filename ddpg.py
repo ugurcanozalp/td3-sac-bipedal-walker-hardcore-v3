@@ -50,6 +50,7 @@ def test_ddpg(env, agent):
     done=False
     for i in range(1000):
         action = agent.get_action(state, explore=False)
+        print(action)
         next_state, reward, done, _ = env.step(action)
         state = next_state
         score += reward
@@ -66,8 +67,8 @@ if __name__=='__main__':
     print("Action dimension : ",env.action_space.shape)
     print("State  dimension : ",env.observation_space.shape)
     print("Action sample : ",env.action_space.sample())
-    print("State sample  : \n ",env.reset())    
-    
+    print("State sample  : \n ",env.reset())        
+
     scores = train_ddpg(env, agent)
 
     fig = plt.figure()

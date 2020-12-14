@@ -84,7 +84,7 @@ class Agent():
 
 class OrnsteinUhlenbeckNoise:
     def __init__(self, mu):
-        self.theta, self.dt, self.sigma = 7.5, 0.02, 1.4  # 1.0, 0.02, 0.25 # 7.5, 0.02, 1.4
+        self.theta, self.dt, self.sigma = 7.5, 0.02, 1.4 # 1.0, 0.02, 0.25 # 7.5, 0.02, 1.4
         self.mu = mu
         self.x_prev = np.zeros_like(self.mu)
 
