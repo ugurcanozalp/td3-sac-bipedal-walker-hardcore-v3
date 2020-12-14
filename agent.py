@@ -1,6 +1,7 @@
 import torch
 from torch import optim
 import numpy as np
+import os
 from replay_buffer import ReplayBuffer
 # https://github.com/A-Raafat/DDPG-bipedal/blob/master/My_DDPG.ipynb
 
@@ -17,11 +18,11 @@ class Agent():
         
         self.train_actor = Actor().to(self.device)
         self.target_actor= Actor().to(self.device)
-        self.actor_optim = optim.Adam(self.train_actor.parameters(), lr=lr)
+        self.actor_optim = optim.Adam(self.train_actor.parameters(), lr=0.3*lr)
         
         self.train_critic = Critic().to(self.device)
         self.target_critic= Critic().to(self.device)
-        self.critic_optim = optim.Adam(self.train_critic.parameters(), lr=0.1*lr)
+        self.critic_optim = optim.Adam(self.train_critic.parameters(), lr=lr)
 
         self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size))
         
@@ -41,7 +42,7 @@ class Agent():
         #update critic
         next_actions = self.target_actor(next_states)
         Q_targets_next = self.target_critic(next_states, next_actions)
-        Q_targets = rewards + (self.gamma * Q_targets_next * done)
+        Q_targets = rewards + (self.gamma * Q_targets_next * (1-done))
         Q_expected = self.train_critic(states, actions)
         
         critic_loss = torch.nn.MSELoss()(Q_expected, Q_targets)
@@ -71,10 +72,8 @@ class Agent():
             action= self.train_actor(state).cpu().data.numpy()[0]
         self.train_actor.train()
 
-        #print(f"{action}")
         if explore:
             noise = self.noise_generator()
-            #print(f"--{noise}")
             action += noise
         return action
     
