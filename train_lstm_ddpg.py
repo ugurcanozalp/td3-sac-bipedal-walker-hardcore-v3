@@ -15,7 +15,7 @@ env.seed(0)
 print("Action dimension : ",env.action_space.shape)
 print("State  dimension : ",env.observation_space.shape)
 print("Action sample : ",env.action_space.sample())
-print("State sample  : \n ",env.reset())    
+#print("State sample  : \n ",env.reset())    
    
 scores = train_ddpg(env, agent, trainer_name='lstm')
 fig = plt.figure()

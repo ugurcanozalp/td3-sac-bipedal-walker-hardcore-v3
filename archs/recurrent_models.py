@@ -34,13 +34,13 @@ class Critic(nn.Module):
         self.lstm.weight_ih_l0.data = fanin_init(self.lstm.weight_ih_l0.data.size())
 
         self.fca = nn.Linear(action_dim,128)
-        self.fca.weight.data = fanin_init(self.fca1.weight.data.size())
+        self.fca.weight.data = fanin_init(self.fca.weight.data.size())
 
-        self.fc2 = nn.Linear(256,128)
-        self.fc2.weight.data = fanin_init(self.fc2.weight.data.size())
+        self.fc1 = nn.Linear(256,128)
+        self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc3 = nn.Linear(128,1)
-        self.fc3.weight.data.uniform_(-EPS,EPS)
+        self.fc2 = nn.Linear(128,1)
+        self.fc2.weight.data.uniform_(-EPS,EPS)
 
         self.relu = nn.ReLU()
         self.tanh = nn.Tanh()
@@ -52,12 +52,13 @@ class Critic(nn.Module):
         :param action: Input Action (Torch Variable : [n,action_dim] )
         :return: Value function : Q(S,a) (Torch Variable : [n,1] )
         """
-        s1, (_, _) = self.relu(self.lstm(state))
+        s1, (_, _) = self.lstm(state)
+        s1 = s1[:,0]
         a1 = self.tanh(self.fca(action))
         x = torch.cat((s1,a1),dim=1)
 
-        x = self.relu(self.fc2(x))
-        x = self.fc3(x)
+        x = self.relu(self.fc1(x))
+        x = self.fc2(x)
 
         return x
 
@@ -81,7 +82,7 @@ class Actor(nn.Module):
         self.lstm.weight_ih_l0.data = fanin_init(self.lstm.weight_ih_l0.data.size())
 
         self.fc1 = nn.Linear(128,64)
-        self.fc1.weight.data = fanin_init(self.fc2.weight.data.size())
+        self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
         self.fc2 = nn.Linear(64,action_dim)
         self.fc2.weight.data.uniform_(-EPS,EPS)
@@ -98,7 +99,9 @@ class Actor(nn.Module):
         :param state: Input state (Torch Variable : [n,state_dim] )
         :return: Output action (Torch Variable: [n,action_dim] )
         """
-        x = self.lstm(state)
-        action = self.tanh(self.fc1(x))
+        x, (_, _) = self.lstm(state)
+        x = x[:,0]
+        x = self.relu(self.fc1(x))
+        action = self.tanh(self.fc2(x))
 
         return action
