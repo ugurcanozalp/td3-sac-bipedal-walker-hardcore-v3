@@ -29,17 +29,17 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.lstm = nn.LSTM(state_dim, 128, batch_first=True, bidirectional=False) 
+        self.lstm = nn.LSTM(state_dim, 80, batch_first=True, bidirectional=False) 
         self.lstm.weight_hh_l0.data = fanin_init(self.lstm.weight_hh_l0.data.size())
         self.lstm.weight_ih_l0.data = fanin_init(self.lstm.weight_ih_l0.data.size())
 
-        self.fca = nn.Linear(action_dim,128)
+        self.fca = nn.Linear(action_dim,80)
         self.fca.weight.data = fanin_init(self.fca.weight.data.size())
 
-        self.fc1 = nn.Linear(256,128)
+        self.fc1 = nn.Linear(160,80)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(128,1)
+        self.fc2 = nn.Linear(80,1)
         self.fc2.weight.data.uniform_(-EPS,EPS)
 
         self.relu = nn.ReLU()
@@ -77,14 +77,14 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.lstm = nn.LSTM(state_dim, 128, batch_first=True, bidirectional=False) 
+        self.lstm = nn.LSTM(state_dim, 80, batch_first=True, bidirectional=False) 
         self.lstm.weight_hh_l0.data = fanin_init(self.lstm.weight_hh_l0.data.size())
         self.lstm.weight_ih_l0.data = fanin_init(self.lstm.weight_ih_l0.data.size())
 
-        self.fc1 = nn.Linear(128,64)
+        self.fc1 = nn.Linear(80,40)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(64,action_dim)
+        self.fc2 = nn.Linear(40,action_dim)
         self.fc2.weight.data.uniform_(-EPS,EPS)
 
         self.relu = nn.ReLU()
