@@ -6,6 +6,10 @@ import numpy as np
 #env = gym.make('BipedalWalker-v3')
 
 class BoxToHistoryBox(gym.ObservationWrapper):
+    '''
+    This wrapper converts the environment which returns last h observations.
+    First h observations are converted such that first states are same.
+    '''
     def __init__(self, env, h=8):
         super().__init__(env)
         self.h = h

@@ -9,7 +9,7 @@ from archs.recurrent_models import Actor, Critic
 from env_wrappers import BoxToHistoryBox
 
 env_raw = gym.make('BipedalWalker-v3')
-env = BoxToHistoryBox(env_raw)
+env = BoxToHistoryBox(env_raw, h=32)
 agent = Agent(Actor, Critic, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1])
 env.seed(0)
 print("Action dimension : ",env.action_space.shape)

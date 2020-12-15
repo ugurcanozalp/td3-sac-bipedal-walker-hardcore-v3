@@ -7,7 +7,7 @@ from collections import deque
 from agent import Agent
 
 
-def train_ddpg(env, agent, n_episodes=5000, max_t=700, populate_episode=20, trainer_name='type_x'):
+def train_ddpg(env, agent, n_episodes=5000, max_t=700, populate_episode=20, trainer_name='type_x', score_limit=250.0):
     scores_deque = deque(maxlen=100)
     scores = []
     max_score = -np.Inf
@@ -36,8 +36,10 @@ def train_ddpg(env, agent, n_episodes=5000, max_t=700, populate_episode=20, trai
             torch.save(agent.train_actor.state_dict(), os.path.join('models',trainer_name+'_ckpt_actor.pth'))
             torch.save(agent.train_critic.state_dict(), os.path.join('models',trainer_name+'_ckpt_critic.pth'))
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_deque))) 
-            test_ddpg(env, agent, render=False)
-        if score >=200:
+            test_score = test_ddpg(env, agent, render=False)
+            if test_score >= score_limit:
+            	break
+        if score >=score_limit:
             torch.save(agent.train_actor.state_dict(), os.path.join('models',trainer_name+'_ckpt_actor.pth'))
             torch.save(agent.train_critic.state_dict(), os.path.join('models',trainer_name+'_ckpt_critic.pth'))
             break
@@ -57,6 +59,10 @@ def test_ddpg(env, agent, render=True):
             env.render()
 
     print('\rTest Episode\tScore: {:.2f}'.format(score))
+    
+    return score
+
+    
 
 
 if __name__=='__main__':
