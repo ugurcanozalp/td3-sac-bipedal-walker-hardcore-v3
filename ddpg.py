@@ -31,33 +31,32 @@ def train_ddpg(env, agent, n_episodes=5000, max_t=700, populate_episode=20, trai
         scores_deque.append(score)
         scores.append(score)
         print('\rEpisode {}\tAverage Score: {:.2f}\tScore: {:.2f}'.format(i_episode, np.mean(scores_deque), score), end="")
-        if i_episode % 25 == 0:
-            test_ddpg(env, agent)
 
         if i_episode % 100 == 0:
             torch.save(agent.train_actor.state_dict(), os.path.join('models',trainer_name+'_ckpt_actor.pth'))
             torch.save(agent.train_critic.state_dict(), os.path.join('models',trainer_name+'_ckpt_critic.pth'))
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_deque))) 
+            test_ddpg(env, agent, render=False)
         if score >=200:
             torch.save(agent.train_actor.state_dict(), os.path.join('models',trainer_name+'_ckpt_actor.pth'))
             torch.save(agent.train_critic.state_dict(), os.path.join('models',trainer_name+'_ckpt_critic.pth'))
             break
     return scores
 
-def test_ddpg(env, agent):
+def test_ddpg(env, agent, render=True):
     state = env.reset()
     score = 0
     done=False
-    for i in range(1000):
+    while not done:
         action = agent.get_action(state, explore=False)
-        print(action)
+        action = action.clip(min=env.action_space.low, max=env.action_space.high)
         next_state, reward, done, _ = env.step(action)
         state = next_state
         score += reward
-        env.render()
-        if done:
-            break
-    print('\rTest Episode\tScore: {:.2f}'.format(score), end="")
+        if render:
+            env.render()
+
+    print('\rTest Episode\tScore: {:.2f}'.format(score))
 
 
 if __name__=='__main__':

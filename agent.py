@@ -6,7 +6,7 @@ from replay_buffer import ReplayBuffer
 # https://github.com/A-Raafat/DDPG-bipedal/blob/master/My_DDPG.ipynb
 
 class Agent():
-    def __init__(self, Actor, Critic, state_size=24, action_size=4, lr=1e-3, gamma=0.99, tau=0.001, batch_size=128, buffer_size=int(1e6)):
+    def __init__(self, Actor, Critic, state_size=24, action_size=4, lr=1e-3, gamma=0.99, tau=0.001, batch_size=128, buffer_size=int(5e5)):
         self.state_size = state_size
         self.action_size = action_size
 
@@ -19,10 +19,12 @@ class Agent():
         self.train_actor = Actor().to(self.device)
         self.target_actor= Actor().to(self.device)
         self.actor_optim = optim.Adam(self.train_actor.parameters(), lr=0.3*lr)
+        print(f'Number of paramters of Actor Net: {sum(p.numel() for p in self.train_actor.parameters())}')
         
         self.train_critic = Critic().to(self.device)
         self.target_critic= Critic().to(self.device)
         self.critic_optim = optim.Adam(self.train_critic.parameters(), lr=lr)
+        print(f'Number of paramters of Critic Net: {sum(p.numel() for p in self.train_critic.parameters())}')
 
         self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size))
         
@@ -84,7 +86,7 @@ class Agent():
 
 class OrnsteinUhlenbeckNoise:
     def __init__(self, mu):
-        self.theta, self.dt, self.sigma = 7.5, 0.02, 1.4 # 1.0, 0.02, 0.25 # 7.5, 0.02, 1.4
+        self.theta, self.dt, self.sigma = 7.5, 0.02, 1.2 # 5.0, 0.02, 1.0 # 1.0, 0.02, 0.25 # 7.5, 0.02, 1.4 # 5.0, 0.02, 0.7
         self.mu = mu
         self.x_prev = np.zeros_like(self.mu)
 

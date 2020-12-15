@@ -1,3 +1,4 @@
+#https://www.researchgate.net/publication/320296763_Recurrent_Network-based_Deterministic_Policy_Gradient_for_Solving_Bipedal_Walking_Challenge_on_Rugged_Terrains
 import numpy as np
 import torch
 import torch.nn as nn
@@ -6,42 +7,98 @@ import torch.optim as optim
 import gym
 import random
 
-#https://www.researchgate.net/publication/320296763_Recurrent_Network-based_Deterministic_Policy_Gradient_for_Solving_Bipedal_Walking_Challenge_on_Rugged_Terrains
+# https://github.com/vy007vikas/PyTorch-ActorCriticRL
+
+EPS = 0.003
+
+def fanin_init(size, fanin=None):
+    fanin = fanin or size[0]
+    v = 1. / np.sqrt(fanin)
+    return torch.Tensor(size).uniform_(-v, v)
+
+class Critic(nn.Module):
+
+    def __init__(self, state_dim=24, action_dim=4):
+        """
+        :param state_dim: Dimension of input state (int)
+        :param action_dim: Dimension of input action (int)
+        :return:
+        """
+        super(Critic, self).__init__()
+
+        self.state_dim = state_dim
+        self.action_dim = action_dim
+
+        self.lstm = nn.LSTM(state_dim, 128, batch_first=True, bidirectional=False) 
+        self.lstm.weight_hh_l0.data = fanin_init(self.lstm.weight_hh_l0.data.size())
+        self.lstm.weight_ih_l0.data = fanin_init(self.lstm.weight_ih_l0.data.size())
+
+        self.fca = nn.Linear(action_dim,128)
+        self.fca.weight.data = fanin_init(self.fca1.weight.data.size())
+
+        self.fc2 = nn.Linear(256,128)
+        self.fc2.weight.data = fanin_init(self.fc2.weight.data.size())
+
+        self.fc3 = nn.Linear(128,1)
+        self.fc3.weight.data.uniform_(-EPS,EPS)
+
+        self.relu = nn.ReLU()
+        self.tanh = nn.Tanh()
+
+    def forward(self, state, action):
+        """
+        returns Value function Q(s,a) obtained from critic network
+        :param state: Input state (Torch Variable : [n,state_dim] )
+        :param action: Input Action (Torch Variable : [n,action_dim] )
+        :return: Value function : Q(S,a) (Torch Variable : [n,1] )
+        """
+        s1, (_, _) = self.relu(self.lstm(state))
+        a1 = self.tanh(self.fca(action))
+        x = torch.cat((s1,a1),dim=1)
+
+        x = self.relu(self.fc2(x))
+        x = self.fc3(x)
+
+        return x
+
 
 class Actor(nn.Module):
-    def __init__(self, state_size=24, action_size=4, fc_layer=128):
+
+    def __init__(self, state_dim=24, action_dim=4):
+        """
+        :param state_dim: Dimension of input state (int)
+        :param action_dim: Dimension of output action (int)
+        :param action_lim: Used to limit action in [-action_lim,action_lim]
+        :return:
+        """
         super(Actor, self).__init__()
-        self.state_size = state_size
-        self.action_size= action_size
-        self.bn = nn.BatchNorm1d(state_size)
-        self.lstm = nn.LSTM(state_size, fc_layer, batch_first=True, bidirectional=False) 
-        self.linear= nn.Linear(fc_layer, action_size)
+
+        self.state_dim = state_dim
+        self.action_dim = action_dim
+
+        self.lstm = nn.LSTM(state_dim, 128, batch_first=True, bidirectional=False) 
+        self.lstm.weight_hh_l0.data = fanin_init(self.lstm.weight_hh_l0.data.size())
+        self.lstm.weight_ih_l0.data = fanin_init(self.lstm.weight_ih_l0.data.size())
+
+        self.fc1 = nn.Linear(128,64)
+        self.fc1.weight.data = fanin_init(self.fc2.weight.data.size())
+
+        self.fc2 = nn.Linear(64,action_dim)
+        self.fc2.weight.data.uniform_(-EPS,EPS)
+
+        self.relu = nn.ReLU()
         self.tanh = nn.Tanh()
 
     def forward(self, state):
-        # state: batch x seq x observation
-        #x = self.bn(state)
-        x = state
-        x, (_, _) = self.lstm(x)
-        x = self.tanh(self.linear(x[:,0]))
-        return x
+        """
+        returns policy function Pi(s) obtained from actor network
+        this function is a gaussian prob distribution for all actions
+        with mean lying in (-1,1) and sigma lying in (0,1)
+        The sampled action can , then later be rescaled
+        :param state: Input state (Torch Variable : [n,state_dim] )
+        :return: Output action (Torch Variable: [n,action_dim] )
+        """
+        x = self.lstm(state)
+        action = self.tanh(self.fc1(x))
 
-class Critic(nn.Module):
-    def __init__(self, state_size=24, action_size=4, fc1_layer=128, fc2_layer=128):
-        super(Critic, self).__init__()
-        self.state_size = state_size
-        self.action_size= action_size
-        self.bn = nn.BatchNorm1d(state_size)
-        self.lstm = nn.LSTM(state_size, fc1_layer, batch_first=True, bidirectional=False)
-        self.linear1 = nn.Linear(fc1_layer+action_size, fc2_layer)
-        self.linear2 = nn.Linear(fc2_layer, 1)
-        self.relu = nn.ReLU()
-        
-    def forward(self, state, action):
-        # state: batch x seq x observation
-        x = state
-        x, (_, _) = self.lstm(x)
-        x = torch.cat((x[:,0], action), dim=1)
-        x = self.relu(self.linear1(x))
-        x = self.linear2(x)
-        return x    
+        return action

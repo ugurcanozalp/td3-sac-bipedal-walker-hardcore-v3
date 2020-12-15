@@ -6,7 +6,7 @@ import os
 from collections import deque
 from agent import Agent
 from ddpg import train_ddpg, test_ddpg
-from archs.mlp4_models import Actor, Critic
+from archs.mlp_models import Actor, Critic
 
 env = gym.make('BipedalWalker-v3')
 agent = Agent(Actor, Critic, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1])
@@ -17,8 +17,8 @@ print("Action sample : ",env.action_space.sample())
 print("State sample  : \n ",env.reset())    
    
 
-agent.train_actor.load_state_dict(torch.load(os.path.join('models', 'mlp4_ckpt_actor.pth'), map_location={'cuda:0': 'cpu'}))
-agent.train_critic.load_state_dict(torch.load(os.path.join('models', 'mlp4_ckpt_critic.pth'), map_location={'cuda:0': 'cpu'}))
+agent.train_actor.load_state_dict(torch.load(os.path.join('models', 'mlp_ckpt_actor.pth'), map_location={'cuda:0': 'cpu'}))
+agent.train_critic.load_state_dict(torch.load(os.path.join('models', 'mlp_ckpt_critic.pth'), map_location={'cuda:0': 'cpu'}))
 scores = test_ddpg(env, agent)
 
 env.close()
