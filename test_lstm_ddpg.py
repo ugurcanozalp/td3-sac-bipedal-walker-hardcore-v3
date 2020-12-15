@@ -17,10 +17,13 @@ print("State  dimension : ",env.observation_space.shape)
 print("Action sample : ",env.action_space.sample())
 print("State sample  : \n ",env.reset())    
    
+try:
+    agent.train_actor.load_state_dict(torch.load(os.path.join('models', 'best_lstm_ckpt_actor.pth'), map_location={'cuda:0': 'cpu'}))
+    agent.train_critic.load_state_dict(torch.load(os.path.join('models', 'best_lstm_ckpt_critic.pth'), map_location={'cuda:0': 'cpu'}))
+except:
+    agent.train_actor.load_state_dict(torch.load(os.path.join('models', 'lstm_ckpt_actor.pth'), map_location={'cuda:0': 'cpu'}))
+    agent.train_critic.load_state_dict(torch.load(os.path.join('models', 'lstm_ckpt_critic.pth'), map_location={'cuda:0': 'cpu'}))
 
-
-agent.train_actor.load_state_dict(torch.load(os.path.join('models', 'lstm_ckpt_actor.pth'), map_location={'cuda:0': 'cpu'}))
-agent.train_critic.load_state_dict(torch.load(os.path.join('models', 'lstm_ckpt_critic.pth'), map_location={'cuda:0': 'cpu'}))
 scores = test_ddpg(env, agent)
 
 env.close()

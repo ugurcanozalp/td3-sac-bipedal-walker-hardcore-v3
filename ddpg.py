@@ -38,11 +38,14 @@ def train_ddpg(env, agent, n_episodes=5000, max_t=700, populate_episode=20, trai
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_deque))) 
             test_score = test_ddpg(env, agent, render=False)
             if test_score >= score_limit:
-            	break
+                torch.save(agent.train_actor.state_dict(), os.path.join('models','best_'+trainer_name+'_ckpt_actor.pth'))
+                torch.save(agent.train_critic.state_dict(), os.path.join('models','best_'+trainer_name+'_ckpt_critic.pth'))
+                score_limit=test_score
         if score >=score_limit:
-            torch.save(agent.train_actor.state_dict(), os.path.join('models',trainer_name+'_ckpt_actor.pth'))
-            torch.save(agent.train_critic.state_dict(), os.path.join('models',trainer_name+'_ckpt_critic.pth'))
-            break
+            #torch.save(agent.train_actor.state_dict(), os.path.join('models','best_'+trainer_name+'_ckpt_actor.pth'))
+            #torch.save(agent.train_critic.state_dict(), os.path.join('models','best_'+trainer_name+'_ckpt_critic.pth'))
+            #score_limit=score
+            pass
     return scores
 
 def test_ddpg(env, agent, render=True):
@@ -59,7 +62,7 @@ def test_ddpg(env, agent, render=True):
             env.render()
 
     print('\rTest Episode\tScore: {:.2f}'.format(score))
-    
+
     return score
 
     
