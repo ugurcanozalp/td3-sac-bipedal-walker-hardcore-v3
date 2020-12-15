@@ -21,7 +21,7 @@ class Agent():
         
         self.train_critic = Critic().to(self.device)
         self.target_critic= Critic().to(self.device)
-        self.critic_optim = optim.Adam(self.train_critic.parameters(), lr=0.1*lr)
+        self.critic_optim = optim.Adam(self.train_critic.parameters(), lr=lr)
 
         self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size))
         
