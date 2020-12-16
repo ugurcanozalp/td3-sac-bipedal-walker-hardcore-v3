@@ -20,13 +20,15 @@ def train_ddpg(env, agent, n_episodes=5000, max_t=700, populate_episode=20, trai
             next_state, reward, done, _ = env.step(action)
             #if i_episode>20:
             #    env.render()
-            if i_episode>populate_episode:
-                agent.learn_with_batches(state, action, reward, next_state, done)
+            #if i_episode>populate_episode:
+            agent.learn_with_batches(state, action, reward, next_state, done)
             
             state = next_state
             score += reward
             if done:
                 break 
+
+        agent.noise_generator.update_sigma()
 
         scores_deque.append(score)
         scores.append(score)
@@ -64,24 +66,3 @@ def test_ddpg(env, agent, render=True):
     print('\rTest Episode\tScore: {:.2f}'.format(score))
 
     return score
-
-    
-
-
-if __name__=='__main__':
-    env = gym.make('BipedalWalker-v3')
-    agent = Agent(state_size = env.observation_space.shape[0], action_size=env.action_space.shape[0])
-    env.seed(0)
-    print("Action dimension : ",env.action_space.shape)
-    print("State  dimension : ",env.observation_space.shape)
-    print("Action sample : ",env.action_space.sample())
-    print("State sample  : \n ",env.reset())        
-
-    scores = train_ddpg(env, agent)
-
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    plt.plot(np.arange(1, len(scores)+1), scores)
-    plt.ylabel('Score')
-    plt.xlabel('Episode #')
-    plt.show()
