@@ -16,8 +16,8 @@ def train(env, agent, n_episodes=5000, max_t=700, trainer_name='type_x', score_l
             action = agent.get_action(state, explore=True)
             action = action.clip(min=env.action_space.low, max=env.action_space.high)
             next_state, reward, done, _ = env.step(action)
-            #if i_episode>0*20:
-            #    env.render()
+            if i_episode>0*20:
+                env.render()
             agent.learn_with_batches(state, action, reward, next_state, done)
             
             state = next_state
