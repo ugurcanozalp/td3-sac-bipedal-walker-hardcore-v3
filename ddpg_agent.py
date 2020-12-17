@@ -3,10 +3,13 @@ from torch import optim
 import numpy as np
 import os
 from replay_buffer import ReplayBuffer
-# https://github.com/A-Raafat/DDPG-bipedal/blob/master/My_DDPG.ipynb
+from noise import OrnsteinUhlenbeckNoise
 
-class Agent():
-    def __init__(self, Actor, Critic, state_size=24, action_size=4, lr=1e-3, gamma=0.99, tau=0.001, batch_size=128, buffer_size=int(5e5)):
+# https://github.com/A-Raafat/DDPG-bipedal/blob/master/My_DDPG.ipynb
+class DDPGAgent():
+    def __init__(self, Actor, Critic, state_size=24, action_size=4, 
+            lr=1e-3, gamma=0.99, tau=0.001, batch_size=128, buffer_size=int(5e5)):
+        
         self.state_size = state_size
         self.action_size = action_size
 
@@ -18,7 +21,7 @@ class Agent():
         
         self.train_actor = Actor().to(self.device)
         self.target_actor= Actor().to(self.device)
-        self.actor_optim = optim.Adam(self.train_actor.parameters(), lr=0.3*lr)
+        self.actor_optim = optim.Adam(self.train_actor.parameters(), lr=0.25*lr)
         print(f'Number of paramters of Actor Net: {sum(p.numel() for p in self.train_actor.parameters())}')
         
         self.train_critic = Critic().to(self.device)
@@ -76,38 +79,10 @@ class Agent():
 
         if explore:
             noise = self.noise_generator()
+            #print(noise)
             action += noise
         return action
     
     def soft_update(self, local_model, target_model):
         for target_param, local_param in zip(target_model.parameters(), local_model.parameters()):
             target_param.data.copy_(self.tau*local_param.data + (1.0-self.tau)*target_param.data)
-
-
-class OrnsteinUhlenbeckNoise:
-    def __init__(self, mu, theta = 7.5, dt = 0.02, sigma_max = 1.4, sigma_min = 1.0, n_steps_annealing = 2000):
-        # 5.0, 0.02, 1.0 # 1.0, 0.02, 0.25 # 7.5, 0.02, 1.4 # 5.0, 0.02, 0.7
-        self.mu = mu
-        self.theta = theta
-        self.dt = dt
-        self.sigma_max = sigma_max
-        self.sigma_min = sigma_min 
-        self._delta_sigma = -float(self.sigma_max - self.sigma_min) / float(n_steps_annealing)
-        self._current_sigma = self.sigma_max
-        self._n_step = 0
-        
-        self.x_prev = np.zeros_like(self.mu)
-
-    @property
-    def current_sigma(self):
-        return self._current_sigma
-    
-    def update_sigma(self):
-        self._n_step +=1
-        self._current_sigma = max(self.sigma_min, self._delta_sigma * float(self._n_step) + self.sigma_max)
-
-    def __call__(self):
-        x = self.x_prev + self.theta * (self.mu - self.x_prev) * self.dt + \
-                self.current_sigma * np.sqrt(self.dt) * np.random.normal(size=self.mu.shape)
-        self.x_prev = x
-        return x

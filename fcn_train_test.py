@@ -4,10 +4,8 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 from collections import deque
-from agent import Agent
 
-
-def train_ddpg(env, agent, n_episodes=5000, max_t=700, populate_episode=20, trainer_name='type_x', score_limit=250.0):
+def train(env, agent, n_episodes=5000, max_t=700, trainer_name='type_x', score_limit=250.0):
     scores_deque = deque(maxlen=100)
     scores = []
     max_score = -np.Inf
@@ -18,17 +16,14 @@ def train_ddpg(env, agent, n_episodes=5000, max_t=700, populate_episode=20, trai
             action = agent.get_action(state, explore=True)
             action = action.clip(min=env.action_space.low, max=env.action_space.high)
             next_state, reward, done, _ = env.step(action)
-            #if i_episode>20:
+            #if i_episode>0*20:
             #    env.render()
-            #if i_episode>populate_episode:
             agent.learn_with_batches(state, action, reward, next_state, done)
             
             state = next_state
             score += reward
             if done:
                 break 
-
-        agent.noise_generator.update_sigma()
 
         scores_deque.append(score)
         scores.append(score)
@@ -50,7 +45,7 @@ def train_ddpg(env, agent, n_episodes=5000, max_t=700, populate_episode=20, trai
             pass
     return scores
 
-def test_ddpg(env, agent, render=True):
+def test(env, agent, render=True):
     state = env.reset()
     score = 0
     done=False

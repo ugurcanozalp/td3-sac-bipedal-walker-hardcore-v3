@@ -6,36 +6,120 @@ import torch.optim as optim
 import gym
 import random
 
-class Actor(nn.Module):
-    def __init__(self, state_size=24, action_size=4, fc_layer=128):
-        super(Actor, self).__init__()
-        self.state_size = state_size
-        self.action_size= action_size
-        self.Layer_in = nn.Linear(state_size, fc_layer)
-        self.Layer_out= nn.Linear(fc_layer, action_size)
-        self.relu = nn.ReLU()
-        self.tanh = nn.Tanh()
+# https://github.com/vy007vikas/PyTorch-ActorCriticRL
 
-    def forward(self, state):
-        x = state
-        x = self.relu(self.Layer_in(x))
-        x = self.tanh(self.Layer_out(x))
+EPS = 0.003
+
+def fanin_init(size, fanin=None):
+    fanin = fanin or size[0]
+    v = 1. / np.sqrt(fanin)
+    return torch.Tensor(size).uniform_(-v, v)
+
+class FeedForwardEncoder(nn.Module):
+    def __init__(self, input_size, hidden_size):
+        super(FeedForwardEncoder, self).__init__()
+        self.lin1 = nn.Linear(input_size, hidden_size)
+        self.lin1.weight.data = fanin_init(self.lin1.weight.data.size())
+        self.lin2 = nn.Linear(hidden_size, input_size)
+        self.lin2.weight.data = fanin_init(self.lin2.weight.data.size())
+        self.relu = nn.ReLU()
+        #self.do = nn.Dropout(p=dropout)
+        self.layernorm = nn.LayerNorm(input_size)
+    
+    def forward(self, x):
+        res = x
+        x = self.lin1(x)
+        #x = self.do(x)
+        x = self.relu(x)
+        x = self.lin2(x)
+        x = self.layernorm(x+res) # residual connection, similar to transformer
         return x
 
+class Embedder(nn.Module):
+    def __init__(self, input_size, output_size):
+        super(Embedder, self).__init__()
+        self.lin = nn.Linear(input_size, output_size)
+        self.lin.weight.data = fanin_init(self.lin.weight.data.size())
+        self.layernorm = nn.LayerNorm(output_size)
+
+    def forward(self, x):
+        return self.layernorm(self.lin(x))
+
+
 class Critic(nn.Module):
-    def __init__(self, state_size=24, action_size=4, fc1_layer=256, fc2_layer=128):
+
+    def __init__(self, state_dim=24, action_dim=4):
+        """
+        :param state_dim: Dimension of input state (int)
+        :param action_dim: Dimension of input action (int)
+        :return:
+        """
         super(Critic, self).__init__()
-        self.state_size = state_size
-        self.action_size= action_size
-        self.Layer_1 = nn.Linear(state_size, fc1_layer)
-        self.Layer_2 = nn.Linear(fc1_layer+action_size, fc2_layer)
-        self.Layer_3 = nn.Linear(fc2_layer, 1)
+
+        self.state_dim = state_dim
+        self.action_dim = action_dim
+
+        self.state_embedding = Embedder(state_dim, 64)
+        self.state_encoder = FeedForwardEncoder(64,256)
+
+        self.action_embedding = Embedder(action_dim, 64)
+
+        self.fc1 = nn.Linear(128,64)
+        self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
+
+        self.fc2 = nn.Linear(64,1)
+        self.fc2.weight.data.uniform_(-EPS,EPS)
+
         self.relu = nn.ReLU()
-        
+
     def forward(self, state, action):
-        x = state
-        x = self.relu(self.Layer_1(x))
-        x = torch.cat((x, action), dim=1)
-        x = self.relu(self.Layer_2(x))
-        x = self.Layer_3(x)
-        return x    
+        """
+        returns Value function Q(s,a) obtained from critic network
+        :param state: Input state (Torch Variable : [n,state_dim] )
+        :param action: Input Action (Torch Variable : [n,action_dim] )
+        :return: Value function : Q(S,a) (Torch Variable : [n,1] )
+        """
+        s = self.state_embedding(state)
+        s = self.state_encoder(s)
+        a = self.action_embedding(action)
+        x = torch.cat((s,a),dim=1)
+        x = self.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
+
+
+class Actor(nn.Module):
+
+    def __init__(self, state_dim=24, action_dim=4):
+        """
+        :param state_dim: Dimension of input state (int)
+        :param action_dim: Dimension of output action (int)
+        :param action_lim: Used to limit action in [-action_lim,action_lim]
+        :return:
+        """
+        super(Actor, self).__init__()
+
+        self.state_dim = state_dim
+        self.action_dim = action_dim
+
+        self.state_embedding = Embedder(state_dim, 64)
+        self.state_encoder = FeedForwardEncoder(64,256)
+
+        self.fc = nn.Linear(64,action_dim)
+        self.fc.weight.data.uniform_(-EPS,EPS)
+        self.tanh = nn.Tanh()
+
+
+    def forward(self, state):
+        """
+        returns policy function Pi(s) obtained from actor network
+        this function is a gaussian prob distribution for all actions
+        with mean lying in (-1,1) and sigma lying in (0,1)
+        The sampled action can , then later be rescaled
+        :param state: Input state (Torch Variable : [n,state_dim] )
+        :return: Output action (Torch Variable: [n,action_dim] )
+        """
+        s = self.state_embedding(state)
+        s = self.state_encoder(s)
+        action = self.tanh(self.fc(s))
+        return action
