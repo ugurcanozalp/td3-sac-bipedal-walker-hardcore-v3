@@ -46,13 +46,13 @@ if args.flag == 'train':
     env.close()
 elif args.flag == 'test':
     try:
-        actor_file = os.path.join(["models", rl_type, "_".join(["best", model_type, "actor.pth"])])
-        critic_file = os.path.join(["models", rl_type, "_".join(["best", model_type, "critic.pth"])])
+        actor_file = os.path.join("models", rl_type, "_".join(["best", model_type, "actor.pth"]))
+        critic_file = os.path.join("models", rl_type, "_".join(["best", model_type, "critic.pth"]))
         agent.train_actor.load_state_dict(torch.load(actor_file, map_location={'cuda:0': 'cpu'}))
         agent.train_critic.load_state_dict(torch.load(critic_file, map_location={'cuda:0': 'cpu'}))
     except:
-        actor_file = os.path.join(["models", rl_type, "_".join([model_type, "actor.pth"])])
-        critic_file = os.path.join(["models", rl_type, "_".join([model_type, "critic.pth"])])
+        actor_file = os.path.join("models", rl_type, "_".join([model_type, "actor.pth"]))
+        critic_file = os.path.join("models", rl_type, "_".join([model_type, "critic.pth"]))
         agent.train_actor.load_state_dict(torch.load(actor_file, map_location={'cuda:0': 'cpu'}))
         agent.train_critic.load_state_dict(torch.load(critic_file, map_location={'cuda:0': 'cpu'}))
 
