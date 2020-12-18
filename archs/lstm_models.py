@@ -26,9 +26,22 @@ class Embedder(nn.Module):
     def forward(self, x):
         return self.layernorm(self.lin(x))
 
+class NormalizedLSTM(nn.Module):
+    def __init__(self, input_size=64, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1):
+        super(NormalizedLSTM, self).__init__()
+        self.lstm = nn.LSTM(input_size=64, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1)
+        self.layernorm = nn.LayerNorm(hidden_size)
+
+    def forward(self, x):
+        x, (_, _) = self.lstm(x)
+        x = x[:, -1]
+        x = self.layernorm(x)
+        return x
+
+
 class Critic(nn.Module):
 
-    def __init__(self, state_dim=24, action_dim=4, seq_len=32):
+    def __init__(self, state_dim=24, action_dim=4, seq_len=8):
         """
         :param state_dim: Dimension of input state (int)
         :param action_dim: Dimension of input action (int)
@@ -40,7 +53,7 @@ class Critic(nn.Module):
         self.action_dim = action_dim
 
         self.state_embedding = Embedder(state_dim, 64)
-        self.state_encoder = nn.LSTM(input_size=64, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1)
+        self.state_encoder = NormalizedLSTM(input_size=64, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1)
 
         self.action_embedding = Embedder(action_dim, 64)
 
@@ -60,8 +73,7 @@ class Critic(nn.Module):
         :return: Value function : Q(S,a) (Torch Variable : [n,1] )
         """
         s = self.state_embedding(state)
-        s, (_, _) = self.state_encoder(s)
-        s = s[:, -1]
+        s = self.state_encoder(s)
         a = self.action_embedding(action)
         x = torch.cat((s,a),dim=1)
         x = self.relu(self.fc1(x))
