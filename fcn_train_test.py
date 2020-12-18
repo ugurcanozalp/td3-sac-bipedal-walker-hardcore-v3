@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt
 from collections import deque
 
-def train(env, agent, n_episodes=5000, max_t=700, trainer_name='type_x', score_limit=250.0):
+def train(env, agent, n_episodes=5000, max_t=700, model_type='unk', score_limit=250.0):
     scores_deque = deque(maxlen=100)
     scores = []
     max_score = -np.Inf
@@ -16,8 +16,10 @@ def train(env, agent, n_episodes=5000, max_t=700, trainer_name='type_x', score_l
             action = agent.get_action(state, explore=True)
             action = action.clip(min=env.action_space.low, max=env.action_space.high)
             next_state, reward, done, _ = env.step(action)
-            if i_episode>0*20:
-                env.render()
+            
+            #if i_episode>0*20:
+            #    env.render()
+            
             agent.learn_with_batches(state, action, reward, next_state, done)
             
             state = next_state
@@ -30,18 +32,19 @@ def train(env, agent, n_episodes=5000, max_t=700, trainer_name='type_x', score_l
         print('\rEpisode {}\tAverage Score: {:.2f}\tScore: {:.2f}'.format(i_episode, np.mean(scores_deque), score), end="")
 
         if i_episode % 100 == 0:
-            torch.save(agent.train_actor.state_dict(), os.path.join('models',trainer_name+'_ckpt_actor.pth'))
-            torch.save(agent.train_critic.state_dict(), os.path.join('models',trainer_name+'_ckpt_critic.pth'))
+            actor_file = os.path.join("models", agent.rl_type, "_".join([model_type, "actor.pth"]))
+            critic_file = os.path.join("models", agent.rl_type, "_".join([model_type, "critic.pth"]))
+            torch.save(agent.train_actor.state_dict(), actor_file)
+            torch.save(agent.train_critic.state_dict(), critic_file)
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_deque))) 
-            test_score = test_ddpg(env, agent, render=False)
+            test_score = test(env, agent, render=False)
             if test_score >= score_limit:
-                torch.save(agent.train_actor.state_dict(), os.path.join('models','best_'+trainer_name+'_ckpt_actor.pth'))
-                torch.save(agent.train_critic.state_dict(), os.path.join('models','best_'+trainer_name+'_ckpt_critic.pth'))
+                actor_file = os.path.join("models", agent.rl_type, "_".join(["best", model_type, "actor.pth"]))
+                critic_file = os.path.join("models", agent.rl_type, "_".join(["best", model_type, "critic.pth"]))
+                torch.save(agent.train_actor.state_dict(), actor_file)
+                torch.save(agent.train_critic.state_dict(), critic_file)
                 score_limit=test_score
         if score >=score_limit:
-            #torch.save(agent.train_actor.state_dict(), os.path.join('models','best_'+trainer_name+'_ckpt_actor.pth'))
-            #torch.save(agent.train_critic.state_dict(), os.path.join('models','best_'+trainer_name+'_ckpt_critic.pth'))
-            #score_limit=score
             pass
     return scores
 

@@ -7,6 +7,7 @@ from noise import OrnsteinUhlenbeckNoise
 
 # https://github.com/A-Raafat/DDPG-bipedal/blob/master/My_DDPG.ipynb
 class DDPGAgent():
+    rl_type = 'ddpg'
     def __init__(self, Actor, Critic, state_size=24, action_size=4, 
             lr=1e-3, gamma=0.99, tau=0.001, batch_size=128, buffer_size=int(5e5)):
         
