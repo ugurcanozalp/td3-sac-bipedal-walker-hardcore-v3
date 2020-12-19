@@ -31,18 +31,12 @@ def train(env, agent, n_episodes=5000, max_t=700, model_type='unk', score_limit=
         scores.append(score)
         print('\rEpisode {}\tAverage Score: {:.2f}\tScore: {:.2f}'.format(i_episode, np.mean(scores_deque), score), end="")
 
-        if i_episode % 100 == 0:
-            actor_file = os.path.join("models", agent.rl_type, "_".join([model_type, "actor.pth"]))
-            critic_file = os.path.join("models", agent.rl_type, "_".join([model_type, "critic.pth"]))
-            torch.save(agent.train_actor.state_dict(), actor_file)
-            torch.save(agent.train_critic.state_dict(), critic_file)
+        if i_episode % 5 == 0:
+            agent.save_ckpt(model_type)
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_deque))) 
             test_score = test(env, agent, render=False)
             if test_score >= score_limit:
-                actor_file = os.path.join("models", agent.rl_type, "_".join(["best", model_type, "actor.pth"]))
-                critic_file = os.path.join("models", agent.rl_type, "_".join(["best", model_type, "critic.pth"]))
-                torch.save(agent.train_actor.state_dict(), actor_file)
-                torch.save(agent.train_critic.state_dict(), critic_file)
+                agent.save_ckpt(model_type, 'best')
                 score_limit=test_score
         if score >=score_limit:
             pass

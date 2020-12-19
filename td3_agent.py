@@ -6,13 +6,16 @@ from replay_buffer import ReplayBuffer
 from noise import OrnsteinUhlenbeckNoise
 
 # https://github.com/A-Raafat/DDPG-bipedal/blob/master/My_DDPG.ipynb
-class DDPGAgent():
-    rl_type = 'ddpg'
-    def __init__(self, Actor, Critic, state_size=24, action_size=4, 
+class TD3Agent():
+    rl_type = 'td3'
+    def __init__(self, Actor, Critic, state_size=24, action_size=4, update_freq=int(4),
             lr=1e-3, gamma=0.99, tau=0.001, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
         self.action_size = action_size
+        self.update_freq = update_freq
+
+        self.learn_call = 0
 
         self.gamma = gamma
         self.tau = tau
@@ -23,14 +26,19 @@ class DDPGAgent():
         self.train_actor = Actor().to(self.device)
         self.target_actor= Actor().to(self.device).eval()
         self.hard_update(self.train_actor, self.target_actor)
-        self.actor_optim = optim.Adam(self.train_actor.parameters(), lr=0.25*lr)
+        self.actor_optim = optim.Adam(self.train_actor.parameters(), lr=lr) # hard update at the beginning
         print(f'Number of paramters of Actor Net: {sum(p.numel() for p in self.train_actor.parameters())}')
         
-        self.train_critic = Critic().to(self.device)
-        self.target_critic= Critic().to(self.device).eval()
-        self.hard_update(self.train_critic, self.target_critic)
-        self.critic_optim = optim.Adam(self.train_critic.parameters(), lr=lr)
-        print(f'Number of paramters of Critic Net: {sum(p.numel() for p in self.train_critic.parameters())}')
+        self.train_critic_1 = Critic().to(self.device)
+        self.target_critic_1 = Critic().to(self.device).eval()
+        self.hard_update(self.train_critic_1, self.target_critic_1)
+        self.critic_1_optim = optim.Adam(self.train_critic_1.parameters(), lr=lr)
+
+        self.train_critic_2 = Critic().to(self.device)
+        self.target_critic_2 = Critic().to(self.device).eval()
+        self.hard_update(self.train_critic_2, self.target_critic_2)
+        self.critic_2_optim = optim.Adam(self.train_critic_2.parameters(), lr=lr)
+        print(f'Number of paramters of Single Critic Net: {sum(p.numel() for p in self.train_critic_2.parameters())}')
 
         self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size))
         
@@ -45,34 +53,45 @@ class DDPGAgent():
             self.learn(exp)
             
     def learn(self, exp):
+        self.learn_call+=1
         states, actions, rewards, next_states, done = exp
         
         #update critic
         with torch.no_grad():
             next_actions = self.target_actor(next_states)
-            Q_targets_next = self.target_critic(next_states, next_actions)
+            Q_targets_next_1 = self.target_critic_1(next_states, next_actions)
+            Q_targets_next_2 = self.target_critic_2(next_states, next_actions)
+            Q_targets_next = torch.min(Q_targets_next_1, Q_targets_next_2)
             Q_targets = rewards + (self.gamma * Q_targets_next * (1-done))
         
-        Q_expected = self.train_critic(states, actions)
-        
-        critic_loss = torch.nn.MSELoss()(Q_expected, Q_targets)
+        Q_expected_1 = self.train_critic_1(states, actions)
+        Q_expected_2 = self.train_critic_2(states, actions)       
+
+        critic_1_loss = torch.nn.MSELoss()(Q_expected_1, Q_targets)
+        critic_2_loss = torch.nn.MSELoss()(Q_expected_2, Q_targets)
         #critic_loss = torch.nn.SmoothL1Loss()(Q_expected, Q_targets)
 
-        self.critic_optim.zero_grad()
-        critic_loss.backward()
-        self.critic_optim.step()
+        self.critic_1_optim.zero_grad()
+        critic_1_loss.backward()
+        self.critic_1_optim.step()
+
+        self.critic_2_optim.zero_grad()
+        critic_2_loss.backward()
+        self.critic_2_optim.step()
         
-        #update actor
-        actions_pred = self.train_actor(states)
-        actor_loss = -self.train_critic(states, actions_pred).mean()
+        if self.learn_call % self.update_freq == 0:
+            #update actor
+            actions_pred = self.train_actor(states)
+            actor_loss = -self.train_critic_1(states, actions_pred).mean()
+            
+            self.actor_optim.zero_grad()
+            actor_loss.backward()
+            self.actor_optim.step()
         
-        self.actor_optim.zero_grad()
-        actor_loss.backward()
-        self.actor_optim.step()
-        
-        #using soft upates
-        self.soft_update(self.train_actor, self.target_actor)
-        self.soft_update(self.train_critic, self.target_critic)
+            #using soft upates
+            self.soft_update(self.train_actor, self.target_actor)
+            self.soft_update(self.train_critic_1, self.target_critic_1)
+            self.soft_update(self.train_critic_2, self.target_critic_2)
         
             
     def get_action(self, state, explore=False):
@@ -98,6 +117,8 @@ class DDPGAgent():
 
     def save_ckpt(self, model_type, prefix='last'):
         actor_file = os.path.join("models", self.rl_type, "_".join([prefix, model_type, "actor.pth"]))
-        critic_file = os.path.join("models", self.rl_type, "_".join([prefix, model_type, "critic.pth"]))
+        critic_1_file = os.path.join("models", self.rl_type, "_".join([prefix, model_type, "critic_1.pth"]))
+        critic_2_file = os.path.join("models", self.rl_type, "_".join([prefix, model_type, "critic_2.pth"]))
         torch.save(self.train_actor.state_dict(), actor_file)
-        torch.save(self.train_critic.state_dict(), critic_file)
+        torch.save(self.train_critic_1.state_dict(), critic_1_file)
+        torch.save(self.train_critic_2.state_dict(), critic_2_file)
