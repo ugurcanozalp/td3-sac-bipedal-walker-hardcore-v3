@@ -1,5 +1,5 @@
-# ddpg-bipedal-walker
-Various architecture implementations for solving BipedalWalker-v3 of GYM on PyTorch.
+# ddpg-td3-bipedal-walker-v3
+Various architectures and RL methods implementations for solving BipedalWalker-v3 of GYM on PyTorch.
 
 # How to
 Create new python environment and First install requirements. (python 3.6)
