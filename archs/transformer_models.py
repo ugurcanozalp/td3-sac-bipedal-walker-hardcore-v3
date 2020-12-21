@@ -52,10 +52,10 @@ class Embedder(nn.Module):
         super(Embedder, self).__init__()
         self.lin = nn.Linear(input_size, output_size)
         self.lin.weight.data = fanin_init(self.lin.weight.data.size())
-        self.layernorm = nn.LayerNorm(output_size)
+        self.tanh = nn.Tanh()
 
     def forward(self, x):
-        return self.layernorm(self.lin(x))
+        return self.tanh(self.lin(x))
 
 class Critic(nn.Module):
 
