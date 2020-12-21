@@ -32,7 +32,7 @@ class DDPGAgent():
         self.critic_optim = optim.Adam(self.train_critic.parameters(), lr=lr)
         print(f'Number of paramters of Critic Net: {sum(p.numel() for p in self.train_critic.parameters())}')
 
-        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size))
+        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=0.2, sigma=0.2)
         
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \
             batch_size= self.batch_size, device=self.device)
