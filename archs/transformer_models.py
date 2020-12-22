@@ -65,6 +65,7 @@ class Critic(nn.Module):
             nhead=4, num_layers=1, max_len=max_len)
 
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.ReLU())
+        self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
 
         self.fc1 = nn.Linear(128,64)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())

@@ -44,7 +44,8 @@ class Critic(nn.Module):
         self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1)
 
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.ReLU())
-
+        self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
+        
         self.fc1 = nn.Linear(128,64)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 

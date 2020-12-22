@@ -23,13 +23,14 @@ class FeedForwardEncoder(nn.Module):
         self.lin2 = nn.Linear(hidden_size, out_size)
         self.lin2.weight.data = fanin_init(self.lin2.weight.data.size())
         self.relu = nn.ReLU()
+        self.layernorm = nn.LayerNorm(out_size)
     
     def forward(self, x):
         res = x
         x = self.lin1(x)
         x = self.relu(x)
         x = self.lin2(x)
-        x = self.relu(x)
+        x = self.layernorm(x)
         return x
 
 """
@@ -60,7 +61,7 @@ class Critic(nn.Module):
         self.state_encoder = FeedForwardEncoder(self.state_dim, 256, 64)
 
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.ReLU())
-
+        self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
         self.fc1 = nn.Linear(128,64)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
