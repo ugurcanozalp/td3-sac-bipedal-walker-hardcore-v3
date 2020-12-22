@@ -33,8 +33,10 @@ class PositionalEncoding(nn.Module):
         return x
 
 class MyTransformerEncoder(nn.Module):
-    def __init__(self, d_model=64, dim_feedforward=128, nhead=4, num_layers=1, max_len=32):
+    def __init__(self, input_size, d_model=64, dim_feedforward=128, nhead=4, num_layers=1, max_len=32):
         super(MyTransformerEncoder, self).__init__()
+        self.linear_embedding = nn.Sequential(nn.Linear(input_size, d_model), nn.LayerNorm(d_model))
+        self.linear_embedding[0].weight.data = fanin_init(self.linear_embedding[0].weight.data.size())
         self.pos_embedding = PositionalEncoding (d_model=d_model, max_len=max_len)
         encoder = nn.TransformerEncoderLayer(d_model=d_model, nhead=nhead, dim_feedforward=dim_feedforward, activation='relu')
         encoder.linear1.weight.data = fanin_init(encoder.linear1.weight.data.size())
@@ -43,6 +45,7 @@ class MyTransformerEncoder(nn.Module):
         self.transformer_encoder = nn.TransformerEncoder(encoder, num_layers=num_layers)
 
     def forward(self, x): 
+        x = self.linear_embedding(x)
         x = self.pos_embedding(x)
         x = self.transformer_encoder(x)
         return x
@@ -61,8 +64,8 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = MyTransformerEncoder(d_model=self.state_dim, dim_feedforward=128, \
-            nhead=4, num_layers=1, max_len=max_len)
+        self.state_encoder = MyTransformerEncoder(input_size = self.state_dim, d_model=64, 
+            dim_feedforward=128, nhead=4, num_layers=1, max_len=max_len)
 
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.ReLU())
         self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
@@ -105,8 +108,8 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = MyTransformerEncoder(d_model=64, dim_feedforward=128, \
-            nhead=4, num_layers=1, max_len=max_len)
+        self.state_encoder = MyTransformerEncoder(input_size=self.state_dim, d_model=64, 
+            dim_feedforward=128, nhead=4, num_layers=1, max_len=max_len)
 
         self.fc = nn.Linear(64,action_dim)
         self.fc.weight.data.uniform_(-EPS,EPS)
