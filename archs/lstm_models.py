@@ -16,20 +16,10 @@ def fanin_init(size, fanin=None):
     v = 1. / np.sqrt(fanin)
     return torch.Tensor(size).uniform_(-v, v)
 
-class Embedder(nn.Module):
-    def __init__(self, input_size, output_size):
-        super(Embedder, self).__init__()
-        self.lin = nn.Linear(input_size, output_size)
-        self.lin.weight.data = fanin_init(self.lin.weight.data.size())
-        self.tanh = nn.Tanh()
-
-    def forward(self, x):
-        return self.tanh(self.lin(x))
-
 class NormalizedLSTM(nn.Module):
-    def __init__(self, input_size=64, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1):
+    def __init__(self, input_size, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1):
         super(NormalizedLSTM, self).__init__()
-        self.lstm = nn.LSTM(input_size=64, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1)
+        self.lstm = nn.LSTM(input_size, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1)
         self.layernorm = nn.LayerNorm(hidden_size)
 
     def forward(self, x):
@@ -37,7 +27,6 @@ class NormalizedLSTM(nn.Module):
         x = x[:, -1]
         x = self.layernorm(x)
         return x
-
 
 class Critic(nn.Module):
 
@@ -52,10 +41,9 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_embedding = Embedder(state_dim, 64)
-        self.state_encoder = NormalizedLSTM(input_size=64, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1)
+        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1)
 
-        self.action_embedding = Embedder(action_dim, 64)
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.ReLU())
 
         self.fc1 = nn.Linear(128,64)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
@@ -72,9 +60,8 @@ class Critic(nn.Module):
         :param action: Input Action (Torch Variable : [n,action_dim] )
         :return: Value function : Q(S,a) (Torch Variable : [n,1] )
         """
-        s = self.state_embedding(state)
-        s = self.state_encoder(s)
-        a = self.action_embedding(action)
+        s = self.state_encoder(state)
+        a = self.action_encoder(action)
         x = torch.cat((s,a),dim=1)
         x = self.relu(self.fc1(x))
         x = self.fc2(x)
@@ -95,8 +82,7 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_embedding = Embedder(state_dim, 64)
-        self.state_encoder = nn.LSTM(input_size=64, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1)
+        self.state_encoder = nn.LSTM(input_size=self.state_dim, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1)
 
         self.fc = nn.Linear(64,action_dim)
         self.fc.weight.data.uniform_(-EPS,EPS)
@@ -111,8 +97,7 @@ class Actor(nn.Module):
         :param state: Input state (Torch Variable : [n,state_dim] )
         :return: Output action (Torch Variable: [n,action_dim] )
         """
-        s = self.state_embedding(state)
-        s, (_, _) = self.state_encoder(s)
+        s, (_, _) = self.state_encoder(state)
         s = s[:, -1]
         action = self.tanh(self.fc(s))
         return action
