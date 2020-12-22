@@ -30,6 +30,7 @@ class PositionalEncoding(nn.Module):
 
     def forward(self, x):
         x = x + self.pe[:, :x.size(1), :]
+        # x = x + self.pe[:, :x.size(1), :]
         return x
 
 class MyTransformerEncoder(nn.Module):
