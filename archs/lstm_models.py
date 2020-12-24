@@ -17,9 +17,9 @@ def fanin_init(size, fanin=None):
     return torch.Tensor(size).uniform_(-v, v)
 
 class NormalizedLSTM(nn.Module):
-    def __init__(self, input_size, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1):
+    def __init__(self, input_size, hidden_size=128, batch_first=True, bidirectional=False, num_layers=1):
         super(NormalizedLSTM, self).__init__()
-        self.lstm = nn.LSTM(input_size, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1)
+        self.lstm = nn.LSTM(input_size, hidden_size=hidden_size, batch_first=True, bidirectional=False, num_layers=1)
         self.layernorm = nn.LayerNorm(hidden_size)
 
     def forward(self, x):
@@ -30,7 +30,7 @@ class NormalizedLSTM(nn.Module):
 
 class Critic(nn.Module):
 
-    def __init__(self, state_dim=24, action_dim=4, seq_len=8):
+    def __init__(self, state_dim=24, action_dim=4):
         """
         :param state_dim: Dimension of input state (int)
         :param action_dim: Dimension of input action (int)
@@ -41,15 +41,15 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1)
+        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=128, batch_first=True, bidirectional=False, num_layers=1)
 
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.ReLU())
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.ReLU())
         self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
         
-        self.fc1 = nn.Linear(128,64)
+        self.fc1 = nn.Linear(256,128)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(64,1)
+        self.fc2 = nn.Linear(128,1)
         self.fc2.weight.data.uniform_(-EPS,EPS)
 
         self.relu = nn.ReLU()
@@ -71,7 +71,7 @@ class Critic(nn.Module):
 
 class Actor(nn.Module):
 
-    def __init__(self, state_dim=24, action_dim=4, seq_len=32):
+    def __init__(self, state_dim=24, action_dim=4):
         """
         :param state_dim: Dimension of input state (int)
         :param action_dim: Dimension of output action (int)
@@ -83,9 +83,9 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = nn.LSTM(input_size=self.state_dim, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1)
+        self.state_encoder = nn.LSTM(input_size=self.state_dim, hidden_size=128, batch_first=True, bidirectional=False, num_layers=1)
 
-        self.fc = nn.Linear(64,action_dim)
+        self.fc = nn.Linear(128,action_dim)
         self.fc.weight.data.uniform_(-EPS,EPS)
         self.tanh = nn.Tanh()
 

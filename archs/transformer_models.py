@@ -30,10 +30,9 @@ class PositionalEncoding(nn.Module):
         self.register_buffer('pe', pe)
 
     def forward(self, x):
-        x = x + torch.flip(self.pe[:, :x.size(1), :], dims=[1])
-        # x = x + self.pe[:, :x.size(1), :]
+        #x = x + torch.flip(self.pe[:, :x.size(1), :], dims=[1])
+        x = x + self.pe[:, :x.size(1), :]
         return x
-
 
 class LearnablePositionalEncoding(nn.Module):
     def __init__(self, d_model, max_len=32):
@@ -46,8 +45,8 @@ class LearnablePositionalEncoding(nn.Module):
 class MyTransformerEncoder(nn.Module):
     def __init__(self, input_size, d_model, dim_feedforward, output_size, nhead=4, num_layers=1, max_len=32):
         super(MyTransformerEncoder, self).__init__()
-        self.linear_embedding = nn.Sequential(nn.Linear(input_size, d_model), nn.LayerNorm(d_model))
-        self.linear_embedding[0].weight.data = fanin_init(self.linear_embedding[0].weight.data.size())
+        self.linear_embedding = nn.Linear(input_size, d_model)
+        self.linear_embedding.weight.data = fanin_init(self.linear_embedding.weight.data.size())
         self.pos_embedding = PositionalEncoding(d_model=d_model, max_len=max_len)
         #self.pos_embedding = LearnablePositionalEncoding(d_model, max_len=max_len)
         encoder = nn.TransformerEncoderLayer(d_model=d_model, nhead=nhead, dim_feedforward=dim_feedforward, activation='relu', dropout=0.0)
@@ -79,16 +78,16 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = MyTransformerEncoder(input_size = self.state_dim, d_model=32, 
-            dim_feedforward=128, output_size=64, nhead=4, num_layers=2, max_len=max_len)
+        self.state_encoder = MyTransformerEncoder(input_size = self.state_dim, d_model=64, 
+            dim_feedforward=192, output_size=128, nhead=2, num_layers=2, max_len=max_len)
 
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.ReLU())
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.ReLU())
         self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
 
-        self.fc1 = nn.Linear(128,64)
+        self.fc1 = nn.Linear(256,128)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(64,1)
+        self.fc2 = nn.Linear(128,1)
         self.fc2.weight.data.uniform_(-EPS,EPS)
 
         self.relu = nn.ReLU()
@@ -123,10 +122,10 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = MyTransformerEncoder(input_size=self.state_dim, d_model=32, 
-            dim_feedforward=128, output_size=64, nhead=4, num_layers=2, max_len=max_len)
+        self.state_encoder = MyTransformerEncoder(input_size=self.state_dim, d_model=64, 
+            dim_feedforward=192, output_size=128, nhead=2, num_layers=2, max_len=max_len)
 
-        self.fc = nn.Linear(64,action_dim)
+        self.fc = nn.Linear(128,action_dim)
         self.fc.weight.data.uniform_(-EPS,EPS)
         self.tanh = nn.Tanh()
 

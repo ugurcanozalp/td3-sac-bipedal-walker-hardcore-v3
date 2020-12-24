@@ -22,10 +22,10 @@ args = parser.parse_args()
 
 if args.env == 'classic':
     env_raw = gym.make('BipedalWalker-v3')
-    env = BoxToHistoryBox(env_raw, h=8)
+    env = BoxToHistoryBox(env_raw, h=16)
 elif args.env == 'hardcore':
     env_raw = gym.make('BipedalWalkerHardcore-v3')
-    env = BoxToHistoryBox(env_raw, h=8)
+    env = BoxToHistoryBox(env_raw, h=16)
 
 agent = DDPGAgent(Actor, Critic, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1])
 env.seed(0)
