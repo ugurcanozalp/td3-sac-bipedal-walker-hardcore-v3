@@ -1,12 +1,17 @@
 import numpy as np
 
 class GaussianNoise:
-    def __init__(self, mu, sigma):
+    def __init__(self, mu, sigma, clip=None):
         self.mu = mu
-        self.sigma = sigma        
+        self.sigma = sigma
+        self.clip = clip        
 
     def __call__(self):
-        return self.mu + self.sigma*np.random.normal(size=self.mu.shape)
+        delta = self.sigma*np.random.normal(size=self.mu.shape)
+        if self.clip is not None:
+            delta = delta.clip(-self.clip,+self.clip)
+
+        return self.mu + delta
 
 class OrnsteinUhlenbeckNoise:
     def __init__(self, mu, theta = 0.15, sigma = 0.2):

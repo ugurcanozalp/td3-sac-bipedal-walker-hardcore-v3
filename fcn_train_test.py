@@ -32,12 +32,14 @@ def train(env, agent, n_episodes=5000, max_t=700, model_type='unk', score_limit=
         print('\rEpisode {}\tAverage Score: {:.2f}\tScore: {:.2f}'.format(i_episode, np.mean(scores_deque), score), end="")
 
         if i_episode % 100 == 0:
-            agent.save_ckpt(model_type)
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_deque))) 
             test_score = test(env, agent, render=False)
             if test_score >= score_limit:
                 agent.save_ckpt(model_type, 'best')
                 score_limit=test_score
+            else:
+                agent.save_ckpt(model_type)
+
         if score >=score_limit:
             pass
     return scores
