@@ -54,7 +54,7 @@ class Critic(nn.Module):
         x = torch.cat((s1,a1),dim=1)
 
         x = self.relu(self.fc2(x))
-        x = self.fc3(x)
+        x = self.fc3(x)*100
 
         return x
 

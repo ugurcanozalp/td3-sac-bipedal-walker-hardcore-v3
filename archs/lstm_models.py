@@ -65,7 +65,7 @@ class Critic(nn.Module):
         a = self.action_encoder(action)
         x = torch.cat((s,a),dim=1)
         x = self.relu(self.fc1(x))
-        x = self.fc2(x)
+        x = self.fc2(x)*100
         return x
 
 
