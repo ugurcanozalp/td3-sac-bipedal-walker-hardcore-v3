@@ -27,7 +27,9 @@ elif args.env == 'hardcore':
     env_raw = gym.make('BipedalWalkerHardcore-v3')
     env = BoxToHistoryBox(env_raw, h=16)
 
-agent = DDPGAgent(Actor, Critic, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1])
+agent = TD3Agent(Actor, Critic, clip_low=-1, clip_high=+1, \
+    state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1])
+
 env.seed(0)
 print("Action dimension : ",env.action_space.shape)
 print("State  dimension : ",env.observation_space.shape)

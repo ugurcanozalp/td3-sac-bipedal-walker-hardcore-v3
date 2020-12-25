@@ -43,13 +43,13 @@ class LearnablePositionalEncoding(nn.Module):
 
 
 class MyTransformerEncoder(nn.Module):
-    def __init__(self, input_size, d_model, dim_feedforward, output_size, nhead=4, num_layers=1, max_len=32):
+    def __init__(self, input_size, d_model, dim_feedforward, output_size, nhead=4, num_layers=2, max_len=32):
         super(MyTransformerEncoder, self).__init__()
         self.linear_embedding = nn.Linear(input_size, d_model)
         self.linear_embedding.weight.data = fanin_init(self.linear_embedding.weight.data.size())
         self.pos_embedding = PositionalEncoding(d_model=d_model, max_len=max_len)
         #self.pos_embedding = LearnablePositionalEncoding(d_model, max_len=max_len)
-        encoder = nn.TransformerEncoderLayer(d_model=d_model, nhead=nhead, dim_feedforward=dim_feedforward, activation='relu', dropout=0.0)
+        encoder = nn.TransformerEncoderLayer(d_model=d_model, nhead=nhead, dim_feedforward=dim_feedforward, activation='gelu', dropout=0.0)
         encoder.linear1.weight.data = fanin_init(encoder.linear1.weight.data.size())
         encoder.linear2.weight.data = fanin_init(encoder.linear2.weight.data.size())
         encoder.self_attn.in_proj_weight.data = fanin_init(encoder.self_attn.in_proj_weight.data.size())

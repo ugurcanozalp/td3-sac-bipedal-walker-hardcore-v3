@@ -8,8 +8,8 @@ from noise import OrnsteinUhlenbeckNoise, GaussianNoise
 # https://github.com/A-Raafat/DDPG-bipedal/blob/master/My_DDPG.ipynb
 class TD3Agent():
     rl_type = 'td3'
-    def __init__(self, Actor, Critic, state_size=24, action_size=4, update_freq=int(2),
-            lr=1e-3, gamma=0.99, tau=0.001, batch_size=128, buffer_size=int(5e5)):
+    def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(2),
+            lr=1e-3, gamma=0.99, tau=0.005, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -23,6 +23,9 @@ class TD3Agent():
 
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") 
         
+        self.clip_low = torch.tensor(clip_low)
+        self.clip_high = torch.tensor(clip_high)
+
         self.train_actor = Actor().to(self.device)
         self.target_actor= Actor().to(self.device).eval()
         self.hard_update(self.train_actor, self.target_actor)
@@ -60,7 +63,8 @@ class TD3Agent():
         #update critic
         with torch.no_grad():
             next_actions = self.target_actor(next_states)
-            next_actions = (next_actions + torch.from_numpy(self.target_noise(), dtype=torch.float)).to(self.device)
+            next_actions = next_actions + torch.from_numpy(self.target_noise()).float().to(self.device)
+            next_actions = torch.clamp(next_actions, self.clip_low, self.clip_high)
             Q_targets_next_1 = self.target_critic_1(next_states, next_actions)
             Q_targets_next_2 = self.target_critic_2(next_states, next_actions)
             Q_targets_next = torch.min(Q_targets_next_1, Q_targets_next_2)

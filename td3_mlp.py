@@ -24,7 +24,9 @@ if args.env == 'classic':
 elif args.env == 'hardcore':
     env = gym.make('BipedalWalkerHardcore-v3')
 
-agent = TD3Agent(Actor, Critic, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1])
+agent = TD3Agent(Actor, Critic, clip_low=-1, clip_high=+1, \
+    state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1])
+
 env.seed(0)
 print("Action dimension : ",env.action_space.shape)
 print("State  dimension : ",env.observation_space.shape)
