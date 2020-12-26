@@ -21,9 +21,6 @@ parser.add_argument("-r", "--rl_type", type=str, choices=['ddpg', 'td3'], defaul
 
 args = parser.parse_args()
 
-model_type = args.model_type
-rl_type = args.rl_type
-
 if args.model_type=='mlp':
     from archs.mlp_models import Actor, Critic
 elif args.model_type=='mlp2':
