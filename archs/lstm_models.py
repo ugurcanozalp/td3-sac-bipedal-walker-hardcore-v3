@@ -20,12 +20,12 @@ class NormalizedLSTM(nn.Module):
     def __init__(self, input_size, hidden_size=128, batch_first=True, bidirectional=False, num_layers=1):
         super(NormalizedLSTM, self).__init__()
         self.lstm = nn.LSTM(input_size, hidden_size=hidden_size, batch_first=True, bidirectional=False, num_layers=1)
-        self.layernorm = nn.LayerNorm(hidden_size)
+        #self.layernorm = nn.LayerNorm(hidden_size)
 
     def forward(self, x):
         x, (_, _) = self.lstm(x)
         x = x[:, -1]
-        x = self.layernorm(x)
+        #x = self.layernorm(x)
         return x
 
 class Critic(nn.Module):

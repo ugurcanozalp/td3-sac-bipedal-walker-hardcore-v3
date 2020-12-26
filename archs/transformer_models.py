@@ -6,6 +6,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import gym
 import random
+from .utils.stable_transformer import StableTransformerXL
 
 # https://github.com/vy007vikas/PyTorch-ActorCriticRL
 
@@ -15,7 +16,7 @@ def fanin_init(size, fanin=None):
     fanin = fanin or size[0]
     v = 1. / np.sqrt(fanin)
     return torch.Tensor(size).uniform_(-v, v)
-
+"""
 class PositionalEncoding(nn.Module):
     def __init__(self, d_model, max_len=32):
         super(PositionalEncoding, self).__init__()
@@ -63,7 +64,24 @@ class MyTransformerEncoder(nn.Module):
         x = self.transformer_encoder(x)
         x = self.output_layer(x)
         return x
+"""
+class MyStableTransformerEncoder(nn.Module):
+    def __init__(self, d_state, d_input, n_layers, n_heads, d_head_inner, d_ff_inner,
+                 dropout=0.1, dropouta=0.):
+        super(MyStableTransformerEncoder, self).__init__()
+        self.linear_embedding = nn.Linear(d_state, d_input)
+        self.transformer_encoder = StableTransformerXL(d_input, n_layers, n_heads, d_head_inner, d_ff_inner,
+             dropout=0.1, dropouta=0.)
+        self.output_layer = nn.Sequential(nn.Linear(d_input,128), nn.Tanh())
+        self.memory=None
 
+    def forward(self, x):
+        x = self.linear_embedding(x)
+        trans_state = self.transformer_encoder(x)
+        x, self.memory = trans_state['logits'], trans_state['memory']
+        x = x[:, -1]
+        x = self.output_layer(x)
+        return x
 
 class Critic(nn.Module):
 
@@ -78,8 +96,10 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = MyTransformerEncoder(input_size = self.state_dim, d_model=64, 
-            dim_feedforward=192, output_size=128, nhead=2, num_layers=2, max_len=max_len)
+        #self.state_encoder = MyTransformerEncoder(input_size = self.state_dim, d_model=64, 
+        #    dim_feedforward=192, output_size=128, nhead=2, num_layers=2, max_len=max_len)
+        
+        self.state_encoder = MyStableTransformerEncoder(self.state_dim, 32, 3, 4, 8, 128, dropout=0.0)
 
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.ReLU())
         self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
@@ -100,7 +120,6 @@ class Critic(nn.Module):
         :return: Value function : Q(S,a) (Torch Variable : [n,1] )
         """
         s = self.state_encoder(state)
-        s = s[:,-1]
         a = self.action_encoder(action)
         x = torch.cat((s,a),dim=1)
         x = self.relu(self.fc1(x))
@@ -122,8 +141,10 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = MyTransformerEncoder(input_size=self.state_dim, d_model=64, 
-            dim_feedforward=192, output_size=128, nhead=2, num_layers=2, max_len=max_len)
+        #self.state_encoder = MyTransformerEncoder(input_size=self.state_dim, d_model=64, 
+        #    dim_feedforward=192, output_size=128, nhead=2, num_layers=2, max_len=max_len)
+        
+        self.state_encoder = MyStableTransformerEncoder(self.state_dim, 32, 3, 4, 8, 128, dropout=0.0)
 
         self.fc = nn.Linear(128,action_dim)
         self.fc.weight.data.uniform_(-EPS,EPS)
@@ -139,6 +160,5 @@ class Actor(nn.Module):
         :return: Output action (Torch Variable: [n,action_dim] )
         """
         s = self.state_encoder(state)
-        s = s[:,-1]
         action = self.tanh(self.fc(s))
         return action
