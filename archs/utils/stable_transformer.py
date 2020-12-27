@@ -1,239 +1,139 @@
+from torch.nn.modules import TransformerEncoderLayer, TransformerEncoder
 import torch
+from torch import nn
+from torch.nn.init import xavier_uniform_
+from torch.autograd import Variable
 import torch.nn.functional as F
 
-#https://arxiv.org/pdf/1910.06764.pdf
-#STABILIZING TRANSFORMERS FOR REINFORCEMENT LEARNING
+'''
+GRU gating layer used in Stabilizing transformers in RL.
+Note that all variable names follow the notation from section: "Gated-Recurrent-Unit-type gating" 
+in https://arxiv.org/pdf/1910.06764.pdf
+'''
+class GRUGate(nn.Module):
 
-#https://github.com/dhruvramani/Transformers-RL
+    def __init__(self,d_model):
+        #d_model is dimension of embedding for each token as input to layer (want to maintain this in the gate)
+        super(GRUGate,self).__init__()
 
-class PositionalEmbedding(torch.nn.Module):
-    def __init__(self, dim):
-        super(PositionalEmbedding, self).__init__()
+        self.linear_w_r = nn.Linear(d_model,d_model,bias=False)
+        self.linear_u_r = nn.Linear(d_model,d_model,bias=False)
+        self.linear_w_z = nn.Linear(d_model,d_model)               ### Giving bias to this layer (will count as b_g so can just initialize negative)
+        self.linear_u_z = nn.Linear(d_model, d_model,bias=False)
+        self.linear_w_g = nn.Linear(d_model, d_model,bias=False)
+        self.linear_u_g = nn.Linear(d_model, d_model,bias=False)
+        self.sigmoid = nn.Sigmoid()
+        self.tanh = nn.Tanh()
 
-        self.dim = dim
-        inv_freq = 1 / (10000 ** (torch.arange(0.0, dim, 2.0) / dim))
-        self.register_buffer("inv_freq", inv_freq)
-        
-    def forward(self, positions):
-        sinusoid_inp = torch.einsum("i,j->ij", positions.float(), self.inv_freq)
-        pos_emb = torch.cat([sinusoid_inp.sin(), sinusoid_inp.cos()], dim=-1)
-        return pos_emb[:, None, :]
+    def forward(self,x,y):
+        ### Here x,y follow from notation in paper
 
-class PositionwiseFF(torch.nn.Module):
-    def __init__(self, d_input, d_inner, dropout):
-        super(PositionwiseFF, self).__init__()
+        z = self.sigmoid(self.linear_w_z(y) + self.linear_u_z(x))  #MAKE SURE THIS IS APPLIED ON PROPER AXIS
+        r = self.sigmoid(self.linear_w_r(y) + self.linear_u_r(x))
+        h_hat = self.tanh(self.linear_w_g(y) + self.linear_u_g(r*x))  #Note elementwise multiplication of r and x
+        return (1.-z)*x + z*h_hat
 
-        self.d_input = d_input
-        self.d_inner = d_inner
-        self.dropout = dropout
-        self.ff = torch.nn.Sequential(
-            torch.nn.Linear(d_input, d_inner), torch.nn.ReLU(inplace=True),
-            torch.nn.Dropout(dropout),
-            torch.nn.Linear(d_inner, d_input),
-            torch.nn.Dropout(dropout),
-        )
+class PositionalEncoding(nn.Module):
+    def __init__(self, d_model, max_len=64):
+        super(PositionalEncoding, self).__init__()
+        pe = torch.zeros(max_len, d_model)
+        position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
+        _log10000 = 9.21034037198
+        _log1000 = 6.907755278982137
+        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-_log1000 / d_model))
+        pe[:, 0::2] = torch.sin(position * div_term)
+        pe[:, 1::2] = torch.cos(position * div_term)
+        pe = pe.unsqueeze(0)
+        self.register_buffer('pe', pe)
 
-    def forward(self, input_):
-        ff_out = self.ff(input_)
-        return ff_out
+    def forward(self, x):
+        #x = x + torch.flip(self.pe[:, :x.size(1), :], dims=[1])
+        x = x + self.pe[:, :x.size(1), :]
+        return x
 
-class GatingMechanism(torch.nn.Module):
-    def __init__(self, d_input, bg=0.1):
-        super(GatingMechanism, self).__init__()
-        self.Wr = torch.nn.Linear(d_input, d_input)
-        self.Ur = torch.nn.Linear(d_input, d_input)
-        self.Wz = torch.nn.Linear(d_input, d_input)
-        self.Uz = torch.nn.Linear(d_input, d_input)
-        self.Wg = torch.nn.Linear(d_input, d_input)
-        self.Ug = torch.nn.Linear(d_input, d_input)
-        self.bg = bg
+"""
+class LearnablePositionalEncoding(nn.Module):
+    def __init__(self, d_model, max_len=32):
+        super(LearnablePositionalEncoding, self).__init__()
+        self.embedding = nn.Parameter(0.01*torch.randn(max_len, d_model))
+    def forward(self, x):
+        return x + self.embedding[:x.size(1)].unsqueeze(0)
+"""        
 
-        self.sigmoid = torch.nn.Sigmoid()
-        self.tanh = torch.nn.Tanh()
+class StableTransformerLayer(nn.Module):
+    def __init__(self, d_model, nhead, dim_feedforward=2048, dropout=0.1, use_gate = False):
+        #fill in reordering of operations as done in https://arxiv.org/pdf/1910.06764.pdf
+        #d_model: dimension of embedding for each input
+        super(StableTransformerLayer,self).__init__()
 
-    def forward(self, x, y):
-        r = self.sigmoid(self.Wr(y) + self.Ur(x))
-        z = self.sigmoid(self.Wz(y) + self.Uz(x) - self.bg)
-        h = self.tanh(self.Wg(y) + self.Ug(torch.mul(r, x)))
-        g = torch.mul(1-z, x) + torch.mul(z, h)
-        return g
+        self.use_gate = use_gate
+        if self.use_gate:
+            self.gate_mha = GRUGate(d_model)
+            self.gate_mlp = GRUGate(d_model)
+        self.self_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
 
-class MultiHeadAttentionXL(torch.nn.Module):
-    def __init__(self, d_input, d_inner, n_heads=4, dropout=0.1, dropouta=0.0):
-        super(MultiHeadAttentionXL, self).__init__()
+        self.linear1 = nn.Linear(d_model, dim_feedforward)
+        self.dropout = nn.Dropout(dropout)
+        self.linear2 = nn.Linear(dim_feedforward, d_model)
 
-        self.d_input = d_input
-        self.d_inner = d_inner
-        self.n_heads = n_heads
+        self.norm1 = nn.LayerNorm(d_model)
+        self.norm2 = nn.LayerNorm(d_model)
+        self.dropout1 = nn.Dropout(dropout)
+        self.dropout2 = nn.Dropout(dropout)
 
-        # Linear transformation for keys & values for all heads at once for efficiency
-        self.linear_kv = torch.nn.Linear(d_input, (d_inner * n_heads * 2), # 2 for keys & values
-            bias=False)
-        # for queries (will not be concatenated with memorized states so separate)
-        self.linear_q = torch.nn.Linear(d_input, d_inner * n_heads, bias=False)
-        
-        # for positional embeddings
-        self.linear_p = torch.nn.Linear(d_input, d_inner * n_heads, bias=False)
-        self.scale = 1 / (d_inner ** 0.5) # for scaled dot product attention
-        self.dropa = torch.nn.Dropout(dropouta)
+        self.activation = nn.ReLU()
+        self.relu = nn.ReLU()
 
-        self.lout = torch.nn.Linear(self.d_inner * self.n_heads, self.d_input, bias=False)
-        self.dropo = torch.nn.Dropout(dropout)
-        
-    def _rel_shift(self, x):
-        zero_pad = torch.zeros((x.size(0), 1, * x.size()[2:]), device=x.device, dtype=x.dtype)
-        return (torch.cat([zero_pad, x], dim=1)
-                    .view(x.size(1) + 1, x.size(0), *x.size()[2:])[1:]
-                    .view_as(x)) 
-        
-    def forward(self, input_, pos_embs, memory, u, v, mask=None):
-        """
-        + pos_embs: positional embeddings passed separately to handle relative positions.
-        + Arguments  
-            - input: torch.FloatTensor, shape - (seq, bs, self.d_input)
-            - pos_embs: torch.FloatTensor, shape - (seq + prev_seq, bs, self.d_input)
-            - memory: torch.FloatTensor, shape - (prev_seq, b, d_in)
-            - u: torch.FloatTensor, shape - (No. of heads, inner_dim)
-            - v: torch.FloatTensor, shape - (No. of heads, inner_dim)
-            - mask: torch.FloatTensor, Optional 
-        + Returns
-            - output: torch.FloatTensor, shape - (seq, bs, self.d_input)
-        + symbols representing shape of the tensors
-            - cs: current sequence length, b: batch, H: no. of heads
-            - d: inner dimension, ps: previous sequence length
-        """
-        cur_seq = input_.shape[0] 
-        prev_seq = memory.shape[0] 
-        H, d = self.n_heads, self.d_inner
-        input_with_memory = torch.cat([memory, input_], dim=0) # concat memory across sequence dimension
+    def forward(self, src, src_mask=None, src_key_padding_mask=None):
 
-        k_tfmd, v_tfmd = torch.chunk(self.linear_kv(input_with_memory), 2, dim=-1)
-        q_tfmd = self.linear_q(input_)
-        
-        _, bs, _ = q_tfmd.shape
-        assert bs == k_tfmd.shape[1]
-
-        content_attn = torch.einsum("ibhd,jbhd->ijbh", (
-                (q_tfmd.view(cur_seq, bs, H, d) + u), 
-                 k_tfmd.view(cur_seq + prev_seq, bs, H, d)
-        ))
-
-        p_tfmd = self.linear_p(pos_embs)
-        position_attn = torch.einsum("ibhd,jhd->ijbh", (
-                (q_tfmd.view(cur_seq, bs, H, d) + v),
-                 p_tfmd.view(cur_seq + prev_seq, H, d)
-        ))
-        
-        position_attn = self._rel_shift(position_attn)
-        attn = content_attn + position_attn
-
-        if mask is not None and mask.any().item():
-            mask = mask.bool()
-            attn = attn.masked_fill(
-                mask[..., None], -float('inf'))
-        attn = torch.softmax(attn * self.scale, # rescale to prevent values from exploding
-                             dim=1) # normalize across the value sequence dimension
-        attn = self.dropa(attn)
-        
-        attn_weighted_values = (torch.einsum("ijbh,jbhd->ibhd",
-                                           (attn, # (cs, cs + ps, b, H)
-                                            v_tfmd.view(cur_seq + prev_seq, bs, H, d), # (cs + ps, b, H, d)
-                                           )) # (cs, b, H, d)
-                                .contiguous() # we need to change the memory layout to make `view` work
-                                .view(cur_seq, bs, H * d)) # (cs, b, H * d)
-
-        output = self.dropo(self.lout(attn_weighted_values))
-        return output
-
-class StableTransformerEncoderLayerXL(torch.nn.Module):
-    def __init__(self, n_heads, d_input,  d_head_inner, d_ff_inner, dropout, gating=True, dropouta=0.0):
-        super(StableTransformerEncoderLayerXL, self).__init__()
-
-        self.gating = gating
-        self.gate1 = GatingMechanism(d_input)
-        self.gate2 = GatingMechanism(d_input)
-        self.mha = MultiHeadAttentionXL(d_input, d_head_inner, n_heads=n_heads, dropout=dropout, dropouta=dropouta)
-        self.ff = PositionwiseFF(d_input, d_ff_inner, dropout)
-        self.norm1 = torch.nn.LayerNorm(d_input)
-        self.norm2 = torch.nn.LayerNorm(d_input)
-            
-    def forward(self, input_, pos_embs, u, v, mask=None, mems=None):
-        src2 = self.norm1(input_)
-        src2 = self.mha(src2, pos_embs, mems, u, v, mask=mask)
-        src = self.gate1(input_, src2) if self.gating else input_ + src2
-        src2 = self.ff(self.norm2(src))
-        src = self.gate2(src, src2) if self.gating else src + src2
-        return src
-
-class StableTransformerXL(torch.nn.Module):
-    def __init__(self, d_input, n_layers, n_heads, d_head_inner, d_ff_inner,
-                 dropout=0.1, dropouta=0.):
-        super(StableTransformerXL, self).__init__()
-
-        self.n_layers, self.n_heads, self.d_input, self.d_head_inner, self.d_ff_inner = \
-            n_layers, n_heads, d_input, d_head_inner, d_ff_inner
-
-        self.pos_embs = PositionalEmbedding(d_input)
-        self.drop = torch.nn.Dropout(dropout)
-        self.layers = torch.nn.ModuleList([StableTransformerEncoderLayerXL(n_heads, d_input, d_head_inner=d_head_inner,
-                                                  d_ff_inner=d_ff_inner, dropout=dropout, dropouta=dropouta)
-                                     for _ in range(n_layers)])
-        
-        # u and v are global parameters: maybe changing these to per-head parameters might help performance?
-        self.u, self.v = (torch.nn.Parameter(torch.Tensor(self.n_heads, self.d_head_inner)),
-                          torch.nn.Parameter(torch.Tensor(self.n_heads, self.d_head_inner)))
-        
-    def init_memory(self, device=torch.device("cpu")):
-        return [torch.empty(0, dtype=torch.float).to(device) for _ in range(self.n_layers+1)]
-    
-    def update_memory(self, previous_memory, hidden_states):
         '''
-            + Arguments
-                - previous_memory: List[torch.FloatTensor],
-                - hidden_states: List[torch.FloatTensor]
+        #ORIGINAL TRANSFORMER ORDERING
+        src2 = self.self_attn(src, src, src, attn_mask=src_mask,
+                              key_padding_mask=src_key_padding_mask)[0]
+        src = src + self.dropout1(src2)
+        src = self.norm1(src)
+        src2 = self.linear2(self.dropout(self.activation(self.linear1(src))))
+        src = src + self.dropout2(src2)
+        src = self.norm2(src)
         '''
-        assert len(hidden_states) == len(previous_memory)
-        mem_len, seq_len = previous_memory[0].size(0), hidden_states[0].size(0)
 
-        with torch.no_grad():
-            new_memory = []
-            end_idx = mem_len + seq_len
-            beg_idx = max(0, end_idx - mem_len)
-            for m, h in zip(previous_memory, hidden_states):
-                cat = torch.cat([m, h], dim=0) 
-                new_memory.append(cat[beg_idx:end_idx].detach())
-        return new_memory
-    
-    def forward(self, inputs, memory=None):
-        '''
-            + Arguments 
-                - inputs - torch.FloatTensor
-                - memory - Optional, list[torch.FloatTensor]
-        '''
-        if memory is None: 
-            memory = self.init_memory(inputs.device)
-        assert len(memory) == len(self.layers) + 1
-        
-        cur_seq, bs = inputs.shape[:2]
-        prev_seq = memory[0].size(0)
-        
-        dec_attn_mask = torch.triu(
-            torch.ones((cur_seq, cur_seq + prev_seq)),
-            diagonal=1 + prev_seq,
-        ).byte()[..., None].to(inputs.device)
-        
-        pos_ips = torch.arange(cur_seq + prev_seq - 1, -1, -1.0, dtype=torch.float).to(inputs.device)
-        pos_embs = self.drop(self.pos_embs(pos_ips))
-        if self.d_input % 2 != 0:
-            pos_embs = pos_embs[:, :, :-1]
-        
-        hidden_states = [inputs]
-        layer_out = inputs
-        for mem, layer in zip(memory, self.layers):
-            layer_out = layer(layer_out, pos_embs, self.u, self.v, 
-                              mask=dec_attn_mask, mems=mem)
-            hidden_states.append(layer_out)
-        
-        #  Memory is treated as a const., don't propagate through it
-        new_memory = self.update_memory(memory, hidden_states)
-        return {"logits": layer_out, "memory": new_memory}
+        #HOW SHOULD THE DROPOUT BE APPLIED, it seems like dropout is completely missing the original source that residually connects?
+        #This doesn't perfectly correspond to dropout used in TransformerXL I believe. (to do: read their code)
+
+
+        src2 = self.norm1(src)
+        src2 = self.self_attn(src2, src2, src2, attn_mask=src_mask,
+                              key_padding_mask=src_key_padding_mask)[0]
+        if self.use_gate:
+            src2 = self.gate_mha(src, self.relu(self.dropout1(src2)))
+        else:
+            src2 = src + self.relu(self.dropout1(src2))
+
+        src3 = self.norm2(src2)
+        src3 = self.linear2(self.dropout(self.activation(self.linear1(src3))))
+
+        if self.use_gate:
+            src3 = self.gate_mlp(src2, self.dropout2(self.relu(src3)))
+        else:
+            src3 = self.dropout2(self.relu(src3)) + src2
+
+        return src3
+
+class StableTransformerEncoder(nn.Module):
+
+    def __init__(self, num_layers, d_in, d_out, d_model, nhead, dim_feedforward=2048, dropout=0.1, use_gate = False):
+        super(StableTransformerEncoder,self).__init__()
+        self.inp_embedding = nn.Linear(d_in, d_model)
+        self.pos_embedding = PositionalEncoding(d_model, max_len=32)
+        self.st_layer = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, use_gate)
+        self.encoder = TransformerEncoder(self.st_layer, num_layers)
+        self.out_embedding = nn.Sequential(nn.Linear(d_model, d_out), nn.LayerNorm(d_out))
+
+    def forward(self, src, mask=None):
+        x = src
+        x = self.inp_embedding(x)
+        x = self.pos_embedding(x)
+        x = self.encoder(x)
+        x = x[:, -1] # last state throughout sequence
+        x = self.out_embedding(x)
+        return x

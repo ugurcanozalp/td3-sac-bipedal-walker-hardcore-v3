@@ -6,7 +6,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import gym
 import random
-from .utils.stable_transformer import StableTransformerXL
+from .utils.stable_transformer import StableTransformerEncoder
 
 # https://github.com/vy007vikas/PyTorch-ActorCriticRL
 
@@ -16,72 +16,6 @@ def fanin_init(size, fanin=None):
     fanin = fanin or size[0]
     v = 1. / np.sqrt(fanin)
     return torch.Tensor(size).uniform_(-v, v)
-"""
-class PositionalEncoding(nn.Module):
-    def __init__(self, d_model, max_len=32):
-        super(PositionalEncoding, self).__init__()
-        pe = torch.zeros(max_len, d_model)
-        position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
-        _log10000 = 9.21034037198
-        _log1000 = 6.907755278982137
-        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-_log1000 / d_model))
-        pe[:, 0::2] = torch.sin(position * div_term)
-        pe[:, 1::2] = torch.cos(position * div_term)
-        pe = pe.unsqueeze(0)
-        self.register_buffer('pe', pe)
-
-    def forward(self, x):
-        #x = x + torch.flip(self.pe[:, :x.size(1), :], dims=[1])
-        x = x + self.pe[:, :x.size(1), :]
-        return x
-
-class LearnablePositionalEncoding(nn.Module):
-    def __init__(self, d_model, max_len=32):
-        super(LearnablePositionalEncoding, self).__init__()
-        self.embedding = nn.Parameter(0.01*torch.randn(max_len, d_model))
-    def forward(self, x):
-        return x + self.embedding[:x.size(1)].unsqueeze(0)
-
-
-class MyTransformerEncoder(nn.Module):
-    def __init__(self, input_size, d_model, dim_feedforward, output_size, nhead=4, num_layers=2, max_len=32):
-        super(MyTransformerEncoder, self).__init__()
-        self.linear_embedding = nn.Linear(input_size, d_model)
-        self.linear_embedding.weight.data = fanin_init(self.linear_embedding.weight.data.size())
-        self.pos_embedding = PositionalEncoding(d_model=d_model, max_len=max_len)
-        #self.pos_embedding = LearnablePositionalEncoding(d_model, max_len=max_len)
-        encoder = nn.TransformerEncoderLayer(d_model=d_model, nhead=nhead, dim_feedforward=dim_feedforward, activation='gelu', dropout=0.0)
-        encoder.linear1.weight.data = fanin_init(encoder.linear1.weight.data.size())
-        encoder.linear2.weight.data = fanin_init(encoder.linear2.weight.data.size())
-        encoder.self_attn.in_proj_weight.data = fanin_init(encoder.self_attn.in_proj_weight.data.size())
-        self.transformer_encoder = nn.TransformerEncoder(encoder, num_layers=num_layers)
-        self.output_layer = nn.Sequential(nn.Linear(d_model, output_size), nn.ReLU())
-        self.output_layer[0].weight.data = fanin_init(self.output_layer[0].weight.data.size())
-
-    def forward(self, x): 
-        x = self.linear_embedding(x)
-        x = self.pos_embedding(x)
-        x = self.transformer_encoder(x)
-        x = self.output_layer(x)
-        return x
-"""
-class MyStableTransformerEncoder(nn.Module):
-    def __init__(self, d_state, d_input, n_layers, n_heads, d_head_inner, d_ff_inner,
-                 dropout=0.1, dropouta=0.):
-        super(MyStableTransformerEncoder, self).__init__()
-        self.linear_embedding = nn.Linear(d_state, d_input)
-        self.transformer_encoder = StableTransformerXL(d_input, n_layers, n_heads, d_head_inner, d_ff_inner,
-             dropout=0.1, dropouta=0.)
-        self.output_layer = nn.Sequential(nn.Linear(d_input,128), nn.Tanh())
-        self.memory=None
-
-    def forward(self, x):
-        x = self.linear_embedding(x)
-        trans_state = self.transformer_encoder(x)
-        x, self.memory = trans_state['logits'], trans_state['memory']
-        x = x[:, -1]
-        x = self.output_layer(x)
-        return x
 
 class Critic(nn.Module):
 
@@ -99,7 +33,8 @@ class Critic(nn.Module):
         #self.state_encoder = MyTransformerEncoder(input_size = self.state_dim, d_model=64, 
         #    dim_feedforward=192, output_size=128, nhead=2, num_layers=2, max_len=max_len)
         
-        self.state_encoder = MyStableTransformerEncoder(self.state_dim, 32, 3, 4, 8, 128, dropout=0.0)
+        self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim, 
+            d_out=128, d_model=32, nhead=4, dim_feedforward=128, dropout=0.0, use_gate = True)
 
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.ReLU())
         self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
@@ -144,7 +79,8 @@ class Actor(nn.Module):
         #self.state_encoder = MyTransformerEncoder(input_size=self.state_dim, d_model=64, 
         #    dim_feedforward=192, output_size=128, nhead=2, num_layers=2, max_len=max_len)
         
-        self.state_encoder = MyStableTransformerEncoder(self.state_dim, 32, 3, 4, 8, 128, dropout=0.0)
+        self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim, 
+            d_out=128, d_model=32, nhead=4, dim_feedforward=128, dropout=0.0, use_gate = True)
 
         self.fc = nn.Linear(128,action_dim)
         self.fc.weight.data.uniform_(-EPS,EPS)
