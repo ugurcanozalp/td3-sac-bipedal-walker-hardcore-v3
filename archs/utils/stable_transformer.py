@@ -125,8 +125,8 @@ class StableTransformerEncoder(nn.Module):
         super(StableTransformerEncoder,self).__init__()
         self.inp_embedding = nn.Linear(d_in, d_model)
         self.pos_embedding = PositionalEncoding(d_model, max_len=32)
-        self.st_layer = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, use_gate)
-        self.encoder = TransformerEncoder(self.st_layer, num_layers)
+        st_layer = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, use_gate)
+        self.encoder = TransformerEncoder(st_layer, num_layers)
         self.out_embedding = nn.Sequential(nn.Linear(d_model, d_out), nn.LayerNorm(d_out))
 
     def forward(self, src, mask=None):
