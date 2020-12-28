@@ -29,7 +29,7 @@ class FeedForwardEncoder(nn.Module):
     def forward(self, x):
         res = x
         x = self.lin1(x)
-        x = self.tanh(x)
+        x = self.relu(x)
         x = self.lin2(x)
         x = self.layernorm(x)
         return x
