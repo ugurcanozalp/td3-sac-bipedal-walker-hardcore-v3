@@ -16,16 +16,39 @@ def fanin_init(size, fanin=None):
     v = 1. / np.sqrt(fanin)
     return torch.Tensor(size).uniform_(-v, v)
 
+class LastStatePooler(nn.Module):
+    def __init__(self, d_in, d_out):
+        super(LastStatePooler, self).__init__()
+        self.linear = nn.Linear(d_in, d_out)
+        self.linear.weight.data = fanin_init(self.linear.weight.data.size())
+        self.tanh = nn.Tanh()
+    def forward(self,x):
+        x = self.linear(x)
+        x = x[:, -1]
+        return self.tanh(x)
+
+class MaxPooler(nn.Module):
+    def __init__(self, d_in, d_out):
+        super(LastStatePooler, self).__init__()
+        self.linear = nn.Sequential(nn.Linear(d_in, d_out))
+        self.linear.weight.data = fanin_init(self.linear.weight.data.size())
+    def forward(self,x):
+        x = self.linear(x)
+        x = x.max(axis=-2) # -2 -> sequence dimension
+        return x
+
 class NormalizedLSTM(nn.Module):
-    def __init__(self, input_size, hidden_size=128, batch_first=True, bidirectional=False, num_layers=1):
+    def __init__(self, input_size, hidden_size=64, output_size=64, batch_first=True, bidirectional=False, num_layers=1):
         super(NormalizedLSTM, self).__init__()
-        self.lstm = nn.LSTM(input_size, hidden_size=hidden_size, batch_first=True, bidirectional=False, num_layers=1)
-        self.layernorm = nn.LayerNorm(hidden_size)
+        self.embedding = nn.Sequential(nn.Linear(input_size, hidden_size), nn.Tanh())
+        self.embedding[0].weight.data = fanin_init(self.embedding[0].weight.data.size())
+        self.lstm = nn.LSTM(hidden_size, hidden_size=hidden_size, batch_first=True, bidirectional=False, num_layers=num_layers)
+        self.pooler = LastStatePooler(hidden_size, output_size)
 
     def forward(self, x):
+        x = self.embedding(x)
         x, (_, _) = self.lstm(x)
-        x = x[:, -1]
-        x = self.layernorm(x)
+        x = self.pooler(x)
         return x
 
 class Critic(nn.Module):
@@ -41,15 +64,15 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=128, batch_first=True, bidirectional=False, num_layers=1)
+        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, output_size=64, batch_first=True, bidirectional=False, num_layers=1)
 
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.ReLU())
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.LayerNorm(64), nn.ReLU())
         self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
         
-        self.fc1 = nn.Linear(256,128)
+        self.fc1 = nn.Linear(128,64)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(128,1)
+        self.fc2 = nn.Linear(64,1)
         self.fc2.weight.data.uniform_(-EPS,EPS)
 
         self.relu = nn.ReLU()
@@ -65,7 +88,7 @@ class Critic(nn.Module):
         a = self.action_encoder(action)
         x = torch.cat((s,a),dim=1)
         x = self.relu(self.fc1(x))
-        x = self.fc2(x)*100
+        x = self.fc2(x)*10
         return x
 
 
@@ -83,9 +106,9 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = nn.LSTM(input_size=self.state_dim, hidden_size=128, batch_first=True, bidirectional=False, num_layers=1)
+        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, output_size=64, batch_first=True, bidirectional=False, num_layers=1)
 
-        self.fc = nn.Linear(128,action_dim)
+        self.fc = nn.Linear(64,action_dim)
         self.fc.weight.data.uniform_(-EPS,EPS)
         self.tanh = nn.Tanh()
 
@@ -98,7 +121,6 @@ class Actor(nn.Module):
         :param state: Input state (Torch Variable : [n,state_dim] )
         :return: Output action (Torch Variable: [n,action_dim] )
         """
-        s, (_, _) = self.state_encoder(state)
-        s = s[:, -1]
+        s = self.state_encoder(state)
         action = self.tanh(self.fc(s))
         return action

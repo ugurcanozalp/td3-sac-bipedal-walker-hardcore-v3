@@ -16,22 +16,29 @@ def fanin_init(size, fanin=None):
     return torch.Tensor(size).uniform_(-v, v)
 
 class FeedForwardEncoder(nn.Module):
-    def __init__(self, input_size, hidden_size, out_size):
+    def __init__(self, input_size, hidden_size, ff_size):
         super(FeedForwardEncoder, self).__init__()
         self.lin1 = nn.Linear(input_size, hidden_size)
         self.lin1.weight.data = fanin_init(self.lin1.weight.data.size())
-        self.lin2 = nn.Linear(hidden_size, out_size)
+        self.lin2 = nn.Linear(hidden_size, ff_size)
         self.lin2.weight.data = fanin_init(self.lin2.weight.data.size())
+        self.lin3 = nn.Linear(ff_size, hidden_size)
+        self.lin3.weight.data = fanin_init(self.lin3.weight.data.size())
         self.relu = nn.ReLU()
         self.tanh = nn.Tanh()
-        self.layernorm = nn.LayerNorm(out_size)
-    
+        self.layernorm2 = nn.LayerNorm(ff_size)
+        self.layernorm3 = nn.LayerNorm(hidden_size)
+
     def forward(self, x):
         res = x
         x = self.lin1(x)
+        y = self.tanh(x)
+        x = self.lin2(y)
+        x = self.layernorm2(x)
         x = self.relu(x)
-        x = self.lin2(x)
-        x = self.layernorm(x)
+        x = self.lin3(x)
+        x = self.layernorm3(x+y)
+
         return x
 
 """
@@ -59,14 +66,14 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = FeedForwardEncoder(self.state_dim, 512, 128)
+        self.state_encoder = FeedForwardEncoder(self.state_dim, 64, 512)
 
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.ReLU())
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.LayerNorm(64), nn.ReLU())
         self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
-        self.fc1 = nn.Linear(256,128)
+        self.fc1 = nn.Linear(128,64)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(128,1)
+        self.fc2 = nn.Linear(64,1)
         self.fc2.weight.data.uniform_(-EPS,EPS)
 
         self.relu = nn.ReLU()
@@ -82,7 +89,7 @@ class Critic(nn.Module):
         a = self.action_encoder(action)
         x = torch.cat((s,a),dim=1)
         x = self.relu(self.fc1(x))
-        x = self.fc2(x)*100
+        x = self.fc2(x)*10
         return x
 
 
@@ -100,9 +107,9 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = FeedForwardEncoder(self.state_dim, 512, 128)
+        self.state_encoder = FeedForwardEncoder(self.state_dim, 64, 512)
 
-        self.fc = nn.Linear(128,action_dim)
+        self.fc = nn.Linear(64,action_dim)
         self.fc.weight.data.uniform_(-EPS,EPS)
         self.tanh = nn.Tanh()
 

@@ -119,6 +119,7 @@ class StableTransformerLayer(nn.Module):
 
         return src3
 
+"""
 class StableTransformerEncoder(nn.Module):
 
     def __init__(self, num_layers, d_in, d_out, d_model, nhead, dim_feedforward=2048, dropout=0.1, use_gate = False):
@@ -127,7 +128,6 @@ class StableTransformerEncoder(nn.Module):
         self.pos_embedding = PositionalEncoding(d_model, max_len=32)
         st_layer = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, use_gate)
         self.encoder = TransformerEncoder(st_layer, num_layers)
-        self.out_embedding = nn.Sequential(nn.Linear(d_model, d_out), nn.LayerNorm(d_out))
 
     def forward(self, src, mask=None):
         x = src
@@ -135,5 +135,5 @@ class StableTransformerEncoder(nn.Module):
         x = self.pos_embedding(x)
         x = self.encoder(x)
         x = x[:, -1] # last state throughout sequence
-        x = self.out_embedding(x)
         return x
+"""
