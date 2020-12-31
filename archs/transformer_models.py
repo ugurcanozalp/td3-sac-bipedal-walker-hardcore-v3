@@ -75,7 +75,7 @@ class Critic(nn.Module):
         #    dim_feedforward=192, output_size=128, nhead=2, num_layers=2, max_len=max_len)
         
         self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim, 
-            d_model=64, nhead=4, dim_feedforward=192, d_out=64, dropout=0.0, use_gate = False)
+            d_model=64, nhead=2, dim_feedforward=192, d_out=64, dropout=0.0, use_gate = False)
 
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.LayerNorm(64), nn.ReLU())
         self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
@@ -121,7 +121,7 @@ class Actor(nn.Module):
         #    dim_feedforward=192, output_size=128, nhead=2, num_layers=2, max_len=max_len)
         
         self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim, 
-            d_model=64, nhead=4, dim_feedforward=192, d_out=64, dropout=0.0, use_gate = False)
+            d_model=64, nhead=2, dim_feedforward=192, d_out=64, dropout=0.0, use_gate = False)
 
         self.fc = nn.Linear(64,action_dim)
         self.fc.weight.data.uniform_(-EPS,EPS)
