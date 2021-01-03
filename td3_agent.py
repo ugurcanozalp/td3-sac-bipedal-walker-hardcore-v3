@@ -43,7 +43,7 @@ class TD3Agent():
         self.critic_2_optim = optim.Adam(self.train_critic_2.parameters(), lr=lr, weight_decay=weight_decay)
         print(f'Number of paramters of Single Critic Net: {sum(p.numel() for p in self.train_critic_2.parameters())}')
 
-        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=0.15, sigma=0.17)
+        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=0.15, sigma=0.07) # theta=0.15, sigma=0.17
         self.target_noise = GaussianNoise(mu=np.zeros(action_size), sigma=0.2, clip=0.5)
         
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \
@@ -99,12 +99,12 @@ class TD3Agent():
             self.soft_update(self.train_critic_1, self.target_critic_1)
             self.soft_update(self.train_critic_2, self.target_critic_2)
         
-            
+    @torch.no_grad()        
     def get_action(self, state, explore=False):
-        state = torch.from_numpy(state).unsqueeze(0).float().to(self.device)
         self.train_actor.eval()
-        with torch.no_grad():
-            action= self.train_actor(state).cpu().data.numpy()[0]
+        state = torch.from_numpy(state).unsqueeze(0).float().to(self.device)
+        #with torch.no_grad():
+        action= self.train_actor(state).cpu().data.numpy()[0]
         self.train_actor.train()
 
         if explore:

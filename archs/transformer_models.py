@@ -40,7 +40,7 @@ class MaxPooler(nn.Module):
 
 class StableTransformerEncoder(nn.Module):
 
-    def __init__(self, num_layers, d_in, d_model, nhead, dim_feedforward=192, d_out=64, dropout=0.1, use_gate = False):
+    def __init__(self, num_layers, d_in, d_model, nhead, dim_feedforward=192, d_out=128, dropout=0.1, use_gate = False):
         super(StableTransformerEncoder,self).__init__()
         self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model), nn.Tanh())
         self.inp_embedding[0].weight.data = fanin_init(self.inp_embedding[0].weight.data.size())
@@ -70,21 +70,19 @@ class Critic(nn.Module):
 
         self.state_dim = state_dim
         self.action_dim = action_dim
-
-        #self.state_encoder = MyTransformerEncoder(input_size = self.state_dim, d_model=64, 
-        #    dim_feedforward=192, output_size=128, nhead=2, num_layers=2, max_len=max_len)
         
         self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim, 
-            d_model=64, nhead=2, dim_feedforward=192, d_out=64, dropout=0.0, use_gate = False)
+            d_model=64, nhead=2, dim_feedforward=192, d_out=128, dropout=0.0, use_gate = False)
 
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.LayerNorm(64), nn.ReLU())
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.LayerNorm(128), nn.ReLU())
         self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
 
-        self.fc1 = nn.Linear(128,64)
+        self.fc1 = nn.Linear(256,128)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(64,1)
+        self.fc2 = nn.Linear(128,1)
         self.fc2.weight.data.uniform_(-EPS,EPS)
+        self.fc2.bias.data.fill_(-1.0)
 
         self.relu = nn.ReLU()
 
@@ -116,15 +114,13 @@ class Actor(nn.Module):
 
         self.state_dim = state_dim
         self.action_dim = action_dim
-
-        #self.state_encoder = MyTransformerEncoder(input_size=self.state_dim, d_model=64, 
-        #    dim_feedforward=192, output_size=128, nhead=2, num_layers=2, max_len=max_len)
         
         self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim, 
-            d_model=64, nhead=2, dim_feedforward=192, d_out=64, dropout=0.0, use_gate = False)
+            d_model=64, nhead=2, dim_feedforward=192, d_out=128, dropout=0.0, use_gate = False)
 
-        self.fc = nn.Linear(64,action_dim)
+        self.fc = nn.Linear(128,action_dim)
         self.fc.weight.data.uniform_(-EPS,EPS)
+        self.fc.bias.data.zero_()
         self.tanh = nn.Tanh()
 
     def forward(self, state):

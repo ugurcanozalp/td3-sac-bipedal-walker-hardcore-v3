@@ -39,6 +39,7 @@ class Critic(nn.Module):
 
         self.fc3 = nn.Linear(128,1)
         self.fc3.weight.data.uniform_(-EPS,EPS)
+        self.fc2.bias.data.fill_(-1.0)
 
         self.relu = nn.ReLU()
 
@@ -54,7 +55,7 @@ class Critic(nn.Module):
         x = torch.cat((s1,a1),dim=1)
 
         x = self.relu(self.fc2(x))
-        x = self.fc3(x)*100
+        x = self.fc3(x)*10
 
         return x
 
@@ -81,6 +82,7 @@ class Actor(nn.Module):
 
         self.fc3 = nn.Linear(64,action_dim)
         self.fc3.weight.data.uniform_(-EPS,EPS)
+        self.fc3.bias.data.zero_()
 
         self.relu = nn.ReLU()
         self.tanh = nn.Tanh()

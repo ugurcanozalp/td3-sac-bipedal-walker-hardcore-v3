@@ -16,7 +16,7 @@ def fanin_init(size, fanin=None):
     return torch.Tensor(size).uniform_(-v, v)
 
 class FeedForwardEncoder(nn.Module):
-    def __init__(self, input_size, hidden_size, ff_size):
+    def __init__(self, input_size, hidden_size, ff_size, out_size):
         super(FeedForwardEncoder, self).__init__()
         self.lin1 = nn.Linear(input_size, hidden_size)
         self.lin1.weight.data = fanin_init(self.lin1.weight.data.size())
@@ -24,6 +24,8 @@ class FeedForwardEncoder(nn.Module):
         self.lin2.weight.data = fanin_init(self.lin2.weight.data.size())
         self.lin3 = nn.Linear(ff_size, hidden_size)
         self.lin3.weight.data = fanin_init(self.lin3.weight.data.size())
+        self.linout = nn.Linear(hidden_size, out_size)
+        self.linout.weight.data = fanin_init(self.linout.weight.data.size())
         self.relu = nn.ReLU()
         self.tanh = nn.Tanh()
         self.layernorm2 = nn.LayerNorm(ff_size)
@@ -38,7 +40,8 @@ class FeedForwardEncoder(nn.Module):
         x = self.relu(x)
         x = self.lin3(x)
         x = self.layernorm3(x+y)
-
+        x = self.linout(x)
+        x = self.tanh(x)
         return x
 
 """
@@ -66,15 +69,16 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = FeedForwardEncoder(self.state_dim, 64, 512)
+        self.state_encoder = FeedForwardEncoder(self.state_dim, 128, 256, 128)
 
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.LayerNorm(64), nn.ReLU())
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.LayerNorm(128), nn.ReLU())
         self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
-        self.fc1 = nn.Linear(128,64)
+        self.fc1 = nn.Linear(256,128)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(64,1)
+        self.fc2 = nn.Linear(128,1)
         self.fc2.weight.data.uniform_(-EPS,EPS)
+        self.fc2.bias.data.fill_(-1.0)
 
         self.relu = nn.ReLU()
 
@@ -107,10 +111,11 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = FeedForwardEncoder(self.state_dim, 64, 512)
+        self.state_encoder = FeedForwardEncoder(self.state_dim, 128, 256, 128)
 
-        self.fc = nn.Linear(64,action_dim)
+        self.fc = nn.Linear(128,action_dim)
         self.fc.weight.data.uniform_(-EPS,EPS)
+        self.fc.bias.data.zero_()
         self.tanh = nn.Tanh()
 
 

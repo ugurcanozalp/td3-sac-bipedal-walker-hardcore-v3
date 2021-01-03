@@ -69,6 +69,7 @@ elif args.flag == 'test':
     except:
         actor_file = os.path.join("models", args.rl_type, "_".join(["last", args.model_type, "actor.pth"]))
         agent.train_actor.load_state_dict(torch.load(actor_file, map_location={'cuda:0': 'cpu'}))
+    agent.train_actor.eval()
 
     scores = test(env, agent)
 

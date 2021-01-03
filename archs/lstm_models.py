@@ -64,16 +64,17 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, output_size=64, batch_first=True, bidirectional=False, num_layers=1)
+        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, output_size=128, batch_first=True, bidirectional=False, num_layers=1)
 
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.LayerNorm(64), nn.ReLU())
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.LayerNorm(128), nn.ReLU())
         self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
         
-        self.fc1 = nn.Linear(128,64)
+        self.fc1 = nn.Linear(256,128)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(64,1)
+        self.fc2 = nn.Linear(128,1)
         self.fc2.weight.data.uniform_(-EPS,EPS)
+        self.fc2.bias.data.fill_(-1.0)
 
         self.relu = nn.ReLU()
 
@@ -106,10 +107,11 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, output_size=64, batch_first=True, bidirectional=False, num_layers=1)
+        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, output_size=128, batch_first=True, bidirectional=False, num_layers=1)
 
-        self.fc = nn.Linear(64,action_dim)
+        self.fc = nn.Linear(128,action_dim)
         self.fc.weight.data.uniform_(-EPS,EPS)
+        self.fc.bias.data.zero_()
         self.tanh = nn.Tanh()
 
     def forward(self, state):

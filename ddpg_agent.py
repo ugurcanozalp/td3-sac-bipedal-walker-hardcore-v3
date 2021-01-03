@@ -23,7 +23,7 @@ class DDPGAgent():
         self.train_actor = Actor().to(self.device)
         self.target_actor= Actor().to(self.device).eval()
         self.hard_update(self.train_actor, self.target_actor)
-        self.actor_optim = optim.Adam(self.train_actor.parameters(), lr=0.1*lr, weight_decay=weight_decay)
+        self.actor_optim = optim.Adam(self.train_actor.parameters(), lr=0.25*lr, weight_decay=weight_decay)
         print(f'Number of paramters of Actor Net: {sum(p.numel() for p in self.train_actor.parameters())}')
         
         self.train_critic = Critic().to(self.device)
@@ -74,12 +74,12 @@ class DDPGAgent():
         self.soft_update(self.train_actor, self.target_actor)
         self.soft_update(self.train_critic, self.target_critic)
         
-            
+    @torch.no_grad()        
     def get_action(self, state, explore=False):
-        state = torch.from_numpy(state).unsqueeze(0).float().to(self.device)
         self.train_actor.eval()
-        with torch.no_grad():
-            action= self.train_actor(state).cpu().data.numpy()[0]
+        state = torch.from_numpy(state).unsqueeze(0).float().to(self.device)
+        #with torch.no_grad():
+        action= self.train_actor(state).cpu().data.numpy()[0]
         self.train_actor.train()
 
         if explore:

@@ -40,8 +40,6 @@ def train(env, agent, n_episodes=5000, max_t=700, model_type='unk', score_limit=
             else:
                 agent.save_ckpt(model_type)
 
-        if score >=score_limit:
-            pass
     return scores
 
 def test(env, agent, render=True):
