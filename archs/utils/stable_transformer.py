@@ -47,8 +47,8 @@ class PositionalEncoding(nn.Module):
         self.register_buffer('pe', pe)
 
     def forward(self, x):
-        #x = x + torch.flip(self.pe[:, :x.size(1), :], dims=[1])
-        x = x + self.pe[:, :x.size(1), :]
+        x = x + torch.flip(self.pe[:, :x.size(1), :], dims=[1])
+        #x = x + self.pe[:, :x.size(1), :]
         return x
 
 """
