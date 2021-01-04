@@ -18,36 +18,23 @@ def fanin_init(size, fanin=None):
     return torch.Tensor(size).uniform_(-v, v)
 
 class LastStatePooler(nn.Module):
-    def __init__(self, d_in, d_out):
-        super(LastStatePooler, self).__init__()
-        self.linear = nn.Linear(d_in, d_out)
-        self.linear.weight.data = fanin_init(self.linear.weight.data.size())
-        self.tanh = nn.Tanh()
     def forward(self,x):
-        x = self.linear(x)
-        x = x[:, -1]
-        return self.tanh(x)
+        return x[:, -1]
 
 class MaxPooler(nn.Module):
-    def __init__(self, d_in, d_out):
-        super(LastStatePooler, self).__init__()
-        self.linear = nn.Sequential(nn.Linear(d_in, d_out))
-        self.linear.weight.data = fanin_init(self.linear.weight.data.size())
     def forward(self,x):
-        x = self.linear(x)
-        x = x.max(axis=-2) # -2 -> sequence dimension
-        return x
+        return x.max(axis=-2) # -2 -> sequence dimension
 
 class StableTransformerEncoder(nn.Module):
 
-    def __init__(self, num_layers, d_in, d_model, nhead, dim_feedforward=192, d_out=128, dropout=0.1, use_gate = False):
+    def __init__(self, num_layers, d_in, d_model, nhead, dim_feedforward=192, dropout=0.1, use_gate = False):
         super(StableTransformerEncoder,self).__init__()
         self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model), nn.Tanh())
         self.inp_embedding[0].weight.data = fanin_init(self.inp_embedding[0].weight.data.size())
         self.pos_embedding = PositionalEncoding(d_model, max_len=32)
         st_layer = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, use_gate)
         self.encoder = TransformerEncoder(st_layer, num_layers)
-        self.pooler = LastStatePooler(d_model, d_out)
+        self.pooler = LastStatePooler()
 
     def forward(self, src, mask=None):
         x = src
@@ -72,19 +59,19 @@ class Critic(nn.Module):
         self.action_dim = action_dim
         
         self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim, 
-            d_model=64, nhead=2, dim_feedforward=192, d_out=128, dropout=0.0, use_gate = False)
+            d_model=64, nhead=2, dim_feedforward=192, dropout=0.0, use_gate = False)
 
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.LayerNorm(128), nn.ReLU())
-        self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
+        #self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.LayerNorm(128), nn.ReLU())
+        #self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
 
-        self.fc1 = nn.Linear(256,128)
+        self.fc1 = nn.Linear(self.action_dim+64,64)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(128,1)
+        self.fc2 = nn.Linear(64,1)
         self.fc2.weight.data.uniform_(-EPS,EPS)
         self.fc2.bias.data.fill_(-1.0)
 
-        self.relu = nn.ReLU()
+        self.act = nn.ReLU()
 
     def forward(self, state, action):
         """
@@ -96,7 +83,7 @@ class Critic(nn.Module):
         s = self.state_encoder(state)
         a = self.action_encoder(action)
         x = torch.cat((s,a),dim=1)
-        x = self.relu(self.fc1(x))
+        x = self.act(self.fc1(x))
         x = self.fc2(x)*10
         return x
 
@@ -116,9 +103,9 @@ class Actor(nn.Module):
         self.action_dim = action_dim
         
         self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim, 
-            d_model=64, nhead=2, dim_feedforward=192, d_out=128, dropout=0.0, use_gate = False)
+            d_model=64, nhead=2, dim_feedforward=192, dropout=0.0, use_gate = False)
 
-        self.fc = nn.Linear(128,action_dim)
+        self.fc = nn.Linear(64,action_dim)
         self.fc.weight.data.uniform_(-EPS,EPS)
         self.fc.bias.data.zero_()
         self.tanh = nn.Tanh()

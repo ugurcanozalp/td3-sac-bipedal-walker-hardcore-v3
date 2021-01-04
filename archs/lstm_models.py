@@ -17,33 +17,20 @@ def fanin_init(size, fanin=None):
     return torch.Tensor(size).uniform_(-v, v)
 
 class LastStatePooler(nn.Module):
-    def __init__(self, d_in, d_out):
-        super(LastStatePooler, self).__init__()
-        self.linear = nn.Linear(d_in, d_out)
-        self.linear.weight.data = fanin_init(self.linear.weight.data.size())
-        self.tanh = nn.Tanh()
     def forward(self,x):
-        x = self.linear(x)
-        x = x[:, -1]
-        return self.tanh(x)
+        return x[:, -1]
 
 class MaxPooler(nn.Module):
-    def __init__(self, d_in, d_out):
-        super(LastStatePooler, self).__init__()
-        self.linear = nn.Sequential(nn.Linear(d_in, d_out))
-        self.linear.weight.data = fanin_init(self.linear.weight.data.size())
     def forward(self,x):
-        x = self.linear(x)
-        x = x.max(axis=-2) # -2 -> sequence dimension
-        return x
+        return x.max(axis=1) # 1 -> sequence dimension
 
 class NormalizedLSTM(nn.Module):
-    def __init__(self, input_size, hidden_size=64, output_size=64, batch_first=True, bidirectional=False, num_layers=1):
+    def __init__(self, input_size, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1):
         super(NormalizedLSTM, self).__init__()
         self.embedding = nn.Sequential(nn.Linear(input_size, hidden_size), nn.Tanh())
         self.embedding[0].weight.data = fanin_init(self.embedding[0].weight.data.size())
         self.lstm = nn.LSTM(hidden_size, hidden_size=hidden_size, batch_first=True, bidirectional=False, num_layers=num_layers)
-        self.pooler = LastStatePooler(hidden_size, output_size)
+        self.pooler = LastStatePooler()
 
     def forward(self, x):
         x = self.embedding(x)
@@ -64,19 +51,19 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, output_size=128, batch_first=True, bidirectional=False, num_layers=1)
+        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, batch_first=True, bidirectional=False, num_layers=1)
 
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.LayerNorm(128), nn.ReLU())
-        self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
+        #self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.LayerNorm(128), nn.ReLU())
+        #self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
         
-        self.fc1 = nn.Linear(256,128)
+        self.fc1 = nn.Linear(self.action_dim+96,64)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(128,1)
+        self.fc2 = nn.Linear(64,1)
         self.fc2.weight.data.uniform_(-EPS,EPS)
         self.fc2.bias.data.fill_(-1.0)
 
-        self.relu = nn.ReLU()
+        self.act = nn.ReLU()
 
     def forward(self, state, action):
         """
@@ -86,9 +73,9 @@ class Critic(nn.Module):
         :return: Value function : Q(S,a) (Torch Variable : [n,1] )
         """
         s = self.state_encoder(state)
-        a = self.action_encoder(action)
+        a = action
         x = torch.cat((s,a),dim=1)
-        x = self.relu(self.fc1(x))
+        x = self.act(self.fc1(x))
         x = self.fc2(x)*10
         return x
 
@@ -107,9 +94,9 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, output_size=128, batch_first=True, bidirectional=False, num_layers=1)
+        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, batch_first=True, bidirectional=False, num_layers=1)
 
-        self.fc = nn.Linear(128,action_dim)
+        self.fc = nn.Linear(96,action_dim)
         self.fc.weight.data.uniform_(-EPS,EPS)
         self.fc.bias.data.zero_()
         self.tanh = nn.Tanh()
