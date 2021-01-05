@@ -72,10 +72,10 @@ class Critic(nn.Module):
         self.fc1 = nn.Linear(self.action_dim+128,128)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(128,64)
+        self.fc2 = nn.Linear(128,128)
         self.fc2.weight.data = fanin_init(self.fc2.weight.data.size())
 
-        self.fc3 = nn.Linear(64,1)
+        self.fc3 = nn.Linear(128,1)
         self.fc3.weight.data.uniform_(-EPS,EPS)
         self.fc3.bias.data.fill_(-1.0)
 

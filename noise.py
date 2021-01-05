@@ -14,16 +14,17 @@ class GaussianNoise:
         return self.mu + delta
 
 class OrnsteinUhlenbeckNoise:
-    def __init__(self, mu, theta = 0.15, sigma = 0.2):
+    def __init__(self, mu, theta = 0.15, sigma = 0.2, dt=1.0):
         # 5.0, 0.02, 1.0 # 1.0, 0.02, 0.25 # 7.5, 0.02, 1.4 # 5.0, 0.02, 0.7
         self.mu = mu
         self.theta = theta
-        self.sigma = sigma        
+        self.sigma = sigma
+        self.dt = dt        
         self.x_prev = np.zeros_like(self.mu)
 
     def __call__(self):
-        x = self.x_prev + self.theta * (self.mu - self.x_prev) + \
-                self.sigma * np.random.normal(size=self.mu.shape)
+        x = self.x_prev + self.theta * (self.mu - self.x_prev) * self.dt + \
+                self.sigma * np.sqrt(self.dt) * np.random.normal(size=self.mu.shape)
         self.x_prev = x
         return x
 
