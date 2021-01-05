@@ -67,11 +67,14 @@ class Critic(nn.Module):
         self.fc1 = nn.Linear(self.action_dim+64,128)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(128,1)
-        self.fc2.weight.data.uniform_(-EPS,EPS)
-        self.fc2.bias.data.fill_(-1.0)
+        self.fc2 = nn.Linear(128,64)
+        self.fc2.weight.data = fanin_init(self.fc2.weight.data.size())
 
-        self.act = nn.SiLU()
+        self.fc3 = nn.Linear(128,1)
+        self.fc3.weight.data.uniform_(-EPS,EPS)
+        self.fc3.bias.data.fill_(-1.0)
+
+        self.act = nn.LeakyReLU()
 
     def forward(self, state, action):
         """
@@ -84,7 +87,8 @@ class Critic(nn.Module):
         a = action
         x = torch.cat((s,a),dim=1)
         x = self.act(self.fc1(x))
-        x = self.fc2(x)*10
+        x = self.act(self.fc2(x))
+        x = self.fc3(x)*10
         return x
 
 

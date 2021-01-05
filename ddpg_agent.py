@@ -9,7 +9,7 @@ from noise import OrnsteinUhlenbeckNoise
 class DDPGAgent():
     rl_type = 'ddpg'
     def __init__(self, Actor, Critic, state_size=24, action_size=4, 
-            lr=4e-4, weight_decay=1e-4, gamma=0.99, tau=0.001, batch_size=128, buffer_size=int(2e5)):
+            lr=4e-4, weight_decay=1e-4, gamma=0.99, tau=0.001, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
         self.action_size = action_size
