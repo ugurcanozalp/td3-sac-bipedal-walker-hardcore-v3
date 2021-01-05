@@ -12,7 +12,8 @@ def train(env, agent, n_episodes=5000, max_t=700, model_type='unk', score_limit=
     for i_episode in range(1, n_episodes+1):
         state = env.reset()
         score = 0
-        for t in range(max_t):
+        done = False
+        while not done:
             action = agent.get_action(state, explore=True)
             action = action.clip(min=env.action_space.low, max=env.action_space.high)
             next_state, reward, done, _ = env.step(action)
@@ -24,8 +25,6 @@ def train(env, agent, n_episodes=5000, max_t=700, model_type='unk', score_limit=
 
             state = next_state
             score += reward
-            if done:
-                break 
 
         scores_deque.append(score)
         scores.append(score)
