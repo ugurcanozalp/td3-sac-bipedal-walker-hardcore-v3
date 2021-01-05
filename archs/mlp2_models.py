@@ -24,8 +24,8 @@ class FeedForwardEncoder(nn.Module):
         self.lin2.weight.data = fanin_init(self.lin2.weight.data.size())
         self.lin3 = nn.Linear(ff_size, hidden_size)
         self.lin3.weight.data = fanin_init(self.lin3.weight.data.size())
-        self.relu = nn.ReLU()
         self.tanh = nn.Tanh()
+        self.act = nn.SiLU()
         self.layernorm2 = nn.LayerNorm(ff_size)
         self.layernorm3 = nn.LayerNorm(hidden_size)
 
@@ -35,10 +35,9 @@ class FeedForwardEncoder(nn.Module):
         y = self.tanh(x)
         x = self.lin2(y)
         x = self.layernorm2(x)
-        x = self.relu(x)
+        x = self.act(x)
         x = self.lin3(x)
         x = self.layernorm3(x+y)
-        x = self.tanh(x)
         return x
 
 """
@@ -70,14 +69,14 @@ class Critic(nn.Module):
 
         #self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.LayerNorm(128), nn.ReLU())
         #self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
-        self.fc1 = nn.Linear(self.action_dim+128,64)
+        self.fc1 = nn.Linear(self.action_dim+128,128)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(64,1)
+        self.fc2 = nn.Linear(128,1)
         self.fc2.weight.data.uniform_(-EPS,EPS)
         self.fc2.bias.data.fill_(-1.0)
 
-        self.act = nn.ReLU()
+        self.act = nn.SiLU()
 
     def forward(self, state, action):
         """

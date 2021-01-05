@@ -64,14 +64,14 @@ class Critic(nn.Module):
         #self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.LayerNorm(128), nn.ReLU())
         #self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
 
-        self.fc1 = nn.Linear(self.action_dim+64,64)
+        self.fc1 = nn.Linear(self.action_dim+64,128)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(64,1)
+        self.fc2 = nn.Linear(128,1)
         self.fc2.weight.data.uniform_(-EPS,EPS)
         self.fc2.bias.data.fill_(-1.0)
 
-        self.act = nn.ReLU()
+        self.act = nn.SiLU()
 
     def forward(self, state, action):
         """
@@ -81,7 +81,7 @@ class Critic(nn.Module):
         :return: Value function : Q(S,a) (Torch Variable : [n,1] )
         """
         s = self.state_encoder(state)
-        a = self.action_encoder(action)
+        a = action
         x = torch.cat((s,a),dim=1)
         x = self.act(self.fc1(x))
         x = self.fc2(x)*10

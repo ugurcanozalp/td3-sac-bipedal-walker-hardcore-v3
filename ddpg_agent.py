@@ -9,7 +9,7 @@ from noise import OrnsteinUhlenbeckNoise
 class DDPGAgent():
     rl_type = 'ddpg'
     def __init__(self, Actor, Critic, state_size=24, action_size=4, 
-            lr=1e-3, weight_decay=1e-3, gamma=0.98, tau=0.001, batch_size=128, buffer_size=int(2e5)):
+            lr=4e-4, weight_decay=1e-4, gamma=0.99, tau=0.001, batch_size=128, buffer_size=int(2e5)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -32,7 +32,7 @@ class DDPGAgent():
         self.critic_optim = optim.Adam(self.train_critic.parameters(), lr=lr, weight_decay=weight_decay)
         print(f'Number of paramters of Critic Net: {sum(p.numel() for p in self.train_critic.parameters())}')
 
-        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=0.15, sigma=0.17) # theta=0.15, sigma=0.2
+        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=0.15, sigma=0.2) # theta=0.15, sigma=0.2
         
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \
             batch_size= self.batch_size, device=self.device)

@@ -56,14 +56,14 @@ class Critic(nn.Module):
         #self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.LayerNorm(128), nn.ReLU())
         #self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
         
-        self.fc1 = nn.Linear(self.action_dim+96,64)
+        self.fc1 = nn.Linear(self.action_dim+96,128)
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
 
-        self.fc2 = nn.Linear(64,1)
+        self.fc2 = nn.Linear(128,1)
         self.fc2.weight.data.uniform_(-EPS,EPS)
         self.fc2.bias.data.fill_(-1.0)
 
-        self.act = nn.ReLU()
+        self.act = nn.SiLU()
 
     def forward(self, state, action):
         """
