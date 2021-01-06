@@ -37,7 +37,7 @@ if args.env == 'classic':
 elif args.env == 'hardcore':
     env = gym.make('BipedalWalkerHardcore-v3')
 
-env._max_episode_steps = 750
+env._max_episode_steps = 1000
 
 if args.model_type in ['lstm', 'transformer']:
     env = BoxToHistoryBox(env, h=16)

@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt
 from collections import deque
 
-def train(env, agent, n_episodes=5000, model_type='unk', score_limit=250.0, explore_episode=50):
+def train(env, agent, n_episodes=3000, model_type='unk', score_limit=250.0, explore_episode=50):
     scores_deque = deque(maxlen=100)
     scores = []
     max_score = -np.Inf
@@ -29,18 +29,21 @@ def train(env, agent, n_episodes=5000, model_type='unk', score_limit=250.0, expl
 
         scores_deque.append(score)
         scores.append(score)
-        print('\rEpisode {}\tAverage Score: {:.2f}\tScore: {:.2f}'.format(i_episode, np.mean(scores_deque), score), end="")
+        avg_score_100 = np.mean(scores_deque)
+        print('\rEpisode {}\tAverage Score: {:.2f}\tScore: {:.2f}'.format(i_episode, avg_score_100, score), end="")
 
-        if i_episode % 100 == 0:
+        if i_episode % 100 == 0 or avg_score_100>200.0:
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_deque)))
-            agent.eval_mode()
+            agent.eval_mode() # test in eval mode.
             test_score = test(env, agent, render=False)
-            agent.train_mode() # when the test done, come back to train mode.
             if test_score >= score_limit:
-                agent.save_ckpt(model_type, 'best')
+                agent.save_ckpt(model_type, 'best'+str(int(test_score)))
                 score_limit=test_score
             else:
                 agent.save_ckpt(model_type)
+            if avg_score_100>200.0:
+                break
+            agent.train_mode() # when the test done, come back to train mode.
 
     return scores
 

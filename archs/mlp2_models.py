@@ -70,7 +70,7 @@ class Critic(nn.Module):
         self.action_layer = nn.Sequential(nn.Linear(self.action_dim, 128), nn.Tanh())
         self.action_layer[0].weight.data = fanin_init(self.action_layer[0].weight.data.size())
 
-        self.fc2 = nn.Linear(2*128,128)
+        self.fc2 = nn.Linear(128,128)
         self.fc2.weight.data = fanin_init(self.fc2.weight.data.size())
 
         self.fc3 = nn.Linear(128,1)
@@ -88,7 +88,8 @@ class Critic(nn.Module):
         """
         s = self.state_encoder(state)
         a = self.action_layer(action)
-        x = torch.cat((s,a),dim=1)
+        #x = torch.cat((s,a),dim=1)
+        x = s + a
         x = self.act(self.fc2(x))
         x = self.fc3(x)*10
         return x
