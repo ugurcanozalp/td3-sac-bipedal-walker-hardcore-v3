@@ -23,7 +23,7 @@ class DDPGAgent():
         self.train_actor = Actor().to(self.device)
         self.target_actor= Actor().to(self.device).eval()
         self.hard_update(self.train_actor, self.target_actor)
-        self.actor_optim = optim.Adam(self.train_actor.parameters(), lr=0.2*lr, weight_decay=weight_decay)
+        self.actor_optim = optim.Adam(self.train_actor.parameters(), lr=0.25*lr, weight_decay=weight_decay)
         print(f'Number of paramters of Actor Net: {sum(p.numel() for p in self.train_actor.parameters())}')
         
         self.train_critic = Critic().to(self.device)
@@ -32,7 +32,7 @@ class DDPGAgent():
         self.critic_optim = optim.Adam(self.train_critic.parameters(), lr=lr, weight_decay=weight_decay)
         print(f'Number of paramters of Critic Net: {sum(p.numel() for p in self.train_critic.parameters())}')
 
-        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=0.6, sigma=0.4, dt=0.02) # theta=0.15, sigma=0.2
+        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=1.2, sigma=0.55, dt=0.02) # theta=0.15, sigma=0.2
         
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \
             batch_size= self.batch_size, device=self.device)
