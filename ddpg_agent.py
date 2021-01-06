@@ -9,7 +9,7 @@ from noise import OrnsteinUhlenbeckNoise
 class DDPGAgent():
     rl_type = 'ddpg'
     def __init__(self, Actor, Critic, state_size=24, action_size=4, 
-            lr=1e-3, weight_decay=1e-4, gamma=0.99, tau=0.001, batch_size=128, buffer_size=int(5e5)):
+            lr=1e-3, weight_decay=1e-3, gamma=0.99, tau=0.001, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -76,11 +76,8 @@ class DDPGAgent():
         
     @torch.no_grad()        
     def get_action(self, state, explore=False):
-        self.train_actor.eval()
         state = torch.from_numpy(state).unsqueeze(0).float().to(self.device)
-        #with torch.no_grad():
-        action= self.train_actor(state).cpu().data.numpy()[0]
-        self.train_actor.train()
+        action = self.train_actor(state).cpu().data.numpy()[0]
 
         if explore:
             noise = self.noise_generator()
@@ -101,3 +98,11 @@ class DDPGAgent():
         critic_file = os.path.join("models", self.rl_type, "_".join([prefix, model_type, "critic.pth"]))
         torch.save(self.train_actor.state_dict(), actor_file)
         torch.save(self.train_critic.state_dict(), critic_file)
+
+    def train_mode(self):
+        self.train_actor.train()
+        self.train_critic.train()
+
+    def eval_mode(self):
+        self.train_actor.eval()
+        self.train_critic.eval()

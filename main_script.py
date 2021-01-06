@@ -55,7 +55,8 @@ print("State  dimension : ",env.observation_space.shape)
 print("Action sample : ",env.action_space.sample())
 print("State sample  : \n ",env.reset())    
 
-if args.flag == 'train':   
+if args.flag == 'train':
+    agent.train_mode()   
     scores = train(env, agent, model_type=args.model_type)
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -65,6 +66,7 @@ if args.flag == 'train':
     plt.show()
     env.close()
 elif args.flag == 'test':
+    agent.eval_mode()
     try:
         assert False
         actor_file = os.path.join("models", args.rl_type, "_".join(["best", args.model_type, "actor.pth"]))

@@ -9,7 +9,7 @@ from noise import OrnsteinUhlenbeckNoise, GaussianNoise
 class TD3Agent():
     rl_type = 'td3'
     def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(4),
-            lr=1e-3, weight_decay=1e-4, gamma=0.99, tau=0.004, batch_size=128, buffer_size=int(5e5)):
+            lr=1e-3, weight_decay=1e-3, gamma=0.99, tau=0.004, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -101,11 +101,11 @@ class TD3Agent():
         
     @torch.no_grad()        
     def get_action(self, state, explore=False):
-        self.train_actor.eval()
+        #self.train_actor.eval()
         state = torch.from_numpy(state).unsqueeze(0).float().to(self.device)
         #with torch.no_grad():
-        action= self.train_actor(state).cpu().data.numpy()[0]
-        self.train_actor.train()
+        action = self.train_actor(state).cpu().data.numpy()[0]
+        #self.train_actor.train()
 
         if explore:
             noise = self.noise_generator()
@@ -128,3 +128,13 @@ class TD3Agent():
         torch.save(self.train_actor.state_dict(), actor_file)
         torch.save(self.train_critic_1.state_dict(), critic_1_file)
         torch.save(self.train_critic_2.state_dict(), critic_2_file)
+
+    def train_mode(self):
+        self.train_actor.train()
+        self.train_critic_1.train()
+        self.train_critic_2.train()
+
+    def eval_mode(self):
+        self.train_actor.eval()
+        self.train_critic_1.eval()
+        self.train_critic_2.eval()
