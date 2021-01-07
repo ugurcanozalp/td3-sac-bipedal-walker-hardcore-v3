@@ -23,7 +23,7 @@ class FeedForwardEncoder(nn.Module):
         self.lin2 = nn.Linear(hidden_size, ff_size)
         nn.init.xavier_uniform_(self.lin2.weight, gain=nn.init.calculate_gain('relu'))
         self.lin3 = nn.Linear(ff_size, hidden_size)
-        nn.init.xavier_uniform_(self.lin3.weight, gain=nn.init.calculate_gain('tanh'))
+        nn.init.xavier_uniform_(self.lin3.weight, gain=nn.init.calculate_gain('relu'))
         self.tanh = nn.Tanh()
         self.act = nn.GELU()
         self.layernorm2 = nn.LayerNorm(ff_size)
@@ -70,9 +70,12 @@ class Critic(nn.Module):
         self.fc2 = nn.Linear(self.action_dim+128,256)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
 
-        self.fc3 = nn.Linear(256,1)
+        self.fc3 = nn.Linear(256,32)
+        nn.init.xavier_uniform_(self.fc3.weight, gain=nn.init.calculate_gain('relu'))
+        
+        self.fc_out = nn.Linear(32,1)
         nn.init.xavier_uniform_(self.fc3.weight)
-        nn.init.zeros_(self.fc3.bias)
+        nn.init.zeros_(self.fc_out.bias)
 
         self.act = nn.GELU()
 
@@ -87,7 +90,8 @@ class Critic(nn.Module):
         a = action
         x = torch.cat((s,a),dim=1)
         x = self.act(self.fc2(x))
-        x = self.fc3(x)*10
+        x = self.act(self.fc3(x))
+        x = self.fc_out(x)*10
         return x
 
 

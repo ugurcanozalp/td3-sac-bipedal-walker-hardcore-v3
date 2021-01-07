@@ -53,12 +53,15 @@ class Critic(nn.Module):
 
         self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, batch_first=True, bidirectional=False, num_layers=1)
 
-        self.fc2 = nn.Linear(self.action_dim+96,256)
+        self.fc2 = nn.Linear(self.action_dim+96,128)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
 
-        self.fc3 = nn.Linear(256,1)
+        self.fc3 = nn.Linear(128,32)
+        nn.init.xavier_uniform_(self.fc3.weight, gain=nn.init.calculate_gain('relu'))
+        
+        self.fc_out = nn.Linear(32,1)
         nn.init.xavier_uniform_(self.fc3.weight)
-        nn.init.zeros_(self.fc3.bias)
+        nn.init.zeros_(self.fc_out.bias)
 
         self.act = nn.GELU()
 
@@ -73,7 +76,8 @@ class Critic(nn.Module):
         a = action
         x = torch.cat((s,a),dim=1)
         x = self.act(self.fc2(x))
-        x = self.fc3(x)*10
+        x = self.act(self.fc3(x))
+        x = self.fc_out(x)*10
         return x
 
 

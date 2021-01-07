@@ -61,12 +61,15 @@ class Critic(nn.Module):
         self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim, 
             d_model=64, nhead=2, dim_feedforward=192, dropout=0.0, use_gate = False)
 
-        self.fc2 = nn.Linear(self.action_dim+64,256)
+        self.fc2 = nn.Linear(self.action_dim+64,128)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
 
-        self.fc3 = nn.Linear(256,1)
+        self.fc3 = nn.Linear(128,32)
+        nn.init.xavier_uniform_(self.fc3.weight, gain=nn.init.calculate_gain('relu'))
+        
+        self.fc_out = nn.Linear(32,1)
         nn.init.xavier_uniform_(self.fc3.weight)
-        self.fc3.bias.data.zeros_()
+        nn.init.zeros_(self.fc_out.bias)
 
         self.act = nn.GELU()
 
@@ -81,7 +84,8 @@ class Critic(nn.Module):
         a = action
         x = torch.cat((s,a),dim=1)
         x = self.act(self.fc2(x))
-        x = self.fc3(x)*10
+        x = self.act(self.fc3(x))
+        x = self.fc_out(x)*10
         return x
 
 
