@@ -52,14 +52,12 @@ class Critic(nn.Module):
         self.action_dim = action_dim
 
         self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, batch_first=True, bidirectional=False, num_layers=1)
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 96), nn.Tanh())
 
-        self.fc2 = nn.Linear(self.action_dim+96,192)
+        self.fc2 = nn.Linear(96,192)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('tanh'))
-
-        self.fc3 = nn.Linear(192,64)
-        nn.init.xavier_uniform_(self.fc3.weight, gain=nn.init.calculate_gain('tanh'))
         
-        self.fc_out = nn.Linear(64,1)
+        self.fc_out = nn.Linear(192,1)
         nn.init.xavier_uniform_(self.fc_out.weight)
         nn.init.zeros_(self.fc_out.bias)
 
@@ -73,10 +71,10 @@ class Critic(nn.Module):
         :return: Value function : Q(S,a) (Torch Variable : [n,1] )
         """
         s = self.state_encoder(state)
-        a = action
-        x = torch.cat((s,a),dim=1)
+        a = self.action_encoder(action)
+        #x = torch.cat((s,a),dim=1)
+        x = s + a
         x = self.act(self.fc2(x))
-        x = self.act(self.fc3(x))
         x = self.fc_out(x)*10
         return x
 
