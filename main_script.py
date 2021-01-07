@@ -37,8 +37,6 @@ if args.env == 'classic':
 elif args.env == 'hardcore':
     env = gym.make('BipedalWalkerHardcore-v3')
 
-env._max_episode_steps = 1000
-
 if args.model_type in ['lstm', 'transformer']:
     env = BoxToHistoryBox(env, h=16)
 
@@ -56,6 +54,7 @@ print("Action sample : ",env.action_space.sample())
 print("State sample  : \n ",env.reset())    
 
 if args.flag == 'train':
+    env._max_episode_steps = 1000
     agent.train_mode()   
     scores = train(env, agent, model_type=args.model_type)
     fig = plt.figure()
@@ -66,14 +65,16 @@ if args.flag == 'train':
     plt.show()
     env.close()
 elif args.flag == 'test':
+    env._max_episode_steps = 1600
+    #agent.freeze_networks()
     agent.eval_mode()
     try:
         assert False
         actor_file = os.path.join("models", args.rl_type, "_".join(["best", args.model_type, "actor.pth"]))
-        agent.train_actor.load_state_dict(torch.load(actor_file, map_location={'cuda:0': 'cpu'}))
+        agent.train_actor.load_state_dict(torch.load(actor_file, map_location=agent.device))
     except:
         actor_file = os.path.join("models", args.rl_type, "_".join(["last", args.model_type, "actor.pth"]))
-        agent.train_actor.load_state_dict(torch.load(actor_file, map_location={'cuda:0': 'cpu'}))
+        agent.train_actor.load_state_dict(torch.load(actor_file, map_location=agent.device))
     agent.train_actor.eval()
 
     scores = test(env, agent)

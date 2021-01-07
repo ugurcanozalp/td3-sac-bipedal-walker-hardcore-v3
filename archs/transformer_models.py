@@ -30,7 +30,7 @@ class StableTransformerEncoder(nn.Module):
     def __init__(self, num_layers, d_in, d_model, nhead, dim_feedforward=192, dropout=0.1, use_gate = False):
         super(StableTransformerEncoder,self).__init__()
         self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model), nn.Tanh())
-        self.inp_embedding[0].weight.data = fanin_init(self.inp_embedding[0].weight.data.size())
+        nn.init.xavier_uniform_(self.inp_embedding[0].weight, gain=nn.init.calculate_gain('tanh'))
         self.pos_embedding = PositionalEncoding(d_model, max_len=32)
         st_layer = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, use_gate)
         self.encoder = TransformerEncoder(st_layer, num_layers)
@@ -61,18 +61,12 @@ class Critic(nn.Module):
         self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim, 
             d_model=64, nhead=2, dim_feedforward=192, dropout=0.0, use_gate = False)
 
-        #self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.LayerNorm(128), nn.ReLU())
-        #self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
-
-        self.action_layer = nn.Sequential(nn.Linear(self.action_dim, 64), nn.Tanh())
-        self.action_layer[0].weight.data = fanin_init(self.action_layer[0].weight.data.size())
-
-        self.fc2 = nn.Linear(64,128)
-        self.fc2.weight.data = fanin_init(self.fc2.weight.data.size())
+        self.fc2 = nn.Linear(self.action_dim+64,128)
+        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('tanh'))
 
         self.fc3 = nn.Linear(128,1)
-        self.fc3.weight.data.uniform_(-EPS,EPS)
-        self.fc3.bias.data.zero_()
+        nn.init.xavier_uniform_(self.fc3.weight)
+        self.fc3.bias.data.zeros_()
 
         self.act = nn.Tanh()
 
@@ -84,9 +78,8 @@ class Critic(nn.Module):
         :return: Value function : Q(S,a) (Torch Variable : [n,1] )
         """
         s = self.state_encoder(state)
-        a = self.action_layer(action)
-        #x = torch.cat((s,a),dim=1)
-        x = s + a
+        a = action
+        x = torch.cat((s,a),dim=1)
         x = self.act(self.fc2(x))
         x = self.fc3(x)*10
         return x
@@ -110,8 +103,8 @@ class Actor(nn.Module):
             d_model=64, nhead=2, dim_feedforward=192, dropout=0.0, use_gate = False)
 
         self.fc = nn.Linear(64,action_dim)
-        self.fc.weight.data.uniform_(-EPS,EPS)
-        self.fc.bias.data.zero_()
+        nn.init.xavier_uniform_(self.fc.weight, gain=nn.init.calculate_gain('tanh'))
+        nn.init.zeros_(self.fc.bias)
         self.tanh = nn.Tanh()
 
     def forward(self, state):

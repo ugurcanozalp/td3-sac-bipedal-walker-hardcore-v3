@@ -1,4 +1,5 @@
 import numpy as np
+np.random.seed(0)
 
 class GaussianNoise:
     def __init__(self, mu, sigma, clip=None):
@@ -14,7 +15,7 @@ class GaussianNoise:
         return self.mu + delta
 
 class OrnsteinUhlenbeckNoise:
-    def __init__(self, mu, theta = 0.15, sigma = 0.2, dt=1.0):
+    def __init__(self, mu, theta = 0.15, sigma = 0.2, dt=0.02):
         # 5.0, 0.02, 1.0 # 1.0, 0.02, 0.25 # 7.5, 0.02, 1.4 # 5.0, 0.02, 0.7
         self.mu = mu
         self.theta = theta

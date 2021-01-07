@@ -4,12 +4,13 @@ import numpy as np
 import os
 from replay_buffer import ReplayBuffer
 from noise import OrnsteinUhlenbeckNoise
+from itertools import chain
 
 # https://github.com/A-Raafat/DDPG-bipedal/blob/master/My_DDPG.ipynb
 class DDPGAgent():
     rl_type = 'ddpg'
     def __init__(self, Actor, Critic, state_size=24, action_size=4, 
-            lr=1e-3, weight_decay=1e-3, gamma=0.99, tau=0.001, batch_size=128, buffer_size=int(5e5)):
+            lr=1e-3, weight_decay=1e-4, gamma=0.99, tau=0.001, batch_size=128, buffer_size=int(7e5)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -23,7 +24,7 @@ class DDPGAgent():
         self.train_actor = Actor().to(self.device)
         self.target_actor= Actor().to(self.device).eval()
         self.hard_update(self.train_actor, self.target_actor)
-        self.actor_optim = optim.Adam(self.train_actor.parameters(), lr=0.25*lr, weight_decay=weight_decay)
+        self.actor_optim = optim.Adam(self.train_actor.parameters(), lr=0.1*lr, weight_decay=weight_decay)
         print(f'Number of paramters of Actor Net: {sum(p.numel() for p in self.train_actor.parameters())}')
         
         self.train_critic = Critic().to(self.device)
@@ -50,12 +51,13 @@ class DDPGAgent():
         #update critic
         with torch.no_grad():
             next_actions = self.target_actor(next_states)
-            Q_targets_next = self.target_critic(next_states, next_actions)
+            Q_targets_next = self.target_critic(next_states, next_actions).detach()
             Q_targets = rewards + (self.gamma * Q_targets_next * (1-done))
         
         Q_expected = self.train_critic(states, actions)
         
         critic_loss = torch.nn.MSELoss()(Q_expected, Q_targets)
+        #print(f"{critic_loss} - {Q_expected[0][0]} - {Q_targets[0][0]}")
         #critic_loss = torch.nn.SmoothL1Loss()(Q_expected, Q_targets)
 
         self.critic_optim.zero_grad()
@@ -106,3 +108,7 @@ class DDPGAgent():
     def eval_mode(self):
         self.train_actor.eval()
         self.train_critic.eval()
+
+    def freeze_networks(self):
+        for p in chain(self.train_actor.parameters(), self.train_critic.parameters()):
+            p.requires_grad = False

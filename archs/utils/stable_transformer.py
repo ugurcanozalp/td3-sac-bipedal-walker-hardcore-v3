@@ -118,22 +118,4 @@ class StableTransformerLayer(nn.Module):
             src3 = self.dropout2(self.relu(src3)) + src2
 
         return src3
-
-"""
-class StableTransformerEncoder(nn.Module):
-
-    def __init__(self, num_layers, d_in, d_out, d_model, nhead, dim_feedforward=2048, dropout=0.1, use_gate = False):
-        super(StableTransformerEncoder,self).__init__()
-        self.inp_embedding = nn.Linear(d_in, d_model)
-        self.pos_embedding = PositionalEncoding(d_model, max_len=32)
-        st_layer = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, use_gate)
-        self.encoder = TransformerEncoder(st_layer, num_layers)
-
-    def forward(self, src, mask=None):
-        x = src
-        x = self.inp_embedding(x)
-        x = self.pos_embedding(x)
-        x = self.encoder(x)
-        x = x[:, -1] # last state throughout sequence
-        return x
-"""
+        

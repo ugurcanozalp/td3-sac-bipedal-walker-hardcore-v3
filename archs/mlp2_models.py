@@ -19,11 +19,11 @@ class FeedForwardEncoder(nn.Module):
     def __init__(self, input_size, hidden_size, ff_size):
         super(FeedForwardEncoder, self).__init__()
         self.lin1 = nn.Linear(input_size, hidden_size)
-        self.lin1.weight.data = fanin_init(self.lin1.weight.data.size())
+        nn.init.xavier_uniform_(self.lin1.weight, gain=nn.init.calculate_gain('tanh'))
         self.lin2 = nn.Linear(hidden_size, ff_size)
-        self.lin2.weight.data = fanin_init(self.lin2.weight.data.size())
+        nn.init.xavier_uniform_(self.lin2.weight, gain=nn.init.calculate_gain('relu'))
         self.lin3 = nn.Linear(ff_size, hidden_size)
-        self.lin3.weight.data = fanin_init(self.lin3.weight.data.size())
+        nn.init.xavier_uniform_(self.lin3.weight, gain=nn.init.calculate_gain('tanh'))
         self.tanh = nn.Tanh()
         self.act = nn.GELU()
         self.layernorm2 = nn.LayerNorm(ff_size)
@@ -67,15 +67,12 @@ class Critic(nn.Module):
 
         self.state_encoder = FeedForwardEncoder(self.state_dim, 128, 256)
 
-        self.action_layer = nn.Sequential(nn.Linear(self.action_dim, 128), nn.Tanh())
-        self.action_layer[0].weight.data = fanin_init(self.action_layer[0].weight.data.size())
-
-        self.fc2 = nn.Linear(128,128)
-        self.fc2.weight.data = fanin_init(self.fc2.weight.data.size())
+        self.fc2 = nn.Linear(self.action_dim+128,128)
+        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('tanh'))
 
         self.fc3 = nn.Linear(128,1)
-        self.fc3.weight.data.uniform_(-EPS,EPS)
-        self.fc3.bias.data.zero_()
+        nn.init.xavier_uniform_(self.fc3.weight)
+        nn.init.zeros_(self.fc3.bias)
 
         self.act = nn.Tanh()
 
@@ -87,9 +84,8 @@ class Critic(nn.Module):
         :return: Value function : Q(S,a) (Torch Variable : [n,1] )
         """
         s = self.state_encoder(state)
-        a = self.action_layer(action)
-        #x = torch.cat((s,a),dim=1)
-        x = s + a
+        a = action
+        x = torch.cat((s,a),dim=1)
         x = self.act(self.fc2(x))
         x = self.fc3(x)*10
         return x
@@ -112,8 +108,8 @@ class Actor(nn.Module):
         self.state_encoder = FeedForwardEncoder(self.state_dim, 128, 256)
 
         self.fc = nn.Linear(128,action_dim)
-        self.fc.weight.data.uniform_(-EPS,EPS)
-        self.fc.bias.data.zero_()
+        nn.init.xavier_uniform_(self.fc.weight, gain=nn.init.calculate_gain('tanh'))
+        nn.init.zeros_(self.fc.bias)
         self.tanh = nn.Tanh()
 
 

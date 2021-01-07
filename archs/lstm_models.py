@@ -28,7 +28,7 @@ class NormalizedLSTM(nn.Module):
     def __init__(self, input_size, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1):
         super(NormalizedLSTM, self).__init__()
         self.embedding = nn.Sequential(nn.Linear(input_size, hidden_size), nn.Tanh())
-        self.embedding[0].weight.data = fanin_init(self.embedding[0].weight.data.size())
+        nn.init.xavier_uniform_(self.embedding[0].weight, gain=nn.init.calculate_gain('tanh'))
         self.lstm = nn.LSTM(hidden_size, hidden_size=hidden_size, batch_first=True, bidirectional=False, num_layers=num_layers)
         self.pooler = LastStatePooler()
 
@@ -53,18 +53,12 @@ class Critic(nn.Module):
 
         self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, batch_first=True, bidirectional=False, num_layers=1)
 
-        #self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.LayerNorm(128), nn.ReLU())
-        #self.action_encoder[0].weight.data = fanin_init(self.action_encoder[0].weight.data.size())
-        
-        self.action_layer = nn.Sequential(nn.Linear(self.action_dim, 96), nn.Tanh())
-        self.action_layer[0].weight.data = fanin_init(self.action_layer[0].weight.data.size())
-
-        self.fc2 = nn.Linear(96,128)
-        self.fc2.weight.data = fanin_init(self.fc2.weight.data.size())
+        self.fc2 = nn.Linear(self.action_dim+96,128)
+        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('tanh'))
 
         self.fc3 = nn.Linear(128,1)
-        self.fc3.weight.data.uniform_(-EPS,EPS)
-        self.fc3.bias.data.zero_()
+        nn.init.xavier_uniform_(self.fc3.weight)
+        nn.init.zeros_(self.fc3.bias)
 
         self.act = nn.Tanh()
 
@@ -76,9 +70,8 @@ class Critic(nn.Module):
         :return: Value function : Q(S,a) (Torch Variable : [n,1] )
         """
         s = self.state_encoder(state)
-        a = self.action_layer(action)
-        #x = torch.cat((s,a),dim=1)
-        x = s + a
+        a = action
+        x = torch.cat((s,a),dim=1)
         x = self.act(self.fc2(x))
         x = self.fc3(x)*10
         return x
@@ -101,8 +94,8 @@ class Actor(nn.Module):
         self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, batch_first=True, bidirectional=False, num_layers=1)
 
         self.fc = nn.Linear(96,action_dim)
-        self.fc.weight.data.uniform_(-EPS,EPS)
-        self.fc.bias.data.zero_()
+        nn.init.xavier_uniform_(self.fc.weight, gain=nn.init.calculate_gain('tanh'))
+        nn.init.zeros_(self.fc.bias)
         self.tanh = nn.Tanh()
 
     def forward(self, state):
