@@ -65,16 +65,16 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = FeedForwardEncoder(self.state_dim, 128, 256)
+        self.state_encoder = FeedForwardEncoder(self.state_dim, 96, 320)
 
-        self.fc2 = nn.Linear(self.action_dim+128,256)
-        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
+        self.fc2 = nn.Sequential(nn.Linear(self.action_dim+96,256), nn.LayerNorm(256))
+        nn.init.xavier_uniform_(self.fc2[0].weight, gain=nn.init.calculate_gain('relu'))
 
-        self.fc3 = nn.Linear(256,32)
-        nn.init.xavier_uniform_(self.fc3.weight, gain=nn.init.calculate_gain('relu'))
+        self.fc3 = nn.Sequential(nn.Linear(256,128), nn.LayerNorm(128))
+        nn.init.xavier_uniform_(self.fc3[0].weight, gain=nn.init.calculate_gain('relu'))
         
-        self.fc_out = nn.Linear(32,1)
-        nn.init.xavier_uniform_(self.fc3.weight)
+        self.fc_out = nn.Linear(128,1)
+        nn.init.xavier_uniform_(self.fc_out.weight)
         nn.init.zeros_(self.fc_out.bias)
 
         self.act = nn.GELU()
@@ -109,9 +109,9 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = FeedForwardEncoder(self.state_dim, 128, 256)
+        self.state_encoder = FeedForwardEncoder(self.state_dim, 96, 320)
 
-        self.fc = nn.Linear(128,action_dim)
+        self.fc = nn.Linear(96,action_dim)
         nn.init.xavier_uniform_(self.fc.weight, gain=nn.init.calculate_gain('tanh'))
         nn.init.zeros_(self.fc.bias)
         self.tanh = nn.Tanh()

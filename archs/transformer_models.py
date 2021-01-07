@@ -61,14 +61,14 @@ class Critic(nn.Module):
         self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim, 
             d_model=64, nhead=2, dim_feedforward=192, dropout=0.0, use_gate = False)
 
-        self.fc2 = nn.Linear(self.action_dim+64,128)
-        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
+        self.fc2 = nn.Sequential(nn.Linear(self.action_dim+64,256), nn.LayerNorm(256))
+        nn.init.xavier_uniform_(self.fc2[0].weight, gain=nn.init.calculate_gain('relu'))
 
-        self.fc3 = nn.Linear(128,32)
-        nn.init.xavier_uniform_(self.fc3.weight, gain=nn.init.calculate_gain('relu'))
+        self.fc3 = nn.Sequential(nn.Linear(256,128), nn.LayerNorm(128))
+        nn.init.xavier_uniform_(self.fc3[0].weight, gain=nn.init.calculate_gain('relu'))
         
-        self.fc_out = nn.Linear(32,1)
-        nn.init.xavier_uniform_(self.fc3.weight)
+        self.fc_out = nn.Linear(128,1)
+        nn.init.xavier_uniform_(self.fc_out.weight)
         nn.init.zeros_(self.fc_out.bias)
 
         self.act = nn.GELU()
