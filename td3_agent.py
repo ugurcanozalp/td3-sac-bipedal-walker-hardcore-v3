@@ -30,7 +30,7 @@ class TD3Agent():
         self.train_actor = Actor().to(self.device)
         self.target_actor= Actor().to(self.device).eval()
         self.hard_update(self.train_actor, self.target_actor) # hard update at the beginning
-        self.actor_optim = optim.AdamW(self.train_actor.parameters(), lr=0.2*lr, weight_decay=weight_decay) 
+        self.actor_optim = optim.AdamW(self.train_actor.parameters(), lr=lr, weight_decay=weight_decay) 
         print(f'Number of paramters of Actor Net: {sum(p.numel() for p in self.train_actor.parameters())}')
         
         self.train_critic_1 = Critic().to(self.device)
