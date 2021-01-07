@@ -67,17 +67,17 @@ class Critic(nn.Module):
 
         self.state_encoder = FeedForwardEncoder(self.state_dim, 96, 320)
 
-        self.fc2 = nn.Sequential(nn.Linear(self.action_dim+96,256), nn.LayerNorm(256))
-        nn.init.xavier_uniform_(self.fc2[0].weight, gain=nn.init.calculate_gain('relu'))
+        self.fc2 = nn.Linear(self.action_dim+96,192)
+        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('tanh'))
 
-        self.fc3 = nn.Sequential(nn.Linear(256,128), nn.LayerNorm(128))
-        nn.init.xavier_uniform_(self.fc3[0].weight, gain=nn.init.calculate_gain('relu'))
+        self.fc3 = nn.Linear(192,64)
+        nn.init.xavier_uniform_(self.fc3.weight, gain=nn.init.calculate_gain('tanh'))
         
-        self.fc_out = nn.Linear(128,1)
+        self.fc_out = nn.Linear(64,1)
         nn.init.xavier_uniform_(self.fc_out.weight)
         nn.init.zeros_(self.fc_out.bias)
 
-        self.act = nn.GELU()
+        self.act = nn.Tanh()
 
     def forward(self, state, action):
         """
