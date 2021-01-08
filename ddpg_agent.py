@@ -83,7 +83,7 @@ class DDPGAgent():
 
         if explore:
             noise = self.noise_generator()
-            print(noise)
+            #print(noise)
             action += noise
         return action
     
