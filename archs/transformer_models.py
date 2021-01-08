@@ -58,18 +58,18 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
         
-        self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim, 
-            d_model=64, nhead=2, dim_feedforward=192, dropout=0.0, use_gate = False)
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.Tanh())
+        self.state_encoder = StableTransformerEncoder(num_layers=1, d_in=self.state_dim, 
+            d_model=96, nhead=2, dim_feedforward=192, dropout=0.0, use_gate = False)
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 96), nn.GELU())
 
-        self.fc2 = nn.Linear(64,192)
-        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('tanh'))
+        self.fc2 = nn.Linear(96,256)
+        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
-        self.fc_out = nn.Linear(192,1)
+        self.fc_out = nn.Linear(256,1)
         nn.init.xavier_uniform_(self.fc_out.weight)
         nn.init.zeros_(self.fc_out.bias)
 
-        self.act = nn.Tanh()
+        self.act = nn.GELU()
 
     def forward(self, state, action):
         """
@@ -101,8 +101,8 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
         
-        self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim, 
-            d_model=64, nhead=2, dim_feedforward=192, dropout=0.0, use_gate = False)
+        self.state_encoder = StableTransformerEncoder(num_layers=1, d_in=self.state_dim, 
+            d_model=96, nhead=2, dim_feedforward=192, dropout=0.0, use_gate = False)
 
         self.fc = nn.Linear(64,action_dim)
         nn.init.xavier_uniform_(self.fc.weight, gain=nn.init.calculate_gain('tanh'))
