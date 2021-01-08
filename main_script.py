@@ -47,7 +47,6 @@ elif args.rl_type=='td3':
 else:
     print('Wrong learning algorithm type!'); exit(0);
     
-env.seed(0)
 print("Action dimension : ",env.action_space.shape)
 print("State  dimension : ",env.observation_space.shape)
 print("Action sample : ",env.action_space.sample())
