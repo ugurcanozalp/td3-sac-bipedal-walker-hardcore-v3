@@ -67,6 +67,7 @@ elif args.flag == 'test':
     env._max_episode_steps = 1600
     #agent.freeze_networks()
     agent.eval_mode()
+    env.seed(0)
     try:
         assert False
         actor_file = os.path.join("models", args.rl_type, "_".join(["best", args.model_type, "actor.pth"]))

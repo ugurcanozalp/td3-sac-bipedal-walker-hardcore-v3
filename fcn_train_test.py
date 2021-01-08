@@ -48,7 +48,6 @@ def train(env, agent, n_episodes=3000, model_type='unk', score_limit=250.0, expl
     return scores
 
 def test(env, agent, render=True):
-    #env.seed(0)
     prev_max_episode_steps = env._max_episode_steps
     env._max_episode_steps = 1600
     state = env.reset()
