@@ -8,7 +8,7 @@ import random
 
 # https://github.com/vy007vikas/PyTorch-ActorCriticRL
 
-EPS = 0.003
+#EPS = 0.003
 
 def fanin_init(size, fanin=None):
     fanin = fanin or size[0]

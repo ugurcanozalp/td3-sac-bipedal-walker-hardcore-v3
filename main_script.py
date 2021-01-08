@@ -69,7 +69,6 @@ elif args.flag == 'test':
     agent.eval_mode()
     env.seed(0)
     try:
-        assert False
         actor_file = os.path.join("models", args.rl_type, "_".join(["best", args.model_type, "actor.pth"]))
         agent.train_actor.load_state_dict(torch.load(actor_file, map_location=agent.device))
     except:

@@ -5,9 +5,10 @@ import os
 import matplotlib.pyplot as plt
 from collections import deque
 
-def train(env, agent, n_episodes=3000, model_type='unk', score_limit=250.0, explore_episode=50):
+def train(env, agent, n_episodes=3000, model_type='unk', score_limit=250.0, explore_episode=50, test_f=100):
     scores_deque = deque(maxlen=100)
     scores = []
+    test_scores = []
     max_score = -np.Inf
     for i_episode in range(1, n_episodes+1):
         state = env.reset()
@@ -32,10 +33,11 @@ def train(env, agent, n_episodes=3000, model_type='unk', score_limit=250.0, expl
         avg_score_100 = np.mean(scores_deque)
         print('\rEpisode {}\tAverage Score: {:.2f}\tScore: {:.2f}'.format(i_episode, avg_score_100, score), end="")
 
-        if i_episode % 100 == 0 or avg_score_100>200.0:
+        if i_episode % test_f == 0 or avg_score_100>200.0:
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_deque)))
             agent.eval_mode() # test in eval mode.
             test_score = test(env, agent, render=False)
+            test_scores.append(test_score)
             if test_score >= score_limit:
                 agent.save_ckpt(model_type, 'best'+str(int(test_score)))
                 score_limit=test_score
@@ -45,7 +47,7 @@ def train(env, agent, n_episodes=3000, model_type='unk', score_limit=250.0, expl
                 break
             agent.train_mode() # when the test done, come back to train mode.
 
-    return scores
+    return scores, test_scores
 
 def test(env, agent, render=True):
     prev_max_episode_steps = env._max_episode_steps
@@ -66,3 +68,20 @@ def test(env, agent, render=True):
     print('\rTest Episode\tScore: {:.2f}'.format(score))
     env._max_episode_steps = prev_max_episode_steps
     return score
+
+#fig = plt.figure()
+#ax = fig.add_subplot(111)
+#...
+#ax.title('Score History')
+#ax.legend()
+#f.savefig(savename)
+#f.show()
+
+def create_graph(ax, scores, test_scores, test_f=100, label='FFRC'):
+    episodes = np.arange(1, len(scores)+1)
+    test_episodes = np.arange(test_f, (len(test_scores)+1)*test_f, test_f)
+    ax.plot(episodes, scores, alpha=.5)
+    ax.step(test_episodes, test_scores, label=label)
+    ax.set_ylabel('Score')
+    ax.set_xlabel('Episode #')
+
