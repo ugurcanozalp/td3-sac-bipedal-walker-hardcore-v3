@@ -18,11 +18,11 @@ def train(env, agent, n_episodes=3000, model_type='unk', score_limit=250.0, expl
             if i_episode>explore_episode:
                 action = agent.get_action(state, explore=True)
                 action = action.clip(min=env.action_space.low, max=env.action_space.high)
-                next_state, reward, done, _ = env.step(action)
-                agent.learn_with_batches(state, action, reward, next_state, done)
             else:
                 action = env.action_space.sample()
-                next_state, reward, done, _ = env.step(action)
+                
+            next_state, reward, done, _ = env.step(action)
+            agent.learn_with_batches(state, action, reward, next_state, done)
 
             state = next_state
             score += reward
