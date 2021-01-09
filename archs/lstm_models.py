@@ -22,7 +22,8 @@ class LastStatePooler(nn.Module):
 
 class MaxPooler(nn.Module):
     def forward(self,x):
-        return x.max(axis=1) # 1 -> sequence dimension
+        x, _ = x.max(axis=-2) # -2 -> sequence dimension
+        return x 
 
 class NormalizedLSTM(nn.Module):
     def __init__(self, input_size, hidden_size=64, batch_first=True, bidirectional=False, num_layers=1):
@@ -30,7 +31,7 @@ class NormalizedLSTM(nn.Module):
         self.embedding = nn.Sequential(nn.Linear(input_size, hidden_size), nn.Tanh())
         nn.init.xavier_uniform_(self.embedding[0].weight, gain=nn.init.calculate_gain('tanh'))
         self.lstm = nn.LSTM(hidden_size, hidden_size=hidden_size, batch_first=True, bidirectional=False, num_layers=num_layers)
-        self.pooler = LastStatePooler()
+        self.pooler = MaxPooler()
 
     def forward(self, x):
         x = self.embedding(x)
@@ -53,10 +54,10 @@ class Critic(nn.Module):
 
         self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, batch_first=True, bidirectional=False, num_layers=1)
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 96), nn.Tanh())
-        nn.init.xavier_uniform_(self.action_encoder[0], gain=nn.init.calculate_gain('tanh'))
-        
+        nn.init.xavier_uniform_(self.action_encoder[0].weight, gain=nn.init.calculate_gain('tanh'))
+
         self.fc2 = nn.Linear(96,256)
-        nn.init.xavier_uniform_(self.fc2.weight, gain=0.1*nn.init.calculate_gain('relu'))
+        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
         self.fc_out = nn.Linear(256,1)
         nn.init.xavier_uniform_(self.fc_out.weight)

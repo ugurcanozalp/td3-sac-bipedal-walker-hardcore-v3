@@ -30,14 +30,13 @@ class FeedForwardEncoder(nn.Module):
         self.layernorm3 = nn.LayerNorm(hidden_size)
 
     def forward(self, x):
-        res = x
         x = self.lin1(x)
-        y = self.tanh(x)
-        x = self.lin2(y)
+        x = self.tanh(x)
+        x = self.lin2(x)
         x = self.layernorm2(x)
         x = self.act(x)
         x = self.lin3(x)
-        x = self.layernorm3(x+y)
+        x = self.layernorm3(x)
         return x
 
 """
@@ -67,10 +66,10 @@ class Critic(nn.Module):
 
         self.state_encoder = FeedForwardEncoder(self.state_dim, 96, 384)
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 96), nn.Tanh())
-        nn.init.xavier_uniform_(self.action_encoder[0], gain=nn.init.calculate_gain('tanh'))
+        nn.init.xavier_uniform_(self.action_encoder[0].weight, gain=nn.init.calculate_gain('tanh'))
 
         self.fc2 = nn.Linear(96,256)
-        nn.init.xavier_uniform_(self.fc2.weight, gain=0.1*nn.init.calculate_gain('relu'))
+        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
         self.fc_out = nn.Linear(256,1)
         nn.init.xavier_uniform_(self.fc_out.weight)

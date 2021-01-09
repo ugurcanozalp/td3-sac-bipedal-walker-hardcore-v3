@@ -1,5 +1,5 @@
 import numpy as np
-np.random.seed(0)
+#np.random.seed(0)
 
 class GaussianNoise:
     def __init__(self, mu, sigma, clip=None):
