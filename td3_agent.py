@@ -30,7 +30,7 @@ class TD3Agent():
         self.train_actor = Actor().to(self.device)
         self.target_actor= Actor().to(self.device).eval()
         self.hard_update(self.train_actor, self.target_actor) # hard update at the beginning
-        self.actor_optim = optim.AdamW(self.train_actor.parameters(), lr=lr, weight_decay=weight_decay) 
+        self.actor_optim = optim.AdamW(self.train_actor.parameters(), lr=lr, weight_decay=0.0) 
         print(f'Number of paramters of Actor Net: {sum(p.numel() for p in self.train_actor.parameters())}')
         
         self.train_critic_1 = Critic().to(self.device)
@@ -44,7 +44,7 @@ class TD3Agent():
         self.critic_2_optim = optim.AdamW(self.train_critic_2.parameters(), lr=lr, weight_decay=weight_decay)
         print(f'Number of paramters of Single Critic Net: {sum(p.numel() for p in self.train_critic_2.parameters())}')
 
-        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=3.2, sigma=0.7, dt=0.02) #theta=1.2, sigma=0.55
+        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=3.2, sigma=0.6, dt=0.02) #theta=1.2, sigma=0.55
         self.target_noise = GaussianNoise(mu=np.zeros(action_size), sigma=0.2, clip=0.5)
         
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \
