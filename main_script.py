@@ -15,20 +15,20 @@ parser.add_argument("-f", "--flag", type=str, choices=['train', 'test'],
                     default='train', help="train or test?")
 parser.add_argument("-e", "--env", type=str, choices=['classic', 'hardcore'],
                     default='classic', help="environment type, classic or hardcore?")
-parser.add_argument("-m", "--model_type", type=str, choices=['mlp','mlp2','lstm','transformer'],
-                    default='mlp2', help="model type")
+parser.add_argument("-m", "--model_type", type=str, choices=['ff','lstm','bilstm','trsf'],
+                    default='ff', help="model type")
 parser.add_argument("-r", "--rl_type", type=str, choices=['ddpg', 'td3'], default='ddpg', help='RL method')
 
 args = parser.parse_args()
 
-if args.model_type=='mlp':
-    from archs.mlp_models import Actor, Critic
-elif args.model_type=='mlp2':
-    from archs.mlp2_models import Actor, Critic
+if args.model_type=='ff':
+    from archs.ff_models import Actor, Critic
 elif args.model_type=='lstm':
     from archs.lstm_models import Actor, Critic
-elif args.model_type=='transformer':
-    from archs.transformer_models import Actor, Critic
+elif args.model_type=='bilstm':
+    from archs.lstm_models import Actor, Critic
+elif args.model_type=='trsf':
+    from archs.trsf_models import Actor, Critic
 else:
     print('Wrong model type!'); exit(0);
 
@@ -37,7 +37,7 @@ if args.env == 'classic':
 elif args.env == 'hardcore':
     env = gym.make('BipedalWalkerHardcore-v3')
 
-if args.model_type in ['lstm', 'transformer']:
+if args.model_type in ['lstm', 'bilstm','trsf']:
     env = BoxToHistoryBox(env, h=16)
 
 if args.rl_type=='ddpg':
