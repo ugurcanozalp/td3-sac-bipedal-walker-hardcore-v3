@@ -63,13 +63,13 @@ class Critic(nn.Module):
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 96), nn.GELU())
 
         self.fc2 = nn.Linear(96,256)
-        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
+        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('tanh'))
         
         self.fc_out = nn.Linear(256,1)
         nn.init.xavier_uniform_(self.fc_out.weight)
         nn.init.zeros_(self.fc_out.bias)
 
-        self.act = nn.GELU()
+        self.act = nn.Tanh()
 
     def forward(self, state, action):
         """
