@@ -35,7 +35,7 @@ class StableTransformerEncoder(nn.Module):
         self.pos_embedding = PositionalEncoding(d_model, max_len=32)
         st_layer = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, use_gate)
         self.encoder = TransformerEncoder(st_layer, num_layers)
-        self.pooler = MaxPooler()
+        self.pooler = LastStatePooler()
 
     def forward(self, src, mask=None):
         x = src

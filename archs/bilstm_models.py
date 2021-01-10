@@ -31,12 +31,12 @@ class NormalizedLSTM(nn.Module):
         self.embedding = nn.Sequential(nn.Linear(input_size, hidden_size), nn.Tanh())
         nn.init.xavier_uniform_(self.embedding[0].weight, gain=nn.init.calculate_gain('tanh'))
         self.lstm = nn.LSTM(hidden_size, hidden_size=hidden_size, batch_first=batch_first, bidirectional=bidirectional, num_layers=num_layers)
-        self.pooler = MaxPooler()
+        self.pooler = LastStatePooler()
 
     def forward(self, x):
         x = self.embedding(x)
-        h = x[:,0].unsqueeze(0).repeat(2,1,1)
-        c = torch.zeros_like(h)
+        #h = x[:,0].unsqueeze(0).repeat(2,1,1)
+        #c = torch.zeros_like(h)
         x, (_, _) = self.lstm(x)
         x = self.pooler(x)
         return x
