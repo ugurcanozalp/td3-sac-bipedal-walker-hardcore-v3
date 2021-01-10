@@ -35,8 +35,8 @@ class NormalizedLSTM(nn.Module):
 
     def forward(self, x):
         x = self.embedding(x)
-        h = x[:,0].unsqueeze(0).repeat(2,1,1)
-        c = torch.zeros_like(h)
+        h = torch.stack((x[:,0], x[:,-1])).contiguous()
+        c = torch.zeros_like(h).contiguous()
         x, (_, _) = self.lstm(x, (h, c))
         x = self.pooler(x)
         return x

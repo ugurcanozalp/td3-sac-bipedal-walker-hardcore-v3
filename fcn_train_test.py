@@ -43,7 +43,7 @@ def train(env, agent, n_episodes=3000, model_type='unk', score_limit=250.0, expl
                 score_limit=test_score
             else:
                 agent.save_ckpt(model_type)
-            if avg_score_100>200.0:
+            if avg_score_100>280.0:
                 break
             agent.train_mode() # when the test done, come back to train mode.
 
