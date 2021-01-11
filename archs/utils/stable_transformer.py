@@ -40,7 +40,8 @@ class PositionalEncoding(nn.Module):
         position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
         _log10000 = 9.21034037198
         _log1000 = 6.907755278982137
-        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-_log1000 / d_model))
+        _log100 = 4.605170185988092
+        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-_log100 / d_model))
         pe[:, 0::2] = torch.sin(position * div_term)
         pe[:, 1::2] = torch.cos(position * div_term)
         pe = pe.unsqueeze(0)

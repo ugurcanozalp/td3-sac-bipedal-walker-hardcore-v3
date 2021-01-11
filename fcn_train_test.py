@@ -33,7 +33,7 @@ def train(env, agent, n_episodes=3000, model_type='unk', score_limit=250.0, expl
         avg_score_100 = np.mean(scores_deque)
         print('\rEpisode {}\tAverage Score: {:.2f}\tScore: {:.2f}'.format(i_episode, avg_score_100, score), end="")
 
-        if i_episode % test_f == 0 or avg_score_100>200.0:
+        if i_episode % test_f == 0 or avg_score_100>280.0:
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_deque)))
             agent.eval_mode() # test in eval mode.
             test_score = test(env, agent, render=False)
