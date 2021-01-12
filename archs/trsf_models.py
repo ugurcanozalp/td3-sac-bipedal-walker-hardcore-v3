@@ -32,7 +32,8 @@ class WeightedMeanPooling(nn.Module):
         self.eps = torch.finfo(torch.float).eps
         self.w = nn.Linear(seq_len,1, bias=False)
         #nn.init.uniform_(self.w.weight, a=0.0, b=2.0/seq_len)
-        self.w.weight.data = 2.0**torch.arange(-seq_len,0, dtype=torch.float).unsqueeze(0)
+        self.w.weight.data = torch.zeros(1, seq_len, dtype=torch.float)
+        self.w.weight.data[0,-1]=1.0
         #self.w.weight.requires_grad=False
 
     def forward(self, x):
@@ -45,17 +46,17 @@ class StableTransformerEncoder(nn.Module):
         self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model), nn.Tanh())
         nn.init.xavier_uniform_(self.inp_embedding[0].weight) # , gain=nn.init.calculate_gain('tanh')
         #self.pos_embedding = LearnablePositionalEncoding(d_model, max_len=8)
-        self.pos_embedding = PositionalEncoding(d_model, max_len=8, ratio=0.1)
+        self.pos_embedding = PositionalEncoding(d_model, max_len=8, ratio=0.05)
         st_layer = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, use_gate)
         self.encoder = TransformerEncoder(st_layer, num_layers)
         self.pooler = WeightedMeanPooling(seq_len=8)
-        self.layn = nn.LayerNorm(d_model)
+        #self.layn = nn.LayerNorm(d_model)
 
     def forward(self, src, mask=None):
         x = src
         x = self.inp_embedding(x)
         x = self.pos_embedding(x)
-        x = self.layn(x)
+        #x = self.layn(x)
         x = self.encoder(x)
         x = self.pooler(x)
         return x
