@@ -34,33 +34,36 @@ class GRUGate(nn.Module):
         return (1.-z)*x + z*h_hat
 
 class PositionalEncoding(nn.Module):
-    def __init__(self, d_model, max_len=64):
+    def __init__(self, d_model, max_len=8, ratio=None):
         super(PositionalEncoding, self).__init__()
         pe = torch.zeros(max_len, d_model)
         position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
         _log10000 = 9.21034037198
         _log1000 = 6.907755278982137
         _log100 = 4.605170185988092
-        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-_log100 / d_model))
+        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-_log1000 / d_model))
         pe[:, 0::2] = torch.sin(position * div_term)
         pe[:, 1::2] = torch.cos(position * div_term)
         pe = pe.unsqueeze(0)
         self.register_buffer('pe', pe)
+        if ratio is not None:
+            self.ratio = torch.nn.Parameter(torch.tensor(ratio, dtype=torch.float), requires_grad=True)
+        else:
+            self.ratio = torch.nn.Parameter(torch.tensor(1.0, dtype=torch.float), requires_grad=False)
 
     def forward(self, x):
-        x = x + torch.flip(self.pe[:, :x.size(1), :], dims=[1])
+        x = x + torch.flip(self.ratio*self.pe[:, :x.size(1), :], dims=[1])
         #x = x + self.pe[:, :x.size(1), :]
         return x
 
-"""
 class LearnablePositionalEncoding(nn.Module):
-    def __init__(self, d_model, max_len=32):
+    def __init__(self, d_model, max_len=8):
         super(LearnablePositionalEncoding, self).__init__()
-        self.embedding = nn.Parameter(0.01*torch.randn(max_len, d_model))
+        self.embedding = nn.Parameter(torch.zeros(max_len, d_model))
+        torch.nn.init.orthogonal_(self.embedding, gain=0.1)
     def forward(self, x):
         return x + self.embedding[:x.size(1)].unsqueeze(0)
-"""        
-
+    
 class StableTransformerLayer(nn.Module):
     def __init__(self, d_model, nhead, dim_feedforward=2048, dropout=0.1, use_gate = False):
         #fill in reordering of operations as done in https://arxiv.org/pdf/1910.06764.pdf
