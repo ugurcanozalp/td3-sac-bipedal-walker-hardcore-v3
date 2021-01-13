@@ -60,7 +60,7 @@ class LearnablePositionalEncoding(nn.Module):
     def __init__(self, d_model, max_len=8):
         super(LearnablePositionalEncoding, self).__init__()
         self.embedding = nn.Parameter(torch.zeros(max_len, d_model))
-        torch.nn.init.orthogonal_(self.embedding, gain=0.1)
+        torch.nn.init.orthogonal_(self.embedding, gain=1.0)
     def forward(self, x):
         return x + self.embedding[:x.size(1)].unsqueeze(0)
     
@@ -77,8 +77,10 @@ class StableTransformerLayer(nn.Module):
         self.self_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
 
         self.linear1 = nn.Linear(d_model, dim_feedforward)
+        nn.init.xavier_uniform_(self.linear1.weight, gain=1.0)
         self.dropout = nn.Dropout(dropout)
         self.linear2 = nn.Linear(dim_feedforward, d_model)
+        nn.init.xavier_uniform_(self.linear2.weight, gain=1.0)
 
         self.norm1 = nn.LayerNorm(d_model)
         self.norm2 = nn.LayerNorm(d_model)
@@ -109,17 +111,17 @@ class StableTransformerLayer(nn.Module):
         src2 = self.self_attn(src2, src2, src2, attn_mask=src_mask,
                               key_padding_mask=src_key_padding_mask)[0]
         if self.use_gate:
-            src2 = self.gate_mha(src, self.relu(self.dropout1(src2)))
+            src2 = self.gate_mha(src, self.dropout1(src2)) # src2 = self.gate_mha(src, self.relu(self.dropout1(src2)))
         else:
-            src2 = src + self.relu(self.dropout1(src2))
+            src2 = src + self.dropout1(src2) # src2 = src + self.relu(self.dropout1(src2))
 
         src3 = self.norm2(src2)
         src3 = self.linear2(self.dropout(self.activation(self.linear1(src3))))
 
         if self.use_gate:
-            src3 = self.gate_mlp(src2, self.dropout2(self.relu(src3)))
+            src3 = self.gate_mlp(src2, self.dropout2(src3)) # src3 = self.gate_mlp(src2, self.dropout2(self.relu(src3)))
         else:
-            src3 = self.dropout2(self.relu(src3)) + src2
+            src3 = self.dropout2(src3) + src2 # src3 = self.dropout2(self.relu(src3)) + src2
 
         return src3
         

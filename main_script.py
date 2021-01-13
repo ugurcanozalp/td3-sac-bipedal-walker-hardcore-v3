@@ -18,6 +18,7 @@ parser.add_argument("-e", "--env", type=str, choices=['classic', 'hardcore'],
 parser.add_argument("-m", "--model_type", type=str, choices=['ff','lstm','bilstm','trsf'],
                     default='ff', help="model type")
 parser.add_argument("-r", "--rl_type", type=str, choices=['ddpg', 'td3'], default='ddpg', help='RL method')
+parser.add_argument("-l", "--lr", type=float, default=5e-4, help='Learning Rate')
 
 args = parser.parse_args()
 
@@ -43,9 +44,9 @@ if args.model_type in ['lstm', 'bilstm','trsf']:
     env = BoxToHistoryBox(env, h=8)
 
 if args.rl_type=='ddpg':
-    agent = DDPGAgent(Actor, Critic, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1])
+    agent = DDPGAgent(Actor, Critic, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1], lr=args.lr)
 elif args.rl_type=='td3':
-    agent = TD3Agent(Actor, Critic, clip_low=-1, clip_high=+1, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1])
+    agent = TD3Agent(Actor, Critic, clip_low=-1, clip_high=+1, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1],lr=args.lr)
 else:
     print('Wrong learning algorithm type!'); exit(0);
     
