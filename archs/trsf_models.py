@@ -30,26 +30,23 @@ class WeightedMeanPooling(nn.Module):
     def __init__(self, seq_len):
         super(WeightedMeanPooling,self).__init__()
         self.eps = torch.finfo(torch.float).eps
-        self.w = nn.Linear(seq_len,1, bias=False)
-        #nn.init.uniform_(self.w.weight, a=0.0, b=2.0/seq_len)
-        self.w.weight.data = torch.zeros(1, seq_len, dtype=torch.float)
-        self.w.weight.data[0,-1]=1.0
-        #self.w.weight.requires_grad=False
+        self.w = nn.Parameter(torch.arange(-seq_len, 0, dtype=torch.float), requires_grad=True)
 
     def forward(self, x):
-        return self.w(x.permute(0,2,1)).squeeze(-1) / (self.w.weight.sum()+self.eps)
+        w_norm = nn.functional.softmax(self.w, dim=-1)
+        return x.permute(0,2,1)@w_norm
 
 class StableTransformerEncoder(nn.Module):
 
-    def __init__(self, num_layers, d_in, d_model, nhead, dim_feedforward=128, dropout=0.05, use_gate=False):
+    def __init__(self, num_layers, d_in, d_model, nhead, dim_feedforward=128, dropout=0.0, use_gate=True):
         super(StableTransformerEncoder,self).__init__()
         self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model))
         nn.init.xavier_uniform_(self.inp_embedding[0].weight, gain=1.0)
         #self.pos_embedding = LearnablePositionalEncoding(d_model, max_len=8)
-        self.pos_embedding = PositionalEncoding(d_model, max_len=8, ratio=None)
+        self.pos_embedding = PositionalEncoding(d_model, max_len=16, ratio=None)
         st_layer = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, use_gate)
         self.encoder = TransformerEncoder(st_layer, num_layers)
-        self.pooler = WeightedMeanPooling(seq_len=8)
+        self.pooler = WeightedMeanPooling(seq_len=16)
         #self.pooler = LastStatePooler()
         self.layn = nn.LayerNorm(d_model)
 
@@ -75,8 +72,8 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
         
-        self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim,
-            d_model=96, nhead=4, dim_feedforward=96, dropout=0.05, use_gate = False)
+        self.state_encoder = StableTransformerEncoder(num_layers=1, d_in=self.state_dim,
+            d_model=96, nhead=4, dim_feedforward=192, dropout=0.00, use_gate = False)
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 96), nn.Tanh())
         nn.init.xavier_uniform_(self.action_encoder[0].weight, gain=nn.init.calculate_gain('tanh'))
 
@@ -107,7 +104,7 @@ class Critic(nn.Module):
 
 class Actor(nn.Module):
 
-    def __init__(self, state_dim=24, action_dim=4, max_len=8):
+    def __init__(self, state_dim=24, action_dim=4, max_len=16):
         """
         :param state_dim: Dimension of input state (int)
         :param action_dim: Dimension of output action (int)
@@ -119,8 +116,8 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
         
-        self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim,
-            d_model=96, nhead=4, dim_feedforward=96, dropout=0.05, use_gate = False)
+        self.state_encoder = StableTransformerEncoder(num_layers=1, d_in=self.state_dim,
+            d_model=96, nhead=4, dim_feedforward=192, dropout=0.00, use_gate = False)
 
         self.fc = nn.Linear(96,action_dim)
         nn.init.xavier_uniform_(self.fc.weight, gain=nn.init.calculate_gain('tanh'))

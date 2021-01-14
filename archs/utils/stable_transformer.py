@@ -34,7 +34,7 @@ class GRUGate(nn.Module):
         return (1.-z)*x + z*h_hat
 
 class PositionalEncoding(nn.Module):
-    def __init__(self, d_model, max_len=8, ratio=None):
+    def __init__(self, d_model, max_len=16, ratio=None):
         super(PositionalEncoding, self).__init__()
         pe = torch.zeros(max_len, d_model)
         position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
