@@ -29,7 +29,7 @@ def train(env, agent, n_episodes=3000, model_type='unk', score_limit=250.0, expl
             score += reward
 
         scores_deque.append(score)
-        scores.append(score)
+        scores.append((i_episode, score))
         avg_score_100 = np.mean(scores_deque)
         print('\rEpisode {}\tAverage Score: {:.2f}\tScore: {:.2f}'.format(i_episode, avg_score_100, score), end="")
 
@@ -37,7 +37,7 @@ def train(env, agent, n_episodes=3000, model_type='unk', score_limit=250.0, expl
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_deque)))
             agent.eval_mode() # test in eval mode.
             test_score = test(env, agent, render=False)
-            test_scores.append(test_score)
+            test_scores.append((i_episode, test_score))
             if test_score >= score_limit:
                 agent.save_ckpt(model_type, 'best'+str(int(test_score)))
                 score_limit=test_score
@@ -54,7 +54,7 @@ def test(env, agent, render=True):
     score = 0
     done=False
     while not done:
-        action = agent.get_action(state, explore=False)
+        action = agent.get_action(state, explore=True)
         #print(action)
         action = action.clip(min=env.action_space.low, max=env.action_space.high)
         next_state, reward, done, _ = env.step(action)

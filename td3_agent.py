@@ -10,7 +10,7 @@ from itertools import chain
 class TD3Agent():
     rl_type = 'td3'
     def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(4),
-            lr=5e-4, weight_decay=1e-5, gamma=0.99, tau=0.005, batch_size=128, buffer_size=int(5e5)):
+            lr=5e-4, weight_decay=1e-6, gamma=0.99, tau=0.005, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -46,7 +46,7 @@ class TD3Agent():
 
         #self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=3.2, sigma=0.3, dt=0.02)
         #self.noise_generator = DecayingGaussianNoise(mu=np.zeros(action_size), end_sigma=0.12, start_sigma=1.0, decay_step=200) 
-        self.noise_generator = GaussianNoise(mu=np.zeros(action_size), sigma=0.15) #sigma=0.12
+        self.noise_generator = GaussianNoise(mu=np.zeros(action_size), sigma=0.12) #sigma=0.12
         self.target_noise = GaussianNoise(mu=np.zeros(action_size), sigma=0.2, clip=0.5)
         
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \
