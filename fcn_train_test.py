@@ -39,10 +39,8 @@ def train(env, agent, n_episodes=3000, model_type='unk', score_limit=250.0, expl
             test_score = test(env, agent, render=False)
             test_scores.append((i_episode, test_score))
             if test_score >= score_limit:
-                agent.save_ckpt(model_type, 'best'+str(int(test_score)))
                 score_limit=test_score
-            else:
-                agent.save_ckpt(model_type)
+            agent.save_ckpt(model_type, 'ep'+str(int(i_episode)))
             if avg_score_100>280.0:
                 break
             agent.train_mode() # when the test done, come back to train mode.
@@ -65,20 +63,4 @@ def test(env, agent, render=True):
 
     print('\rTest Episode\tScore: {:.2f}'.format(score))
     return score
-
-#fig = plt.figure()
-#ax = fig.add_subplot(111)
-#...
-#ax.title('Score History')
-#ax.legend()
-#f.savefig(savename)
-#f.show()
-
-def create_graph(ax, scores, test_scores, test_f=100, label='FFRC'):
-    episodes = np.arange(1, len(scores)+1)
-    test_episodes = np.arange(test_f, (len(test_scores)+1)*test_f, test_f)
-    ax.plot(episodes, scores, alpha=.5)
-    ax.step(test_episodes, test_scores, label=label)
-    ax.set_ylabel('Score')
-    ax.set_xlabel('Episode #')
 

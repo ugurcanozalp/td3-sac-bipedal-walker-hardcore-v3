@@ -101,6 +101,18 @@ class DDPGAgent():
         torch.save(self.train_actor.state_dict(), actor_file)
         torch.save(self.train_critic.state_dict(), critic_file)
 
+    def load_ckpt(self, model_type, prefix='last'):
+        actor_file = os.path.join("models", "ddpg", "_".join([prefix, model_type, "actor.pth"]))
+        critic_file = os.path.join("models", "ddpg", "_".join([prefix, model_type, "critic.pth"]))
+        try:
+            self.train_actor.load_state_dict(torch.load(actor_file, map_location=agent.device))
+        except:
+            print("Actor checkpoint cannot be loaded.")
+        try:
+            self.train_critic.load_state_dict(torch.load(critic_file, map_location=agent.device))
+        except:
+            print("Critic checkpoint cannot be loaded.")
+
     def train_mode(self):
         self.train_actor.train()
         self.train_critic.train()

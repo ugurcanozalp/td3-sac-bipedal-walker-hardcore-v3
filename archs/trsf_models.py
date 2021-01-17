@@ -73,11 +73,11 @@ class Critic(nn.Module):
         self.action_dim = action_dim
         
         self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim,
-            d_model=96, nhead=2, dim_feedforward=96, dropout=0.00, use_gate = False)
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 96)) # , nn.Tanh()
+            d_model=64, nhead=2, dim_feedforward=160, dropout=0.00, use_gate = False)
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64)) # , nn.Tanh()
         nn.init.xavier_uniform_(self.action_encoder[0].weight) # , gain=nn.init.calculate_gain('tanh')
 
-        self.fc2 = nn.Linear(96,256)
+        self.fc2 = nn.Linear(64,256)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
         self.fc_out = nn.Linear(256,1)
@@ -117,9 +117,9 @@ class Actor(nn.Module):
         self.action_dim = action_dim
         
         self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim,
-            d_model=96, nhead=2, dim_feedforward=96, dropout=0.00, use_gate = False)
+            d_model=64, nhead=2, dim_feedforward=160, dropout=0.00, use_gate = False)
 
-        self.fc = nn.Linear(96,action_dim)
+        self.fc = nn.Linear(64,action_dim)
         nn.init.xavier_uniform_(self.fc.weight, gain=nn.init.calculate_gain('tanh'))
         nn.init.zeros_(self.fc.bias)
         self.tanh = nn.Tanh()

@@ -19,6 +19,7 @@ parser.add_argument("-m", "--model_type", type=str, choices=['ff','lstm','bilstm
                     default='ff', help="model type")
 parser.add_argument("-r", "--rl_type", type=str, choices=['ddpg', 'td3'], default='ddpg', help='RL method')
 parser.add_argument("-l", "--lr", type=float, default=5e-4, help='Learning Rate')
+parser.add_argument("-c", "--ckpt", type=str, default='ep100', help='checkpoint to start with')
 
 args = parser.parse_args()
 
@@ -49,7 +50,9 @@ elif args.rl_type=='td3':
     agent = TD3Agent(Actor, Critic, clip_low=-1, clip_high=+1, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1],lr=args.lr)
 else:
     print('Wrong learning algorithm type!'); exit(0);
-    
+
+agent.load_ckpt(args.model_type, args.ckpt)
+
 print("Action dimension : ",env.action_space.shape)
 print("State  dimension : ",env.observation_space.shape)
 print("Action sample : ",env.action_space.sample())
@@ -68,20 +71,12 @@ if args.flag == 'train':
     ax.legend()
     #f.savefig(savename)
     fig.show()
+    env.close()
 elif args.flag == 'test':
     #agent.freeze_networks()
     agent.eval_mode()
     #env.seed(0)
-    try:
-        actor_file = os.path.join("models", args.rl_type, "_".join(["best", args.model_type, "actor.pth"]))
-        agent.train_actor.load_state_dict(torch.load(actor_file, map_location=agent.device))
-    except:
-        actor_file = os.path.join("models", args.rl_type, "_".join(["last", args.model_type, "actor.pth"]))
-        agent.train_actor.load_state_dict(torch.load(actor_file, map_location=agent.device))
-    agent.train_actor.eval()
-
     scores = test(env, agent)
-
     env.close()
 else:
     print('Wrong flag!')
