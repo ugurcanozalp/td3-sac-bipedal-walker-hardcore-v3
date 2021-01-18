@@ -40,8 +40,8 @@ class StableTransformerEncoder(nn.Module):
 
     def __init__(self, num_layers, d_in, d_model, nhead, dim_feedforward=128, dropout=0.0, use_gate=True):
         super(StableTransformerEncoder,self).__init__()
-        self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model)) # , nn.Tanh()
-        nn.init.xavier_uniform_(self.inp_embedding[0].weight) # , gain=nn.init.calculate_gain('tanh')
+        self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model), nn.Tanh()) # 
+        nn.init.xavier_uniform_(self.inp_embedding[0].weight, gain=nn.init.calculate_gain('tanh')) # 
         #self.pos_embedding = LearnablePositionalEncoding(d_model, max_len=8)
         self.pos_embedding = PositionalEncoding(d_model, max_len=16, ratio=None)
         st_layer = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, use_gate)

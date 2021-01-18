@@ -4,7 +4,6 @@ from torch import nn
 from torch.nn.init import xavier_uniform_
 from torch.autograd import Variable
 import torch.nn.functional as F
-
 '''
 GRU gating layer used in Stabilizing transformers in RL.
 Note that all variable names follow the notation from section: "Gated-Recurrent-Unit-type gating" 
@@ -36,6 +35,7 @@ class GRUGate(nn.Module):
 class PositionalEncoding(nn.Module):
     def __init__(self, d_model, max_len=16, ratio=None):
         super(PositionalEncoding, self).__init__()
+        self.embedding_scale = d_model**0.5
         pe = torch.zeros(max_len, d_model)
         position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
         _log10000 = 9.21034037198
@@ -52,12 +52,12 @@ class PositionalEncoding(nn.Module):
             self.ratio = torch.nn.Parameter(torch.tensor(1.0, dtype=torch.float), requires_grad=False)
 
     def forward(self, x):
-        x = x + torch.flip(self.ratio*self.pe[:, :x.size(1), :], dims=[1])
+        x = x + torch.flip(self.ratio*self.pe[:, :x.size(1), :], dims=[1]) / self.embedding_scale
         #x = x + self.pe[:, :x.size(1), :]
         return x
 
 class LearnablePositionalEncoding(nn.Module):
-    def __init__(self, d_model, max_len=8):
+    def __init__(self, d_model, max_len=16):
         super(LearnablePositionalEncoding, self).__init__()
         self.embedding = nn.Parameter(torch.zeros(max_len, d_model))
         torch.nn.init.orthogonal_(self.embedding, gain=1.0)
