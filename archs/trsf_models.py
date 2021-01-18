@@ -30,18 +30,18 @@ class WeightedMeanPooling(nn.Module):
     def __init__(self, seq_len):
         super(WeightedMeanPooling,self).__init__()
         self.eps = torch.finfo(torch.float).eps
-        self.w = nn.Parameter(torch.arange(-seq_len, 0, dtype=torch.float), requires_grad=True)
+        w_tensor = torch.zeros(seq_len, dtype=torch.float); w_tensor[-1]=1.0
+        self.w = nn.Parameter(w_tensor, requires_grad=True)
 
     def forward(self, x):
-        w_norm = nn.functional.softmax(self.w, dim=-1)
-        return x.permute(0,2,1)@w_norm
+        return x.permute(0,2,1)@self.w
 
 class StableTransformerEncoder(nn.Module):
 
     def __init__(self, num_layers, d_in, d_model, nhead, dim_feedforward=128, dropout=0.0, use_gate=True):
         super(StableTransformerEncoder,self).__init__()
-        self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model), nn.Tanh())
-        nn.init.xavier_uniform_(self.inp_embedding[0].weight, gain=nn.init.calculate_gain('tanh'))
+        self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model)) # , nn.Tanh()
+        nn.init.xavier_uniform_(self.inp_embedding[0].weight) # , gain=nn.init.calculate_gain('tanh')
         #self.pos_embedding = LearnablePositionalEncoding(d_model, max_len=8)
         self.pos_embedding = PositionalEncoding(d_model, max_len=16, ratio=None)
         st_layer = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, use_gate)
@@ -73,7 +73,7 @@ class Critic(nn.Module):
         self.action_dim = action_dim
         
         self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim,
-            d_model=64, nhead=2, dim_feedforward=160, dropout=0.00, use_gate = False)
+            d_model=64, nhead=4, dim_feedforward=160, dropout=0.00, use_gate = False)
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64)) # , nn.Tanh()
         nn.init.xavier_uniform_(self.action_encoder[0].weight) # , gain=nn.init.calculate_gain('tanh')
 
@@ -117,7 +117,7 @@ class Actor(nn.Module):
         self.action_dim = action_dim
         
         self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim,
-            d_model=64, nhead=2, dim_feedforward=160, dropout=0.00, use_gate = False)
+            d_model=64, nhead=4, dim_feedforward=160, dropout=0.00, use_gate = False)
 
         self.fc = nn.Linear(64,action_dim)
         nn.init.xavier_uniform_(self.fc.weight, gain=nn.init.calculate_gain('tanh'))

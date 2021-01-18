@@ -137,14 +137,14 @@ class TD3Agent():
     def load_ckpt(self, model_type, prefix='last'):
         actor_file = os.path.join("models", "td3", "_".join([prefix, model_type, "actor.pth"]))
         critic_1_file = os.path.join("models", "td3", "_".join([prefix, model_type, "critic_1.pth"]))
-        critic_2_file = os.path.join("models", "td3", "_".join([prefix, model_type, "critic_1.pth"]))
+        critic_2_file = os.path.join("models", "td3", "_".join([prefix, model_type, "critic_2.pth"]))
         try:
-            self.train_actor.load_state_dict(torch.load(actor_file, map_location=agent.device))
+            self.train_actor.load_state_dict(torch.load(actor_file, map_location=self.device))
         except:
             print("Actor checkpoint cannot be loaded.")
         try:
-            self.train_critic_1.load_state_dict(torch.load(critic_file_1, map_location=agent.device))
-            self.train_critic_2.load_state_dict(torch.load(critic_file_2, map_location=agent.device))
+            self.train_critic_1.load_state_dict(torch.load(critic_1_file, map_location=self.device))
+            self.train_critic_2.load_state_dict(torch.load(critic_2_file, map_location=self.device))
         except:
             print("Critic checkpoints cannot be loaded.")              
 

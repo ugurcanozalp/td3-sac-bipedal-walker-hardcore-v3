@@ -105,11 +105,11 @@ class DDPGAgent():
         actor_file = os.path.join("models", "ddpg", "_".join([prefix, model_type, "actor.pth"]))
         critic_file = os.path.join("models", "ddpg", "_".join([prefix, model_type, "critic.pth"]))
         try:
-            self.train_actor.load_state_dict(torch.load(actor_file, map_location=agent.device))
+            self.train_actor.load_state_dict(torch.load(actor_file, map_location=self.device))
         except:
             print("Actor checkpoint cannot be loaded.")
         try:
-            self.train_critic.load_state_dict(torch.load(critic_file, map_location=agent.device))
+            self.train_critic.load_state_dict(torch.load(critic_file, map_location=self.device))
         except:
             print("Critic checkpoint cannot be loaded.")
 
