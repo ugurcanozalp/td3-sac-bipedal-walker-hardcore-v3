@@ -73,7 +73,7 @@ class Critic(nn.Module):
         self.action_dim = action_dim
         
         self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim,
-            d_model=64, nhead=4, dim_feedforward=160, dropout=0.00, use_gate = False)
+            d_model=64, nhead=2, dim_feedforward=160, dropout=0.00, use_gate = False)
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64)) # , nn.Tanh()
         nn.init.xavier_uniform_(self.action_encoder[0].weight) # , gain=nn.init.calculate_gain('tanh')
 
@@ -117,7 +117,7 @@ class Actor(nn.Module):
         self.action_dim = action_dim
         
         self.state_encoder = StableTransformerEncoder(num_layers=2, d_in=self.state_dim,
-            d_model=64, nhead=4, dim_feedforward=160, dropout=0.00, use_gate = False)
+            d_model=64, nhead=2, dim_feedforward=160, dropout=0.00, use_gate = False)
 
         self.fc = nn.Linear(64,action_dim)
         nn.init.xavier_uniform_(self.fc.weight, gain=nn.init.calculate_gain('tanh'))
