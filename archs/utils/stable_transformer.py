@@ -52,7 +52,7 @@ class PositionalEncoding(nn.Module):
             self.ratio = torch.nn.Parameter(torch.tensor(1.0, dtype=torch.float), requires_grad=False)
 
     def forward(self, x):
-        x = x + torch.flip(self.ratio*self.pe[:, :x.size(1), :], dims=[1]) / self.embedding_scale
+        x = x*self.embedding_scale + torch.flip(self.ratio*self.pe[:, :x.size(1), :], dims=[1])
         #x = x + self.pe[:, :x.size(1), :]
         return x
 
