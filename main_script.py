@@ -69,7 +69,7 @@ if args.flag == 'train':
     ax.set_xlabel('Episode #')
     ax.set_title('Score History')
     ax.legend()
-    f.savefig(os.path.join("results", args.model_type+'-'+args.rl_type+'.png'))
+    fig.savefig(os.path.join("results", args.model_type+'-'+args.rl_type+'.png'))
     fig.show()
     env.close()
 elif args.flag == 'test':
