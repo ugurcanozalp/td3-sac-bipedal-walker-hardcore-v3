@@ -1,0 +1,22 @@
+\chapter{BIPEDAL WALKING WITH TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}
+\label{chap:exp_setup}
+
+\section{Details of the Environment}
+
+\textbf{Observation Space}: Hull angle, hull angular velocity, translational velocity on two dimension, joint positions, joint angular speeds, leg ground concats and 10 lidar rangefinder measurements.
+
+\textbf{Action Space}: Torque provided to knee and pelvis joints of both legs.
+
+\textbf{Rewarding}: Directly proportional to distance traveled forward, +300 points given if agent reaches end of path. -100 point if agent falls, and small amount of negative reward proportional to applied motor torque (preventing applying unnecessary torque).
+
+\section{RL Method and hyperparameters}
+
+\section{Proposed Neural Networks}
+
+\subsection{Feed Forward Network}
+
+\subsection{Long Short Term Memory}
+
+\subsection{Transformer (Pre-layer Normalized)}
+
+\section{Results}

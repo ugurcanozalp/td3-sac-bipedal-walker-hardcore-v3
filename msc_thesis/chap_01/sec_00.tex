@@ -1,0 +1,59 @@
+\section{Nothing is Special!}
+\label{sec:nothing-special}
+
+There is nothing special about this section.
+However, we may try a listings.
+
+First, the suggested ones:
+\begin{Verbatim}
+    % super cooles Program
+    i = 1
+    for i = 1:10
+    if i > 3
+        i=i+2
+    else
+        i=i+1
+    end
+\end{Verbatim}
+
+% following needs the matlab.sty
+\begin{Verbatim}[frame=none, numbers=none]
+    % super cooles Program
+    i = 1
+    for i = 1:10
+    if i > 3
+        i=i+2
+    else
+        i=i+1
+    end
+\end{Verbatim}
+
+The other ways of including source codes, basically MATLAB here, you may try, each of the environments environments.
+
+\VerbatimInput%[frame=single, framerule=1px, baselinestretch=1.2]
+	{myMatlabCode.m}
+
+Hopefully, everything works!\ldots
+
+Here is another one:
+
+% following needs the matlab.sty
+\begin{Verbatim}
+x = 1;
+y = 3;
+z = x/y;
+\end{Verbatim}
+
+or a floating one, Listing~\ref{mfile:linetest}, 
+with caption on page~\pageref{mfile:linetest}.
+% following needs the matlab.sty
+% try several options. 
+\begin{listing}
+  %\VerbListingBoxed{myMatlabCode.m}
+  \VerbatimInput{myMatlabCode.m}
+	%\inputminted{matlab}{myMatlabCode.m} % only if minted is used!
+  %\VerbListing{myMatlabCode.m}
+\caption{The \texttt{lintest} function in a floating ``Listing'' environment.}
+\label{mfile:linetest}
+\end{listing}
+

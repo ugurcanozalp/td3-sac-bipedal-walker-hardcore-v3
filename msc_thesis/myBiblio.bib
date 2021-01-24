@@ -1,0 +1,471 @@
+
+@incollection{lecun_efficient_2012,
+	address = {Berlin, Heidelberg},
+	series = {Lecture {Notes} in {Computer} {Science}},
+	title = {Efficient {BackProp}},
+	isbn = {9783642352898},
+	url = {https://doi.org/10.1007/978-3-642-35289-8_3},
+	abstract = {The convergence of back-propagation learning is analyzed so as to explain common phenomenon observed by practitioners. Many undesirable behaviors of backprop can be avoided with tricks that are rarely exposed in serious technical publications. This paper gives some of those tricks, and offers explanations of why they work.Many authors have suggested that second-order optimization methods are advantageous for neural net training. It is shown that most “classical” second-order methods are impractical for large neural networks. A few methods are proposed that do not have these limitations.},
+	language = {en},
+	urldate = {2021-01-23},
+	booktitle = {Neural {Networks}: {Tricks} of the {Trade}: {Second} {Edition}},
+	publisher = {Springer},
+	author = {LeCun, Yann A. and Bottou, Léon and Orr, Genevieve B. and Müller, Klaus-Robert},
+	editor = {Montavon, Grégoire and Orr, Geneviève B. and Müller, Klaus-Robert},
+	year = {2012},
+	doi = {10.1007/978-3-642-35289-8_3},
+	keywords = {Conjugate Gradient , Gradient Descent , Handwritten Digit , Neural Information Processing System , Newton Algorithm },
+	pages = {9--48},
+}
+
+@article{ba_layer_2016,
+	title = {Layer {Normalization}},
+	url = {http://arxiv.org/abs/1607.06450},
+	abstract = {Training state-of-the-art, deep neural networks is computationally expensive. One way to reduce the training time is to normalize the activities of the neurons. A recently introduced technique called batch normalization uses the distribution of the summed input to a neuron over a mini-batch of training cases to compute a mean and variance which are then used to normalize the summed input to that neuron on each training case. This significantly reduces the training time in feed-forward neural networks. However, the effect of batch normalization is dependent on the mini-batch size and it is not obvious how to apply it to recurrent neural networks. In this paper, we transpose batch normalization into layer normalization by computing the mean and variance used for normalization from all of the summed inputs to the neurons in a layer on a single training case. Like batch normalization, we also give each neuron its own adaptive bias and gain which are applied after the normalization but before the non-linearity. Unlike batch normalization, layer normalization performs exactly the same computation at training and test times. It is also straightforward to apply to recurrent neural networks by computing the normalization statistics separately at each time step. Layer normalization is very effective at stabilizing the hidden state dynamics in recurrent networks. Empirically, we show that layer normalization can substantially reduce the training time compared with previously published techniques.},
+	urldate = {2021-01-23},
+	journal = {arXiv:1607.06450 [cs, stat]},
+	author = {Ba, Jimmy Lei and Kiros, Jamie Ryan and Hinton, Geoffrey E.},
+	month = jul,
+	year = {2016},
+	note = {arXiv: 1607.06450},
+	keywords = {Computer Science - Machine Learning, Statistics - Machine Learning},
+}
+
+@article{xiong_layer_2020,
+	title = {On {Layer} {Normalization} in the {Transformer} {Architecture}},
+	url = {http://arxiv.org/abs/2002.04745},
+	abstract = {The Transformer is widely used in natural language processing tasks. To train a Transformer however, one usually needs a carefully designed learning rate warm-up stage, which is shown to be crucial to the final performance but will slow down the optimization and bring more hyper-parameter tunings. In this paper, we first study theoretically why the learning rate warm-up stage is essential and show that the location of layer normalization matters. Specifically, we prove with mean field theory that at initialization, for the original-designed Post-LN Transformer, which places the layer normalization between the residual blocks, the expected gradients of the parameters near the output layer are large. Therefore, using a large learning rate on those gradients makes the training unstable. The warm-up stage is practically helpful for avoiding this problem. On the other hand, our theory also shows that if the layer normalization is put inside the residual blocks (recently proposed as Pre-LN Transformer), the gradients are well-behaved at initialization. This motivates us to remove the warm-up stage for the training of Pre-LN Transformers. We show in our experiments that Pre-LN Transformers without the warm-up stage can reach comparable results with baselines while requiring significantly less training time and hyper-parameter tuning on a wide range of applications.},
+	urldate = {2021-01-17},
+	journal = {arXiv:2002.04745 [cs, stat]},
+	author = {Xiong, Ruibin and Yang, Yunchang and He, Di and Zheng, Kai and Zheng, Shuxin and Xing, Chen and Zhang, Huishuai and Lan, Yanyan and Wang, Liwei and Liu, Tie-Yan},
+	month = jun,
+	year = {2020},
+	note = {arXiv: 2002.04745},
+	keywords = {Computer Science - Computation and Language, Computer Science - Machine Learning, Statistics - Machine Learning},
+}
+
+@article{kingma_adam_2017,
+	title = {Adam: {A} {Method} for {Stochastic} {Optimization}},
+	shorttitle = {Adam},
+	url = {http://arxiv.org/abs/1412.6980},
+	abstract = {We introduce Adam, an algorithm for first-order gradient-based optimization of stochastic objective functions, based on adaptive estimates of lower-order moments. The method is straightforward to implement, is computationally efficient, has little memory requirements, is invariant to diagonal rescaling of the gradients, and is well suited for problems that are large in terms of data and/or parameters. The method is also appropriate for non-stationary objectives and problems with very noisy and/or sparse gradients. The hyper-parameters have intuitive interpretations and typically require little tuning. Some connections to related algorithms, on which Adam was inspired, are discussed. We also analyze the theoretical convergence properties of the algorithm and provide a regret bound on the convergence rate that is comparable to the best known results under the online convex optimization framework. Empirical results demonstrate that Adam works well in practice and compares favorably to other stochastic optimization methods. Finally, we discuss AdaMax, a variant of Adam based on the infinity norm.},
+	urldate = {2021-01-12},
+	journal = {arXiv:1412.6980 [cs]},
+	author = {Kingma, Diederik P. and Ba, Jimmy},
+	month = jan,
+	year = {2017},
+	note = {arXiv: 1412.6980},
+	keywords = {Computer Science - Machine Learning},
+}
+
+@article{paszke_pytorch_2019,
+	title = {{PyTorch}: {An} {Imperative} {Style}, {High}-{Performance} {Deep} {Learning} {Library}},
+	volume = {32},
+	shorttitle = {{PyTorch}},
+	url = {https://papers.nips.cc/paper/2019/hash/bdbca288fee7f92f2bfa9f7012727740-Abstract.html},
+	language = {en},
+	urldate = {2021-01-12},
+	journal = {Advances in Neural Information Processing Systems},
+	author = {Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin, Zeming and Gimelshein, Natalia and Antiga, Luca and Desmaison, Alban and Kopf, Andreas and Yang, Edward and DeVito, Zachary and Raison, Martin and Tejani, Alykhan and Chilamkurthy, Sasank and Steiner, Benoit and Fang, Lu and Bai, Junjie and Chintala, Soumith},
+	year = {2019},
+	pages = {8026--8037},
+}
+
+@misc{collobert_torch7_2011,
+	title = {Torch7: {A} {Matlab}-like {Environment} for {Machine} {Learning}},
+	shorttitle = {Torch7},
+	url = {https://www.semanticscholar.org/paper/Torch7%3A-A-Matlab-like-Environment-for-Machine-Collobert-Kavukcuoglu/3449b65008b27f6e60a73d80c1fd990f0481126b},
+	abstract = {Torch7 is a versatile numeric computing framework and machine learning library that extends Lua. Its goal is to provide a flexible environment to design and train learning machines. Flexibility is obtained via Lua, an extremely lightweight scripting language. High performance is obtained via efficient OpenMP/SSE and CUDA implementations of low-level numeric routines. Torch7 can easily be interfaced to third-party software thanks to Lua’s light interface.},
+	language = {en},
+	urldate = {2021-01-24},
+	journal = {undefined},
+	author = {Collobert, Ronan and Kavukcuoglu, K. and Farabet, C.},
+	year = {2011},
+}
+
+@misc{alammar_illustrated_nodate,
+	title = {The {Illustrated} {Transformer}},
+	url = {http://jalammar.github.io/illustrated-transformer/},
+	abstract = {Discussions:
+Hacker News (65 points, 4 comments), Reddit r/MachineLearning (29 points, 3 comments)
+
+
+Translations: Chinese (Simplified), French, Japanese, Korean, Russian, Spanish
+
+Watch: MIT’s Deep Learning State of the Art lecture referencing this post
+
+In the previous post, we looked at Attention – a ubiquitous method in modern deep learning models. Attention is a concept that helped improve the performance of neural machine translation applications. In this post, we will look at The Transformer – a model that uses attention to boost the speed with which these models can be trained. The Transformers outperforms the Google Neural Machine Translation model in specific tasks. The biggest benefit, however, comes from how The Transformer lends itself to parallelization. It is in fact Google Cloud’s recommendation to use The Transformer as a reference model to use their Cloud TPU offering. So let’s try to break the model apart and look at how it functions.
+
+The Transformer was proposed in the paper Attention is All You Need. A TensorFlow implementation of it is available as a part of the Tensor2Tensor package. Harvard’s NLP group created a guide annotating the paper with PyTorch implementation. In this post, we will attempt to oversimplify things a bit and introduce the concepts one by one to hopefully make it easier to understand to people without in-depth knowledge of the subject matter.
+
+2020 Update: I’ve created a “Narrated Transformer” video which is a gentler approach to the topic:
+
+
+A High-Level Look
+Let’s begin by looking at the model as a single black box. In a machine translation application, it would take a sentence in one language, and output its translation in another.},
+	urldate = {2021-01-11},
+	author = {Alammar, Jay},
+}
+
+@article{parisotto_stabilizing_2019,
+	title = {Stabilizing {Transformers} for {Reinforcement} {Learning}},
+	url = {http://arxiv.org/abs/1910.06764},
+	abstract = {Owing to their ability to both effectively integrate information over long time horizons and scale to massive amounts of data, self-attention architectures have recently shown breakthrough success in natural language processing (NLP), achieving state-of-the-art results in domains such as language modeling and machine translation. Harnessing the transformer's ability to process long time horizons of information could provide a similar performance boost in partially observable reinforcement learning (RL) domains, but the large-scale transformers used in NLP have yet to be successfully applied to the RL setting. In this work we demonstrate that the standard transformer architecture is difficult to optimize, which was previously observed in the supervised learning setting but becomes especially pronounced with RL objectives. We propose architectural modifications that substantially improve the stability and learning speed of the original Transformer and XL variant. The proposed architecture, the Gated Transformer-XL (GTrXL), surpasses LSTMs on challenging memory environments and achieves state-of-the-art results on the multi-task DMLab-30 benchmark suite, exceeding the performance of an external memory architecture. We show that the GTrXL, trained using the same losses, has stability and performance that consistently matches or exceeds a competitive LSTM baseline, including on more reactive tasks where memory is less critical. GTrXL offers an easy-to-train, simple-to-implement but substantially more expressive architectural alternative to the standard multi-layer LSTM ubiquitously used for RL agents in partially observable environments.},
+	urldate = {2021-01-10},
+	journal = {arXiv:1910.06764 [cs, stat]},
+	author = {Parisotto, Emilio and Song, H. Francis and Rae, Jack W. and Pascanu, Razvan and Gulcehre, Caglar and Jayakumar, Siddhant M. and Jaderberg, Max and Kaufman, Raphael Lopez and Clark, Aidan and Noury, Seb and Botvinick, Matthew M. and Heess, Nicolas and Hadsell, Raia},
+	month = oct,
+	year = {2019},
+	note = {arXiv: 1910.06764},
+	keywords = {Computer Science - Artificial Intelligence, Computer Science - Machine Learning, Statistics - Machine Learning},
+}
+
+@article{mcculloch_logical_1943,
+	title = {A logical calculus of the ideas immanent in nervous activity},
+	volume = {5},
+	issn = {1522-9602},
+	url = {https://doi.org/10.1007/BF02478259},
+	doi = {10.1007/BF02478259},
+	abstract = {Because of the “all-or-none” character of nervous activity, neural events and the relations among them can be treated by means of propositional logic. It is found that the behavior of every net can be described in these terms, with the addition of more complicated logical means for nets containing circles; and that for any logical expression satisfying certain conditions, one can find a net behaving in the fashion it describes. It is shown that many particular choices among possible neurophysiological assumptions are equivalent, in the sense that for every net behaving under one assumption, there exists another net which behaves under the other and gives the same results, although perhaps not in the same time. Various applications of the calculus are discussed.},
+	language = {en},
+	number = {4},
+	urldate = {2020-06-22},
+	journal = {The bulletin of mathematical biophysics},
+	author = {McCulloch, Warren S. and Pitts, Walter},
+	month = dec,
+	year = {1943},
+	pages = {115--133},
+}
+
+@inproceedings{vaswani_attention_2017,
+	title = {Attention is {All} {You} {Need}},
+	url = {https://arxiv.org/pdf/1706.03762.pdf},
+	urldate = {2020-06-16},
+	author = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and Kaiser, Lukasz and Polosukhin, Illia},
+	year = {2017},
+}
+
+@article{hochreiter_long_1997,
+	title = {Long {Short}-{Term} {Memory}},
+	volume = {9},
+	issn = {0899-7667},
+	url = {https://www.mitpressjournals.org/doi/10.1162/neco.1997.9.8.1735},
+	doi = {10.1162/neco.1997.9.8.1735},
+	abstract = {Learning to store information over extended time intervals by recurrent backpropagation takes a very long time, mostly because of insufficient, decaying error backflow. We briefly review Hochreiter's (1991) analysis of this problem, then address it by introducing a novel, efficient, gradient based method called long short-term memory (LSTM). Truncating the gradient where this does not do harm, LSTM can learn to bridge minimal time lags in excess of 1000 discrete-time steps by enforcing constant error flow through constant error carousels within special units. Multiplicative gate units learn to open and close access to the constant error flow. LSTM is local in space and time; its computational complexity per time step and weight is O. 1. Our experiments with artificial data involve local, distributed, real-valued, and noisy pattern representations. In comparisons with real-time recurrent learning, back propagation through time, recurrent cascade correlation, Elman nets, and neural sequence chunking, LSTM leads to many more successful runs, and learns much faster. LSTM also solves complex, artificial long-time-lag tasks that have never been solved by previous recurrent network algorithms.},
+	number = {8},
+	urldate = {2020-06-16},
+	journal = {Neural Computation},
+	author = {Hochreiter, Sepp and Schmidhuber, Jürgen},
+	month = nov,
+	year = {1997},
+	pages = {1735--1780},
+}
+
+@article{rumelhart_learning_1986,
+	title = {Learning representations by back-propagating errors},
+	volume = {323},
+	copyright = {1986 Nature Publishing Group},
+	issn = {1476-4687},
+	url = {https://www.nature.com/articles/323533a0},
+	doi = {10.1038/323533a0},
+	abstract = {We describe a new learning procedure, back-propagation, for networks of neurone-like units. The procedure repeatedly adjusts the weights of the connections in the network so as to minimize a measure of the difference between the actual output vector of the net and the desired output vector. As a result of the weight adjustments, internal ‘hidden’ units which are not part of the input or output come to represent important features of the task domain, and the regularities in the task are captured by the interactions of these units. The ability to create useful new features distinguishes back-propagation from earlier, simpler methods such as the perceptron-convergence procedure1.},
+	language = {en},
+	number = {6088},
+	urldate = {2020-06-16},
+	journal = {Nature},
+	author = {Rumelhart, David E. and Hinton, Geoffrey E. and Williams, Ronald J.},
+	month = oct,
+	year = {1986},
+	pages = {533--536},
+}
+
+@misc{lecun_backpropagation_1989,
+	title = {Backpropagation applied to handwritten zip code recognition},
+	url = {https://doi.org/10.1162/neco.1989.1.4.541},
+	abstract = {The ability of learning networks to generalize can be greatly enhanced by providing constraints from the task domain. This paper demonstrates how such constraints can be integrated into a backpropagation network through the architecture of the network. This approach has been successfully applied to the recognition of handwritten zip code digits provided by the U.S. Postal Service. A single network learns the entire recognition operation, going from the normalized image of the character to the final classification.},
+	urldate = {2020-06-16},
+	publisher = {MIT Press},
+	author = {LeCun, Y. and Boser, B. and Denker, J. S. and Henderson, D. and Howard, R. E. and Hubbard, W. and Jackel, L. D.},
+	month = dec,
+	year = {1989},
+}
+
+@article{rosenblatt_perceptron_1958,
+	title = {The perceptron: {A} probabilistic model for information storage and organization in the brain.},
+	volume = {65},
+	journal = {Psychological Review},
+	author = {Rosenblatt, Frank},
+	year = {1958},
+	pages = {386--408},
+}
+
+@book{bishop_pattern_2006,
+	title = {Pattern {Recognition} {And} {Machine} {Learning}},
+	publisher = {Springer},
+	author = {Bishop, Christopher M.},
+	year = {2006},
+}
+
+@book{russell_artificial_nodate,
+	edition = {3},
+	title = {Artificial {Intelligence} {A} {Modern} {Approach}},
+	isbn = {9780136042594},
+	publisher = {Prentice Hall},
+	author = {Russell, Stuart J. and Norvig, Peter},
+	year = {1995},
+}
+
+
+@article{watkins_technical_1992,
+	title = {Technical {Note}: {Q}-{Learning}},
+	volume = {8},
+	issn = {1573-0565},
+	shorttitle = {Technical {Note}},
+	url = {https://doi.org/10.1023/A:1022676722315},
+	doi = {10.1023/A:1022676722315},
+	abstract = {\$\${\textbackslash}mathcal\{Q\}\$\$-learning (Watkins, 1989) is a simple way for agents to learn how to act optimally in controlled Markovian domains. It amounts to an incremental method for dynamic programming which imposes limited computational demands. It works by successively improving its evaluations of the quality of particular actions at particular states.},
+	language = {en},
+	number = {3},
+	urldate = {2021-01-12},
+	journal = {Machine Learning},
+	author = {Watkins, Christopher J.C.H. and Dayan, Peter},
+	month = may,
+	year = {1992},
+	pages = {279--292},
+}
+
+@book{sutton_reinforcement_1998,
+	title = {Reinforcement {Learning}: {An} {Introduction}},
+	shorttitle = {Reinforcement {Learning}},
+	language = {English},
+	publisher = {A Bradford Book},
+	author = {Sutton, Richard S. and Barto, Andrew G.},
+	month = feb,
+	year = {1998},
+}
+
+@article{upadhyay_transformer_2019,
+	title = {Transformer {Based} {Reinforcement} {Learning} {For} {Games}},
+	url = {http://arxiv.org/abs/1912.03918},
+	abstract = {Recent times have witnessed sharp improvements in reinforcement learning tasks using deep reinforcement learning techniques like Deep Q Networks, Policy Gradients, Actor Critic methods which are based on deep learning based models and back-propagation of gradients to train such models. An active area of research in reinforcement learning is about training agents to play complex video games, which so far has been something accomplished only by human intelligence. Some state of the art performances in video game playing using deep reinforcement learning are obtained by processing the sequence of frames from video games, passing them through a convolutional network to obtain features and then using recurrent neural networks to figure out the action leading to optimal rewards. The recurrent neural network will learn to extract the meaningful signal out of the sequence of such features. In this work, we propose a method utilizing a transformer network which have recently replaced RNNs in Natural Language Processing (NLP), and perform experiments to compare with existing methods.},
+	urldate = {2021-01-09},
+	journal = {arXiv:1912.03918 [cs]},
+	author = {Upadhyay, Uddeshya and Shah, Nikunj and Ravikanti, Sucheta and Medhe, Mayanka},
+	month = dec,
+	year = {2019},
+	note = {arXiv: 1912.03918},
+	keywords = {Computer Science - Machine Learning, Computer Science - Neural and Evolutionary Computing},
+}
+
+@article{fujimoto_addressing_2018,
+	title = {Addressing {Function} {Approximation} {Error} in {Actor}-{Critic} {Methods}},
+	url = {http://arxiv.org/abs/1802.09477},
+	abstract = {In value-based reinforcement learning methods such as deep Q-learning, function approximation errors are known to lead to overestimated value estimates and suboptimal policies. We show that this problem persists in an actor-critic setting and propose novel mechanisms to minimize its effects on both the actor and the critic. Our algorithm builds on Double Q-learning, by taking the minimum value between a pair of critics to limit overestimation. We draw the connection between target networks and overestimation bias, and suggest delaying policy updates to reduce per-update error and further improve performance. We evaluate our method on the suite of OpenAI gym tasks, outperforming the state of the art in every environment tested.},
+	urldate = {2021-01-06},
+	journal = {arXiv:1802.09477 [cs, stat]},
+	author = {Fujimoto, Scott and van Hoof, Herke and Meger, David},
+	month = oct,
+	year = {2018},
+	note = {arXiv: 1802.09477
+version: 3},
+	keywords = {Computer Science - Artificial Intelligence, Computer Science - Machine Learning, Statistics - Machine Learning},
+}
+
+@article{heess_memory-based_2015,
+	title = {Memory-based control with recurrent neural networks},
+	url = {http://arxiv.org/abs/1512.04455},
+	abstract = {Partially observed control problems are a challenging aspect of reinforcement learning. We extend two related, model-free algorithms for continuous control -- deterministic policy gradient and stochastic value gradient -- to solve partially observed domains using recurrent neural networks trained with backpropagation through time. We demonstrate that this approach, coupled with long-short term memory is able to solve a variety of physical control problems exhibiting an assortment of memory requirements. These include the short-term integration of information from noisy sensors and the identification of system parameters, as well as long-term memory problems that require preserving information over many time steps. We also demonstrate success on a combined exploration and memory problem in the form of a simplified version of the well-known Morris water maze task. Finally, we show that our approach can deal with high-dimensional observations by learning directly from pixels. We find that recurrent deterministic and stochastic policies are able to learn similarly good solutions to these tasks, including the water maze where the agent must learn effective search strategies.},
+	urldate = {2021-01-06},
+	journal = {arXiv:1512.04455 [cs]},
+	author = {Heess, Nicolas and Hunt, Jonathan J. and Lillicrap, Timothy P. and Silver, David},
+	month = dec,
+	year = {2015},
+	note = {arXiv: 1512.04455},
+	keywords = {Computer Science - Machine Learning},
+}
+
+@article{lillicrap_continuous_2019,
+	title = {Continuous control with deep reinforcement learning},
+	url = {http://arxiv.org/abs/1509.02971},
+	abstract = {We adapt the ideas underlying the success of Deep Q-Learning to the continuous action domain. We present an actor-critic, model-free algorithm based on the deterministic policy gradient that can operate over continuous action spaces. Using the same learning algorithm, network architecture and hyper-parameters, our algorithm robustly solves more than 20 simulated physics tasks, including classic problems such as cartpole swing-up, dexterous manipulation, legged locomotion and car driving. Our algorithm is able to find policies whose performance is competitive with those found by a planning algorithm with full access to the dynamics of the domain and its derivatives. We further demonstrate that for many of the tasks the algorithm can learn policies end-to-end: directly from raw pixel inputs.},
+	urldate = {2021-01-06},
+	journal = {arXiv:1509.02971 [cs, stat]},
+	author = {Lillicrap, Timothy P. and Hunt, Jonathan J. and Pritzel, Alexander and Heess, Nicolas and Erez, Tom and Tassa, Yuval and Silver, David and Wierstra, Daan},
+	month = jul,
+	year = {2019},
+	note = {arXiv: 1509.02971},
+	keywords = {Computer Science - Machine Learning, Statistics - Machine Learning},
+}
+
+@article{wierstra_recurrent_2010,
+	title = {Recurrent policy gradients},
+	doi = {10.1093/jigpal/jzp049},
+	abstract = {Reinforcement learning for partially observable Markov decision problems (POMDPs) is a challenge as it requires policies with an internal state. Traditional approaches suer significantly from this shortcoming and usually make strong assumptions on the problem domain such as perfect system models, state-estimators and a Markovian hidden system. Recurrent neural networks (RNNs) oer a natural framework for dealing with policy learning using hidden state and require only few limiting assumptions. As they can be trained well using gradient descent, they are suited for policy gradient approaches. In this paper, we present a policy gradient method, the Recurrent Policy Gradient which constitutes a model-free reinforcement learning method. It is aimed at training limited-memory stochastic policies on problems which require long-term memories of past observations. The approach involves approximating a policy gradient for a recurrent neural network by backpropagating return-weighted characteristic eligibilities through time. Using a “Long Short-Term Memory” RNN architecture, we are able to outperform previous RL methods on three important benchmark tasks. Furthermore, we show that using history-dependent baselines helps reducing estimation variance significantly, thus enabling our approach to tackle more challenging, highly stochastic environments.},
+	journal = {Log. J. IGPL},
+	author = {Wierstra, Daan and Förster, A. and Peters, Jan and Schmidhuber, J.},
+	year = {2010},
+}
+
+@article{brockman_openai_2016,
+	title = {{OpenAI} {Gym}},
+	url = {http://arxiv.org/abs/1606.01540},
+	abstract = {OpenAI Gym is a toolkit for reinforcement learning research. It includes a growing collection of benchmark problems that expose a common interface, and a website where people can share their results and compare the performance of algorithms. This whitepaper discusses the components of OpenAI Gym and the design decisions that went into the software.},
+	urldate = {2021-01-06},
+	journal = {arXiv:1606.01540 [cs]},
+	author = {Brockman, Greg and Cheung, Vicki and Pettersson, Ludwig and Schneider, Jonas and Schulman, John and Tang, Jie and Zaremba, Wojciech},
+	month = jun,
+	year = {2016},
+	note = {arXiv: 1606.01540},
+	keywords = {Computer Science - Artificial Intelligence, Computer Science - Machine Learning},
+}
+
+@phdthesis{cebeci_prioritized_2019,
+	type = {Thesis},
+	title = {Prioritized experince deep deterministic policy gradient method for dynamic systems},
+	url = {http://risc01.sabanciuniv.edu/record=b2325810 (Table of contents)},
+	abstract = {In this thesis, the problem of learning to control a dynamic system through reinforcement learning is taken up. There are two important problems in learning to control dynamic systems under this framework: correlated sample space and curse of dimensionality: The first problem means that samples sequentially taken from the plant are correlated, and fail to provide a rich data set to learn from. The second problem means that plants with a large state dimension are untractable if states are quantized for the learning algorithm. Recently, these problems have been attacked by state-of-the-art algorithm called Deep Deterministic Policy Gradient method (DDPG). In this thesis, we propose a new algorithm Prioritized Experience DDPG (PE-DDPG) that improves the sample efficiency of DDPG, through a Prioritized Experience Replay mechanism integrated into the original DDPG. It allows the agent experience some samples more frequently depending on their novelty. PE-DDPG algorithm is tested on OpenAI Gym's Inverted Pendulum task. The results of experiment show that the proposed algorithm can reduce training time and it has lower variance which implies more stable learning process.},
+	urldate = {2021-01-03},
+	author = {Cebeci, Serhat Emre},
+	month = jul,
+	year = {2019},
+}
+
+@misc{noauthor_bipedalwalker-v2_2021,
+	title = {{BipedalWalker}-v2},
+	url = {https://gym.openai.com/envs/BipedalWalker-v2/},
+	journal = {BipedalWalker-v2},
+	month = jan,
+	year = {2021},
+}
+
+@misc{noauthor_bipedalwalkerhardcore-v2_2021,
+	title = {{BipedalWalkerHardcore}-v2},
+	url = {https://gym.openai.com/envs/BipedalWalkerHardcore-v2/},
+	journal = {BipedalWalkerHardcore-v2},
+	month = jan,
+	year = {2021},
+}
+
+@article{kumar_bipedal_2018,
+	title = {Bipedal {Walking} {Robot} using {Deep} {Deterministic} {Policy} {Gradient}},
+	url = {http://arxiv.org/abs/1807.05924},
+	abstract = {Machine learning algorithms have found several applications in the field of robotics and control systems. The control systems community has started to show interest towards several machine learning algorithms from the sub-domains such as supervised learning, imitation learning and reinforcement learning to achieve autonomous control and intelligent decision making. Amongst many complex control problems, stable bipedal walking has been the most challenging problem. In this paper, we present an architecture to design and simulate a planar bipedal walking robot(BWR) using a realistic robotics simulator, Gazebo. The robot demonstrates successful walking behaviour by learning through several of its trial and errors, without any prior knowledge of itself or the world dynamics. The autonomous walking of the BWR is achieved using reinforcement learning algorithm called Deep Deterministic Policy Gradient(DDPG). DDPG is one of the algorithms for learning controls in continuous action spaces. After training the model in simulation, it was observed that, with a proper shaped reward function, the robot achieved faster walking or even rendered a running gait with an average speed of 0.83 m/s. The gait pattern of the bipedal walker was compared with the actual human walking pattern. The results show that the bipedal walking pattern had similar characteristics to that of a human walking pattern. The video presenting our experiment is available at https://goo.gl/NHXKqR.},
+	urldate = {2021-01-16},
+	journal = {arXiv:1807.05924 [cs]},
+	author = {Kumar, Arun and Paul, Navneet and Omkar, S. N.},
+	month = jul,
+	year = {2018},
+	note = {arXiv: 1807.05924},
+	keywords = {Computer Science - Artificial Intelligence, Computer Science - Machine Learning, Computer Science - Robotics},
+}
+
+@article{rastogi_deep_2017,
+	title = {Deep {Reinforcement} {Learning} for {Bipedal} {Robots}},
+	url = {https://repository.tudelft.nl/islandora/object/uuid%3A0fac495f-f87a-4a61-a80f-5f901323379a},
+	abstract = {Reinforcement Learning (RL) is a general purpose framework for designing controllers for non-linear systems. It tries to learn a controller (policy) by trial and error. This makes it highly suitable for systems which are difficult to control using conventional control methodologies, such as walking robots. Traditionally, RL has only been applicable to problems with low dimensional state space, but use of Deep Neural Networks as function approximators with RL have shown impressive results for control of high dimensional systems. This approach is known as Deep Reinforcement Learning (DRL).\&lt;br/\&gt;\&lt;br/\&gt;A major drawback of DRL algorithms is that they generally require a large number of samples and training time, which becomes a challenge when working with real robots. Therefore, most applications of DRL methods have been limited to simulation platforms. Moreover, due to model uncertainties like friction and model inaccuracies in mass, lengths etc., a policy that is trained on a simulation model might not work directly on a real robot.\&lt;br/\&gt;\&lt;br/\&gt;The objective of the thesis is to apply a DRL algorithm, the Deep Deterministic Policy Gradient (DDPG), for a 2D bipedal robot. The bipedal robot used for analysis is developed by the Delft BioRobotics Lab for Reinforcement Learning purposes and is known as LEO. The DDPG method is applied on a simulated model of LEO and compared with traditional RL methods like SARSA. To overcome the problem of high sample requirement when learning a policy on the real system, an iterative approach is developed in this thesis which learns a difference model and then learns a new policy with this difference model. The difference model captures the mismatch between the real robot and the simulated model.\&lt;br/\&gt;\&lt;br/\&gt;The approach is tested for two experimental setups in simulation, an inverted pendulum problem and LEO. The difference model is able to learn a policy which is almost optimal compared to training on a real system from scratch, with only {\textbackslash}SI\{10\}\{{\textbackslash}percent\} of the samples required.},
+	language = {en},
+	urldate = {2021-01-08},
+	author = {Rastogi, Divyam},
+	year = {2017},
+}
+
+@inproceedings{song_recurrent_2018,
+	title = {Recurrent {Deterministic} {Policy} {Gradient} {Method} for {Bipedal} {Locomotion} on {Rough} {Terrain} {Challenge}},
+	doi = {10.1109/ICARCV.2018.8581309},
+	abstract = {This paper presents a deep learning framework that is capable of solving partially observable locomotion tasks based on our novel interpretation of Recurrent Deterministic Policy Gradient (RDPG). We study on bias of sampled error measure and its variance induced by the partial observability of environment and subtrajectory sampling, respectively. Three major improvements are introduced in our RDPG based learning framework: tail-step bootstrap of temporal difference, initialisation of hidden state using past subtrajectory, truncation of temporal backpropagation, and injection of external experiences learned by other agents. The proposed learning framework was implemented to solve the Bipedal-Walker challenge in OpenAI's gym simulation environment where only partial state information is available. Our simulation study shows that the autonomous behaviors generated by the RDPG agent are highly adaptive to a variety of obstacles and enables the agent to effectively traverse rugged terrains for long distance with higher success rate than leading contenders.},
+	booktitle = {2018 15th {International} {Conference} on {Control}, {Automation}, {Robotics} and {Vision} ({ICARCV})},
+	author = {Song, D. R. and Yang, C. and McGreavy, C. and Li, Z.},
+	month = nov,
+	year = {2018},
+	keywords = {Backpropagation, Humanoid robots, Legged locomotion, Observability, OpenAIs gym simulation environment, RDPG agent, RDPG based learning framework, Task analysis, Training, autonomous behaviors, backpropagation, bipedal locomotion, bipedal-walker challenge, control engineering computing, deep learning framework, gradient methods, legged locomotion, recurrent deterministic policy gradient method, rough terrain challenge, statistical analysis, subtrajectory truncation, tail-step bootstrap, temporal backpropagation},
+	pages = {311--318},
+}
+
+@book{kopsa_reinforcement_2018,
+	address = {Ankara},
+	title = {Reinforcement learning control for autorotation of a simple point-mass helicopter model},
+	publisher = {METU},
+	author = {Kopşa, Kadircan and Kutay, Ali Türker},
+	collaborator = {{Middle East Technical University (METU)}},
+	year = {2018},
+	keywords = {Helicopters, Neural networks (Computer science), Reinforcement learning},
+}
+
+@inproceedings{abbeel_application_2006,
+	title = {An {Application} of {Reinforcement} {Learning} to {Aerobatic} {Helicopter} {Flight}},
+	doi = {10.7551/mitpress/7503.003.0006},
+	abstract = {Autonomous helicopter flight is widely regarded to be a highly challenging control problem. This paper presents the first successful autonomous completion on a real RC helicopter of the following four aerobatic maneuvers: forward flip and sideways roll at low speed, tail-in funnel, and nose-in funnel. Our experimental results significantly extend the state of the art in autonomous helicopter flight. We used the following approach: First we had a pilot fly the helicopter to help us find a helicopter dynamics model and a reward (cost) function. Then we used a reinforcement learning (optimal control) algorithm to find a controller that is optimized for the resulting model and reward function. More specifically, we used differential dynamic programming (DDP), an extension of the linear quadratic regulator (LQR).},
+	booktitle = {{NIPS}},
+	author = {Abbeel, P. and Coates, A. and Quigley, M. and Ng, A.},
+	year = {2006},
+}
+
+@inproceedings{santos_experimental_2012,
+	title = {An experimental validation of reinforcement learning applied to the position control of {UAVs}},
+	doi = {10.1109/ICSMC.2012.6378172},
+	abstract = {In this paper, we explore the application of Reinforcement Learning (RL) to the derivation of control laws for the flight control of an unmanned aerial vehicle (UAV). The controllers are derived off-line with a simulation and the solutions are ported to an actual aircraft. Experimental results showed that the controllers stabilize the quad-rotor during the path tracking as has been learned in the simulation.},
+	booktitle = {2012 {IEEE} {International} {Conference} on {Systems}, {Man}, and {Cybernetics} ({SMC})},
+	author = {Santos, S. R. Barros dos and Givigi, S. N. and Júnior, C. L. N.},
+	month = oct,
+	year = {2012},
+	note = {ISSN: 1062-922X},
+	keywords = {Aerodynamics, Atmospheric modeling, Attitude control, Computational modeling, Learning, Learning automata, RL, Reinforcement Learning, UAV, Unmanned Air Vehicles, Vectors, aircraft, aircraft control, autonomous aerial vehicles, flight control, learning systems, path tracking, position control, quad-rotor, reinforcement learning, unmanned aerial vehicle},
+	pages = {2796--2802},
+}
+
+@article{wang_deep_2019,
+	title = {Deep {Reinforcement} {Learning} for {Autonomous} {Driving}},
+	url = {http://arxiv.org/abs/1811.11329},
+	abstract = {Reinforcement learning has steadily improved and outperform human in lots of traditional games since the resurgence of deep neural network. However, these success is not easy to be copied to autonomous driving because the state spaces in real world are extreme complex and action spaces are continuous and fine control is required. Moreover, the autonomous driving vehicles must also keep functional safety under the complex environments. To deal with these challenges, we first adopt the deep deterministic policy gradient (DDPG) algorithm, which has the capacity to handle complex state and action spaces in continuous domain. We then choose The Open Racing Car Simulator (TORCS) as our environment to avoid physical damage. Meanwhile, we select a set of appropriate sensor information from TORCS and design our own rewarder. In order to fit DDPG algorithm to TORCS, we design our network architecture for both actor and critic inside DDPG paradigm. To demonstrate the effectiveness of our model, We evaluate on different modes in TORCS and show both quantitative and qualitative results.},
+	urldate = {2021-01-14},
+	journal = {arXiv:1811.11329 [cs]},
+	author = {Wang, Sen and Jia, Daoyuan and Weng, Xinshuo},
+	month = may,
+	year = {2019},
+	note = {arXiv: 1811.11329},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition, Computer Science - Machine Learning, Computer Science - Robotics},
+}
+
+@article{pan_virtual_2017,
+	title = {Virtual to {Real} {Reinforcement} {Learning} for {Autonomous} {Driving}},
+	url = {http://arxiv.org/abs/1704.03952},
+	abstract = {Reinforcement learning is considered as a promising direction for driving policy learning. However, training autonomous driving vehicle with reinforcement learning in real environment involves non-affordable trial-and-error. It is more desirable to first train in a virtual environment and then transfer to the real environment. In this paper, we propose a novel realistic translation network to make model trained in virtual environment be workable in real world. The proposed network can convert non-realistic virtual image input into a realistic one with similar scene structure. Given realistic frames as input, driving policy trained by reinforcement learning can nicely adapt to real world driving. Experiments show that our proposed virtual to real (VR) reinforcement learning (RL) works pretty well. To our knowledge, this is the first successful case of driving policy trained by reinforcement learning that can adapt to real world driving data.},
+	urldate = {2021-01-14},
+	journal = {arXiv:1704.03952 [cs]},
+	author = {Pan, Xinlei and You, Yurong and Wang, Ziyan and Lu, Cewu},
+	month = sep,
+	year = {2017},
+	note = {arXiv: 1704.03952},
+	keywords = {Computer Science - Artificial Intelligence, Computer Science - Computer Vision and Pattern Recognition},
+}
+
+@article{shalev-shwartz_safe_2016,
+	title = {Safe, {Multi}-{Agent}, {Reinforcement} {Learning} for {Autonomous} {Driving}},
+	url = {http://arxiv.org/abs/1610.03295},
+	abstract = {Autonomous driving is a multi-agent setting where the host vehicle must apply sophisticated negotiation skills with other road users when overtaking, giving way, merging, taking left and right turns and while pushing ahead in unstructured urban roadways. Since there are many possible scenarios, manually tackling all possible cases will likely yield a too simplistic policy. Moreover, one must balance between unexpected behavior of other drivers/pedestrians and at the same time not to be too defensive so that normal traffic flow is maintained. In this paper we apply deep reinforcement learning to the problem of forming long term driving strategies. We note that there are two major challenges that make autonomous driving different from other robotic tasks. First, is the necessity for ensuring functional safety - something that machine learning has difficulty with given that performance is optimized at the level of an expectation over many instances. Second, the Markov Decision Process model often used in robotics is problematic in our case because of unpredictable behavior of other agents in this multi-agent scenario. We make three contributions in our work. First, we show how policy gradient iterations can be used without Markovian assumptions. Second, we decompose the problem into a composition of a Policy for Desires (which is to be learned) and trajectory planning with hard constraints (which is not learned). The goal of Desires is to enable comfort of driving, while hard constraints guarantees the safety of driving. Third, we introduce a hierarchical temporal abstraction we call an "Option Graph" with a gating mechanism that significantly reduces the effective horizon and thereby reducing the variance of the gradient estimation even further.},
+	urldate = {2021-01-14},
+	journal = {arXiv:1610.03295 [cs, stat]},
+	author = {Shalev-Shwartz, Shai and Shammah, Shaked and Shashua, Amnon},
+	month = oct,
+	year = {2016},
+	note = {arXiv: 1610.03295},
+	keywords = {Computer Science - Artificial Intelligence, Computer Science - Machine Learning, Statistics - Machine Learning},
+}
+
+@article{sallab_deep_2017,
+	title = {Deep {Reinforcement} {Learning} framework for {Autonomous} {Driving}},
+	volume = {2017},
+	doi = {10.2352/ISSN.2470-1173.2017.19.AVM-023},
+	abstract = {Reinforcement learning is considered to be a strong AI paradigm which can be used to teach machines through interaction with the environment and learning from their mistakes. Despite its perceived utility, it has not yet been successfully applied in automotive applications. Motivated
+by the successful demonstrations of learning of Atari games and Go by Google DeepMind, we propose a framework for autonomous driving using deep reinforcement learning. This is of particular relevance as it is difficult to pose autonomous driving as a supervised learning problem due to strong
+interactions with the environment including other vehicles, pedestrians and roadworks. As it is a relatively new area of research for autonomous driving, we provide a short overview of deep reinforcement learning and then describe our proposed framework. It incorporates Recurrent Neural Networks
+for information integration, enabling the car to handle partially observable scenarios. It also integrates the recent work on attention models to focus on relevant information, thereby reducing the computational complexity for deployment on embedded hardware. The framework was tested in an
+open source 3D car racing simulator called TORCS. Our simulation results demonstrate learning of autonomous maneuvering in a scenario of complex road curvatures and simple interaction of other vehicles.},
+	number = {19},
+	journal = {Electronic Imaging},
+	author = {Sallab, Ahmad EL and Abdou, Mohammed and Perot, Etienne and Yogamani, Senthil},
+	month = jan,
+	year = {2017},
+	keywords = {AUTONOMOUS DRIVING, DEEP LEARNING, REINFORCEMENT LEARNING},
+	pages = {70--76},
+}

@@ -1,0 +1,13 @@
+\section{Differences from Supervised and Unsupervised Learning}
+\label{sec:ml}
+
+\textbf{Supervised Learning}: It is task of learning a function that maps an input to an output based on $N$ example input-output pairs $(x_i,y_i)$ \cite{russell_artificial_nodate}. More formally, it is approximating function $f \colon X \mapsto Y$ such that $ f(x_i) \approx y_i, \forall i \in {1,2,...,N} $.
+If $Y$ is set of categorical variable, the task is called classification, and $Y$ is set of continious variables, the task is called regression.
+Input $x$ can be thought as state of an agent. That makes $y$ correct action at state $x$. For supervised learning, both $x$ and $y$ should be available, where the correct action are provided by a friendly supervisor []. 
+
+\textbf{Unsupervised Learning}: Unsupervised learning is discovering structure on input examples without any label on it. Based on $N$ example input pairs $(x_i)$, it is discovering function $f \colon X \mapsto Y$ $ f(x_i) = y_i, \forall i \in {1,2,...,N} $ , where $y_i$ is disovered output. 
+If $Y$ is set of categorical variable, the task is called clustering, and $Y$ is set of continious variables, the task is dimension reduction. If any two inputs map to same output class (clustering) or close value (dimension reduction), those inputs are assumed to be similar.
+Again, input $x$ can be thought as stateof an agent. However, correct action is not available and there is no given hint in this case. It can learn relations among states but it does not know what to do since there is no target or utility []. 
+
+Reinforcement Learning is different than supervised learning because correct actions are not provided. Meanwhile, it is also different than unsupervised learning because the agent is forced to learn a behaviour. The agent is evaluated at each time step without supervision.
+

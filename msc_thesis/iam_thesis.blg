@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: iam_thesis.aux
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+Reallocating 'name_of_file' (item size: 1) to 15 items.
+The style file: iamBiblioStyle.bst
+Database file #1: myBiblio.bib
+Warning--to sort, need author or key in noauthor_bipedalwalker-v2_2021
+Warning--to sort, need author or key in noauthor_bipedalwalkerhardcore-v2_2021
+Warning--empty booktitle in vaswani_attention_2017
+You've used 10 entries,
+            2531 wiz_defined-function locations,
+            614 strings with 6416 characters,
+and the built_in function-call counts, 5045 in all, are:
+= -- 323
+> -- 260
+< -- 4
++ -- 106
+- -- 94
+* -- 346
+:= -- 629
+add.period$ -- 10
+call.type$ -- 10
+change.case$ -- 78
+chr.to.int$ -- 0
+cite$ -- 13
+duplicate$ -- 420
+empty$ -- 382
+format.name$ -- 101
+if$ -- 1019
+int.to.chr$ -- 0
+int.to.str$ -- 10
+missing$ -- 119
+newline$ -- 33
+num.names$ -- 16
+pop$ -- 224
+preamble$ -- 1
+purify$ -- 67
+quote$ -- 0
+skip$ -- 129
+stack$ -- 0
+substring$ -- 190
+swap$ -- 291
+text.length$ -- 4
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 38
+warning$ -- 3
+while$ -- 28
+width$ -- 12
+write$ -- 85
+(There were 3 warnings)

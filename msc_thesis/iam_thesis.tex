@@ -1,0 +1,401 @@
+%
+% METU Institute of Natural and Applied Sciences Thesis example 
+%
+% Edited and Commented by Utku Erdoğdu 2013
+% Modified for IAM - Institute of Applied Mathematics
+% Graduate School of Applied Mathematics
+% Edited and Commented by Omur Ugur 2017-2018
+%
+% Please read the explanations so that you can customize the document		
+%
+% Files needed by this document:
+% metu.cls 
+% metu11.def (if you will use 11pt fonts) 
+% metu12.def (if you will use 12pt fonts)
+% metu10.def (if you will use 10pt fonts)
+%
+% Possible Options Here:
+%
+% oneandhalf, double, single : Line spacing used in the thesis. 
+% Default and institute preference is
+% single.
+%
+% 10pt, 11pt, 12pt : Font size Default is 10pt, which is institue choice. 
+% 
+% pntr, pntc, pnbt : Page number position. 
+% Options are top center, top right or bottom. 
+% Default and institute preference is page numbers at bottom. 
+% When page numbers are at the top bottom margins are skewed.
+% 
+% chaproman, chaparabic: Chapter numbering format. 
+% Options are roman numbers and arabic numbers.
+% Default is roman, institute prefers arabic
+%
+% oneside, twoside : Printing style. Default is twoside. 
+% In this style chapters and (almost all) preliminary pages begin from 
+% odd numbered pages.
+%
+% tr, eng : Document language. This is useful if you want to translate 
+% your thesis into Turkish. 
+% Then you give the option tr and use \ifturkish. . .\else. . .\fi  
+% whenever you want 
+% to do something only for Turkish or only for English. Default is eng. 
+% IMPORTANT!! : For official institute documents you should not use this option. 
+% The Turkish format is only supplied for custom translations.
+%
+% ceng,aee,arme.. : You can use the abbreviated form of your department here 
+% and there is no further need to define the department name below. 
+% If your department name is not among the below list of defined
+% departments, you should use \department and \turkishdepartment macros 
+% to define the name of your department.
+%
+% Defined Departments and Abbreviations:
+% (may not work after modification for IAM)
+% --------------------------------------
+% Computer Engineering : ceng
+% Aerospace Engineering : aee
+% Archaeometry : arme
+% Architecture : arch
+% Biochemistry : bch
+% Biology : biol
+% Biomedical Engineering : bme
+% Biotechnology : btec
+% Building Science : bs
+% Cement Engineering : ceme
+% Chemical Engineering : che
+% Chemistry : chem
+% City and Regional Planning : crp
+% City Planning : cp
+% Civil Engineering : ce
+% Computational Design and Fabrication Technologies in Architecture : arcd
+% Computer Education and Instructional Technology : cte
+% Design Research for Interaction : iddi
+% Earthquake Studies : eqs
+% Earth System Science : ess
+% Electrical and Electronics Engineering : ee
+% Engineering Management : em
+% Engineering Sciences : es
+% Environmental Engineering : enve
+% Food Engineering : fde
+% Geodetics - Geographical Information Technologies : ggit
+% Geological Engineering : geoe
+% Hydrosystems Engineering : he
+% Industrial Design : id
+% Industrial Engineering : ie
+% Mathematics : math
+% Mechanical Engineering : mech
+% Metallurgical and Materials Engineering : mete
+% Micro and Nanotechnology : mnt
+% Mining Engineering : mine
+% Operational Research : or
+% Petroleum and Natural Gas Engineering : pete
+% Physics : phys
+% Polymer Science and Technology : pst
+% Regional Planning : rp
+% Restoration : rest
+% Secondary Science and Mathematics Education : ssme
+% Software Engineering : se
+% Statistics : stat
+% Structural Mechanics : st
+% 
+% phd, ms : Degree Received. Ph.D. or M.S. Default is M.S.
+%
+%
+% Defined for use of IAM:
+% acsc, cryp, fm, sc
+%
+% End of Options
+
+
+% Use one of the following \documentclass with options of metu_iam.cls
+\documentclass[chaparabic,sc,ms,12pt,oneandhalf]{metu_iam} 
+%\documentclass[chaparabic,fm,ms,11pt,oneandhalf]{metu_iam} % preferred by IAM
+%\documentclass[chaparabic,acsc,ms,10pt,single]{metu_iam} % preferred by the FBE
+%\documentclass[chaparabic,cryp,phd,12pt,double]{metu_iam}
+
+% You can delete next line If your thesis does not have an appendix
+\usepackage{appendix}
+
+%
+% Personal Information 
+% ----------------------------
+%
+% Please check this part and fill in information about your thesis
+%
+% Name and Surname
+% be careful with the uppercase letters and Turkish characters
+% following name should work for both UPPERCASE and LOWERCASE names
+\author{UĞURCAN ÖZALP}
+% Thesis Title English and Turkish
+\title{Reinforcement Learning methods for Bipedal Robot Walking in Partially Observed Environment}
+\turkishtitle{Pekiştirmeli Öğrenme Yöntemleriyle Kısmi Gözlenebilir Ortamda Çift Bacaklı Robotun Yürütülmesi }
+% Department : English and Turkish
+%
+% Some of the departments are pre-defined, you need not redeclare them. 
+% You can use them by just giving an option to \documentclass. 
+% See documentation for options above. If you will define your 
+% department here do not use ``Department'' or ``Bölümü'' words.
+%\department{Computer Engineering}
+%\turkishdepartment{Bilgisayar Mühendisliği}
+%
+% Date : You should indicate the month of your thesis defence in English.
+% Default is this month
+%
+\date{June 2021} % do NOT use comma
+%
+% Approval Page Details
+% --------------------------
+% For each command you can give the title as optional parameter enclosed in [ ]
+% This also handles the Turkish titles if you're planning 
+% to produce Turkish version of the document. 
+% If you'll hard code the title, you need 
+% to use turkish version of each command after the command itself
+% 
+% prof : Prof. Dr.
+% assocprof : Assoc. Prof. Dr.
+% assistprof : Assist. Prof. Dr.
+% dr : Dr.
+%
+% Director of Institute
+\director[prof]{Bülent Karasözen}
+% Head of Department
+\headofdept[prof]{Ömür Uğur}
+%
+% Supervisor : English and Turkish
+\supervisor[prof]{Ömür Uğur}
+%\cosupervisor[assistprof]{Noname NoSurname} % suppress/comment if you don't have cosupervisor
+% \turkishsupervisor{  } %if you will hard-code the academic title
+%
+% Affiliation of Supervisor in English and possibly in Turkish
+\departmentofsupervisor{Scientific Computing, METU}
+% \turkishcosupervisor{Prof. Dr. Reda Alhajj} %if you will hard-code the academic title
+% Affiliation of Co-Supervisor
+% You can just delete/comment the next line if you don't have a co-supervisor
+%\departmentofcosupervisor{Computer Engineering Dept., Bilkent Uni.}
+%
+% Committee Members
+% In general members are sorted according to their academic titles; however
+% new modifications indicate
+%
+% The Chair (1)
+% Supervisor (2)
+% Co-supervisor, if any (3)
+% Academic Titles (4,5) or (3-5)
+% 
+% IMPORTANT:  All affiliatons should fit in a single line
+% If affiliation line is broken into two lines you should shorten the affiliation by using 
+% abbrevations or any other means
+%
+\committeememberi[prof]{I am the Chair}
+\affiliationi{Computer Engineering Department, METU}
+% Second committee member is always your supervisor
+\committeememberii[prof]{I am the Supervisor}
+\affiliationii{Computer Engineering Department, METU}
+% If you are an M.Sc. student and your Co-Supervisor is in your 
+% examination committee, then third committee member is always your co-supervisor
+%
+% IMPORTANT: If you are Ph.D. student your co-supervisor cannot be in your 
+% examination committee.
+\committeememberiii[assocprof]{I may be Co-Supervisor}
+\affiliationiii{Computer Engineering Department, METU}
+
+% Fourth committee member
+% If you have only three (3) Committee Members;
+% this can ONLY be if this is a M.Sc thesis
+% then uncomment \committeeivfalse so that
+% 4th and 5th members do NOT count at all:
+%\committeeivfalse
+% Otherwise, you need to fill in the 4th and the 5th members
+\committeememberiv[assocprof]{A Member with High Title}
+\affiliationiv{Computer Engineering Department, METU}
+% Fifth committee member is a MUST if Fourth committee member is
+\committeememberv[assistprof]{A Member with Low Title}
+\affiliationv{Computer Engineering Department, Hacettepe University}
+%
+% Keywords : English & Turkish, Comma seperated
+\keywords{deep reinforcement learning, partial observability, robot control, actor-critic methods, etc.}
+\anahtarklm{pekiştirmeli derin öğrenme, kısmi gözlemlenebilirlik, robot kontrolü, aktör-eleştirmen metodları, vs.}
+
+%
+% Abstract in English
+%
+\abstract{
+% either write abstract here or simply input
+\input{abstract} % filename: abstract.tex
+}
+%
+% Turkish Abstract
+%
+\oz{
+% either write öz here or simply input
+\input{oz} % filename: oz.tex
+} 
+%
+% Dedication 
+\dedication{\textit{ % better to write here as it is short enough
+}}
+%
+%
+% Acknowledgements   
+\acknowledgments{
+% either write acknowledgments here or simply input
+\input{acknowledgments} % filename: acknowledgments.tex
+}
+%
+% End of Personal and Introductory Information
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+%%% !!! These are most probably you need for effective use of metu_iam.cls
+\usepackage{epigraph} % Added by Ugurcan Ozalp
+\usepackage{graphicx}
+%\graphicspath{ {./figures/} } % if it helps uncomment
+\usepackage{ifpdf} % if you use pdflatex (generally I do not suggest,
+                   % but it depends on your graphic files)
+\ifpdf
+\usepackage{epstopdf}
+\usepackage[pdftex,bookmarks=true,bookmarksnumbered=false,breaklinks=true]{hyperref}
+\pdfadjustspacing=1
+\usepackage[pdftex]{thumbpdf}
+%\usepackage{pdfpages} % needed if you wish to include external pdf page (NOT suggested)
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+%\usepackage[pdftex,linktocpage=true,breaklinks=true]{hyperref}
+\else
+% you may choose either
+%\usepackage[ps2pdf,bookmarks=true,bookmarksnumbered=true,breaklinks=true]{hyperref} % or
+\usepackage[ps2pdf,linktocpage=true,bookmarks=true,bookmarksnumbered=false,breaklinks=true]{hyperref}
+\usepackage[ps2pdf]{thumbpdf}
+\DeclareGraphicsExtensions{.eps}
+%\usepackage[ps2pdf,linktocpage=false,breaklinks=true]{hyperref}
+\fi
+\usepackage[all]{hypcap} 
+
+%
+%%% Necessary packages to compile this Template for IAM
+\usepackage{xcolor}
+\usepackage{fancyvrb}
+\usepackage{xy} 
+\usepackage{listings}
+\usepackage{newfloat}
+% Most likely, you will need these package of AMS
+% These are strongly remommended
+\usepackage{amsmath,amsfonts}
+\usepackage{amsthm,amssymb}
+% unfortunately for this template we need
+\usepackage{caption} % although gives warning of unsopported package.
+\usepackage{subcaption} % although gives warning of unsopported package.
+%%% End of Necessary Packages
+%
+
+%%% Extra packages if you need
+%\usepackage{rotating}
+%\usepackage{booktabs}
+%\usepackage{pifont}
+
+%%%
+%%% Verbatim/Listings Environments
+%%%
+% In most cases, we need to present coding/listing of Matlab or Python
+% or other programming languages.
+% Unfortunately, lstlistings does not work metu_iam.cls !!!
+% It is better to use a workaround instead:
+%
+%%% Suggestion: minted.sty (however not default here, due to the following.)
+%%% HERE IS WHAT YOU HAVE TO DO FIRST: 
+%%% You must invoke LaTeX with the -shell-escape flag;
+%%% and you need to have python as well as pigments installed.
+%uncomment%   \usepackage[newfloat]{minted} % This package supports many languages (and their color schema). 
+% if you are using linux, no problem (in most cases)
+% if you are using Windows, then
+% 1. download and install Python for Windows on https://www.python.org/downloads/windows/
+% 2. open a command prompt in Windows and run on the prompt (C:\Users\yourname>)
+%   (a) python -m pip install -U pip setuptools
+%   (b) easy_install pygments
+%    make sure that the executables are reachable within the PATH environment variable
+% 3. restart Windows
+% Now minted package can be used. 
+% Beware: -shell-escape flag must be used when latex or pdflatex compiler is invoked.
+% Also, if you decide to use minted comment the definition of the listing environment below
+%
+%%% Alternative Approach (however without colours) is
+%%% to use Verbatim Environment
+% for this Template for instance we define,
+% similar to the 'listing' environment in minted.sty :)
+% if you don't want to use this new environment, 
+% or, if you are using minted.sty, you should/must comment the lines:
+%comment%   
+\DeclareFloatingEnvironment[fileext=lol,placement=tbp]{listing}
+%comment%   
+\newcommand{\listingscaption}{Listing}
+ %\floatname{listing}{\listingscaption} % if float, instead of newfloat, is loaded
+%\newcommand{\listoflistingscaption}{List of Listings} % will never be used
+%\providecommand{\listoflistings}{\listof{listing}{\listoflistingscaption}}  % will never be used
+%
+%%% End of Verbatim/Listing Environments
+
+% include any other definitions, abbreviations for LaTeX commands
+% you might need. Use it after carefully defining 
+% your own commands and definitions (even packages)
+\input{myDefinitions} % filename: myDefinitions.tex
+
+
+\begin{document}
+% Preliminaries
+\begin{preliminaries}
+% If you are willing to use any custom stuff before Chapters, put it here
+% Such as List of Abbreviations
+% Check the abbreviations.tex for a template list of abbreviations
+\input{abbreviations} % filename: abbreviations.tex
+% End of Preliminaries
+\end{preliminaries}
+%   
+%%% Latex Content Goes Here 
+% 
+%%% Suggestion is that input your LaTeX files 
+% including chapters and sections
+
+\input{chap_01/intro}
+\input{chap_01/sec_01}
+\input{chap_01/sec_02}
+\input{chap_01/sec_03}
+\input{chap_01/sec_04}
+\input{chap_02/intro}
+\input{chap_02/rl_opt_control}
+\input{chap_02/ml}
+\input{chap_02/mdp}
+\input{chap_02/mb_learning}
+\input{chap_02/mf_learning}
+\input{chap_03/intro}
+\input{chap_03/nnets}
+\input{chap_04/intro}
+\input{chap_04/algs}
+\input{chap_04/evaluation}
+\input{chap_05/intro}
+\input{chap_06/intro}
+
+
+
+%
+% References in Bibtex format goes into below indicated file with .bib extension
+\bibliography{myBiblio} % filename: myBiblio.bib
+% You can use full name of authors, 
+% however most likely some of the Bibtex entries you will find, 
+% will use abbreviated first names.
+% If you don't want to correct each of them by hand, 
+% you can use abbreviated style for all of the references
+%\bibliographystyle{abbrv}
+% However, IAM suggests to use
+\bibliographystyle{iamBiblioStyle} % better than to use {plain or abbrv}
+%%% APPENDIXES
+\appendix
+%
+% input your appendix
+% If you are not using minted style, then comment the first appendix below
+% otherwise uncomment.
+%uncomment%  \input{appendix/app1} % includes minted package examples!
+\input{appendix/app2}
+%
+%
+% If you are a Ph.D. Student you need to insert a CV at the end of you thesis
+% Check vita.tex for a simple CV template in Latex
+%\input{vita.tex}
+\end{document}

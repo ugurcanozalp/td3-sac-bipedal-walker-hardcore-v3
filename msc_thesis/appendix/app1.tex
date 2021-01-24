@@ -1,0 +1,114 @@
+\chapter{Proof of Some Theorem}
+\label{app:mintedCodes}
+
+This is appendix text.
+
+\definecolor{myBgColour}{rgb}{0.99,0.99,0.99} % almost white
+
+\setminted[python]{frame=single,
+framesep=2mm,
+baselinestretch=1.1,
+bgcolor=myBgColour,
+fontsize=\footnotesize,
+linenos, autogobble,
+python3=true}
+
+\setminted[matlab]{frame=single,
+framesep=2mm,
+baselinestretch=1.1,
+bgcolor=myBgColour,
+fontsize=\footnotesize,
+linenos, autogobble,
+python3=true}
+
+%\captionsetup[Listing]{format=plain,font={small},labelfont={bf}, aboveskip=-5px}
+%\renewcommand{\theListing}{{\arabic{Listing}}}
+%\setcounter{Listing}{0}
+
+
+However, we place a python code here with a listing environment
+Listing~\ref{lst:first}.	
+
+\begin{listing}	
+\begin{minted}{python}
+# Python program to check if the input number is prime or not
+
+num = 407
+
+# take input from the user
+# num = int(input("Enter a number: "))
+
+# prime numbers are greater than 1
+if num > 1:
+   # check for factors
+   for i in range(2,num):
+       if (num % i) == 0:
+           print(num,"is not a prime number")
+           print(i,"times",num//i,"is",num)
+           break
+   else:
+       print(num,"is a prime number")
+       
+# if input number is less than
+# or equal to 1, it is not prime
+else:
+   print(num,"is not a prime number")
+\end{minted}
+\caption{This is the caption of this Listing environment\label{lst:first}}
+\end{listing}
+
+Also we wish to insert a MATLAB code, too.
+
+\definecolor{myBackgroundColour}{rgb}{0.9,0.9,0.9} % almost gray
+\begin{minted}[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=myBackgroundColour,
+fontsize=\footnotesize,
+linenos
+]{matlab}
+function result = myprime(n)
+% MATLAB program to check if the input number is prime or not
+
+%% initially set output flag to true
+ result = true;
+%% iterate over all positive integers 2,3,...,n-1
+%% if n is not divisible by any of these factors....it is prime
+ if (n == 1)
+     result = 'false';
+ elseif (n == 2)
+     result = 'true';
+ else 
+    for i=2:n-1,
+        if (mod(n,i)==0)
+           result = 'false';
+        end
+    end
+ end
+%% return "true" or "false" instead of 1 or 0  
+ if (result)
+    result = 'true';
+ else
+    result = 'false';
+ end
+\end{minted}
+
+
+Furthermore, here are two files (myPythonCode.py and myMatlabCode.m) included.
+
+\inputminted[
+frame=single,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=myBackgroundColour,
+fontsize=\footnotesize,
+linenos
+]{python}{myPythonCode.py}
+
+\definecolor{myRed}{rgb}{0.95,0.1,0.1}
+
+\begin{listing}
+\inputminted[frame=single, linenos, bgcolor=myRed]{matlab}{myMatlabCode.m}
+\caption{Here is the caption again}
+\end{listing}

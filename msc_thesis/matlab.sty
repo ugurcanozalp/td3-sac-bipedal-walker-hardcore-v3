@@ -1,0 +1,133 @@
+%%   File:  matlab.sty
+%%
+%%   GWR's LaTeX style file for formatting of MATLAB code
+%%   Gerald Recktenwald, gerry@me.pdx.edu
+%%
+%%   For structure of this document, see the LaTeX Companion, Appendix A,
+%%   especially the example in Figure A.2 on page 468
+%%
+%%   2004-08-24 -- GWR:  Fiddled with inline text environments for
+%%      MATLAB strings.  Ended up renaming \matext to \mtt
+%%
+%%   2005-03-16 -- GWR:  Substituted fancyvrb package for verbatim package
+%%
+%%   2005-03-03 -- GWR:  Changed name of mfile environment to Listing
+%%                       This makes is possible to use in other contexts
+%%                       without confusion over "what's an mfile?"
+%%
+%%  2006/08/02 -- GWR:   Modified definition of Listing float so that Listings
+%%                       are indexed by chapter.  This will probably cause problems
+%%                       when the \documentclass does not have chapters.  This
+%%                       is a partial fix for the name class with the Listing
+%%                       float defined in the nmm2.sty file (see bottom of
+%%                       nmm2.sty file).  I think I'll need to use an \ifthenelse
+%%                       to detect the \documentclass, but I haven't figured out
+%%                       how to do this yet.  There is a thread on comp.text.tex
+%%
+%%  http://groups.google.com/group/comp.text.tex/browse_thread/thread/33b97a87e7316f58/8ee9523c2dc13666?lnk=gst&q=name+of+class&rnum=6#8ee9523c2dc13666
+%%  
+%%                       but the solution there is not universal.  It requires loading
+%%                       the classlist.sty file BEFORE the \documenclass declaration
+%%                       This is not a solution, because I want to be able to use
+%%                       \usepackage{matlab} and \usepackage{nmm2} without having
+%%                       to tweak the main source file first!
+
+%% --------- Identification ---------
+\ProvidesPackage{matlab}[2006/03/04  Gerald Recktenwald's style for typesetting MATLAB code]
+
+%% --- Initial Code ---------
+%%
+%% --- load standard packages
+\RequirePackage{alltt}
+\RequirePackage{boxedminipage}
+\RequirePackage{calc}
+\RequirePackage{color}   %%  used by mtextborder environment
+\RequirePackage{float}
+\RequirePackage{ifthen}
+\RequirePackage{fancyvrb}  %% was \RequirePackage{verbatim}     %  was \usepackage{moreverb}
+
+%% --- load GWR packages
+%%
+%%  none
+
+%% --------- Declaration of Options ---------
+%%
+%%   no options
+
+%% --------- Execution of Options ---------
+%%
+%%   no options
+
+%% --------- Main Code ---------
+%%
+
+%% --- names and one-liners
+\newcommand{\MATLAB}{{\normalfont\scshape{Matlab}}}
+\newcommand{\MATLABs}{{\normalfont\scshape{Matlab}'s}}
+\newcommand{\SIMULINK}{{\normalfont\scshape{Simulink}}}
+
+% \newcommand{\backslash}{\texttt{\symbol{'134}}}  %  print the backslash character,  see LaTeX companion, p. 352
+\newcommand{\cmd}[1]{{\normalfont\ttfamily\bfseries#1}}
+\newcommand{\param}[1]{{\normalfont\ttfamily\slshape#1}}  % distinquishes parameters of a function from values
+
+% -------------------------------------------------------------------------
+% --- Simulated command-line entry and source code
+\newcommand{\mttsize}{\footnotesize}     %  allows changing of default text size
+\newcommand{\mtt}[1]{{\ttfamily{#1}}}    %  command version of mtext
+\newenvironment{mtext}                   %   mtext based on modified version by Don DeLand, July 2000
+    {\list{}{\leftmargin10pt\labelwidth0pt\labelsep0pt%  was \leftmargin0pt
+    \topsep4pt plus2pt minus2pt
+    }
+    \item[]\mttsize\begin{alltt}}
+    {\end{alltt}\endlist}
+\newenvironment{mtextflush}        %  mtext based on modified version by Don DeLand, July 2000
+    {\list{}{\leftmargin0pt\labelwidth0pt\labelsep0pt%  was \leftmargin0pt
+    \topsep4pt plus2pt minus2pt
+    }
+    \item[]\mttsize\begin{alltt}}
+    {\end{alltt}\endlist}
+
+% -------------------------------
+% --- Re-implement with fancyvrb package: documentation in LaTeX Companion, 2nd edition, p. 163
+\CustomVerbatimEnvironment       %  needs fancyvrb package
+    {mtext2}{Verbatim}{fontsize=\footnotesize,xleftmargin=10pt,commandchars=\|\[\]}
+
+\CustomVerbatimEnvironment       %  needs fancyvrb package
+    {mtextBoxed}{Verbatim}{frame=single,framerule=1pt,tabsize=2,fontsize=\footnotesize,xleftmargin=10pt,xrightmargin=10pt,commandchars=\|\[\]}
+
+\definecolor{gray}{rgb}{0.7,0.7,0.7}
+\CustomVerbatimEnvironment       %  needs fancyvrb package
+    {mtextborder}{Verbatim}{fontsize=\footnotesize,xleftmargin=10pt,frame=leftline,rulecolor=\color{gray},framerule=4pt}
+
+% --------------------------------------------------------------------------
+% --- VerbListing uses the fancyvrb package to import and format a file
+%     as a mono-spaced code listing.  VerbListingNumber is similar to VerbListing
+%     except that it includes line numbers.  Both VerbListing and VerbListingNumber
+%     use the \MfilePath command to provide the path to the file.  The path is
+%     stored in \theMfilePath, and \MfilePath is just a wrapper for the
+%     \renewcommand that resets \theMfilePath
+\newcommand{\VerbListing}[2][\footnotesize]%
+    {\VerbatimInput[frame=lines,framerule=1pt,tabsize=2,fontsize=#1,xleftmargin=10pt,xrightmargin=10pt]{\theMfilePath#2}}
+\newcommand{\VerbListingBoxed}[2][\footnotesize]%
+    {\VerbatimInput[frame=single,framerule=1pt,tabsize=2,fontsize=#1,xleftmargin=0pt,xrightmargin=0pt]{\theMfilePath#2}}
+\newcommand{\VerbListingNumber}[1]%
+    {\VerbatimInput[frame=lines,framerule=1pt,tabsize=2,numbers=left,fontsize=\footnotesize,xleftmargin=25pt,xrightmargin=10pt]{\theMfilePath#1}}
+
+\newcommand{\theMfilePath}{}
+\newcommand{\MfilePath}[1]{\renewcommand{\theMfilePath}{#1}}
+
+\newenvironment{VerbCode}%
+    {\VerbatimEnvironment\begin{Verbatim}[fontsize=\small]}%
+    {\end{Verbatim}}%
+
+
+% --- Full-blown m-file Listing environment.  This is a floating object
+%     with numbering and other built-in goodies
+%  \usepackage{float}   %  see \RequirePackage{float} above
+
+\floatstyle{plain}
+% \newfloat{mfile}{bt}{lom}[chapter]   %  in a book, Listings should be numbered by chapter
+% \newfloat{Listing}{htb}{lom}[chapter]
+\newfloat{Listing}{btp}{lom}
+\floatname{Listing}{Listing}
+

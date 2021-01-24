@@ -1,0 +1,248 @@
+% metu11.sty  18-Dec-94 Version 1.0
+
+%20030619 TY
+\renewcommand{\normalsize}{\@normalsize}
+
+% Credit goes to Gunes Erkan for the precise margin values
+\oddsidemargin 1.55cm 
+\if@twoside
+\evensidemargin 0.05cm
+\else
+\evensidemargin 1.55cm
+\fi
+\marginparwidth 1cm
+\marginparsep 7pt
+%\topmargin 2.5cm
+%\topmargin 0.5cm
+\topmargin 0cm
+\headheight 12pt
+\headsep .275in
+\footskip .38in
+\textwidth 14.3cm
+\columnsep 10pt
+\columnseprule 0pt
+
+\footnotesep 7.7pt
+\skip\footins 10pt plus 4pt minus 2pt
+\floatsep 12pt plus 2pt minus 2pt
+\textfloatsep 20pt plus 2pt minus 4pt
+\intextsep 12pt plus 2pt minus 2pt
+% \@maxsep 20pt \@dblmaxsep 20pt
+\dblfloatsep 12pt plus 2pt minus 2pt
+\dbltextfloatsep 20pt plus 2pt minus 4pt
+\itemsep 2pt plus 2pt minus 2pt
+
+%end of margins-etc
+\lineskip 1pt \normallineskip 1pt
+\ifd@uble \def\baselinestretch{2} \else 
+\ifs@ngle \def\baselinestretch{1} \else \def\baselinestretch{1.5} \fi
+\fi
+
+\def\@normalsize{\@setsize\normalsize{13.6pt}\xpt\@xpt
+\abovedisplayskip 11pt plus3pt minus6pt\belowdisplayskip \abovedisplayskip
+\abovedisplayshortskip \z@ plus3pt\belowdisplayshortskip 6.5pt plus3.5pt
+minus3pt\let\@listi\@listI \let\currentsize=\@normalsize}
+\def\small{\@setsize\small{12pt}\xpt\@xpt
+\abovedisplayskip 10pt plus2pt minus5pt\belowdisplayskip \abovedisplayskip
+\abovedisplayshortskip \z@ plus3pt\belowdisplayshortskip 6pt plus3pt minus3pt
+\def\@listi{\topsep 6pt plus 2pt minus 2pt\parsep 3pt plus 2pt minus 1pt
+\itemsep \parsep} \let\currentsize=\small}
+\def\footnotesize{\@setsize\footnotesize{11pt}\ixpt\@ixpt
+\abovedisplayskip 8pt plus 2pt minus 4pt\belowdisplayskip \abovedisplayskip
+\abovedisplayshortskip \z@ plus 1pt\belowdisplayshortskip 4pt plus 2pt minus
+2pt
+\def\@listi{\topsep 4pt plus 2pt minus 2pt\parsep 2pt plus 1pt minus 1pt
+\itemsep \parsep} \let\currentsize=\footnotesize}
+\def\scriptsize{\@setsize\scriptsize{9.5pt}\viiipt\@viiipt
+ \let\currentsize=\scriptsize}
+\def\tiny{\@setsize\tiny{7pt}\vipt\@vipt \let\currentsize=\tiny}
+\def\large{\@setsize\large{14pt}\xpt\@xpt \let\currentsize=\large}
+\def\Large{\@setsize\Large{18pt}\xivpt\@xivpt \let\currentsize=\Large}
+\def\LARGE{\@setsize\LARGE{22pt}\xviipt\@xviipt \let\currentsize=\LARGE}
+\def\huge{\@setsize\huge{25pt}\xxpt\@xxpt \let\currentsize=\huge}
+\def\Huge{\@setsize\Huge{30pt}\xxvpt\@xxvpt \let\currentsize=\Huge}
+\let\tmpnormalsize=\normalsize
+\def\normalsize{\tmpnormalsize \let\currentsize=\normalsize}
+\normalsize
+
+
+\@fptop 0pt plus 1fil \@fpsep 8pt plus 2fil \@fpbot 0pt plus 1fil
+\@dblfptop 0pt plus 1fil \@dblfpsep 8pt plus 2fil \@dblfpbot 0pt plus 1fil
+\marginparpush 5pt 
+
+\parskip 0pt plus 1pt \parindent 17pt \partopsep 3pt plus 1pt minus 2pt 
+\@lowpenalty 51 \@medpenalty 151 \@highpenalty 301 
+\@beginparpenalty -\@lowpenalty \@endparpenalty -\@lowpenalty \@itempenalty
+-\@lowpenalty
+
+\def\part{\cleardoublepage \thispagestyle{plain} \if@twocolumn \onecolumn
+\@tempswatrue \else \@tempswafalse \fi \hbox{}\vfil \bgroup \centering
+\secdef\@part\@spart} 
+
+\def\@part[#1]#2{\ifnum \c@secnumdepth >-2\relax \refstepcounter{part}
+\addcontentsline{toc}{part}{\thepart \hspace{1em}#1}\else
+\addcontentsline{toc}{part}{#1}\fi \markboth{}{}
+ \ifnum \c@secnumdepth >-2\relax \huge\bf Part \thepart \\vspace*{\fill}par \vskip 20pt \fi
+\Huge \bf #1\@endpart}
+\def\@endpart{\par\egroup \vfil\newpage \if@twoside \hbox{}
+\thispagestyle{empty}
+ \newpage
+ \fi \if@tempswa \twocolumn \fi}
+\def\@spart#1{\Huge \bf #1\@endpart}
+
+% making of the chapter
+%\newcommand\@chapapp{CHAPTER}\vspace*{\fill}
+
+\def\@makechapterhead#1{
+%	\vspace*{2.2cm}{\parskip \z@ \topsep \z@
+	\vspace*{0.2cm}{\parskip \z@ \topsep \z@
+	\partopsep \z@ \parsep \z@ \itemsep \z@
+	\ifnum \c@secnumdepth >\m@ne
+		\begin{center}
+		\Large\bf \@chapapp{} \thechapter
+		\end{center}
+		\par
+		\vskip 1.5cm
+	\fi
+	\begin{center}
+	\Large \bf #1
+	\end{center}
+	\par \nobreak \vskip 2.0cm}
+}
+
+\def\@makeschapterhead#1{\vspace*{0.6cm}
+	{\parskip \z@ \topsep \z@
+	\partopsep \z@ \parsep \z@ \itemsep \z@
+	\begin{center}
+	\Large{\bf #1}
+	\end{center}\par
+\nobreak \vskip 1.5cm}}
+
+\def\chapter{
+\setlength{\parindent}{0em}
+\setlength{\parskip}{10pt}
+\cleardoublepage\global\@topnum\z@
+\@afterindentfalse \secdef\@chapter\@schapter}
+\def\prechapter{
+\setlength{\parindent}{0em}
+\setlength{\parskip}{10pt}
+\newpage\global\@topnum\z@
+\@afterindentfalse \secdef\@chapter\@schapter}
+\def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
+ \refstepcounter{chapter}
+ \typeout{\@chapapp\space\thechapter.}
+ \addcontentsline{toc}{chapter}{\protect
+ \numberline{\thechapter}\texorpdfstring{\MakeUppercase{#1}}{\uppercase{#1}}}\else
+ \addcontentsline{toc}{chapter}{\MakeUppercase{#1}}\fi
+ \chaptermark{#1}
+ \addtocontents{lof}{\protect\addvspace{10pt}}
+\addtocontents{lot}{\protect\addvspace{10pt}} \if@twocolumn
+\@topnewpage[\@makechapterhead{#2}]
+ \else \@makechapterhead{#2}
+ \@afterheading \fi}
+\def\@schapter#1{\if@twocolumn \@topnewpage[\@makeschapterhead{#1}]
+ \else \@makeschapterhead{#1}
+ \@afterheading\fi
+}
+
+\def\section{\@startsection {section}{1}{\z@}{-3.5ex plus -1ex minus
+ -.2ex}{2.3ex plus .2ex}{\large\bf}}
+\def\subsection{\@startsection{subsection}{2}{\z@}{-3.25ex plus -1ex minus
+ -.2ex}{1.5ex plus .2ex}{\normalsize\bf}}
+\def\subsubsection{\@startsection{subsubsection}{3}{\z@}{-3.25ex plus
+ -1ex minus -.2ex}{1.5ex plus .2ex}{\normalsize\bf}}
+\def\paragraph{\@startsection
+ {paragraph}{4}{\z@}{3.25ex plus 1ex minus .2ex}{-1em}{\normalsize\bf}}
+\def\subparagraph{\@startsection
+ {subparagraph}{4}{\parindent}{3.25ex plus 1ex minus
+ .2ex}{-1em}{\normalsize\bf}}
+
+\def\chaptermark#1{}
+
+\setcounter{secnumdepth}{3}
+
+\def\appendix{\par
+ \setcounter{chapter}{0}
+ \setcounter{section}{0}
+ \addcontentsline{toc}{nodots}{\protect\numberline {}APPENDIX}
+ \def\@chapapp{APPENDIX}
+ \def\thechapter{\Alph{chapter}}}
+
+
+\leftmargini 2.5em
+\leftmarginii 2.2em \leftmarginiii 1.87em \leftmarginiv 1.7em \leftmarginv 1em
+\leftmarginvi 1em
+\leftmargin\leftmargini
+\labelsep .5em
+\labelwidth\leftmargini\advance\labelwidth-\labelsep
+\def\@listI{\leftmargin\leftmargini \parsep 4.5pt plus 2pt minus 1pt\topsep
+9pt plus 3pt minus 5pt\itemsep 4.5pt plus 2pt minus 1pt}
+\let\@listi\@listI
+\@listi
+\def\@listii{\leftmargin\leftmarginii
+ \labelwidth\leftmarginii\advance\labelwidth-\labelsep
+ \topsep 4.5pt plus 2pt minus 1pt
+ \parsep 2pt plus 1pt minus 1pt
+ \itemsep \parsep}
+\def\@listiii{\leftmargin\leftmarginiii
+ \labelwidth\leftmarginiii\advance\labelwidth-\labelsep
+ \topsep 2pt plus 1pt minus 1pt 
+ \parsep \z@ \partopsep 1pt plus 0pt minus 1pt
+ \itemsep \topsep}
+\def\@listiv{\leftmargin\leftmarginiv
+ \labelwidth\leftmarginiv\advance\labelwidth-\labelsep}
+\def\@listv{\leftmargin\leftmarginv
+ \labelwidth\leftmarginv\advance\labelwidth-\labelsep}
+\def\@listvi{\leftmargin\leftmarginvi
+ \labelwidth\leftmarginvi\advance\labelwidth-\labelsep}
+
+\def\@myfiguredottedtocline#1#2#3#4#5{%
+\vskip \z@ \@plus.2\p@
+{\leftskip #2\relax \rightskip \@tocrmarg \parfillskip -\rightskip
+\parindent #2\relax\@afterindenttrue
+\interlinepenalty\@M
+\leavevmode
+\@tempdima #3\relax
+\advance\leftskip \@tempdima \null\nobreak\hskip -\leftskip
+{\ift@rkish{Şekil }\else{Figure }\fi\relax #4}\nobreak
+\leaders\hbox{$\m@th
+\mkern \@dotsep mu\hbox{.}\mkern \@dotsep
+mu$}\hfill
+\nobreak
+\hb@xt@\@pnumwidth{\hfil\normalfont \normalcolor #5}%
+\par}%
+}
+
+\def\@mytabledottedtocline#1#2#3#4#5{%
+\vskip \z@ \@plus.2\p@
+{\leftskip #2\relax \rightskip \@tocrmarg \parfillskip -\rightskip
+\parindent #2\relax\@afterindenttrue
+\interlinepenalty\@M
+\leavevmode
+\@tempdima #3\relax
+\advance\leftskip \@tempdima \null\nobreak\hskip -\leftskip
+{\ift@rkish{Tablo }\else{Table }\fi\relax #4}\nobreak
+\leaders\hbox{$\m@th
+\mkern \@dotsep mu\hbox{.}\mkern \@dotsep
+mu$}\hfill
+\nobreak
+\hb@xt@\@pnumwidth{\hfil\normalfont \normalcolor #5}%
+\par}%
+}
+
+\def\@myalgodottedtocline#1#2#3#4#5{%
+\vskip \z@ \@plus.2\p@
+{\leftskip #2\relax \rightskip \@tocrmarg \parfillskip -\rightskip
+\parindent #2\relax\@afterindenttrue
+\interlinepenalty\@M
+\leavevmode
+\@tempdima #3\relax
+\advance\leftskip \@tempdima \null\nobreak\hskip -\leftskip
+{\ift@rkish{Algoritma }\else{Algorithm }\fi\relax #4}\nobreak
+\leaders\hbox{$\m@th
+\mkern \@dotsep mu\hbox{.}\mkern \@dotsep
+mu$}\hfill
+\nobreak
+\hb@xt@\@pnumwidth{\hfil\normalfont \normalcolor #5}%
+\par}%
+}

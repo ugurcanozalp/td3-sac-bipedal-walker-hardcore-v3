@@ -1,0 +1,48 @@
+\begin{thebibliography}{10}
+
+\bibitem{noauthor_bipedalwalker-v2_2021}
+{BipedalWalker}-v2, January 2021.
+
+\bibitem{noauthor_bipedalwalkerhardcore-v2_2021}
+{BipedalWalkerHardcore}-v2, January 2021.
+
+\bibitem{brockman_openai_2016}
+G.~Brockman, V.~Cheung, L.~Pettersson, J.~Schneider, J.~Schulman, J.~Tang, and
+  W.~Zaremba, {OpenAI} {Gym}, arXiv:1606.01540 [cs], June 2016, arXiv:
+  1606.01540.
+
+\bibitem{collobert_torch7_2011}
+R.~Collobert, K.~Kavukcuoglu, and C.~Farabet, Torch7: {A} {Matlab}-like
+  {Environment} for {Machine} {Learning}, 2011.
+
+\bibitem{mcculloch_logical_1943}
+W.~S. McCulloch and W.~Pitts, A logical calculus of the ideas immanent in
+  nervous activity, The bulletin of mathematical biophysics, 5(4), pp.
+  115--133, December 1943, ISSN 1522-9602.
+
+\bibitem{paszke_pytorch_2019}
+A.~Paszke, S.~Gross, F.~Massa, A.~Lerer, J.~Bradbury, G.~Chanan, T.~Killeen,
+  Z.~Lin, N.~Gimelshein, L.~Antiga, A.~Desmaison, A.~Kopf, E.~Yang, Z.~DeVito,
+  M.~Raison, A.~Tejani, S.~Chilamkurthy, B.~Steiner, L.~Fang, J.~Bai, and
+  S.~Chintala, {PyTorch}: {An} {Imperative} {Style}, {High}-{Performance}
+  {Deep} {Learning} {Library}, Advances in Neural Information Processing
+  Systems, 32, pp. 8026--8037, 2019.
+
+\bibitem{rosenblatt_perceptron_1958}
+F.~Rosenblatt, The perceptron: {A} probabilistic model for information storage
+  and organization in the brain., Psychological Review, 65, pp. 386--408, 1958.
+
+\bibitem{rumelhart_learning_1986}
+D.~E. Rumelhart, G.~E. Hinton, and R.~J. Williams, Learning representations by
+  back-propagating errors, Nature, 323(6088), pp. 533--536, October 1986, ISSN
+  1476-4687.
+
+\bibitem{russell_artificial_nodate}
+S.~J. Russell and P.~Norvig, \emph{Artificial {Intelligence} {A} {Modern}
+  {Approach}}, Prentice Hall, 3 edition, 1995, ISBN 9780136042594.
+
+\bibitem{vaswani_attention_2017}
+A.~Vaswani, N.~Shazeer, N.~Parmar, J.~Uszkoreit, L.~Jones, A.~N. Gomez,
+  L.~Kaiser, and I.~Polosukhin, Attention is {All} {You} {Need}, 2017.
+
+\end{thebibliography}
