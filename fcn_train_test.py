@@ -43,7 +43,7 @@ def train(env, agent, n_episodes=3000, model_type='unk', score_limit=280.0, expl
                 break
             agent.train_mode() # when the test done, come back to train mode.
 
-    return np.array(scores), np.array(test_scores)
+    return np.array(scores).transpose(), np.array(test_scores).transpose()
 
 def test(env, agent, render=True):
     state = env.reset()
