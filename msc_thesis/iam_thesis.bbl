@@ -6,6 +6,11 @@
 \bibitem{noauthor_bipedalwalkerhardcore-v2_2021}
 {BipedalWalkerHardcore}-v2, January 2021.
 
+\bibitem{abbeel_application_2006}
+P.~Abbeel, A.~Coates, M.~Quigley, and A.~Ng, An {Application} of
+  {Reinforcement} {Learning} to {Aerobatic} {Helicopter} {Flight}, in
+  \emph{{NIPS}}, 2006.
+
 \bibitem{brockman_openai_2016}
 G.~Brockman, V.~Cheung, L.~Pettersson, J.~Schneider, J.~Schulman, J.~Tang, and
   W.~Zaremba, {OpenAI} {Gym}, arXiv:1606.01540 [cs], June 2016, arXiv:
@@ -15,10 +20,24 @@ G.~Brockman, V.~Cheung, L.~Pettersson, J.~Schneider, J.~Schulman, J.~Tang, and
 R.~Collobert, K.~Kavukcuoglu, and C.~Farabet, Torch7: {A} {Matlab}-like
   {Environment} for {Machine} {Learning}, 2011.
 
+\bibitem{kopsa_reinforcement_2018}
+K.~Kopşa and A.~T. Kutay, \emph{Reinforcement learning control for
+  autorotation of a simple point-mass helicopter model}, METU, Ankara, 2018.
+
+\bibitem{kumar_bipedal_2018}
+A.~Kumar, N.~Paul, and S.~N. Omkar, Bipedal {Walking} {Robot} using {Deep}
+  {Deterministic} {Policy} {Gradient}, arXiv:1807.05924 [cs], July 2018, arXiv:
+  1807.05924.
+
 \bibitem{mcculloch_logical_1943}
 W.~S. McCulloch and W.~Pitts, A logical calculus of the ideas immanent in
   nervous activity, The bulletin of mathematical biophysics, 5(4), pp.
   115--133, December 1943, ISSN 1522-9602.
+
+\bibitem{pan_virtual_2017}
+X.~Pan, Y.~You, Z.~Wang, and C.~Lu, Virtual to {Real} {Reinforcement}
+  {Learning} for {Autonomous} {Driving}, arXiv:1704.03952 [cs], September 2017,
+  arXiv: 1704.03952.
 
 \bibitem{paszke_pytorch_2019}
 A.~Paszke, S.~Gross, F.~Massa, A.~Lerer, J.~Bradbury, G.~Chanan, T.~Killeen,
@@ -27,6 +46,9 @@ A.~Paszke, S.~Gross, F.~Massa, A.~Lerer, J.~Bradbury, G.~Chanan, T.~Killeen,
   S.~Chintala, {PyTorch}: {An} {Imperative} {Style}, {High}-{Performance}
   {Deep} {Learning} {Library}, Advances in Neural Information Processing
   Systems, 32, pp. 8026--8037, 2019.
+
+\bibitem{rastogi_deep_2017}
+D.~Rastogi, Deep {Reinforcement} {Learning} for {Bipedal} {Robots}, 2017.
 
 \bibitem{rosenblatt_perceptron_1958}
 F.~Rosenblatt, The perceptron: {A} probabilistic model for information storage
@@ -41,8 +63,36 @@ D.~E. Rumelhart, G.~E. Hinton, and R.~J. Williams, Learning representations by
 S.~J. Russell and P.~Norvig, \emph{Artificial {Intelligence} {A} {Modern}
   {Approach}}, Prentice Hall, 3 edition, 1995, ISBN 9780136042594.
 
+\bibitem{sallab_deep_2017}
+A.~E. Sallab, M.~Abdou, E.~Perot, and S.~Yogamani, Deep {Reinforcement}
+  {Learning} framework for {Autonomous} {Driving}, Electronic Imaging,
+  2017(19), pp. 70--76, January 2017.
+
+\bibitem{santos_experimental_2012}
+S.~R. B.~d. Santos, S.~N. Givigi, and C.~L.~N. Júnior, An experimental
+  validation of reinforcement learning applied to the position control of
+  {UAVs}, in \emph{2012 {IEEE} {International} {Conference} on {Systems},
+  {Man}, and {Cybernetics} ({SMC})}, pp. 2796--2802, October 2012, iSSN:
+  1062-922X.
+
+\bibitem{shalev-shwartz_safe_2016}
+S.~Shalev-Shwartz, S.~Shammah, and A.~Shashua, Safe, {Multi}-{Agent},
+  {Reinforcement} {Learning} for {Autonomous} {Driving}, arXiv:1610.03295 [cs,
+  stat], October 2016, arXiv: 1610.03295.
+
+\bibitem{song_recurrent_2018}
+D.~R. Song, C.~Yang, C.~McGreavy, and Z.~Li, Recurrent {Deterministic} {Policy}
+  {Gradient} {Method} for {Bipedal} {Locomotion} on {Rough} {Terrain}
+  {Challenge}, in \emph{2018 15th {International} {Conference} on {Control},
+  {Automation}, {Robotics} and {Vision} ({ICARCV})}, pp. 311--318, November
+  2018.
+
 \bibitem{vaswani_attention_2017}
 A.~Vaswani, N.~Shazeer, N.~Parmar, J.~Uszkoreit, L.~Jones, A.~N. Gomez,
   L.~Kaiser, and I.~Polosukhin, Attention is {All} {You} {Need}, 2017.
+
+\bibitem{wang_deep_2019}
+S.~Wang, D.~Jia, and X.~Weng, Deep {Reinforcement} {Learning} for {Autonomous}
+  {Driving}, arXiv:1811.11329 [cs], May 2019, arXiv: 1811.11329.
 
 \end{thebibliography}
