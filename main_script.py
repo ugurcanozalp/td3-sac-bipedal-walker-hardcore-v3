@@ -36,11 +36,11 @@ else:
 
 if args.env == 'classic':
     env = gym.make('BipedalWalker-v3')
+    #env._max_episode_steps = 1600
 elif args.env == 'hardcore':
     env = gym.make('BipedalWalkerHardcore-v3')
+    #env._max_episode_steps = 2000
     
-env._max_episode_steps = 1000
-
 if args.model_type in ['lstm', 'bilstm','trsf']:
     env = BoxToHistoryBox(env, h=8)
 
@@ -72,6 +72,9 @@ if args.flag == 'train':
     fig.savefig(os.path.join("results", args.model_type+'-'+args.rl_type+'.png'))
     fig.show()
     env.close()
+    np.savetxt(os.path.join("results", "train"+"-",args.model_type+'-'+args.rl_type+'.txt'), scores, fmt="%.6e")
+    np.savetxt(os.path.join("results", "test"+"-",args.model_type+'-'+args.rl_type+'.txt'), test_scores, fmt="%.6e")
+
 elif args.flag == 'test':
     #agent.freeze_networks()
     agent.eval_mode()
