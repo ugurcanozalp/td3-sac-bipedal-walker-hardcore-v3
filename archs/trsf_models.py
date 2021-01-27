@@ -38,15 +38,15 @@ class WeightedMeanPooling(nn.Module):
 
 class StableTransformerEncoder(nn.Module):
 
-    def __init__(self, num_layers, d_in, d_model, nhead, dim_feedforward=128, dropout=0.0, use_gate=True):
+    def __init__(self, num_layers, d_in, d_model, nhead, dim_feedforward=128, dropout=0.0, use_gate=True, seq_len=16):
         super(StableTransformerEncoder,self).__init__()
         self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model), nn.Tanh()) # 
         nn.init.xavier_uniform_(self.inp_embedding[0].weight, gain=nn.init.calculate_gain('tanh')) # 
-        #self.pos_embedding = LearnablePositionalEncoding(d_model, max_len=8)
-        self.pos_embedding = PositionalEncoding(d_model, max_len=8, ratio=None)
+        #self.pos_embedding = LearnablePositionalEncoding(d_model, seq_len=8)
+        self.pos_embedding = PositionalEncoding(d_model, seq_len=seq_len, ratio=None)
         st_layer = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, use_gate)
         self.encoder = TransformerEncoder(st_layer, num_layers)
-        self.pooler = WeightedMeanPooling(seq_len=8)
+        self.pooler = WeightedMeanPooling(seq_len=seq_len)
         #self.pooler = LastStatePooler()
         self.layn = nn.LayerNorm(d_model)
 
@@ -55,13 +55,13 @@ class StableTransformerEncoder(nn.Module):
         x = self.inp_embedding(x)
         x = self.pos_embedding(x)
         x = self.encoder(x.permute(1,0,2)) # batch, seq, emb -> seq, batch, emb
-        x = self.pooler(x.permute(1,0,2)) # seq, batch, emb -> batch, seq, emb 
+        x = self.pooler(x.permute(1,0,2)) # seq, batch, emb -> batch, emb 
         x = self.layn(x)
         return x
 
 class Critic(nn.Module):
 
-    def __init__(self, state_dim=24, action_dim=4, max_len=8):
+    def __init__(self, state_dim=24, action_dim=4):
         """
         :param state_dim: Dimension of input state (int)
         :param action_dim: Dimension of input action (int)
@@ -104,7 +104,7 @@ class Critic(nn.Module):
 
 class Actor(nn.Module):
 
-    def __init__(self, state_dim=24, action_dim=4, max_len=8):
+    def __init__(self, state_dim=24, action_dim=4):
         """
         :param state_dim: Dimension of input state (int)
         :param action_dim: Dimension of output action (int)

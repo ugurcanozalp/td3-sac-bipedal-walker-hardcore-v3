@@ -36,13 +36,13 @@ else:
 
 if args.env == 'classic':
     env = gym.make('BipedalWalker-v3')
-    #env._max_episode_steps = 1600
+    #env._max_episode_steps = 1200
 elif args.env == 'hardcore':
     env = gym.make('BipedalWalkerHardcore-v3')
-    #env._max_episode_steps = 2000
+    #env._max_episode_steps = 1600
     
 if args.model_type in ['lstm', 'bilstm','trsf']:
-    env = BoxToHistoryBox(env, h=8)
+    env = BoxToHistoryBox(env, h=16)
 
 if args.rl_type=='ddpg':
     agent = DDPGAgent(Actor, Critic, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1], lr=args.lr)

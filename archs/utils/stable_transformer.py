@@ -33,11 +33,11 @@ class GRUGate(nn.Module):
         return (1.-z)*x + z*h_hat
 
 class PositionalEncoding(nn.Module):
-    def __init__(self, d_model, max_len=16, ratio=None):
+    def __init__(self, d_model, seq_len=16, ratio=None):
         super(PositionalEncoding, self).__init__()
         self.embedding_scale = d_model**0.5
-        pe = torch.zeros(max_len, d_model)
-        position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
+        pe = torch.zeros(seq_len, d_model)
+        position = torch.arange(0, seq_len, dtype=torch.float).unsqueeze(1)
         _log10000 = 9.21034037198
         #_log1000 = 6.907755278982137
         #_log100 = 4.605170185988092
@@ -57,9 +57,9 @@ class PositionalEncoding(nn.Module):
         return x
 
 class LearnablePositionalEncoding(nn.Module):
-    def __init__(self, d_model, max_len=16):
+    def __init__(self, d_model, seq_len=16):
         super(LearnablePositionalEncoding, self).__init__()
-        self.embedding = nn.Parameter(torch.zeros(max_len, d_model))
+        self.embedding = nn.Parameter(torch.zeros(seq_len, d_model))
         torch.nn.init.orthogonal_(self.embedding, gain=1.0)
     def forward(self, x):
         return x + self.embedding[:x.size(1)].unsqueeze(0)
