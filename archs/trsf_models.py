@@ -38,7 +38,7 @@ class WeightedMeanPooling(nn.Module):
 
 class StableTransformerEncoder(nn.Module):
 
-    def __init__(self, num_layers, d_in, d_model, nhead, dim_feedforward=128, dropout=0.0, use_gate=True, seq_len=16):
+    def __init__(self, num_layers, d_in, d_model, nhead, dim_feedforward=128, dropout=0.1, use_gate=True, seq_len=16):
         super(StableTransformerEncoder,self).__init__()
         self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model), nn.Tanh()) # 
         nn.init.xavier_uniform_(self.inp_embedding[0].weight, gain=nn.init.calculate_gain('tanh')) # 
@@ -73,7 +73,7 @@ class Critic(nn.Module):
         self.action_dim = action_dim
         
         self.state_encoder = StableTransformerEncoder(num_layers=1, d_in=self.state_dim,
-            d_model=96, nhead=4, dim_feedforward=192, dropout=0, use_gate = False)
+            d_model=96, nhead=4, dim_feedforward=192, dropout=0.0, use_gate = False)
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 96), nn.Tanh()) # 
         nn.init.xavier_uniform_(self.action_encoder[0].weight, gain=nn.init.calculate_gain('tanh')) # 
 
@@ -117,7 +117,7 @@ class Actor(nn.Module):
         self.action_dim = action_dim
         
         self.state_encoder = StableTransformerEncoder(num_layers=1, d_in=self.state_dim,
-            d_model=96, nhead=4, dim_feedforward=192, dropout=0, use_gate = False)
+            d_model=96, nhead=4, dim_feedforward=192, dropout=0.0, use_gate = False)
 
         self.fc = nn.Linear(96,action_dim)
         nn.init.xavier_uniform_(self.fc.weight, gain=nn.init.calculate_gain('tanh'))

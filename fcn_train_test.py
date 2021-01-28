@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt
 from collections import deque
 
-def train(env, agent, n_episodes=3000, model_type='unk', score_limit=200.0, explore_episode=50, test_f=100, max_tstep=800):
+def train(env, agent, n_episodes=3000, model_type='unk', score_limit=300.0, explore_episode=20, test_f=100):
     scores_deque = deque(maxlen=100)
     scores = []
     test_scores = []
@@ -14,10 +14,10 @@ def train(env, agent, n_episodes=3000, model_type='unk', score_limit=200.0, expl
         state = env.reset()
         score = 0
         done = False
-
-        t = int(0)
-        while not done and t<max_tstep:
-            t += int(1)
+        
+        #t = int(0)
+        while not done:    
+            #t += int(1)
             if i_episode>explore_episode:
                 action = agent.get_action(state, explore=True)
                 action = action.clip(min=env.action_space.low, max=env.action_space.high)
@@ -35,7 +35,7 @@ def train(env, agent, n_episodes=3000, model_type='unk', score_limit=200.0, expl
         avg_score_100 = np.mean(scores_deque)
         print('\rEpisode {}\tAverage Score: {:.2f}\tScore: {:.2f}'.format(i_episode, avg_score_100, score), end="")
 
-        if i_episode % test_f == 0 or avg_score_100>280.0:
+        if i_episode % test_f == 0 or avg_score_100>score_limit:
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_deque)))
             agent.eval_mode() # test in eval mode.
             test_score = test(env, agent, render=False)

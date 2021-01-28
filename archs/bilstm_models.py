@@ -26,11 +26,12 @@ class MaxPooler(nn.Module):
         return x 
 
 class NormalizedLSTM(nn.Module):
-    def __init__(self, input_size, hidden_size=64, batch_first=True, bidirectional=True, num_layers=1):
+    def __init__(self, input_size, hidden_size=64, batch_first=True, bidirectional=True, num_layers=1, dropout=0.1):
         super(NormalizedLSTM, self).__init__()
         self.embedding = nn.Sequential(nn.Linear(input_size, hidden_size), nn.Tanh())
         nn.init.xavier_uniform_(self.embedding[0].weight, gain=nn.init.calculate_gain('tanh'))
-        self.lstm = nn.LSTM(hidden_size, hidden_size=hidden_size, batch_first=batch_first, bidirectional=bidirectional, num_layers=num_layers)
+        self.dropout = nn.Dropout(dropout)
+        self.lstm = nn.LSTM(hidden_size, hidden_size=hidden_size, batch_first=batch_first, bidirectional=bidirectional, num_layers=num_layers, dropout=dropout)
         self.pooler = LastStatePooler()
 
     def forward(self, x):
@@ -38,6 +39,7 @@ class NormalizedLSTM(nn.Module):
         #h = torch.stack((x[:,0], x[:,-1])).contiguous()
         #c = torch.zeros_like(h).contiguous()
         #x, (_, _) = self.lstm(x, (h, c))
+        x = self.dropout(x)
         x, (_, _) = self.lstm(x)
         x = self.pooler(x)
         return x
@@ -55,7 +57,7 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=64, batch_first=True, bidirectional=True, num_layers=1)
+        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=64, batch_first=True, bidirectional=True, num_layers=1, dropout=0.0)
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64*2), nn.Tanh())
         nn.init.xavier_uniform_(self.action_encoder[0].weight, gain=nn.init.calculate_gain('tanh'))
 
@@ -98,7 +100,7 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=64, batch_first=True, bidirectional=True, num_layers=1)
+        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=64, batch_first=True, bidirectional=True, num_layers=1, dropout=0.0)
 
         self.fc = nn.Linear(64*2,action_dim)
         nn.init.xavier_uniform_(self.fc.weight, gain=nn.init.calculate_gain('tanh'))
