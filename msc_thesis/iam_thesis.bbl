@@ -20,6 +20,20 @@ G.~Brockman, V.~Cheung, L.~Pettersson, J.~Schneider, J.~Schulman, J.~Tang, and
 R.~Collobert, K.~Kavukcuoglu, and C.~Farabet, Torch7: {A} {Matlab}-like
   {Environment} for {Machine} {Learning}, 2011.
 
+\bibitem{fris_landing_2020}
+R.~Fris, The {Landing} of a {Quadcopter} on {Inclined} {Surfaces} using
+  {Reinforcement} {Learning}, 2020.
+
+\bibitem{fu_when_2020}
+X.~Fu, F.~Gao, and J.~Wu, When {Do} {Drivers} {Concentrate}? {Attention}-based
+  {Driver} {Behavior} {Modeling} {With} {Deep} {Reinforcement} {Learning},
+  arXiv:2002.11385 [cs], June 2020, arXiv: 2002.11385.
+
+\bibitem{heess_memory-based_2015}
+N.~Heess, J.~J. Hunt, T.~P. Lillicrap, and D.~Silver, Memory-based control with
+  recurrent neural networks, arXiv:1512.04455 [cs], December 2015, arXiv:
+  1512.04455.
+
 \bibitem{kopsa_reinforcement_2018}
 K.~Kopşa and A.~T. Kutay, \emph{Reinforcement learning control for
   autorotation of a simple point-mass helicopter model}, METU, Ankara, 2018.
@@ -86,6 +100,11 @@ D.~R. Song, C.~Yang, C.~McGreavy, and Z.~Li, Recurrent {Deterministic} {Policy}
   {Challenge}, in \emph{2018 15th {International} {Conference} on {Control},
   {Automation}, {Robotics} and {Vision} ({ICARCV})}, pp. 311--318, November
   2018.
+
+\bibitem{upadhyay_transformer_2019}
+U.~Upadhyay, N.~Shah, S.~Ravikanti, and M.~Medhe, Transformer {Based}
+  {Reinforcement} {Learning} {For} {Games}, arXiv:1912.03918 [cs], December
+  2019, arXiv: 1912.03918.
 
 \bibitem{vaswani_attention_2017}
 A.~Vaswani, N.~Shazeer, N.~Parmar, J.~Uszkoreit, L.~Jones, A.~N. Gomez,

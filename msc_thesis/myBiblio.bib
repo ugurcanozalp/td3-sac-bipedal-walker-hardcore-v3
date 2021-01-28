@@ -257,6 +257,31 @@ Let’s begin by looking at the model as a single black box. In a machine transl
 	keywords = {Computer Science - Machine Learning, Computer Science - Neural and Evolutionary Computing},
 }
 
+
+@article{fris_landing_2020,
+	title = {The {Landing} of a {Quadcopter} on {Inclined} {Surfaces} using {Reinforcement} {Learning}},
+	url = {https://repository.tudelft.nl/islandora/object/uuid%3A5b6fd0d1-5d18-4de7-878d-e22e4df45d3c},
+	abstract = {Deep Reinforcement Learning (DRL) enables us to design controllers for complex tasks with a deep learning approach. It allows us to design controllers that are otherwise cumbersome to design with conventional control methodologies. Often, an objective for RL is binary in nature. However, exploring in environments with sparse rewards is a problem in RL, and finding positive reward becomes exponentially more difficult with increased environment complexity. For this project, our objective is to design an RL based controller for the landing of a quadcopter on inclined surfaces. Landing is defined as reaching these inclined surfaces with reasonable speed, such that no damage is done to either the quadcopter or the surface to land on upon impact. We aim to use a binary reward for this task. We use methods to aid exploration in sparse reward environments, namely Hindsight Experience Replay (HER), and non-optimized demonstrations. HER can resample goals from the demonstrator data and the policy rollouts. The resampling of goals is done by considering a portion of the visited states during policy rollouts as the intended goals. The demonstrations are non-optimized in the sense that the demonstrations do not follow the same objective as ours. We consider demonstrations valid if these demonstrations are obtained from arbitrary stable policies. Our results show that the RL system does generalize to other goals when using HER and demonstrations. The demonstrations are not imitated as were to happen in pure imitation learning. HER, on the other hand, enabled us to receive reward in our complex environment, while also allowing us to experience multiple goals in one policy rollout. We found that lack of HER and demonstrations were not able to overcome the problems of exploration in sparse reward environments. We found that landing a quadcopter on inclined surfaces using an RL controller is feasible. Our trajectories clearly showed a swinging motion which in theory should be a valid control strategy for this problem. This swinging motion results in dead spots with the quadcopter being in a state with a minimal translational and rotational velocities under a relatively large angle. Further research is needed to increase the accuracy and robustness of our RL based controller.},
+	language = {en},
+	urldate = {2021-01-28},
+	author = {Fris, Rein},
+	year = {2020},
+}
+
+@article{fu_when_2020,
+	title = {When {Do} {Drivers} {Concentrate}? {Attention}-based {Driver} {Behavior} {Modeling} {With} {Deep} {Reinforcement} {Learning}},
+	shorttitle = {When {Do} {Drivers} {Concentrate}?},
+	url = {http://arxiv.org/abs/2002.11385},
+	abstract = {Driver distraction a significant risk to driving safety. Apart from spatial domain, research on temporal inattention is also necessary. This paper aims to figure out the pattern of drivers' temporal attention allocation. In this paper, we propose an actor-critic method - Attention-based Twin Delayed Deep Deterministic policy gradient (ATD3) algorithm to approximate a driver' s action according to observations and measure the driver' s attention allocation for consecutive time steps in car-following model. Considering reaction time, we construct the attention mechanism in the actor network to capture temporal dependencies of consecutive observations. In the critic network, we employ Twin Delayed Deep Deterministic policy gradient algorithm (TD3) to address overestimated value estimates persisting in the actor-critic algorithm. We conduct experiments on real-world vehicle trajectory datasets and show that the accuracy of our proposed approach outperforms seven baseline algorithms. Moreover, the results reveal that the attention of the drivers in smooth vehicles is uniformly distributed in previous observations while they keep their attention to recent observations when sudden decreases of relative speeds occur. This study is the first contribution to drivers' temporal attention and provides scientific support for safety measures in transportation systems from the perspective of data mining.},
+	urldate = {2021-01-28},
+	journal = {arXiv:2002.11385 [cs]},
+	author = {Fu, Xingbo and Gao, Feng and Wu, Jiang},
+	month = jun,
+	year = {2020},
+	note = {arXiv: 2002.11385},
+	keywords = {Computer Science - Artificial Intelligence, Computer Science - Machine Learning},
+}
+
 @article{fujimoto_addressing_2018,
 	title = {Addressing {Function} {Approximation} {Error} in {Actor}-{Critic} {Methods}},
 	url = {http://arxiv.org/abs/1802.09477},
