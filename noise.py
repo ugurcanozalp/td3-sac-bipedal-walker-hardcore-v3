@@ -30,6 +30,27 @@ class OrnsteinUhlenbeckNoise:
         return x
 
 
+class DecayingGaussianNoise:
+    def __init__(self, mu, end_sigma = 0.12, start_sigma = 0.5, decay_step = 250000, clip=None):
+        # 5.0, 0.02, 1.0 # 1.0, 0.02, 0.25 # 7.5, 0.02, 1.4 # 5.0, 0.02, 0.7
+        self.mu = mu
+        self.clip = clip   
+        self.end_sigma = end_sigma
+        self.start_sigma = start_sigma 
+        self._delta_sigma = float(self.end_sigma - self.start_sigma) / float(decay_step)
+        self._current_sigma = self.start_sigma
+
+    def update_sigma(self):
+        self._current_sigma = max(self.end_sigma, self._current_sigma - self._delta_sigma)
+
+    def __call__(self):
+        x = self._current_sigma * np.random.normal(size=self.mu.shape)
+        if self.clip is not None:
+            x = x.clip(-self.clip,+self.clip)
+
+        self.update_sigma()
+        return x
+
 """
 class OrnsteinUhlenbeckNoise:
     def __init__(self, mu, theta = 7.5, dt = 0.02, sigma_max = 1.3, sigma_min = 1.3, n_steps_annealing = 2000):
