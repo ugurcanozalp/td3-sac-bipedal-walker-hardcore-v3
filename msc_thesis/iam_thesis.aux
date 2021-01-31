@@ -87,7 +87,8 @@
 \newlabel{sec:relatedwork}{{1.3}{4}{Related Work}{section.1.3}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {1.4}Outline of the Thesis}{5}{section.1.4}\protected@file@percent }
 \newlabel{sec:outline}{{1.4}{5}{Outline of the Thesis}{section.1.4}{}}
-\citation{russell_artificial_nodate}
+\citation{mitchell_machine_1997}
+\citation{sutton_reinforcement_1998}
 \@writefile{toc}{\contentsline {chapter}{\numberline {2}\MakeUppercase  {REINFORCEMENT LEARNING}}{7}{chapter.2}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -96,11 +97,12 @@
 \@writefile{toc}{\contentsline {section}{\numberline {2.1}Reinforcement Learning and Optimal Control}{7}{section.2.1}\protected@file@percent }
 \newlabel{sec:rl_and_control}{{2.1}{7}{Reinforcement Learning and Optimal Control}{section.2.1}{}}
 \citation{russell_artificial_nodate}
+\citation{russell_artificial_nodate}
 \@writefile{toc}{\contentsline {section}{\numberline {2.2}Differences from Supervised and Unsupervised Learning}{8}{section.2.2}\protected@file@percent }
 \newlabel{sec:ml}{{2.2}{8}{Differences from Supervised and Unsupervised Learning}{section.2.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.3}Markov Decision Process}{8}{section.2.3}\protected@file@percent }
-\newlabel{sec:mdp}{{2.3}{8}{Markov Decision Process}{section.2.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Model}{8}{subsection.2.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Markov Decision Process}{9}{section.2.3}\protected@file@percent }
+\newlabel{sec:mdp}{{2.3}{9}{Markov Decision Process}{section.2.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Model}{9}{subsection.2.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1.1}Policy}{9}{subsubsection.2.3.1.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1.2}Reward}{9}{subsubsection.2.3.1.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Return and Discount Factor}{9}{subsection.2.3.2}\protected@file@percent }
@@ -121,70 +123,66 @@
 \newlabel{chap:dnns}{{3}{11}{NEURAL NETWORKS AND DEEP LEARNING}{chapter.3}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.1}Neural Networks}{11}{section.3.1}\protected@file@percent }
 \newlabel{sec:nnet}{{3.1}{11}{Neural Networks}{section.3.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Perceptron}{11}{subsection.3.1.1}\protected@file@percent }
-\newlabel{eqn:perceptron1}{{3.1}{11}{Perceptron}{equation.3.1.1}{}}
-\newlabel{eqn:stepfun}{{3.2}{12}{Perceptron}{equation.3.1.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Perceptron as Neural Layer}{12}{subsection.3.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}Feed Forward Neural Networks (Multilayer Perceptron)}{12}{subsection.3.1.3}\protected@file@percent }
-\newlabel{eqn:mlpact}{{3.3}{12}{Feed Forward Neural Networks (Multilayer Perceptron)}{equation.3.1.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.4}Convolutional Neural Networks}{13}{subsection.3.1.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.4.1}Convolution Operation}{13}{subsubsection.3.1.4.1}\protected@file@percent }
-\newlabel{eqn:conv1d}{{3.4}{13}{Convolution Operation}{equation.3.1.4}{}}
-\newlabel{eqn:conv2d}{{3.5}{13}{Convolution Operation}{equation.3.1.5}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.4.2}Nonlinear Activation}{13}{subsubsection.3.1.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Numerical Optimization}{11}{section.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Neural Network Types}{12}{section.3.3}\protected@file@percent }
+\newlabel{sec:nnet_types}{{3.3}{12}{Neural Network Types}{section.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Perceptron}{12}{subsection.3.3.1}\protected@file@percent }
+\newlabel{eqn:perceptron1}{{3.1}{12}{Perceptron}{equation.3.3.1}{}}
+\newlabel{eqn:stepfun}{{3.2}{12}{Perceptron}{equation.3.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Feed Forward Neural Networks (Multilayer Perceptron)}{12}{subsection.3.3.2}\protected@file@percent }
 \citation{rumelhart_learning_1986}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.4.3}Pooling}{14}{subsubsection.3.1.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.5}Recurrent Neural Networks}{14}{subsection.3.1.5}\protected@file@percent }
-\newlabel{eqn:rnnact}{{3.6}{14}{Recurrent Neural Networks}{equation.3.1.6}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.5.1}Long Term Dependence Problem of Vanilla RNNs}{14}{subsubsection.3.1.5.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Recurrent Layer (left) and Feed Forward Layer (right) illustration.\relax }}{15}{figure.caption.9}\protected@file@percent }
-\newlabel{fig:rnn_vs_ffnn}{{3.1}{15}{Recurrent Layer (left) and Feed Forward Layer (right) illustration.\relax }{figure.caption.9}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces LSTM Cell.\relax }}{15}{figure.caption.10}\protected@file@percent }
-\newlabel{fig:lstm_cell}{{3.2}{15}{LSTM Cell.\relax }{figure.caption.10}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.5.2}Long Short Term Memory}{15}{subsubsection.3.1.5.2}\protected@file@percent }
-\newlabel{eqn:lstm_forget}{{3.7}{16}{Long Short Term Memory}{equation.3.1.7}{}}
-\newlabel{eqn:lstm_inp}{{3.8}{16}{Long Short Term Memory}{equation.3.1.8}{}}
-\newlabel{eqn:lstm_cellstcand}{{3.9}{16}{Long Short Term Memory}{equation.3.1.9}{}}
-\newlabel{eqn:lstm_cellstupt}{{3.10}{16}{Long Short Term Memory}{equation.3.1.10}{}}
-\newlabel{eqn:lstm_out}{{3.11}{16}{Long Short Term Memory}{equation.3.1.11}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.6}Attention Mechanism}{16}{subsection.3.1.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Recurrent Layer (left) and Feed Forward Layer (right) illustration.\relax }}{13}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:rnn_vs_ffnn}{{3.1}{13}{Recurrent Layer (left) and Feed Forward Layer (right) illustration.\relax }{figure.caption.9}{}}
+\newlabel{eqn:mlpact}{{3.3}{13}{Feed Forward Neural Networks (Multilayer Perceptron)}{equation.3.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}Recurrent Neural Networks}{13}{subsection.3.3.3}\protected@file@percent }
+\newlabel{eqn:rnnact}{{3.4}{13}{Recurrent Neural Networks}{equation.3.3.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces LSTM Cell.\relax }}{14}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:lstm_cell}{{3.2}{14}{LSTM Cell.\relax }{figure.caption.10}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3.1}Long Term Dependence Problem of Vanilla RNNs}{14}{subsubsection.3.3.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3.2}Long Short Term Memory}{14}{subsubsection.3.3.3.2}\protected@file@percent }
+\newlabel{eqn:lstm_forget}{{3.5}{14}{Long Short Term Memory}{equation.3.3.5}{}}
+\newlabel{eqn:lstm_inp}{{3.6}{15}{Long Short Term Memory}{equation.3.3.6}{}}
+\newlabel{eqn:lstm_cellstcand}{{3.7}{15}{Long Short Term Memory}{equation.3.3.7}{}}
+\newlabel{eqn:lstm_cellstupt}{{3.8}{15}{Long Short Term Memory}{equation.3.3.8}{}}
+\newlabel{eqn:lstm_out}{{3.9}{15}{Long Short Term Memory}{equation.3.3.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.4}Attention Mechanism}{15}{subsection.3.3.4}\protected@file@percent }
 \citation{vaswani_attention_2017}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.6.1}Transformer}{17}{subsubsection.3.1.6.1}\protected@file@percent }
-\newlabel{eq:layernorm_statistics}{{3.17}{18}{Transformer}{equation.3.1.17}{}}
-\newlabel{eqn:layernorm}{{3.18}{18}{Transformer}{equation.3.1.18}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.6.2}Pre-Layer Normalized Transformer}{19}{subsubsection.3.1.6.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}\MakeUppercase  {DEEP REINFORCEMENT LEARNING}}{21}{chapter.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.4.1}Transformer}{16}{subsubsection.3.3.4.1}\protected@file@percent }
+\newlabel{eq:layernorm_statistics}{{3.15}{17}{Transformer}{equation.3.3.15}{}}
+\newlabel{eqn:layernorm}{{3.16}{17}{Transformer}{equation.3.3.16}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.4.2}Pre-Layer Normalized Transformer}{18}{subsubsection.3.3.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}\MakeUppercase  {DEEP REINFORCEMENT LEARNING}}{19}{chapter.4}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
-\newlabel{chap:methodology}{{4}{21}{DEEP REINFORCEMENT LEARNING}{chapter.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Deep Reinforcement Learning Algorithms on Continious Action Space}{21}{section.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Deep Deterministic Policy Gradient}{21}{subsection.4.1.1}\protected@file@percent }
-\newlabel{sec:ddpg}{{4.1.1}{21}{Deep Deterministic Policy Gradient}{subsection.4.1.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}Twin Delayed Deep Deterministic Policy Gradient}{21}{subsection.4.1.2}\protected@file@percent }
-\newlabel{sec:td3}{{4.1.2}{21}{Twin Delayed Deep Deterministic Policy Gradient}{subsection.4.1.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Evaluation}{21}{section.4.2}\protected@file@percent }
-\newlabel{sec:evaluation}{{4.2}{21}{Evaluation}{section.4.2}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}\MakeUppercase  {BIPEDAL WALKING WITH TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}}{23}{chapter.5}\protected@file@percent }
+\newlabel{chap:methodology}{{4}{19}{DEEP REINFORCEMENT LEARNING}{chapter.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Deep Reinforcement Learning Algorithms on Continious Action Space}{19}{section.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Deep Deterministic Policy Gradient}{19}{subsection.4.1.1}\protected@file@percent }
+\newlabel{sec:ddpg}{{4.1.1}{19}{Deep Deterministic Policy Gradient}{subsection.4.1.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}Twin Delayed Deep Deterministic Policy Gradient}{19}{subsection.4.1.2}\protected@file@percent }
+\newlabel{sec:td3}{{4.1.2}{19}{Twin Delayed Deep Deterministic Policy Gradient}{subsection.4.1.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Evaluation}{19}{section.4.2}\protected@file@percent }
+\newlabel{sec:evaluation}{{4.2}{19}{Evaluation}{section.4.2}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}\MakeUppercase  {BIPEDAL WALKING WITH TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}}{21}{chapter.5}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
-\newlabel{chap:exp_setup}{{5}{23}{BIPEDAL WALKING WITH TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}{chapter.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Details of the Environment}{23}{section.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}RL Method and hyperparameters}{24}{section.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Proposed Neural Networks}{24}{section.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}Feed Forward Network}{24}{subsection.5.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.2}Long Short Term Memory}{24}{subsection.5.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.3}Transformer (Pre-layer Normalized)}{24}{subsection.5.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.4}Results}{24}{section.5.4}\protected@file@percent }
+\newlabel{chap:exp_setup}{{5}{21}{BIPEDAL WALKING WITH TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}{chapter.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Details of the Environment}{21}{section.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}RL Method and hyperparameters}{22}{section.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Proposed Neural Networks}{22}{section.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}Feed Forward Network}{22}{subsection.5.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.2}Long Short Term Memory}{22}{subsection.5.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.3}Transformer (Pre-layer Normalized)}{22}{subsection.5.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}Results}{22}{section.5.4}\protected@file@percent }
 \bibdata{myBiblio}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}\MakeUppercase  {CONCLUSION AND FUTURE WORK}}{25}{chapter.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}\MakeUppercase  {CONCLUSION AND FUTURE WORK}}{23}{chapter.6}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
-\newlabel{chap:conclusion}{{6}{25}{CONCLUSION AND FUTURE WORK}{chapter.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.1}Conclusion}{25}{section.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.2}Future Work}{25}{section.6.2}\protected@file@percent }
+\newlabel{chap:conclusion}{{6}{23}{CONCLUSION AND FUTURE WORK}{chapter.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Conclusion}{23}{section.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Future Work}{23}{section.6.2}\protected@file@percent }
 \bibcite{noauthor_bipedalwalker-v2_2021}{1}
 \bibcite{noauthor_bipedalwalkerhardcore-v2_2021}{2}
 \bibcite{abbeel_application_2006}{3}
@@ -196,27 +194,29 @@
 \bibcite{kopsa_reinforcement_2018}{9}
 \bibcite{kumar_bipedal_2018}{10}
 \bibcite{mcculloch_logical_1943}{11}
-\bibcite{pan_virtual_2017}{12}
-\bibcite{paszke_pytorch_2019}{13}
-\@writefile{toc}{\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{27}{chapter*.11}\protected@file@percent }
-\bibcite{rastogi_deep_2017}{14}
-\bibcite{rosenblatt_perceptron_1958}{15}
-\bibcite{rumelhart_learning_1986}{16}
-\bibcite{russell_artificial_nodate}{17}
-\bibcite{sallab_deep_2017}{18}
-\bibcite{santos_experimental_2012}{19}
-\bibcite{shalev-shwartz_safe_2016}{20}
-\bibcite{song_recurrent_2018}{21}
-\bibcite{upadhyay_transformer_2019}{22}
-\bibcite{vaswani_attention_2017}{23}
-\bibcite{wang_deep_2019}{24}
+\bibcite{mitchell_machine_1997}{12}
+\bibcite{pan_virtual_2017}{13}
+\bibcite{paszke_pytorch_2019}{14}
+\@writefile{toc}{\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{25}{chapter*.11}\protected@file@percent }
+\bibcite{rastogi_deep_2017}{15}
+\bibcite{rosenblatt_perceptron_1958}{16}
+\bibcite{rumelhart_learning_1986}{17}
+\bibcite{russell_artificial_nodate}{18}
+\bibcite{sallab_deep_2017}{19}
+\bibcite{santos_experimental_2012}{20}
+\bibcite{shalev-shwartz_safe_2016}{21}
+\bibcite{song_recurrent_2018}{22}
+\bibcite{sutton_reinforcement_1998}{23}
+\bibcite{upadhyay_transformer_2019}{24}
+\bibcite{vaswani_attention_2017}{25}
+\bibcite{wang_deep_2019}{26}
 \bibstyle{iamBiblioStyle}
-\@writefile{toc}{\contentsline {nodots}{\numberline {}APPENDICES}{28}{chapter*.11}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}\MakeUppercase  {Proof of Some Theorem}}{29}{appendix.A}\protected@file@percent }
+\@writefile{toc}{\contentsline {nodots}{\numberline {}APPENDICES}{26}{chapter*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}\MakeUppercase  {Proof of Some Theorem}}{27}{appendix.A}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
-\newlabel{app:somethms}{{A}{29}{Proof of Some Theorem}{appendix.A}{}}
-\newlabel{`@lastpage'}{{A}{29}{Proof of Some Theorem}{listing.A.1}{}}
-\@writefile{lol}{\contentsline {listing}{\numberline {A.1}{\ignorespaces The \texttt  {lintest} function in a floating ``listing'' environment.\relax }}{30}{listing.A.1}\protected@file@percent }
-\newlabel{mfile:linetest-3}{{A.1}{30}{The \texttt {lintest} function in a floating ``listing'' environment.\relax }{listing.A.1}{}}
+\newlabel{app:somethms}{{A}{27}{Proof of Some Theorem}{appendix.A}{}}
+\newlabel{`@lastpage'}{{A}{27}{Proof of Some Theorem}{listing.A.1}{}}
+\@writefile{lol}{\contentsline {listing}{\numberline {A.1}{\ignorespaces The \texttt  {lintest} function in a floating ``listing'' environment.\relax }}{28}{listing.A.1}\protected@file@percent }
+\newlabel{mfile:linetest-3}{{A.1}{28}{The \texttt {lintest} function in a floating ``listing'' environment.\relax }{listing.A.1}{}}

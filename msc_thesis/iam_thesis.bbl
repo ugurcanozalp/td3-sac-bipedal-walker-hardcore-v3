@@ -48,6 +48,10 @@ W.~S. McCulloch and W.~Pitts, A logical calculus of the ideas immanent in
   nervous activity, The bulletin of mathematical biophysics, 5(4), pp.
   115--133, December 1943, ISSN 1522-9602.
 
+\bibitem{mitchell_machine_1997}
+T.~M. Mitchell, \emph{Machine {Learning}}, McGraw-Hill Education, New York, 1st
+  edition edition, March 1997, ISBN 9780070428072.
+
 \bibitem{pan_virtual_2017}
 X.~Pan, Y.~You, Z.~Wang, and C.~Lu, Virtual to {Real} {Reinforcement}
   {Learning} for {Autonomous} {Driving}, arXiv:1704.03952 [cs], September 2017,
@@ -100,6 +104,10 @@ D.~R. Song, C.~Yang, C.~McGreavy, and Z.~Li, Recurrent {Deterministic} {Policy}
   {Challenge}, in \emph{2018 15th {International} {Conference} on {Control},
   {Automation}, {Robotics} and {Vision} ({ICARCV})}, pp. 311--318, November
   2018.
+
+\bibitem{sutton_reinforcement_1998}
+R.~S. Sutton and A.~G. Barto, \emph{Reinforcement {Learning}: {An}
+  {Introduction}}, A Bradford Book, February 1998.
 
 \bibitem{upadhyay_transformer_2019}
 U.~Upadhyay, N.~Shah, S.~Ravikanti, and M.~Medhe, Transformer {Based}
