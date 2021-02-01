@@ -9,7 +9,7 @@ from itertools import chain
 # https://github.com/A-Raafat/DDPG-bipedal/blob/master/My_DDPG.ipynb
 class TD3Agent():
     rl_type = 'td3'
-    def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(2),
+    def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(4),
             lr=1e-4, weight_decay=1e-6, gamma=0.99, tau=0.005, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
@@ -96,7 +96,6 @@ class TD3Agent():
             
             self.actor_optim.zero_grad()
             actor_loss.backward()
-
             self.actor_optim.step()
         
             #using soft upates
@@ -161,3 +160,13 @@ class TD3Agent():
     def freeze_networks(self):
         for p in chain(self.train_actor.parameters(), self.train_critic_1.parameters(), self.train_critic_2.parameters()):
             p.requires_grad = False
+
+"""
+def eval_grad_norm(name, model):
+    total_norm = 0
+    for p in filter(lambda p: p.grad is not None, model.parameters()):
+        param_norm = p.grad.data.norm(2)
+        total_norm += param_norm.item() ** 2
+    total_norm = total_norm ** (1. / 2)
+    print(f"{name}:{total_norm}")
+"""
