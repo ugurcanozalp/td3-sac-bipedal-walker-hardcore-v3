@@ -26,7 +26,7 @@ class MaxPooler(nn.Module):
         return x 
 
 class NormalizedLSTM(nn.Module):
-    def __init__(self, input_size, hidden_size=64, batch_first=True, dropout=0.1):
+    def __init__(self, input_size, hidden_size=96, batch_first=True, dropout=0.1):
         super(NormalizedLSTM, self).__init__()
         self.embedding = nn.Sequential(nn.Linear(input_size, hidden_size), nn.Tanh())
         nn.init.xavier_uniform_(self.embedding[0].weight, gain=nn.init.calculate_gain('tanh'))
@@ -42,6 +42,7 @@ class NormalizedLSTM(nn.Module):
         x = self.dropout(x)
         x, (_, _) = self.lstm(x)
         x = self.pooler(x)
+        x = 0.5*(x[:, :self.lstm.hidden_size]+x[:, self.lstm.hidden_size:])
         return x
 
 class Critic(nn.Module):
@@ -57,11 +58,11 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=64, batch_first=True, dropout=0.0)
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64*2), nn.Tanh())
+        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, batch_first=True, dropout=0.0)
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 96), nn.Tanh())
         nn.init.xavier_uniform_(self.action_encoder[0].weight, gain=nn.init.calculate_gain('tanh'))
 
-        self.fc2 = nn.Linear(64*2,256)
+        self.fc2 = nn.Linear(96,256)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
         self.fc_out = nn.Linear(256,1)
@@ -100,9 +101,9 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=64, batch_first=True, dropout=0.0)
+        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, batch_first=True, dropout=0.0)
 
-        self.fc = nn.Linear(64*2,action_dim)
+        self.fc = nn.Linear(96,action_dim)
         nn.init.xavier_uniform_(self.fc.weight, gain=nn.init.calculate_gain('tanh'))
         nn.init.zeros_(self.fc.bias)
         self.tanh = nn.Tanh()

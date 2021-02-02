@@ -29,7 +29,7 @@ if args.model_type=='ff':
 elif args.model_type=='lstm':
     from archs.lstm_models import Actor, Critic
 elif args.model_type=='bilstm':
-    from archs.lstm_models import Actor, Critic
+    from archs.bilstm_models import Actor, Critic
 elif args.model_type=='trsf':
     from archs.trsf_models import Actor, Critic
 else:
