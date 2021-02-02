@@ -4,33 +4,6 @@ from torch import nn
 from torch.nn.init import xavier_uniform_
 from torch.autograd import Variable
 import torch.nn.functional as F
-'''
-GRU gating layer used in Stabilizing transformers in RL.
-Note that all variable names follow the notation from section: "Gated-Recurrent-Unit-type gating" 
-in https://arxiv.org/pdf/1910.06764.pdf
-'''
-class GRUGate(nn.Module):
-
-    def __init__(self,d_model):
-        #d_model is dimension of embedding for each token as input to layer (want to maintain this in the gate)
-        super(GRUGate,self).__init__()
-
-        self.linear_w_r = nn.Linear(d_model,d_model,bias=False)
-        self.linear_u_r = nn.Linear(d_model,d_model,bias=False)
-        self.linear_w_z = nn.Linear(d_model,d_model)               ### Giving bias to this layer (will count as b_g so can just initialize negative)
-        self.linear_u_z = nn.Linear(d_model, d_model,bias=False)
-        self.linear_w_g = nn.Linear(d_model, d_model,bias=False)
-        self.linear_u_g = nn.Linear(d_model, d_model,bias=False)
-        self.sigmoid = nn.Sigmoid()
-        self.tanh = nn.Tanh()
-
-    def forward(self,x,y):
-        ### Here x,y follow from notation in paper
-
-        z = self.sigmoid(self.linear_w_z(y) + self.linear_u_z(x))  #MAKE SURE THIS IS APPLIED ON PROPER AXIS
-        r = self.sigmoid(self.linear_w_r(y) + self.linear_u_r(x))
-        h_hat = self.tanh(self.linear_w_g(y) + self.linear_u_g(r*x))  #Note elementwise multiplication of r and x
-        return (1.-z)*x + z*h_hat
 
 class PositionalEncoding(nn.Module):
     def __init__(self, d_model, seq_len=16, ratio=None):
@@ -65,15 +38,11 @@ class LearnablePositionalEncoding(nn.Module):
         return x + self.embedding[:x.size(1)].unsqueeze(0)
     
 class StableTransformerLayer(nn.Module):
-    def __init__(self, d_model, nhead, dim_feedforward=2048, dropout=0.1, use_gate = False):
+    def __init__(self, d_model, nhead, dim_feedforward=2048, dropout=0.1):
         #fill in reordering of operations as done in https://arxiv.org/pdf/1910.06764.pdf
         #d_model: dimension of embedding for each input
         super(StableTransformerLayer,self).__init__()
 
-        self.use_gate = use_gate
-        if self.use_gate:
-            self.gate_mha = GRUGate(d_model)
-            self.gate_mlp = GRUGate(d_model)
         self.self_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
 
         self.linear1 = nn.Linear(d_model, dim_feedforward)
@@ -90,7 +59,7 @@ class StableTransformerLayer(nn.Module):
         self.activation = nn.GELU()
         self.relu = nn.GELU()
 
-    def forward(self, src, src_mask=None, src_key_padding_mask=None):
+    def forward(self, src, src_mask=None, src_key_padding_mask=None, only_last_state=False):
 
         '''
         #ORIGINAL TRANSFORMER ORDERING
@@ -108,20 +77,21 @@ class StableTransformerLayer(nn.Module):
 
 
         src2 = self.norm1(src)
-        src2 = self.self_attn(src2, src2, src2, attn_mask=src_mask,
-                              key_padding_mask=src_key_padding_mask)[0]
-        if self.use_gate:
-            src2 = self.gate_mha(src, self.dropout1(src2)) # src2 = self.gate_mha(src, self.relu(self.dropout1(src2)))
+        if only_last_state:
+            src2 = self.self_attn(src2[-1:], src2, src2, attn_mask=src_mask,
+                                key_padding_mask=src_key_padding_mask)[0]
+        else:
+            src2 = self.self_attn(src2, src2, src2, attn_mask=src_mask,
+                                key_padding_mask=src_key_padding_mask)[0]
+
+        if only_last_state:
+            src2 = src[-1:] + self.dropout1(src2)
         else:
             src2 = src + self.dropout1(src2) # src2 = src + self.relu(self.dropout1(src2))
-
+        
         src3 = self.norm2(src2)
         src3 = self.linear2(self.dropout(self.activation(self.linear1(src3))))
-
-        if self.use_gate:
-            src3 = self.gate_mlp(src2, self.dropout2(src3)) # src3 = self.gate_mlp(src2, self.dropout2(self.relu(src3)))
-        else:
-            src3 = self.dropout2(src3) + src2 # src3 = self.dropout2(self.relu(src3)) + src2
+        src3 = self.dropout2(src3) + src2 # src3 = self.dropout2(self.relu(src3)) + src2
 
         return src3
         
