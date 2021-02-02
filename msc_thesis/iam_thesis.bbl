@@ -57,6 +57,12 @@ X.~Pan, Y.~You, Z.~Wang, and C.~Lu, Virtual to {Real} {Reinforcement}
   {Learning} for {Autonomous} {Driving}, arXiv:1704.03952 [cs], September 2017,
   arXiv: 1704.03952.
 
+\bibitem{parisotto_stabilizing_2019}
+E.~Parisotto, H.~F. Song, J.~W. Rae, R.~Pascanu, C.~Gulcehre, S.~M. Jayakumar,
+  M.~Jaderberg, R.~L. Kaufman, A.~Clark, S.~Noury, M.~M. Botvinick, N.~Heess,
+  and R.~Hadsell, Stabilizing {Transformers} for {Reinforcement} {Learning},
+  arXiv:1910.06764 [cs, stat], October 2019, arXiv: 1910.06764.
+
 \bibitem{paszke_pytorch_2019}
 A.~Paszke, S.~Gross, F.~Massa, A.~Lerer, J.~Bradbury, G.~Chanan, T.~Killeen,
   Z.~Lin, N.~Gimelshein, L.~Antiga, A.~Desmaison, A.~Kopf, E.~Yang, Z.~DeVito,
@@ -121,5 +127,10 @@ A.~Vaswani, N.~Shazeer, N.~Parmar, J.~Uszkoreit, L.~Jones, A.~N. Gomez,
 \bibitem{wang_deep_2019}
 S.~Wang, D.~Jia, and X.~Weng, Deep {Reinforcement} {Learning} for {Autonomous}
   {Driving}, arXiv:1811.11329 [cs], May 2019, arXiv: 1811.11329.
+
+\bibitem{xiong_layer_2020}
+R.~Xiong, Y.~Yang, D.~He, K.~Zheng, S.~Zheng, C.~Xing, H.~Zhang, Y.~Lan,
+  L.~Wang, and T.-Y. Liu, On {Layer} {Normalization} in the {Transformer}
+  {Architecture}, arXiv:2002.04745 [cs, stat], June 2020, arXiv: 2002.04745.
 
 \end{thebibliography}

@@ -48,22 +48,22 @@
 \contentsline {subsection}{\numberline {3.3.4}Attention Mechanism}{15}{subsection.3.3.4}%
 \contentsline {subsubsection}{\numberline {3.3.4.1}Transformer}{16}{subsubsection.3.3.4.1}%
 \contentsline {subsubsection}{\numberline {3.3.4.2}Pre-Layer Normalized Transformer}{18}{subsubsection.3.3.4.2}%
-\contentsline {chapter}{\numberline {4}\MakeUppercase {DEEP REINFORCEMENT LEARNING}}{19}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Deep Reinforcement Learning Algorithms on Continious Action Space}{19}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Deep Deterministic Policy Gradient}{19}{subsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.1.2}Twin Delayed Deep Deterministic Policy Gradient}{19}{subsection.4.1.2}%
-\contentsline {section}{\numberline {4.2}Evaluation}{19}{section.4.2}%
-\contentsline {chapter}{\numberline {5}\MakeUppercase {BIPEDAL WALKING WITH TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}}{21}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Details of the Environment}{21}{section.5.1}%
-\contentsline {section}{\numberline {5.2}RL Method and hyperparameters}{22}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Proposed Neural Networks}{22}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Feed Forward Network}{22}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}Long Short Term Memory}{22}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Transformer (Pre-layer Normalized)}{22}{subsection.5.3.3}%
-\contentsline {section}{\numberline {5.4}Results}{22}{section.5.4}%
-\contentsline {chapter}{\numberline {6}\MakeUppercase {CONCLUSION AND FUTURE WORK}}{23}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Conclusion}{23}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Future Work}{23}{section.6.2}%
-\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{25}{chapter*.11}%
-\contentsline {nodots}{\numberline {}APPENDICES}{26}{chapter*.11}%
-\contentsline {chapter}{\numberline {A}\MakeUppercase {Proof of Some Theorem}}{27}{appendix.A}%
+\contentsline {chapter}{\numberline {4}\MakeUppercase {DEEP REINFORCEMENT LEARNING}}{21}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Deep Reinforcement Learning Algorithms on Continious Action Space}{21}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Deep Deterministic Policy Gradient}{21}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Twin Delayed Deep Deterministic Policy Gradient}{21}{subsection.4.1.2}%
+\contentsline {section}{\numberline {4.2}Evaluation}{21}{section.4.2}%
+\contentsline {chapter}{\numberline {5}\MakeUppercase {BIPEDAL WALKING WITH TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}}{23}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Details of the Environment}{23}{section.5.1}%
+\contentsline {section}{\numberline {5.2}RL Method and hyperparameters}{24}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Proposed Neural Networks}{24}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Feed Forward Network}{24}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Long Short Term Memory}{24}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Transformer (Pre-layer Normalized)}{24}{subsection.5.3.3}%
+\contentsline {section}{\numberline {5.4}Results}{24}{section.5.4}%
+\contentsline {chapter}{\numberline {6}\MakeUppercase {CONCLUSION AND FUTURE WORK}}{25}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Conclusion}{25}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Future Work}{25}{section.6.2}%
+\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{27}{chapter*.12}%
+\contentsline {nodots}{\numberline {}APPENDICES}{29}{chapter*.12}%
+\contentsline {chapter}{\numberline {A}\MakeUppercase {Proof of Some Theorem}}{31}{appendix.A}%
