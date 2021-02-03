@@ -18,7 +18,7 @@ parser.add_argument("-e", "--env", type=str, choices=['classic', 'hardcore'],
 parser.add_argument("-m", "--model_type", type=str, choices=['ff','lstm','bilstm','trsf'],
                     default='ff', help="model type")
 parser.add_argument("-r", "--rl_type", type=str, choices=['ddpg', 'td3'], default='ddpg', help='RL method')
-parser.add_argument("-l", "--lr", type=float, default=5e-4, help='Learning Rate')
+parser.add_argument("-l", "--lr", type=float, default=3e-4, help='Learning Rate')
 parser.add_argument("-w", "--wd", type=float, default=1e-6, help='Weight Decay')
 parser.add_argument("-c", "--ckpt", type=str, default='ep100', help='checkpoint to start with')
 
@@ -37,10 +37,10 @@ else:
 
 if args.env == 'classic':
     env = gym.make('BipedalWalker-v3')
-    #env._max_episode_steps = 1200
+    env._max_episode_steps = 1400
 elif args.env == 'hardcore':
     env = gym.make('BipedalWalkerHardcore-v3')
-    #env._max_episode_steps = 1600
+    env._max_episode_steps = 1800
     
 if args.model_type in ['lstm', 'bilstm','trsf']:
     env = BoxToHistoryBox(env, h=8)

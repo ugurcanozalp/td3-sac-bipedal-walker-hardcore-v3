@@ -28,10 +28,10 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.fcs1 = nn.Linear(state_dim,128)
+        self.fcs1 = nn.Linear(state_dim,96)
         self.fcs1.weight.data = fanin_init(self.fcs1.weight.data.size())
 
-        self.fca1 = nn.Linear(action_dim,128)
+        self.fca1 = nn.Linear(action_dim,96)
         self.fca1.weight.data = fanin_init(self.fca1.weight.data.size())
 
         self.fc2 = nn.Linear(256,128)
