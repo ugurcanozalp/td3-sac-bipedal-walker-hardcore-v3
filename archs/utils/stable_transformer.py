@@ -11,10 +11,10 @@ class PositionalEncoding(nn.Module):
         self.embedding_scale = d_model**0.5
         pe = torch.zeros(seq_len, d_model)
         position = torch.arange(0, seq_len, dtype=torch.float).unsqueeze(1)
-        #_log10000 = 9.21034037198
-        _log1000 = 6.907755278982137
+        _log10000 = 9.21034037198
+        #_log1000 = 6.907755278982137
         #_log100 = 4.605170185988092
-        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-_log1000 / d_model))
+        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-_log10000 / d_model))
         pe[:, 0::2] = torch.sin(position * div_term)
         pe[:, 1::2] = torch.cos(position * div_term)
         pe = pe.unsqueeze(0)
@@ -25,7 +25,7 @@ class PositionalEncoding(nn.Module):
             self.ratio = torch.nn.Parameter(torch.tensor(1.0, dtype=torch.float), requires_grad=False)
 
     def forward(self, x):
-        x = x*self.embedding_scale + torch.flip(self.ratio*self.pe[:, :x.size(1), :], dims=[1])
+        x = x + torch.flip(self.ratio*self.pe[:, :x.size(1), :], dims=[1]) / self.embedding_scale
         #x = x + self.pe[:, :x.size(1), :]
         return x
 
@@ -75,7 +75,6 @@ class StableTransformerLayer(nn.Module):
         #HOW SHOULD THE DROPOUT BE APPLIED, it seems like dropout is completely missing the original source that residually connects?
         #This doesn't perfectly correspond to dropout used in TransformerXL I believe. (to do: read their code)
 
-
         src2 = self.norm1(src)
         if only_last_state:
             src2 = self.self_attn(src2[-1:], src2, src2, attn_mask=src_mask,
@@ -83,6 +82,7 @@ class StableTransformerLayer(nn.Module):
         else:
             src2 = self.self_attn(src2, src2, src2, attn_mask=src_mask,
                                 key_padding_mask=src_key_padding_mask)[0]
+
 
         if only_last_state:
             src2 = src[-1:] + self.dropout1(src2)

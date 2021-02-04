@@ -30,11 +30,11 @@ class FeedForwardEncoder(nn.Module):
 
     def forward(self, x):
         x = self.lin1(x)
-        x = self.tanh(x)
-        x = self.lin2(x)
-        x = self.act(x)
-        x = self.lin3(x)
-        return x
+        xx = self.tanh(x)
+        xx = self.lin2(xx)
+        xx = self.act(xx)
+        xx = self.lin3(xx)
+        return x+xx
 
 """
 class Embedder(nn.Module):
