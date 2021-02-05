@@ -21,6 +21,7 @@ parser.add_argument("-r", "--rl_type", type=str, choices=['ddpg', 'td3'], defaul
 parser.add_argument("-l", "--lr", type=float, default=3e-4, help='Learning Rate')
 parser.add_argument("-w", "--wd", type=float, default=1e-6, help='Weight Decay')
 parser.add_argument("-c", "--ckpt", type=str, default='ep100', help='checkpoint to start with')
+parser.add_argument("-x", "--explore_episode", type=int, default=50, help='number of exploration steps')
 
 args = parser.parse_args()
 
@@ -52,7 +53,7 @@ elif args.rl_type=='td3':
 else:
     print('Wrong learning algorithm type!'); exit(0);
 
-agent.load_ckpt(args.model_type, args.ckpt)
+agent.load_ckpt(args.model_type, args.env, args.ckpt)
 
 print("Action dimension : ",env.action_space.shape)
 print("State  dimension : ",env.observation_space.shape)
@@ -61,7 +62,7 @@ print("State sample  : \n ",env.reset())
 
 if args.flag == 'train':
     agent.train_mode()   
-    scores, test_scores = train(env, agent, model_type=args.model_type)
+    scores, test_scores = train(env, agent, model_type=args.model_type, env_type=args.env, explore_episode=args.explore_episode)
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.plot(scores[0],scores[1],'b-.', alpha=.5)
@@ -73,8 +74,8 @@ if args.flag == 'train':
     fig.savefig(os.path.join("results", args.model_type+'-'+args.rl_type+'.png'))
     fig.show()
     env.close()
-    np.savetxt(os.path.join("results", "train"+"-"+args.model_type+'-'+args.rl_type+'.txt'), scores, fmt="%.6e")
-    np.savetxt(os.path.join("results", "test"+"-"+args.model_type+'-'+args.rl_type+'.txt'), test_scores, fmt="%.6e")
+    np.savetxt(os.path.join("results", "train"+"-"+args.env+'-'+args.model_type+'-'+args.rl_type+'.txt'), scores, fmt="%.6e")
+    np.savetxt(os.path.join("results", "test"+"-"+args.env+'-'+args.model_type+'-'+args.rl_type+'.txt'), test_scores, fmt="%.6e")
 
 elif args.flag == 'test':
     #agent.freeze_networks()

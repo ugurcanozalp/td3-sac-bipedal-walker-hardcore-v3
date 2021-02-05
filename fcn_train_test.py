@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt
 from collections import deque
 
-def train(env, agent, n_episodes=3000, model_type='unk', score_limit=280.0, explore_episode=25, test_f=100):
+def train(env, agent, n_episodes=3000, model_type='unk', env_type='unk', score_limit=280.0, explore_episode=50, test_f=100):
     scores_deque = deque(maxlen=100)
     scores = []
     test_scores = []
@@ -40,7 +40,7 @@ def train(env, agent, n_episodes=3000, model_type='unk', score_limit=280.0, expl
             agent.eval_mode() # test in eval mode.
             test_score = test(env, agent, render=False)
             test_scores.append((i_episode, test_score))
-            agent.save_ckpt(model_type, 'ep'+str(int(i_episode)))
+            agent.save_ckpt(model_type, env_type,'ep'+str(int(i_episode)))
             if avg_score_100>score_limit:
                 break
             agent.train_mode() # when the test done, come back to train mode.

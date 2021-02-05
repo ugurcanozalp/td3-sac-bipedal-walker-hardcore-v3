@@ -125,18 +125,18 @@ class TD3Agent():
         for target_param, local_param in zip(target_model.parameters(), local_model.parameters()):
             target_param.data.copy_(local_param.data)
 
-    def save_ckpt(self, model_type, prefix='last'):
-        actor_file = os.path.join("models", self.rl_type, "_".join([prefix, model_type, "actor.pth"]))
-        critic_1_file = os.path.join("models", self.rl_type, "_".join([prefix, model_type, "critic_1.pth"]))
-        critic_2_file = os.path.join("models", self.rl_type, "_".join([prefix, model_type, "critic_2.pth"]))
+    def save_ckpt(self, model_type, env_type, prefix='last'):
+        actor_file = os.path.join("models", self.rl_type, env_type, "_".join([prefix, model_type, "actor.pth"]))
+        critic_1_file = os.path.join("models", self.rl_type, env_type, "_".join([prefix, model_type, "critic_1.pth"]))
+        critic_2_file = os.path.join("models", self.rl_type, env_type, "_".join([prefix, model_type, "critic_2.pth"]))
         torch.save(self.train_actor.state_dict(), actor_file)
         torch.save(self.train_critic_1.state_dict(), critic_1_file)
         torch.save(self.train_critic_2.state_dict(), critic_2_file)
 
-    def load_ckpt(self, model_type, prefix='last'):
-        actor_file = os.path.join("models", "td3", "_".join([prefix, model_type, "actor.pth"]))
-        critic_1_file = os.path.join("models", "td3", "_".join([prefix, model_type, "critic_1.pth"]))
-        critic_2_file = os.path.join("models", "td3", "_".join([prefix, model_type, "critic_2.pth"]))
+    def load_ckpt(self, model_type, env_type, prefix='last'):
+        actor_file = os.path.join("models", "td3", env_type, "_".join([prefix, model_type, "actor.pth"]))
+        critic_1_file = os.path.join("models", "td3", env_type, "_".join([prefix, model_type, "critic_1.pth"]))
+        critic_2_file = os.path.join("models", "td3", env_type, "_".join([prefix, model_type, "critic_2.pth"]))
         try:
             self.train_actor.load_state_dict(torch.load(actor_file, map_location=self.device))
         except:

@@ -19,14 +19,10 @@ class PositionalEncoding(nn.Module):
         pe[:, 1::2] = torch.cos(position * div_term)
         pe = pe.unsqueeze(0)
         self.register_buffer('pe', pe)
-        if ratio is not None:
-            self.ratio = torch.nn.Parameter(torch.tensor(ratio, dtype=torch.float), requires_grad=True)
-        else:
-            self.ratio = torch.nn.Parameter(torch.tensor(1.0, dtype=torch.float), requires_grad=False)
 
     def forward(self, x):
-        x = x + torch.flip(self.ratio*self.pe[:, :x.size(1), :], dims=[1]) / self.embedding_scale
-        #x = x + self.pe[:, :x.size(1), :]
+        x = x + torch.flip(self.pe[:, :x.size(1), :], dims=[1]) / self.embedding_scale
+        #x = x + self.pe[:, :x.size(1), :] / self.embedding_scale*
         return x
 
 class LearnablePositionalEncoding(nn.Module):
