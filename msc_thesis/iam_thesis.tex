@@ -337,6 +337,8 @@
 % your own commands and definitions (even packages)
 \input{myDefinitions} % filename: myDefinitions.tex
 
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
 
 \begin{document}
 % Preliminaries
@@ -360,7 +362,7 @@
 \input{chap_01/sec_04}
 \input{chap_02/intro}
 \input{chap_02/rl_opt_control}
-\input{chap_02/ml}
+\input{chap_02/chal}
 \input{chap_02/mdp}
 \input{chap_02/mb_learning}
 \input{chap_02/mf_learning}
@@ -368,7 +370,6 @@
 \input{chap_03/nnets}
 \input{chap_04/intro}
 \input{chap_04/algs}
-\input{chap_04/evaluation}
 \input{chap_05/intro}
 \input{chap_06/intro}
 

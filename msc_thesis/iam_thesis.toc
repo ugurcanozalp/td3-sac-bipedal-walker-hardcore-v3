@@ -23,19 +23,16 @@
 \contentsline {section}{\numberline {1.3}Related Work}{4}{section.1.3}%
 \contentsline {section}{\numberline {1.4}Outline of the Thesis}{5}{section.1.4}%
 \contentsline {chapter}{\numberline {2}\MakeUppercase {REINFORCEMENT LEARNING}}{7}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Reinforcement Learning and Optimal Control}{7}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Differences from Supervised and Unsupervised Learning}{8}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Markov Decision Process}{9}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Model}{9}{subsection.2.3.1}%
-\contentsline {subsubsection}{\numberline {2.3.1.1}Policy}{9}{subsubsection.2.3.1.1}%
-\contentsline {subsubsection}{\numberline {2.3.1.2}Reward}{9}{subsubsection.2.3.1.2}%
-\contentsline {subsection}{\numberline {2.3.2}Return and Discount Factor}{9}{subsection.2.3.2}%
-\contentsline {subsection}{\numberline {2.3.3}Horizon}{9}{subsection.2.3.3}%
-\contentsline {subsection}{\numberline {2.3.4}Value Functions}{9}{subsection.2.3.4}%
-\contentsline {subsubsection}{\numberline {2.3.4.1}State Value Function}{9}{subsubsection.2.3.4.1}%
-\contentsline {subsubsection}{\numberline {2.3.4.2}State-Action Value Function}{9}{subsubsection.2.3.4.2}%
-\contentsline {section}{\numberline {2.4}Model Based Reinforcement Learning}{9}{section.2.4}%
-\contentsline {section}{\numberline {2.5}Model Free Reinforcement Learning}{9}{section.2.5}%
+\contentsline {section}{\numberline {2.1}Reinforcement Learning and Optimal Control}{8}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Challenges}{9}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Markov Decision Process}{10}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Value Functions}{10}{subsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.3.1.1}State Value Function}{10}{subsubsection.2.3.1.1}%
+\contentsline {subsubsection}{\numberline {2.3.1.2}State-Action Value Function}{10}{subsubsection.2.3.1.2}%
+\contentsline {section}{\numberline {2.4}Model Based Reinforcement Learning}{10}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Model Free Reinforcement Learning}{10}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Temporal Difference}{10}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Q-Learning}{10}{subsection.2.5.2}%
 \contentsline {chapter}{\numberline {3}\MakeUppercase {NEURAL NETWORKS AND DEEP LEARNING}}{11}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Neural Networks}{11}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Numerical Optimization}{11}{section.3.2}%
@@ -50,11 +47,13 @@
 \contentsline {subsubsection}{\numberline {3.3.4.2}Pre-Layer Normalized Transformer}{18}{subsubsection.3.3.4.2}%
 \contentsline {chapter}{\numberline {4}\MakeUppercase {DEEP REINFORCEMENT LEARNING}}{21}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Deep Reinforcement Learning Algorithms on Continious Action Space}{21}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Deep Deterministic Policy Gradient}{21}{subsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.1.2}Twin Delayed Deep Deterministic Policy Gradient}{21}{subsection.4.1.2}%
-\contentsline {section}{\numberline {4.2}Evaluation}{21}{section.4.2}%
-\contentsline {chapter}{\numberline {5}\MakeUppercase {BIPEDAL WALKING WITH TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}}{23}{chapter.5}%
+\contentsline {subsection}{\numberline {4.1.1}Deep Q-Learning}{21}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Double Deep Q-Learning}{21}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Deep Deterministic Policy Gradient}{21}{subsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.1.4}Twin Delayed Deep Deterministic Policy Gradient}{21}{subsection.4.1.4}%
+\contentsline {chapter}{\numberline {5}\MakeUppercase {BIPEDAL WALKING BY TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}}{23}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Details of the Environment}{23}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Partial Observability}{23}{subsection.5.1.1}%
 \contentsline {section}{\numberline {5.2}RL Method and hyperparameters}{24}{section.5.2}%
 \contentsline {section}{\numberline {5.3}Proposed Neural Networks}{24}{section.5.3}%
 \contentsline {subsection}{\numberline {5.3.1}Feed Forward Network}{24}{subsection.5.3.1}%

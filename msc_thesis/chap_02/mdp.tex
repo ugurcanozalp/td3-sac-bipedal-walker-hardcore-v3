@@ -1,16 +1,19 @@
 \section{Markov Decision Process}
 \label{sec:mdp}
 
-\subsection{Model}
-...
+Markov Decision Process (MDP) is a control process with reward function and discount factor. It is represented as a tuple $(S,A,P,R,\gamma)$. Markov property means that the conditional probability distribution of the future state depends only on the instant state and action instead of the entire past. 
 
-\subsubsection{Policy}
+\textbf{State}: State $s \in S$
 
-\subsubsection{Reward}
+\textbf{Acgtion}: Action $s \in S$
 
-\subsection{Return and Discount Factor}
+\textbf{Model}: Model is mathematical representation of how environment evolves through time, including transition probabilities $p(s'|s,a)$ where $s' \in S$ is next state, $s \in S$ is instant state and $a \in A$ is taken action.
 
-\subsection{Horizon}
+\textbf{Reward}: Reward $R \colon S \times A \mapsto \mathbb{R}$ is a function of state and action. It is ultimate utility function of Reinforcement Learning.
+
+\textbf{Discount Factor and Return}: xxx Horizon?
+
+\textbf{Policy}: It is a mapping $\pi \colon S \mapsto A$ which maps states to actions. 
 
 \subsection{Value Functions}
 

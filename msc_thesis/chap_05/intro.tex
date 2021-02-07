@@ -1,4 +1,4 @@
-\chapter{BIPEDAL WALKING WITH TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}
+\chapter{BIPEDAL WALKING BY TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}
 \label{chap:exp_setup}
 
 \section{Details of the Environment}
@@ -9,9 +9,17 @@
 
 \textbf{Rewarding}: Directly proportional to distance traveled forward, +300 points given if agent reaches end of path. -100 point if agent falls, and small amount of negative reward proportional to applied motor torque (preventing applying unnecessary torque).
 
+\subsection{Partial Observability}
+In DRL, partial observability is handled by 2 ways in literature \cite{dulac-arnold_challenges_2019}. First is incorprating fixed number of last observations while second way is updating hidden belief state using recurrent neural network at each time step. 
+
+Our approach is using fixed number of past states into LSTM, BiLSTM and Transformer based networks. 
+
 \section{RL Method and hyperparameters}
+TD3 algorithm is used for learning task. For all networks following hyperparameters are used.
 
 \section{Proposed Neural Networks}
+
+4 neural network is used. 
 
 \subsection{Feed Forward Network}
 

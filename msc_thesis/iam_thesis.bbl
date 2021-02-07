@@ -20,6 +20,11 @@ G.~Brockman, V.~Cheung, L.~Pettersson, J.~Schneider, J.~Schulman, J.~Tang, and
 R.~Collobert, K.~Kavukcuoglu, and C.~Farabet, Torch7: {A} {Matlab}-like
   {Environment} for {Machine} {Learning}, 2011.
 
+\bibitem{dulac-arnold_challenges_2019}
+G.~Dulac-Arnold, D.~Mankowitz, and T.~Hester, Challenges of {Real}-{World}
+  {Reinforcement} {Learning}, arXiv:1904.12901 [cs, stat], April 2019, arXiv:
+  1904.12901.
+
 \bibitem{fris_landing_2020}
 R.~Fris, The {Landing} of a {Quadcopter} on {Inclined} {Surfaces} using
   {Reinforcement} {Learning}, 2020.
