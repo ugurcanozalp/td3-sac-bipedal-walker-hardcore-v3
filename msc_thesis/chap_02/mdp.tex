@@ -1,22 +1,50 @@
+\section{Sequential Decision Making}
+
+In discrete time setting, the agent takes action $a_t$, then observes observation $o_t$ and obtains reward $r_t$ at time $t$. History is set of past actions observations and rewards, $h_t=\{ a_0, o_0, r_0, ... a_t, o_t, r_t\}$. State $s_t$ is function of the history, $s_t=f(h_t)$, which represents situtaion of environment as much as possible.
+
 \section{Markov Decision Process}
 \label{sec:mdp}
 
-Markov Decision Process (MDP) is a control process with reward function and discount factor. It is represented as a tuple $(S,A,P,R,\gamma)$. Markov property means that the conditional probability distribution of the future state depends only on the instant state and action instead of the entire past. 
+Markov Decision Process (MDP) is a sequential decision making process with Markov property. It is represented as a tuple $(S,A,P,R,\gamma)$. Markov property means that the conditional probability distribution of the future state depends only on the instant state and action instead of the entire past, so it is memoryless. 
 
-\textbf{State}: State $s \in S$
+\textbf{State Space $S$}: A set of all possible configurations of system. 
 
-\textbf{Acgtion}: Action $s \in S$
+\textbf{Action Space $A$}: A set of all possible actions of agent.
 
-\textbf{Model}: Model is mathematical representation of how environment evolves through time, including transition probabilities $p(s'|s,a)$ where $s' \in S$ is next state, $s \in S$ is instant state and $a \in A$ is taken action.
+\textbf{Model $P$}: Model is mathematical representation of how environment evolves through time, including transition probabilities $P(s'|s,a)$ where $s' \in S$ is next state, $s \in S$ is instant state and $a \in A$ is taken action. 
 
-\textbf{Reward}: Reward $R \colon S \times A \mapsto \mathbb{R}$ is a function of state and action. It is ultimate utility function of Reinforcement Learning.
+\textbf{Reward $R$}: A set of rewards coming from environment. At each state transition $s_t \mapsto s_{t+1}$ , a reward $r_t$ is given to agent. Rewards can be either deterministic or stochastic.
 
-\textbf{Discount Factor and Return}: xxx Horizon?
+\subsection{Reward Function}
+Reward function $R$ is expected value of reward at given state $s$ and taken action $a$. Therefore, it is defined as function of state and action, $R \colon S \times A \mapsto R$.
 
-\textbf{Policy}: It is a mapping $\pi \colon S \mapsto A$ which maps states to actions. 
+\begin{equation}
+R(s,a) = \mathbb{E}[r_t|s_t=s, a_t=a] \: \forall t = 0,1, ...
+\end{equation}
 
-\subsection{Value Functions}
+\subsection{Policy}
 
-\subsubsection{State Value Function}
+Policy is a mapping $\pi \colon S \mapsto A$ which maps states to actions. 
 
-\subsubsection{State-Action Value Function}
+\subsection{Optimization Goals}
+
+\textbf{Return and Discount Factor}: Discount factor $\gamma \in [0,1)$ is measure of importance of rewards in the future for value function. This value is used in for return calculation. At time $t$, $G_t$ is return which is cumulative sum of future rewards, scaled by $\gamma$.
+
+\begin{equation}
+G_t = \sum_{i=t}^{\infty} \gamma^{i-t} r_i = r_t + + \gamma G_{t+1}
+\end{equation}
+
+Since return depends on future rewards, it also depends on policy of agent since policy affects future rewards.
+
+\textbf{State Value Function}: State Value Function $V^{\pi}$ is expected return when policy $\pi$ is followed in future.
+
+\begin{equation}
+V^{\pi}(s) = \mathbb{E}[G_t|s_t=s] \: \forall t = 0,1, ...
+\end{equation}
+
+\textbf{State-Action Value Function}: State-Action Value Function $Q^{\pi}$ is expected return when policy $\pi$ is followed in future, but any action taken at instant step.
+
+\begin{equation}
+Q^{\pi}(s,a) = \mathbb{E}[G_t|s_t=s, a_t=a] \: \forall t = 0,1, ...
+\end{equation}
+
