@@ -44,7 +44,7 @@ elif args.env == 'hardcore':
     #env._max_episode_steps = 1800
     
 if args.model_type in ['lstm', 'bilstm','trsf']:
-    env = BoxToHistoryBox(env, h=8)
+    env = BoxToHistoryBox(env, h=16)
 
 if args.rl_type=='ddpg':
     agent = DDPGAgent(Actor, Critic, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1], lr=args.lr, weight_decay=args.wd)

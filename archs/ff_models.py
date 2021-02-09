@@ -41,7 +41,7 @@ class Embedder(nn.Module):
     def __init__(self, input_size, output_size):
         super(Embedder, self).__init__()
         self.lin = nn.Linear(input_size, output_size)
-        self.lin.weight.data = fanin_init(self.lin.weight.data.size())
+        self.lin.weight = fanin_init(self.lin.weight.size())
         self.layernorm = nn.LayerNorm(output_size)
         #self.tanh = nn.Tanh()
     def forward(self, x):
@@ -107,7 +107,7 @@ class Actor(nn.Module):
         self.state_encoder = FeedForwardEncoder(self.state_dim, 128, 384)
 
         self.fc = nn.Linear(128,action_dim)
-        nn.init.xavier_uniform_(self.fc.weight, gain=nn.init.calculate_gain('tanh'))
+        nn.init.xavier_uniform_(self.fc.weight, gain=0.01*nn.init.calculate_gain('tanh'))
         nn.init.zeros_(self.fc.bias)
         self.tanh = nn.Tanh()
 

@@ -44,10 +44,10 @@ class TD3Agent():
         self.critic_2_optim = optim.AdamW(self.train_critic_2.parameters(), lr=lr, weight_decay=weight_decay)
         print(f'Number of paramters of Single Critic Net: {sum(p.numel() for p in self.train_critic_2.parameters())}')
 
-        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=3.0, sigma=0.3, dt=0.02)
+        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=3.0, sigma=0.5, dt=0.02)
         #self.noise_generator = DecayingGaussianNoise(mu=np.zeros(action_size), end_sigma=0.10, start_sigma=0.70, decay_step=500000) 
         #self.noise_generator = GaussianNoise(mu=np.zeros(action_size), sigma=0.12) #sigma=0.12
-        self.target_noise = GaussianNoise(mu=np.zeros(action_size), sigma=0.2, clip=0.5)
+        self.target_noise = GaussianNoise(mu=np.zeros(action_size), sigma=0.20, clip=0.5)
         
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \
             batch_size= self.batch_size, device=self.device)
@@ -113,7 +113,6 @@ class TD3Agent():
 
         if explore:
             noise = self.noise_generator()
-            #print(noise)
             action += noise
         return action
     

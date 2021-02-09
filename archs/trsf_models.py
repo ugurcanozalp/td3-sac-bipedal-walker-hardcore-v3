@@ -41,7 +41,8 @@ class StableTransformerEncoder(nn.Module):
     def __init__(self, d_in, d_model, nhead, dim_feedforward=256, dropout=0.1, seq_len=16):
         super(StableTransformerEncoder,self).__init__()
         self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model), nn.Tanh()) # 
-        nn.init.xavier_uniform_(self.inp_embedding[0].weight, gain=nn.init.calculate_gain('tanh')) # 
+        nn.init.xavier_uniform_(self.inp_embedding[0].weight, gain=nn.init.calculate_gain('tanh')) #
+        nn.init.zeros_(self.inp_embedding[0].bias) 
         self.pos_embedding = PositionalEncoding(d_model, seq_len=seq_len, ratio=None)
         self.encoder = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout)
         self.layn = nn.LayerNorm(d_model)
@@ -116,7 +117,7 @@ class Actor(nn.Module):
             d_model=128, nhead=4, dim_feedforward=256, dropout=0.0)
 
         self.fc = nn.Linear(128,action_dim)
-        nn.init.xavier_uniform_(self.fc.weight, gain=nn.init.calculate_gain('tanh'))
+        nn.init.xavier_normal_(self.fc.weight, gain=0.01*nn.init.calculate_gain('tanh'))
         nn.init.zeros_(self.fc.bias)
         self.tanh = nn.Tanh()
 

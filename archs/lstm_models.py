@@ -30,6 +30,7 @@ class NormalizedLSTM(nn.Module):
         super(NormalizedLSTM, self).__init__()
         self.embedding = nn.Sequential(nn.Linear(input_size, hidden_size), nn.Tanh())
         nn.init.xavier_uniform_(self.embedding[0].weight, gain=nn.init.calculate_gain('tanh'))
+        nn.init.zeros_(self.embedding[0].bias)
         self.dropout = nn.Dropout(dropout)
         self.lstm = nn.LSTM(hidden_size, hidden_size=hidden_size, batch_first=batch_first, bidirectional=False, num_layers=1, dropout=dropout)
         self.pooler = LastStatePooler()
@@ -103,7 +104,7 @@ class Actor(nn.Module):
         self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=128, batch_first=True, dropout=0.0)
 
         self.fc = nn.Linear(128,action_dim)
-        nn.init.xavier_uniform_(self.fc.weight, gain=nn.init.calculate_gain('tanh'))
+        nn.init.xavier_uniform_(self.fc.weight, gain=0.01*nn.init.calculate_gain('tanh'))
         nn.init.zeros_(self.fc.bias)
         self.tanh = nn.Tanh()
 
