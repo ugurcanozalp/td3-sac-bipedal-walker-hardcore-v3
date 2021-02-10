@@ -40,10 +40,12 @@ class DDPGAgent():
         
     def learn_with_batches(self, state, action, reward, next_state, done):
         self.memory.add(state, action, reward, next_state, done)
-        
+        self.learn_one_step()
+
+    def learn_one_step(self):
         if(len(self.memory)>self.batch_size):
             exp=self.memory.sample()
-            self.learn(exp)
+            self.learn(exp)   
             
     def learn(self, exp):
         states, actions, rewards, next_states, done = exp

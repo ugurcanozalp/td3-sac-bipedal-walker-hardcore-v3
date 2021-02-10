@@ -9,7 +9,7 @@ from itertools import chain
 # https://github.com/A-Raafat/DDPG-bipedal/blob/master/My_DDPG.ipynb
 class TD3Agent():
     rl_type = 'td3'
-    def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(3),
+    def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(2),
             lr=3e-4, weight_decay=1e-6, gamma=0.99, tau=0.005, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
@@ -44,20 +44,22 @@ class TD3Agent():
         self.critic_2_optim = optim.AdamW(self.train_critic_2.parameters(), lr=lr, weight_decay=weight_decay)
         print(f'Number of paramters of Single Critic Net: {sum(p.numel() for p in self.train_critic_2.parameters())}')
 
-        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=3.0, sigma=0.5, dt=0.02)
+        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=3.0, sigma=0.4, dt=0.02)
         #self.noise_generator = DecayingGaussianNoise(mu=np.zeros(action_size), end_sigma=0.10, start_sigma=0.70, decay_step=500000) 
         #self.noise_generator = GaussianNoise(mu=np.zeros(action_size), sigma=0.12) #sigma=0.12
-        self.target_noise = GaussianNoise(mu=np.zeros(action_size), sigma=0.20, clip=0.5)
+        self.target_noise = GaussianNoise(mu=np.zeros(action_size), sigma=0.2, clip=0.5)
         
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \
             batch_size= self.batch_size, device=self.device)
         
     def learn_with_batches(self, state, action, reward, next_state, done):
         self.memory.add(state, action, reward, next_state, done)
-        
+        self.learn_one_step()
+
+    def learn_one_step(self):
         if(len(self.memory)>self.batch_size):
             exp=self.memory.sample()
-            self.learn(exp)
+            self.learn(exp)        
             
     def learn(self, exp):
         self.learn_call+=1
@@ -90,6 +92,7 @@ class TD3Agent():
         self.critic_2_optim.step()
         
         if self.learn_call % self.update_freq == 0:
+            self.learn_call = 0
             #update actor
             actions_pred = self.train_actor(states)
             actor_loss = -self.train_critic_1(states, actions_pred).mean()
