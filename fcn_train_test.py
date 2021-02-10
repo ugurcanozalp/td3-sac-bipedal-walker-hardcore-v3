@@ -21,15 +21,18 @@ def train(env, agent, n_episodes=3000, model_type='unk', env_type='unk', score_l
             if i_episode>explore_episode:
                 action = agent.get_action(state, explore=True)
                 action = action.clip(min=env.action_space.low, max=env.action_space.high)
-                next_state, reward, done, _ = env.step(action)
-                agent.learn_with_batches(state, action, reward, next_state, done)
             else:
                 action = env.action_space.sample()
-                next_state, reward, done, _ = env.step(action)
-                agent.memory.add(state, action, reward, next_state, done)
+
+            next_state, reward, done, _ = env.step(action)
+            agent.memory.add(state, action, reward, next_state, done)
 
             state = next_state
             score += reward
+
+        if i_episode>explore_episode:
+            for i in range(t):
+                agent.learn_one_step()
 
         scores_deque.append(score)
         scores.append((i_episode, score))
@@ -54,8 +57,8 @@ def test(env, agent, render=True):
     done=False
     while not done:
         action = agent.get_action(state, explore=False)
-        #print(action)
         action = action.clip(min=env.action_space.low, max=env.action_space.high)
+        #print(action)
         next_state, reward, done, _ = env.step(action)
         state = next_state
         score += reward

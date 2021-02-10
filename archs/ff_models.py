@@ -69,7 +69,8 @@ class Critic(nn.Module):
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
         self.fc_out = nn.Linear(256,1)
-        nn.init.xavier_uniform_(self.fc_out.weight)
+        #nn.init.xavier_uniform_(self.fc_out.weight)
+        nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
         nn.init.zeros_(self.fc_out.bias)
 
         self.act = nn.GELU()
@@ -107,7 +108,7 @@ class Actor(nn.Module):
         self.state_encoder = FeedForwardEncoder(self.state_dim, 128, 384)
 
         self.fc = nn.Linear(128,action_dim)
-        nn.init.xavier_uniform_(self.fc.weight, gain=0.01*nn.init.calculate_gain('tanh'))
+        nn.init.uniform_(self.fc.weight, -0.003,+0.003)
         nn.init.zeros_(self.fc.bias)
         self.tanh = nn.Tanh()
 
