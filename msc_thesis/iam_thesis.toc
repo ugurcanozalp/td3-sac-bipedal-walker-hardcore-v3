@@ -30,42 +30,38 @@
 \contentsline {subsection}{\numberline {2.4.1}Reward Function}{10}{subsection.2.4.1}%
 \contentsline {subsection}{\numberline {2.4.2}Policy}{11}{subsection.2.4.2}%
 \contentsline {subsection}{\numberline {2.4.3}Optimization Goals}{11}{subsection.2.4.3}%
-\contentsline {section}{\numberline {2.5}Model Based Reinforcement Learning}{12}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}Dynamic Programming}{12}{subsection.2.5.1}%
-\contentsline {section}{\numberline {2.6}Model Free Reinforcement Learning}{12}{section.2.6}%
-\contentsline {subsection}{\numberline {2.6.1}Monte Carlo Learning}{12}{subsection.2.6.1}%
-\contentsline {subsection}{\numberline {2.6.2}Temporal Difference Learning}{12}{subsection.2.6.2}%
-\contentsline {subsubsection}{\numberline {2.6.2.1}Q Learning}{12}{subsubsection.2.6.2.1}%
+\contentsline {section}{\numberline {2.5}Model Free Reinforcement Learning}{11}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Q Learning}{12}{subsection.2.5.1}%
+\contentsline {subsubsection}{\numberline {2.5.1.1}Deep Q Learning}{12}{subsubsection.2.5.1.1}%
+\contentsline {subsubsection}{\numberline {2.5.1.2}Double Deep Q Learning}{12}{subsubsection.2.5.1.2}%
+\contentsline {subsection}{\numberline {2.5.2}Policy Gradient}{12}{subsection.2.5.2}%
+\contentsline {subsubsection}{\numberline {2.5.2.1}Deterministic Policy Gradient}{12}{subsubsection.2.5.2.1}%
+\contentsline {subsubsection}{\numberline {2.5.2.2}Deep Deterministic Policy Gradient}{12}{subsubsection.2.5.2.2}%
+\contentsline {subsubsection}{\numberline {2.5.2.3}Twin Delayed Deep Deterministic Policy Gradient}{12}{subsubsection.2.5.2.3}%
 \contentsline {chapter}{\numberline {3}\MakeUppercase {NEURAL NETWORKS AND DEEP LEARNING}}{13}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Neural Networks}{13}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Numerical Optimization}{13}{section.3.2}%
+\contentsline {section}{\numberline {3.2}Backpropagaion}{14}{section.3.2}%
 \contentsline {section}{\numberline {3.3}Neural Network Types}{14}{section.3.3}%
 \contentsline {subsection}{\numberline {3.3.1}Perceptron}{14}{subsection.3.3.1}%
 \contentsline {subsection}{\numberline {3.3.2}Feed Forward Neural Networks (Multilayer Perceptron)}{14}{subsection.3.3.2}%
 \contentsline {subsection}{\numberline {3.3.3}Recurrent Neural Networks}{15}{subsection.3.3.3}%
 \contentsline {subsubsection}{\numberline {3.3.3.1}Long Term Dependence Problem of Vanilla RNNs}{16}{subsubsection.3.3.3.1}%
 \contentsline {subsubsection}{\numberline {3.3.3.2}Long Short Term Memory}{16}{subsubsection.3.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.4}Attention Mechanism}{17}{subsection.3.3.4}%
+\contentsline {subsection}{\numberline {3.3.4}Attention Mechanism}{18}{subsection.3.3.4}%
 \contentsline {subsubsection}{\numberline {3.3.4.1}Transformer}{18}{subsubsection.3.3.4.1}%
-\contentsline {subsubsection}{\numberline {3.3.4.2}Pre-Layer Normalized Transformer}{20}{subsubsection.3.3.4.2}%
-\contentsline {chapter}{\numberline {4}\MakeUppercase {DEEP REINFORCEMENT LEARNING}}{23}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Deep Reinforcement Learning Algorithms on Continious Action Space}{23}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Deep Q-Learning}{23}{subsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.1.2}Double Deep Q-Learning}{23}{subsection.4.1.2}%
-\contentsline {subsection}{\numberline {4.1.3}Deep Deterministic Policy Gradient}{23}{subsection.4.1.3}%
-\contentsline {subsection}{\numberline {4.1.4}Twin Delayed Deep Deterministic Policy Gradient}{23}{subsection.4.1.4}%
-\contentsline {chapter}{\numberline {5}\MakeUppercase {BIPEDAL WALKING BY TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}}{25}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Details of the Environment}{25}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Partial Observability}{26}{subsection.5.1.1}%
-\contentsline {section}{\numberline {5.2}RL Method and hyperparameters}{26}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Proposed Neural Networks}{26}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Feed Forward Network}{27}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}Long Short Term Memory}{27}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Transformer (Pre-layer Normalized)}{27}{subsection.5.3.3}%
-\contentsline {section}{\numberline {5.4}Results}{27}{section.5.4}%
-\contentsline {chapter}{\numberline {6}\MakeUppercase {CONCLUSION AND FUTURE WORK}}{29}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Conclusion}{29}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Future Work}{29}{section.6.2}%
-\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{31}{chapter*.14}%
-\contentsline {nodots}{\numberline {}APPENDICES}{33}{chapter*.14}%
-\contentsline {chapter}{\numberline {A}\MakeUppercase {Proof of Some Theorem}}{35}{appendix.A}%
+\contentsline {subsubsection}{\numberline {3.3.4.2}Pre-Layer Normalized Transformer}{21}{subsubsection.3.3.4.2}%
+\contentsline {chapter}{\numberline {4}\MakeUppercase {BIPEDAL WALKING BY TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}}{23}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Details of the Environment}{23}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Partial Observability}{24}{subsection.4.1.1}%
+\contentsline {section}{\numberline {4.2}RL Method and hyperparameters}{24}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Proposed Neural Networks}{24}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Feed Forward Network}{25}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Long Short Term Memory}{25}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Transformer (Pre-layer Normalized)}{25}{subsection.4.3.3}%
+\contentsline {section}{\numberline {4.4}Results}{25}{section.4.4}%
+\contentsline {chapter}{\numberline {5}\MakeUppercase {CONCLUSION AND FUTURE WORK}}{27}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Conclusion}{27}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Future Work}{27}{section.5.2}%
+\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{29}{chapter*.14}%
+\contentsline {nodots}{\numberline {}APPENDICES}{31}{chapter*.14}%
+\contentsline {chapter}{\numberline {A}\MakeUppercase {Proof of Some Theorem}}{33}{appendix.A}%
