@@ -59,16 +59,15 @@ class Critic(nn.Module):
         self.action_dim = action_dim
 
         self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=128, batch_first=True, dropout=0.0)
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.GELU())
-        nn.init.xavier_uniform_(self.action_encoder[0].weight, gain=nn.init.calculate_gain('relu'))
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.Tanh())
+        nn.init.xavier_uniform_(self.action_encoder[0].weight, gain=nn.init.calculate_gain('tanh'))
 
         self.fc2 = nn.Linear(128,256)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
-        self.fc_out = nn.Linear(256,1)
+        self.fc_out = nn.Linear(256,1, bias=False)
         #nn.init.xavier_uniform_(self.fc_out.weight)
         nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
-        nn.init.zeros_(self.fc_out.bias)
 
         self.act = nn.GELU()
 

@@ -18,10 +18,10 @@ parser.add_argument("-e", "--env", type=str, choices=['classic', 'hardcore'],
 parser.add_argument("-m", "--model_type", type=str, choices=['ff','lstm','bilstm','trsf'],
                     default='ff', help="model type")
 parser.add_argument("-r", "--rl_type", type=str, choices=['ddpg', 'td3'], default='ddpg', help='RL method')
-parser.add_argument("-l", "--lr", type=float, default=3e-4, help='Learning Rate')
+parser.add_argument("-l", "--lr", type=float, default=5e-4, help='Learning Rate')
 parser.add_argument("-w", "--wd", type=float, default=1e-6, help='Weight Decay')
 parser.add_argument("-c", "--ckpt", type=str, default='seed', help='checkpoint to start with')
-parser.add_argument("-x", "--explore_episode", type=int, default=50, help='number of exploration steps')
+parser.add_argument("-x", "--explore_episode", type=int, default=25, help='number of exploration steps')
 
 args = parser.parse_args()
 
