@@ -57,7 +57,7 @@ def test(env, agent, render=True):
     score = 0
     done=False
     while not done:
-        action = agent.get_action(state, explore=False)
+        action = agent.get_action(state, explore=True)
         action = action.clip(min=env.action_space.low, max=env.action_space.high)
         #print(action)
         next_state, reward, done, _ = env.step(action)

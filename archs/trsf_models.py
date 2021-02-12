@@ -71,8 +71,8 @@ class Critic(nn.Module):
         
         self.state_encoder = StableTransformerEncoder(d_in=self.state_dim,
             d_model=128, nhead=4, dim_feedforward=256, dropout=0.0)
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.Tanh()) # 
-        nn.init.xavier_uniform_(self.action_encoder[0].weight, gain=nn.init.calculate_gain('tanh')) # 
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.GELU()) # 
+        nn.init.xavier_uniform_(self.action_encoder[0].weight, gain=nn.init.calculate_gain('relu')) # 
 
         self.fc2 = nn.Linear(128,256)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
