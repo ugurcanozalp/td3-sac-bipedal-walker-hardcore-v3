@@ -55,26 +55,21 @@ In DRL, partial observability is handled by 2 ways in literature \cite{dulac-arn
 
 Our approach is using fixed number of past states into LSTM, BiLSTM and Transformer based networks. 
 
-\section{RL Method and hyperparameters}
-TD3 algorithm is used for learning task. For all networks following hyperparameters are used.
-
 \section{Proposed Neural Networks}
 
 For all networks, varing backbones used to encode state information from observations for both actor and critic networks. As backbones, following networks are proposed.
 
-\begin{itemize}
-	\item Feed Forward Network with residual connection (hidden dim: 128, feed forward dim: 384)
-	\item LSTM (hidden dim: 128, number of layer: 1)
-	\item Bidirectional LSTM (hidden dim: 96, number of layer: 1)
-	\item Transformer (hidden dim: 128, feed forward dim: 256, number of layer: 1)
-\end{itemize}
-
 Actions are passed through feed forward layer with GELU activation and summed up by state encoding. Then, this summation is again passed through feed forward layer with GELU activation. Lastly, a linear layer is used for critic estimation in critic network and feed forward layer with tanh activation for action estimation in actor network.
 
 \subsection{Feed Forward Network}
-
+Feed Forward Network with residual connection (hidden dim: 128, feed forward dim: 384)
 \subsection{Long Short Term Memory}
-
+LSTM (hidden dim: 128, number of layer: 1)
+Bidirectional LSTM (hidden dim: 96, number of layer: 1)
 \subsection{Transformer (Pre-layer Normalized)}
+Transformer (hidden dim: 128, feed forward dim: 256, number of layer: 1)
+
+\section{RL Method and hyperparameters}
+TD3 algorithm is used for learning task. For all networks following hyperparameters are used.\\
 
 \section{Results}

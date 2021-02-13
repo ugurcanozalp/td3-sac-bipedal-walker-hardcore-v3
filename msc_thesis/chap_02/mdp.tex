@@ -1,34 +1,50 @@
 \section{Sequential Decision Making}
 
-In discrete time setting, the agent takes action $a_t$, then observes observation $o_t$ and obtains reward $r_t$ at time $t$. History is set of past actions observations and rewards, $h_t=\{ a_0, o_0, r_0, ... a_t, o_t, r_t\}$. State $s_t$ is function of the history, $s_t=f(h_t)$, which represents situtaion of environment as much as possible.
+RL is stochastic control process in discrete time (bellman).
+At time $t$, the agent starts with state $s_t$ and observes $o_t$, then takes action $a_t$ according to its policy $\pi$ and obtains reward $r_t$ at time $t$. Then state transition to $s_{t+1}$ as a consequence of action and agent observes next observation $o_{t+1}$. History is set of past actions observations and rewards, $h_t=\{ a_0, o_0, r_0, ... a_t, o_t, r_t\}$. State $s_t$ is function of the history, $s_t=f(h_t)$, which represents situtaion of environment as much as possible.
 
 \section{Markov Decision Process}
 \label{sec:mdp}
 
-Markov Decision Process (MDP) is a sequential decision making process with Markov property. It is represented as a tuple $(S,A,P,R,\gamma)$. Markov property means that the conditional probability distribution of the future state depends only on the instant state and action instead of the entire past, so it is memoryless. 
+Markov Decision Process (MDP) is a sequential decision making process with Markov property. It is represented as a tuple $(S,A,T,R,\gamma)$. Markov property means that the conditional probability distribution of the future state depends only on the instant state and action instead of the entire past, so it is memoryless. In MDP setting, the system is fully observable which means states can be derived from instant observations; i.e., $s_t=f(o_t)$. Therefore, agent can decide action based on only instant observation $o_t$ instead of what happened on previous time.
 
 \textbf{State Space $S$}: A set of all possible configurations of system. 
 
 \textbf{Action Space $A$}: A set of all possible actions of agent.
 
-\textbf{Model $P$}: Model is mathematical representation of how environment evolves through time, including transition probabilities $P(s'|s,a)$ where $s' \in S$ is next state, $s \in S$ is instant state and $a \in A$ is taken action. 
+\textbf{Model $T$}: Function of how environment evolves through time, representing transition probabilities $T(s',s,a) = p(s'|s,a)$ where $s' \in S$ is next state, $s \in S$ is instant state and $a \in A$ is taken action. 
 
-\textbf{Reward $R$}: A set of rewards coming from environment. At each state transition $s_t \mapsto s_{t+1}$ , a reward $r_t$ is given to agent. Rewards can be either deterministic or stochastic.
-
-\subsection{Reward Function}
-Reward function $R$ is expected value of reward at given state $s$ and taken action $a$. Therefore, it is defined as function of state and action, $R \colon S \times A \mapsto R$.
+\textbf{Reward Function $R$}: Function of rewards coming from environment. At each state transition $s_t \mapsto s_{t+1}$ , a reward $r_t$ is given to agent. Rewards can be either deterministic or stochastic. Reward function $R$ is expected value of reward at given state $s$ and taken action $a$. Therefore, it is defined as function of state and action, $R \colon S \times A \mapsto R$.
 
 \begin{equation}
 R(s,a) = \mathbb{E}[r_t|s_t=s, a_t=a] \: \forall t = 0,1, ...
 \end{equation}
 
-\subsection{Policy}
+\textbf{Discount Factor $\gamma$}: Discount factor $\gamma \in [0,1)$ is measure of importance of rewards in the future for value function.
 
-Policy is a mapping $\pi \colon S \mapsto A$ which maps states to actions. 
 
-\subsection{Optimization Goals}
 
-\textbf{Return and Discount Factor}: Discount factor $\gamma \in [0,1)$ is measure of importance of rewards in the future for value function. This value is used in for return calculation. At time $t$, $G_t$ is return which is cumulative sum of future rewards, scaled by $\gamma$.
+\section{Partially Observed Markov Decision Process}
+\label{sec:pomdp}
+
+Sometimes, observation space is not enough to represent all information (state) about environment. In such cases, past and instant observations are used to filter out a belief state. It is represented as a tuple $(S,A,T,R,\Omega,O,\gamma)$. In addition to MDP, it introduces observation space $\Omega$ and observation model $O$.
+
+\textbf{Observation Space $\Omega$}: A set of all possible observations of agent.
+
+\textbf{Observation Model $O$}: Function of how observations are related to states, representing observation probabilities $O(o,s) = p(o|s)$ where $s \in S$ is instant state and $o \in \Omega$ is observation. 
+
+\section{Policy}
+
+Policy is logic of how agent acts according to state of environment. It can be either deterministic or stochastic. 
+
+\begin{itemize}
+	\item Deterministic policy $\mu$ is a mapping from states to actions; $\mu \colon S \mapsto A$.
+	\item Stochastic policy $\pi$ is a mapping from state-action pair to a probability; $\pi \colon S \times A \mapsto [0,1]$.
+\end{itemize}
+
+\section{Return, Value Functions and Policy Learning}
+
+\textbf{Return and Discount Factor}: At time $t$, $G_t$ is return which is cumulative sum of future rewards, scaled by discount factor $\gamma$.
 
 \begin{equation}
 G_t = \sum_{i=t}^{\infty} \gamma^{i-t} r_i = r_t + + \gamma G_{t+1}
@@ -48,3 +64,24 @@ V^{\pi}(s) = \mathbb{E}[G_t|s_t=s] \: \forall t = 0,1, ...
 Q^{\pi}(s,a) = \mathbb{E}[G_t|s_t=s, a_t=a] \: \forall t = 0,1, ...
 \end{equation}
 
+Optimal state-action value function should yield maximum expected return for each state-action pair. It is defined as follows;
+
+\begin{equation}
+Q^{*}(s,a) = \max_{\pi} Q^{\pi}(s,a)
+\end{equation}
+
+Similary, the optimal policy $\pi^*$ can be obtained by $Q^{*}(s,a)$.
+
+For stochastic policy;
+\begin{equation}
+\pi^{*}(s,a) = 
+\begin{cases}
+1,   & \text{if  } a = \argmax_{a} Q^{*}(s,a) \\
+0,   & \text{otherwise  }
+\end{cases} 
+\end{equation}
+
+For deterministic policy;
+\begin{equation}
+\mu^{*}(s) = \max_{a} Q^{*}(s,a)
+\end{equation}

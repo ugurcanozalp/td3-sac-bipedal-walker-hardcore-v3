@@ -17,41 +17,40 @@
 \BOOKMARK [1][-]{section.2.2}{Challenges}{chapter.2}% 17
 \BOOKMARK [1][-]{section.2.3}{Sequential Decision Making}{chapter.2}% 18
 \BOOKMARK [1][-]{section.2.4}{Markov Decision Process}{chapter.2}% 19
-\BOOKMARK [2][-]{subsection.2.4.1}{Reward Function}{section.2.4}% 20
-\BOOKMARK [2][-]{subsection.2.4.2}{Policy}{section.2.4}% 21
-\BOOKMARK [2][-]{subsection.2.4.3}{Optimization Goals}{section.2.4}% 22
-\BOOKMARK [1][-]{section.2.5}{Model Free Reinforcement Learning}{chapter.2}% 23
-\BOOKMARK [2][-]{subsection.2.5.1}{Q Learning}{section.2.5}% 24
-\BOOKMARK [3][-]{subsubsection.2.5.1.1}{Deep Q Learning}{subsection.2.5.1}% 25
-\BOOKMARK [3][-]{subsubsection.2.5.1.2}{Double Deep Q Learning}{subsection.2.5.1}% 26
-\BOOKMARK [2][-]{subsection.2.5.2}{Policy Gradient}{section.2.5}% 27
-\BOOKMARK [3][-]{subsubsection.2.5.2.1}{Deterministic Policy Gradient}{subsection.2.5.2}% 28
-\BOOKMARK [3][-]{subsubsection.2.5.2.2}{Deep Deterministic Policy Gradient}{subsection.2.5.2}% 29
-\BOOKMARK [3][-]{subsubsection.2.5.2.3}{Twin Delayed Deep Deterministic Policy Gradient}{subsection.2.5.2}% 30
-\BOOKMARK [0][-]{chapter.3}{NEURAL NETWORKS AND DEEP LEARNING}{}% 31
-\BOOKMARK [1][-]{section.3.1}{Neural Networks}{chapter.3}% 32
-\BOOKMARK [1][-]{section.3.2}{Backpropagaion}{chapter.3}% 33
-\BOOKMARK [1][-]{section.3.3}{Neural Network Types}{chapter.3}% 34
-\BOOKMARK [2][-]{subsection.3.3.1}{Perceptron}{section.3.3}% 35
-\BOOKMARK [2][-]{subsection.3.3.2}{Feed Forward Neural Networks \(Multilayer Perceptron\)}{section.3.3}% 36
-\BOOKMARK [2][-]{subsection.3.3.3}{Recurrent Neural Networks}{section.3.3}% 37
-\BOOKMARK [3][-]{subsubsection.3.3.3.1}{Long Term Dependence Problem of Vanilla RNNs}{subsection.3.3.3}% 38
-\BOOKMARK [3][-]{subsubsection.3.3.3.2}{Long Short Term Memory}{subsection.3.3.3}% 39
-\BOOKMARK [2][-]{subsection.3.3.4}{Attention Mechanism}{section.3.3}% 40
-\BOOKMARK [3][-]{subsubsection.3.3.4.1}{Transformer}{subsection.3.3.4}% 41
-\BOOKMARK [3][-]{subsubsection.3.3.4.2}{Pre-Layer Normalized Transformer}{subsection.3.3.4}% 42
-\BOOKMARK [0][-]{chapter.4}{BIPEDAL WALKING BY TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}{}% 43
-\BOOKMARK [1][-]{section.4.1}{Details of the Environment}{chapter.4}% 44
-\BOOKMARK [2][-]{subsection.4.1.1}{Partial Observability}{section.4.1}% 45
-\BOOKMARK [1][-]{section.4.2}{RL Method and hyperparameters}{chapter.4}% 46
-\BOOKMARK [1][-]{section.4.3}{Proposed Neural Networks}{chapter.4}% 47
-\BOOKMARK [2][-]{subsection.4.3.1}{Feed Forward Network}{section.4.3}% 48
-\BOOKMARK [2][-]{subsection.4.3.2}{Long Short Term Memory}{section.4.3}% 49
-\BOOKMARK [2][-]{subsection.4.3.3}{Transformer \(Pre-layer Normalized\)}{section.4.3}% 50
-\BOOKMARK [1][-]{section.4.4}{Results}{chapter.4}% 51
-\BOOKMARK [0][-]{chapter.5}{CONCLUSION AND FUTURE WORK}{}% 52
-\BOOKMARK [1][-]{section.5.1}{Conclusion}{chapter.5}% 53
-\BOOKMARK [1][-]{section.5.2}{Future Work}{chapter.5}% 54
-\BOOKMARK [0][-]{chapter*.14}{REFERENCES}{}% 55
-\BOOKMARK [0][-]{chapter*.14}{APPENDICES}{}% 56
-\BOOKMARK [0][-]{appendix.A}{Proof of Some Theorem}{}% 57
+\BOOKMARK [1][-]{section.2.5}{Partially Observed Markov Decision Process}{chapter.2}% 20
+\BOOKMARK [1][-]{section.2.6}{Policy}{chapter.2}% 21
+\BOOKMARK [1][-]{section.2.7}{Return, Value Functions and Policy Learning}{chapter.2}% 22
+\BOOKMARK [1][-]{section.2.8}{Model Free Reinforcement Learning}{chapter.2}% 23
+\BOOKMARK [2][-]{subsection.2.8.1}{Value Based Methods \(Q Learning\)}{section.2.8}% 24
+\BOOKMARK [3][-]{subsubsection.2.8.1.1}{Deep Q Learning}{subsection.2.8.1}% 25
+\BOOKMARK [3][-]{subsubsection.2.8.1.2}{Double Deep Q Learning}{subsection.2.8.1}% 26
+\BOOKMARK [2][-]{subsection.2.8.2}{Actor Critic Methods}{section.2.8}% 27
+\BOOKMARK [3][-]{subsubsection.2.8.2.1}{Deep Deterministic Policy Gradient}{subsection.2.8.2}% 28
+\BOOKMARK [3][-]{subsubsection.2.8.2.2}{Twin Delayed Deep Deterministic Policy Gradient}{subsection.2.8.2}% 29
+\BOOKMARK [0][-]{chapter.3}{NEURAL NETWORKS AND DEEP LEARNING}{}% 30
+\BOOKMARK [1][-]{section.3.1}{Neural Networks}{chapter.3}% 31
+\BOOKMARK [1][-]{section.3.2}{Backpropagaion}{chapter.3}% 32
+\BOOKMARK [1][-]{section.3.3}{Neural Network Types}{chapter.3}% 33
+\BOOKMARK [2][-]{subsection.3.3.1}{Perceptron}{section.3.3}% 34
+\BOOKMARK [2][-]{subsection.3.3.2}{Feed Forward Neural Networks \(Multilayer Perceptron\)}{section.3.3}% 35
+\BOOKMARK [2][-]{subsection.3.3.3}{Recurrent Neural Networks}{section.3.3}% 36
+\BOOKMARK [3][-]{subsubsection.3.3.3.1}{Long Term Dependence Problem of Vanilla RNNs}{subsection.3.3.3}% 37
+\BOOKMARK [3][-]{subsubsection.3.3.3.2}{Long Short Term Memory}{subsection.3.3.3}% 38
+\BOOKMARK [2][-]{subsection.3.3.4}{Attention Mechanism}{section.3.3}% 39
+\BOOKMARK [3][-]{subsubsection.3.3.4.1}{Transformer}{subsection.3.3.4}% 40
+\BOOKMARK [3][-]{subsubsection.3.3.4.2}{Pre-Layer Normalized Transformer}{subsection.3.3.4}% 41
+\BOOKMARK [0][-]{chapter.4}{BIPEDAL WALKING BY TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}{}% 42
+\BOOKMARK [1][-]{section.4.1}{Details of the Environment}{chapter.4}% 43
+\BOOKMARK [2][-]{subsection.4.1.1}{Partial Observability}{section.4.1}% 44
+\BOOKMARK [1][-]{section.4.2}{Proposed Neural Networks}{chapter.4}% 45
+\BOOKMARK [2][-]{subsection.4.2.1}{Feed Forward Network}{section.4.2}% 46
+\BOOKMARK [2][-]{subsection.4.2.2}{Long Short Term Memory}{section.4.2}% 47
+\BOOKMARK [2][-]{subsection.4.2.3}{Transformer \(Pre-layer Normalized\)}{section.4.2}% 48
+\BOOKMARK [1][-]{section.4.3}{RL Method and hyperparameters}{chapter.4}% 49
+\BOOKMARK [1][-]{section.4.4}{Results}{chapter.4}% 50
+\BOOKMARK [0][-]{chapter.5}{CONCLUSION AND FUTURE WORK}{}% 51
+\BOOKMARK [1][-]{section.5.1}{Conclusion}{chapter.5}% 52
+\BOOKMARK [1][-]{section.5.2}{Future Work}{chapter.5}% 53
+\BOOKMARK [0][-]{chapter*.14}{REFERENCES}{}% 54
+\BOOKMARK [0][-]{chapter*.14}{APPENDICES}{}% 55
+\BOOKMARK [0][-]{appendix.A}{Proof of Some Theorem}{}% 56

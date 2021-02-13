@@ -21,7 +21,7 @@ def train(env, agent, n_episodes=3000, model_type='unk', env_type='unk', score_l
             if i_episode>explore_episode:
                 action = agent.get_action(state, explore=True)
                 action = action.clip(min=env.action_space.low, max=env.action_space.high)
-                #env.render()
+                env.render()
             else:
                 action = env.action_space.sample()
 
@@ -57,9 +57,9 @@ def test(env, agent, render=True):
     score = 0
     done=False
     while not done:
-        action = agent.get_action(state, explore=True)
+        action = agent.get_action(state, explore=False)
         action = action.clip(min=env.action_space.low, max=env.action_space.high)
-        #print(action)
+        print(action)
         next_state, reward, done, _ = env.step(action)
         state = next_state
         score += reward
