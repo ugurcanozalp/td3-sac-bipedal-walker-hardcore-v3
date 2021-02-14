@@ -11,6 +11,10 @@ P.~Abbeel, A.~Coates, M.~Quigley, and A.~Ng, An {Application} of
   {Reinforcement} {Learning} to {Aerobatic} {Helicopter} {Flight}, in
   \emph{{NIPS}}, 2006.
 
+\bibitem{bellman_dynamic_2003}
+R.~Bellman, \emph{Dynamic {Programming}}, Dover Publications, Mineola, N.Y,
+  reprint edition edition, March 2003, ISBN 9780486428093.
+
 \bibitem{brockman_openai_2016}
 G.~Brockman, V.~Cheung, L.~Pettersson, J.~Schneider, J.~Schulman, J.~Tang, and
   W.~Zaremba, {OpenAI} {Gym}, arXiv:1606.01540 [cs], June 2016, arXiv:
@@ -24,6 +28,12 @@ R.~Collobert, K.~Kavukcuoglu, and C.~Farabet, Torch7: {A} {Matlab}-like
 G.~Dulac-Arnold, D.~Mankowitz, and T.~Hester, Challenges of {Real}-{World}
   {Reinforcement} {Learning}, arXiv:1904.12901 [cs, stat], April 2019, arXiv:
   1904.12901.
+
+\bibitem{francois-lavet_introduction_2018}
+V.~Francois-Lavet, P.~Henderson, R.~Islam, M.~G. Bellemare, and J.~Pineau, An
+  {Introduction} to {Deep} {Reinforcement} {Learning}, Foundations and Trends®
+  in Machine Learning, 11(3-4), pp. 219--354, 2018, ISSN 1935-8237, 1935-8245,
+  arXiv: 1811.12560.
 
 \bibitem{fris_landing_2020}
 R.~Fris, The {Landing} of a {Quadcopter} on {Inclined} {Surfaces} using
@@ -56,6 +66,13 @@ W.~S. McCulloch and W.~Pitts, A logical calculus of the ideas immanent in
 \bibitem{mitchell_machine_1997}
 T.~M. Mitchell, \emph{Machine {Learning}}, McGraw-Hill Education, New York, 1st
   edition edition, March 1997, ISBN 9780070428072.
+
+\bibitem{mnih_human-level_2015}
+V.~Mnih, K.~Kavukcuoglu, D.~Silver, A.~A. Rusu, J.~Veness, M.~G. Bellemare,
+  A.~Graves, M.~Riedmiller, A.~K. Fidjeland, G.~Ostrovski, S.~Petersen,
+  C.~Beattie, A.~Sadik, I.~Antonoglou, H.~King, D.~Kumaran, D.~Wierstra,
+  S.~Legg, and D.~Hassabis, Human-level control through deep reinforcement
+  learning, Nature, 518(7540), pp. 529--533, February 2015, ISSN 1476-4687.
 
 \bibitem{pan_virtual_2017}
 X.~Pan, Y.~You, Z.~Wang, and C.~Lu, Virtual to {Real} {Reinforcement}
@@ -132,6 +149,10 @@ A.~Vaswani, N.~Shazeer, N.~Parmar, J.~Uszkoreit, L.~Jones, A.~N. Gomez,
 \bibitem{wang_deep_2019}
 S.~Wang, D.~Jia, and X.~Weng, Deep {Reinforcement} {Learning} for {Autonomous}
   {Driving}, arXiv:1811.11329 [cs], May 2019, arXiv: 1811.11329.
+
+\bibitem{watkins_technical_1992}
+C.~J. Watkins and P.~Dayan, Technical {Note}: {Q}-{Learning}, Machine Learning,
+  8(3), pp. 279--292, May 1992, ISSN 1573-0565.
 
 \bibitem{xiong_layer_2020}
 R.~Xiong, Y.~Yang, D.~He, K.~Zheng, S.~Zheng, C.~Xing, H.~Zhang, Y.~Lan,

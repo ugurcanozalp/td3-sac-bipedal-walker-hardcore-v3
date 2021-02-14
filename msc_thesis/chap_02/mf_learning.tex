@@ -1,17 +1,46 @@
 \section{Model Free Reinforcement Learning}
 \label{sec:mf_rl}
 
-Model Free Reinforcement Learning is suitable if environment model is not available but agent can experience environment by consequences of its actions.
+Model based methods are based on solving bellman equation \ref{eqn:bellman_v}\ref{eqn:bellman_q} with given model $T$. On the other hand, Model Free Reinforcement Learning is suitable if environment model is not available but agent can experience environment by consequences of its actions. There are 3 main types.
 
-\subsection{Value Based Methods (Q Learning)}
- ...
+\textbf{Value Based Learning}: Value functions are learned, then policy arises naturally from value function as shown in \ref{eqn:policy_stochastic_q} \ref{eqn:policy_deterministic_q}. Since argmax operation is used, this type of learning is suitable for problems where action space is discrete.
+
+\textbf{Policy Based Learning}: Policy is learned directly, return values are used instead of learning a value function. Unlike value based methods, it is suitable for continious action spaces.
+
+\textbf{Actor Critic Learning}: Both policy (actor) and value (critic) functions are learned simulatenously. It is also suitable for continious action spaces. 
+
+\subsection{Q Learning}
+Q Learning is a value based type of learning. It is based on optimizing $Q$ function using bellman equation \ref{eqn:bellman_q} \cite{watkins_technical_1992}. 
+
+Assume that $Q$ function is parametrized by $\theta$. At time $t$,  with state, action, reward, next state tuples ($s_t,a_t,r_t,s_{t+1}$), $Q$ values are updated by minimizing following loss function with respect to $\theta$ using numerical optimization methods.
+
+\begin{equation}
+\label{eqn:q_loss}
+\mathcal{L}_t(\theta_t) = \big( r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta_t) - Q(s_t,a_t;\theta_t) \big) ^ 2
+\end{equation}
+
 \subsubsection{Deep Q Learning}
+
+Deep Q Learning overcomes instability of Q Learning. When a nonlinear approximator is used, learning is unstable. Deep Q Learning introduces Target Network and Experience Replay \cite{mnih_human-level_2015}.
+
+\textbf{Target Network}: Target network is parametrized $\theta_i^-$. It is used to evaluate target value and not updated by loss minimization. It is updated at each fixed number of update step $C$ by Q network parameter $\theta$. 
+
+\textbf{Experience Replay}: Experience tuples are stored in dataset $\mathcal{D}$ as queue with fixed buffer size. 
+
+At each iteration $i$, $\theta$ is updated by experiences uniformly subsampled from experience replay.
+
+\begin{equation}
+\label{eqn:dqn_loss}
+\mathcal{L}_i(\theta_i) = \mathbb{E}_{s,a,r,s'\sim U(\mathcal{D})}\Big[\big( r + \gamma \max_{a'} Q(s',a';\theta_i^-) - Q(s,a;\theta_i) \big) ^ 2 \Big]
+\end{equation}
 
 \subsubsection{Double Deep Q Learning}
 
-\subsection{Actor Critic Methods}
-
 ...
+
+\subsection{Deterministic Policy Gradient}
+Deterministic policy gradient is actor-critic type of learning. However, it can be thought as continious version of Q Learning.  
+
 
 \subsubsection{Deep Deterministic Policy Gradient}
 
