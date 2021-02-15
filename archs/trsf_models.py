@@ -17,15 +17,6 @@ def fanin_init(size, fanin=None):
     v = 1. / np.sqrt(fanin)
     return torch.Tensor(size).uniform_(-v, v)
 
-class LastStatePooler(nn.Module):
-    def forward(self,x):
-        return x[:, -1]
-
-class MaxPooler(nn.Module):
-    def forward(self,x):
-        x, _ = x.max(axis=-2) # -2 -> sequence dimension
-        return x
-
 class WeightedMeanPooling(nn.Module):
     def __init__(self, seq_len):
         super(WeightedMeanPooling,self).__init__()
@@ -40,16 +31,18 @@ class StableTransformerEncoder(nn.Module):
 
     def __init__(self, d_in, d_model, nhead, dim_feedforward=256, dropout=0.1, seq_len=16):
         super(StableTransformerEncoder,self).__init__()
+        self.embedding_scale = d_model**0.5
         self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model), nn.Tanh()) # 
         nn.init.xavier_uniform_(self.inp_embedding[0].weight, gain=nn.init.calculate_gain('tanh')) #
         nn.init.zeros_(self.inp_embedding[0].bias) 
-        self.pos_embedding = PositionalEncoding(d_model, seq_len=seq_len, ratio=None)
+        self.pos_embedding = PositionalEncoding(d_model, seq_len=seq_len)
         self.encoder = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout)
         self.layn = nn.LayerNorm(d_model)
 
     def forward(self, src):
         x = src
         x = self.inp_embedding(x)
+        x = x * self.embedding_scale
         x = self.pos_embedding(x)
         x = x.permute(1,0,2) # batch, seq, emb -> seq, batch, emb
         x = self.encoder(x, only_last_state=True)  # 1, batch, emb

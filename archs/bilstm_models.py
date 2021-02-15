@@ -34,6 +34,7 @@ class NormalizedLSTM(nn.Module):
         self.dropout = nn.Dropout(dropout)
         self.lstm = nn.LSTM(hidden_size, hidden_size=hidden_size, batch_first=batch_first, bidirectional=True, num_layers=1, dropout=dropout)
         self.pooler = LastStatePooler()
+        self.layernorm = nn.LayerNorm(hidden_size)
 
     def forward(self, x):
         x = self.embedding(x)
@@ -44,6 +45,7 @@ class NormalizedLSTM(nn.Module):
         x, (_, _) = self.lstm(x)
         x = self.pooler(x)
         x = 0.5*(x[:, :self.lstm.hidden_size]+x[:, self.lstm.hidden_size:])
+        x = self.layernorm(x)
         return x
 
 class Critic(nn.Module):
@@ -119,6 +121,5 @@ class Actor(nn.Module):
         :return: Output action (Torch Variable: [n,action_dim] )
         """
         s = self.state_encoder(state)
-        print(s.std())
         action = self.tanh(self.fc(s))
         return action

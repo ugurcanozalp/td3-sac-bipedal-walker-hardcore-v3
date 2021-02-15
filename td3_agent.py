@@ -10,7 +10,7 @@ from itertools import chain
 class TD3Agent():
     rl_type = 'td3'
     def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(3),
-            lr=7e-4, weight_decay=0, gamma=0.99, tau=0.005, batch_size=128, buffer_size=int(5e5)):
+            lr=5e-4, weight_decay=1e-6, gamma=0.99, tau=0.005, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
         self.action_size = action_size

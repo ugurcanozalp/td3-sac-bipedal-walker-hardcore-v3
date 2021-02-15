@@ -34,6 +34,7 @@ class NormalizedLSTM(nn.Module):
         self.dropout = nn.Dropout(dropout)
         self.lstm = nn.LSTM(hidden_size, hidden_size=hidden_size, batch_first=batch_first, bidirectional=False, num_layers=1, dropout=dropout)
         self.pooler = LastStatePooler()
+        self.layernorm = nn.LayerNorm(hidden_size)
 
     def forward(self, x):
         x = self.embedding(x)
@@ -43,6 +44,7 @@ class NormalizedLSTM(nn.Module):
         x = self.dropout(x)
         x, (_, _) = self.lstm(x)
         x = self.pooler(x)
+        x = self.layernorm(x)
         return x
 
 class Critic(nn.Module):

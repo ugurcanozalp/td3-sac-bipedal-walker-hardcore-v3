@@ -6,9 +6,9 @@ from torch.autograd import Variable
 import torch.nn.functional as F
 
 class PositionalEncoding(nn.Module):
-    def __init__(self, d_model, seq_len=16, ratio=None):
+    def __init__(self, d_model, seq_len=16):
         super(PositionalEncoding, self).__init__()
-        self.embedding_scale = d_model**0.5
+        # self.embedding_scale = d_model**0.5
         pe = torch.zeros(seq_len, d_model)
         position = torch.arange(0, seq_len, dtype=torch.float).unsqueeze(1)
         _log10000 = 9.21034037198
@@ -21,7 +21,7 @@ class PositionalEncoding(nn.Module):
         self.register_buffer('pe', pe)
 
     def forward(self, x):
-        x = x + torch.flip(self.pe[:, :x.size(1), :], dims=[1]) / self.embedding_scale
+        x = x + torch.flip(self.pe[:, :x.size(1), :], dims=[1]) # / self.embedding_scale
         #x = x + self.pe[:, :x.size(1), :] / self.embedding_scale*
         return x
 
