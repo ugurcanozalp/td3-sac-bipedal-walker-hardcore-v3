@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt
 from collections import deque
 
-def train(env, agent, n_episodes=3000, model_type='unk', env_type='unk', score_limit=250.0, explore_episode=25, test_f=100, max_t_step=2000):
+def train(env, agent, n_episodes=3000, model_type='unk', env_type='unk', score_limit=280.0, explore_episode=30, test_f=100, max_t_step=2000):
     scores_deque = deque(maxlen=100)
     scores = []
     test_scores = []
