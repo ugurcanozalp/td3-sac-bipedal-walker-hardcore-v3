@@ -31,3 +31,28 @@ class BoxToHistoryBox(gym.ObservationWrapper):
         for i in range(self.h-1):
             self.add_to_memory(reset_state)
         return self.observation(reset_state)
+
+class SkipFrame(gym.Wrapper):
+    def __init__(self, env, skip=2):
+        super().__init__(env)
+        self._obs_buffer = deque(maxlen=skip)
+        self._skip = skip
+
+    def step(self, action):
+        total_reward = 0
+        for i in range(self._skip):
+            obs, reward, done, info = self.env.step(action)
+            self._obs_buffer.append(obs)
+            total_reward += reward
+            if done:
+                break
+        
+        return obs, total_reward, done, info
+
+    def reset(self):
+        return self.env.reset()
+
+    def render(self, mode="human"):
+        for _ in range(self._skip):
+            out = self.env.render(mode=mode)
+        return out

@@ -6,7 +6,7 @@ from collections import deque
 from ddpg_agent import DDPGAgent
 from td3_agent import TD3Agent
 from fcn_train_test import train, test
-from env_wrappers import BoxToHistoryBox
+from env_wrappers import BoxToHistoryBox, SkipFrame
 import argparse
 import os
 
@@ -22,6 +22,7 @@ parser.add_argument("-l", "--lr", type=float, default=3e-4, help='Learning Rate'
 parser.add_argument("-w", "--wd", type=float, default=1e-6, help='Weight Decay')
 parser.add_argument("-c", "--ckpt", type=str, default='seed', help='checkpoint to start with')
 parser.add_argument("-x", "--explore_episode", type=int, default=30, help='number of exploration steps')
+parser.add_argument("-g", "--gamma", type=float, default=0.98, help='discount rate')
 
 args = parser.parse_args()
 
@@ -38,18 +39,18 @@ else:
 
 if args.env == 'classic':
     env = gym.make('BipedalWalker-v3')
-    #env._max_episode_steps = 1400
+    env = SkipFrame(env, skip=2)
 elif args.env == 'hardcore':
     env = gym.make('BipedalWalkerHardcore-v3')
-    #env._max_episode_steps = 1800
+    env = SkipFrame(env, skip=2)
     
 if args.model_type in ['lstm', 'bilstm','trsf']:
     env = BoxToHistoryBox(env, h=12)
 
 if args.rl_type=='ddpg':
-    agent = DDPGAgent(Actor, Critic, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1], lr=args.lr, weight_decay=args.wd)
+    agent = DDPGAgent(Actor, Critic, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1], lr=args.lr, weight_decay=args.wd, gamma=args.gamma)
 elif args.rl_type=='td3':
-    agent = TD3Agent(Actor, Critic, clip_low=-1, clip_high=+1, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1],lr=args.lr, weight_decay=args.wd)
+    agent = TD3Agent(Actor, Critic, clip_low=-1, clip_high=+1, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1],lr=args.lr, weight_decay=args.wd, gamma=args.gamma)
 else:
     print('Wrong learning algorithm type!'); exit(0);
 
