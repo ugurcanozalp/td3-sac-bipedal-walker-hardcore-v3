@@ -46,7 +46,7 @@ class TD3Agent():
 
         self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=3.0, sigma=0.8, dt=0.04)
         #self.noise_generator = DecayingGaussianNoise(mu=np.zeros(action_size), end_sigma=0.10, start_sigma=0.70, decay_step=500000) 
-        #self.noise_generator = GaussianNoise(mu=np.zeros(action_size), sigma=0.12) #sigma=0.12
+        #self.noise_generator = GaussianNoise(mu=np.zeros(action_size), sigma=0.4) #sigma=0.12
         self.target_noise = GaussianNoise(mu=np.zeros(action_size), sigma=0.15, clip=0.3)
         
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \

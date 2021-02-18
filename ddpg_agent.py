@@ -10,7 +10,7 @@ from itertools import chain
 class DDPGAgent():
     rl_type = 'ddpg'
     def __init__(self, Actor, Critic, state_size=24, action_size=4, 
-            lr=5e-4, weight_decay=1e-5, gamma=0.99, tau=0.001, batch_size=128, buffer_size=int(5e5)):
+            lr=5e-4, weight_decay=1e-6, gamma=0.98, tau=0.001, batch_size=128, buffer_size=int(3e5)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -33,7 +33,7 @@ class DDPGAgent():
         self.critic_optim = optim.AdamW(self.train_critic.parameters(), lr=lr, weight_decay=weight_decay)
         print(f'Number of paramters of Critic Net: {sum(p.numel() for p in self.train_critic.parameters())}')
 
-        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=3.2, sigma=0.7, dt=0.04) # #theta=1.2, sigma=0.55
+        self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=3.0, sigma=0.9, dt=0.04) # #theta=1.2, sigma=0.55
         
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \
             batch_size= self.batch_size, device=self.device)

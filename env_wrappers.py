@@ -42,6 +42,9 @@ class SkipFrame(gym.Wrapper):
         total_reward = 0
         for i in range(self._skip):
             obs, reward, done, info = self.env.step(action)
+            if self.env.game_over:
+                reward = -25.0
+
             self._obs_buffer.append(obs)
             total_reward += reward
             if done:
