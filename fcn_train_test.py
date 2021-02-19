@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt
 from collections import deque
 
-def train(env, agent, n_episodes=3000, model_type='unk', env_type='unk', score_limit=250.0, explore_episode=30, test_f=100, max_t_step=2000):
+def train(env, agent, n_episodes=3000, model_type='unk', env_type='unk', score_limit=250.0, explore_episode=30, test_f=100, max_t_step=1000):
     scores_deque = deque(maxlen=100)
     scores = []
     test_scores = []
@@ -16,7 +16,7 @@ def train(env, agent, n_episodes=3000, model_type='unk', env_type='unk', score_l
         done = False
         
         t = int(0)
-        while not done and t<max_t_step:    
+        while not done and t < max_t_step:    
             t += int(1)
             if i_episode>explore_episode:
                 action = agent.get_action(state, explore=True)
@@ -25,8 +25,8 @@ def train(env, agent, n_episodes=3000, model_type='unk', env_type='unk', score_l
             else:
                 action = env.action_space.sample()
 
-            next_state, reward, done, _ = env.step(action)
-            agent.memory.add(state, action, reward, next_state, done)
+            next_state, reward, done, info = env.step(action)
+            agent.memory.add(state, action, reward, next_state, info["dead"])
 
             state = next_state
             score += reward
@@ -52,15 +52,17 @@ def train(env, agent, n_episodes=3000, model_type='unk', env_type='unk', score_l
 
     return np.array(scores).transpose(), np.array(test_scores).transpose()
 
-def test(env, agent, render=True):
+def test(env, agent, render=True, max_t_step=1000):
     state = env.reset()
     score = 0
     done=False
-    while not done:
+    t = int(0)
+    while not done and t < max_t_step:
+        t += int(1)
         action = agent.get_action(state, explore=False)
         action = action.clip(min=env.action_space.low, max=env.action_space.high)
         #print(action)
-        next_state, reward, done, _ = env.step(action)
+        next_state, reward, done, info = env.step(action)
         state = next_state
         score += reward
         if render:

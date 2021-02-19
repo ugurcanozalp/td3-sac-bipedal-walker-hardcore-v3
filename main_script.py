@@ -6,7 +6,7 @@ from collections import deque
 from ddpg_agent import DDPGAgent
 from td3_agent import TD3Agent
 from fcn_train_test import train, test
-from env_wrappers import BoxToHistoryBox, SkipFrame
+from env_wrappers import BoxToHistoryBox, MyWalkerWrapper
 import argparse
 import os
 
@@ -39,10 +39,10 @@ else:
 
 if args.env == 'classic':
     env = gym.make('BipedalWalker-v3')
-    env = SkipFrame(env, skip=2)
+    env = MyWalkerWrapper(env, skip=2)
 elif args.env == 'hardcore':
     env = gym.make('BipedalWalkerHardcore-v3')
-    env = SkipFrame(env, skip=2)
+    env = MyWalkerWrapper(env, skip=2)
     
 if args.model_type in ['lstm', 'bilstm','trsf']:
     env = BoxToHistoryBox(env, h=12)

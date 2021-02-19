@@ -62,14 +62,14 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = FeedForwardEncoder(self.state_dim, 128, 384)
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.GELU())
+        self.state_encoder = FeedForwardEncoder(self.state_dim, 96, 192)
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 96), nn.GELU())
         nn.init.xavier_uniform_(self.action_encoder[0].weight, gain=nn.init.calculate_gain('relu'))
 
-        self.fc2 = nn.Linear(128,256)
+        self.fc2 = nn.Linear(96,128)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
-        self.fc_out = nn.Linear(256,1, bias=False)
+        self.fc_out = nn.Linear(128,1, bias=False)
         #nn.init.xavier_uniform_(self.fc_out.weight)
         nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
 
@@ -105,9 +105,9 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = FeedForwardEncoder(self.state_dim, 128, 384)
+        self.state_encoder = FeedForwardEncoder(self.state_dim, 96, 192)
 
-        self.fc = nn.Linear(128,action_dim)
+        self.fc = nn.Linear(96,action_dim)
         nn.init.uniform_(self.fc.weight, -0.003,+0.003)
         nn.init.zeros_(self.fc.bias)
         self.tanh = nn.Tanh()

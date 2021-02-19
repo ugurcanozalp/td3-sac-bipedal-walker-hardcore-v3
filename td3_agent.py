@@ -9,8 +9,8 @@ from itertools import chain
 # https://github.com/A-Raafat/DDPG-bipedal/blob/master/My_DDPG.ipynb
 class TD3Agent():
     rl_type = 'td3'
-    def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(3),
-            lr=3e-4, weight_decay=1e-6, gamma=0.98, tau=0.005, batch_size=128, buffer_size=int(3e5)):
+    def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(2),
+            lr=2e-4, weight_decay=1e-6, gamma=0.98, tau=0.005, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -74,6 +74,7 @@ class TD3Agent():
             Q_targets_next_2 = self.target_critic_2(next_states, next_actions)
             Q_targets_next = torch.min(Q_targets_next_1, Q_targets_next_2).detach()
             Q_targets = rewards + (self.gamma * Q_targets_next * (1-done))
+            #Q_targets = rewards + (self.gamma * Q_targets_next)
         
         Q_expected_1 = self.train_critic_1(states, actions)
         critic_1_loss = torch.nn.MSELoss()(Q_expected_1, Q_targets)

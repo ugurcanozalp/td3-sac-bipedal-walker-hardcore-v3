@@ -29,7 +29,7 @@ class WeightedMeanPooling(nn.Module):
 
 class StableTransformerEncoder(nn.Module):
 
-    def __init__(self, d_in, d_model, nhead, dim_feedforward=256, dropout=0.1, seq_len=16):
+    def __init__(self, d_in, d_model, nhead, dim_feedforward=192, dropout=0.1, seq_len=16):
         super(StableTransformerEncoder,self).__init__()
         self.embedding_scale = d_model**0.5
         self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model), nn.Tanh()) # 
@@ -63,14 +63,14 @@ class Critic(nn.Module):
         self.action_dim = action_dim
         
         self.state_encoder = StableTransformerEncoder(d_in=self.state_dim,
-            d_model=128, nhead=8, dim_feedforward=256, dropout=0.0)
+            d_model=96, nhead=4, dim_feedforward=192, dropout=0.0)
         self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.GELU()) # 
         nn.init.xavier_uniform_(self.action_encoder[0].weight, gain=nn.init.calculate_gain('relu')) # 
 
-        self.fc2 = nn.Linear(128,256)
+        self.fc2 = nn.Linear(96,128)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
-        self.fc_out = nn.Linear(256,1, bias=False)
+        self.fc_out = nn.Linear(128,1, bias=False)
         #nn.init.xavier_uniform_(self.fc_out.weight)
         nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
 
@@ -107,9 +107,9 @@ class Actor(nn.Module):
         self.action_dim = action_dim
         
         self.state_encoder = StableTransformerEncoder(d_in=self.state_dim,
-            d_model=128, nhead=8, dim_feedforward=256, dropout=0.0)
+            d_model=96, nhead=4, dim_feedforward=192, dropout=0.0)
 
-        self.fc = nn.Linear(128,action_dim)
+        self.fc = nn.Linear(96,action_dim)
         nn.init.uniform_(self.fc.weight, -0.003,+0.003)
         nn.init.zeros_(self.fc.bias)
         self.tanh = nn.Tanh()

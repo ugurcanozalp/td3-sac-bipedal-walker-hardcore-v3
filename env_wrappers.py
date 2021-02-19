@@ -32,7 +32,7 @@ class BoxToHistoryBox(gym.ObservationWrapper):
             self.add_to_memory(reset_state)
         return self.observation(reset_state)
 
-class SkipFrame(gym.Wrapper):
+class MyWalkerWrapper(gym.Wrapper):
     def __init__(self, env, skip=2):
         super().__init__(env)
         self._obs_buffer = deque(maxlen=skip)
@@ -43,7 +43,10 @@ class SkipFrame(gym.Wrapper):
         for i in range(self._skip):
             obs, reward, done, info = self.env.step(action)
             if self.env.game_over:
-                reward = -25.0
+                reward = -10.0
+                info["dead"] = True
+            else:
+            	info["dead"] = False
 
             self._obs_buffer.append(obs)
             total_reward += reward
