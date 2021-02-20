@@ -18,11 +18,11 @@ parser.add_argument("-e", "--env", type=str, choices=['classic', 'hardcore'],
 parser.add_argument("-m", "--model_type", type=str, choices=['ff','lstm','bilstm','trsf'],
                     default='ff', help="model type")
 parser.add_argument("-r", "--rl_type", type=str, choices=['ddpg', 'td3'], default='ddpg', help='RL method')
-parser.add_argument("-l", "--lr", type=float, default=3e-4, help='Learning Rate')
-parser.add_argument("-w", "--wd", type=float, default=1e-6, help='Weight Decay')
+parser.add_argument("-l", "--lr", type=float, default=2e-4, help='Learning Rate')
+parser.add_argument("-w", "--wd", type=float, default=0, help='Weight Decay')
 parser.add_argument("-c", "--ckpt", type=str, default='seed', help='checkpoint to start with')
 parser.add_argument("-x", "--explore_episode", type=int, default=30, help='number of exploration steps')
-parser.add_argument("-g", "--gamma", type=float, default=0.98, help='discount rate')
+parser.add_argument("-g", "--gamma", type=float, default=0.99, help='discount rate')
 
 args = parser.parse_args()
 
@@ -64,10 +64,12 @@ print("State sample  : \n ",env.reset())
 if args.flag == 'train':
     agent.train_mode()   
     scores, test_scores = train(env, agent, model_type=args.model_type, env_type=args.env, explore_episode=args.explore_episode)
+    # Generate Figure
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    ax.plot(scores[0],scores[1],'b-.', alpha=.5)
-    ax.step(test_scores[0],test_scores[1], 'b-', label=args.model_type+'-'+args.rl_type)
+    ax.plot(scores[0],scores[1],'b.',alpha=0.5)
+    ax.plot(scores[0],scores[2],'b-',alpha=1.0, label=args.model_type+'-'+args.rl_type)
+    #ax.step(test_scores[0],test_scores[1], 'b-', label=args.model_type+'-'+args.rl_type)
     ax.set_ylabel('Score')
     ax.set_xlabel('Episode #')
     ax.set_title('Score History')

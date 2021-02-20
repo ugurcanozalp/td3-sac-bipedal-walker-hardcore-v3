@@ -33,6 +33,11 @@ class BoxToHistoryBox(gym.ObservationWrapper):
         return self.observation(reset_state)
 
 class MyWalkerWrapper(gym.Wrapper):
+    '''
+    This is custom wrapper for BipedalWalker-v3 and BipedalWalkerHardcore-v3. 
+    Rewards for failure is decreased to make agent brave for exploration and 
+    time frequency of dynamic is lowered by skipping two frames.
+    '''
     def __init__(self, env, skip=2):
         super().__init__(env)
         self._obs_buffer = deque(maxlen=skip)

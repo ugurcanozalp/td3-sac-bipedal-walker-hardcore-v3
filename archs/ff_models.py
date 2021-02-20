@@ -8,12 +8,7 @@ import random
 
 # https://github.com/vy007vikas/PyTorch-ActorCriticRL
 
-#EPS = 0.003
-
-def fanin_init(size, fanin=None):
-    fanin = fanin or size[0]
-    v = 1. / np.sqrt(fanin)
-    return torch.Tensor(size).uniform_(-v, v)
+EPS = 0.003
 
 class FeedForwardEncoder(nn.Module):
     def __init__(self, input_size, hidden_size, ff_size):
@@ -30,24 +25,14 @@ class FeedForwardEncoder(nn.Module):
 
     def forward(self, x):
         x = self.lin1(x)
-        xx = self.tanh(x)
-        xx = self.lin2(xx)
+        x = self.tanh(x)
+        # Residual connection starts
+        xx = self.lin2(x)
         xx = self.act(xx)
         xx = self.lin3(xx)
         o = self.layernorm(x+xx)
         return o 
 
-"""
-class Embedder(nn.Module):
-    def __init__(self, input_size, output_size):
-        super(Embedder, self).__init__()
-        self.lin = nn.Linear(input_size, output_size)
-        self.lin.weight = fanin_init(self.lin.weight.size())
-        self.layernorm = nn.LayerNorm(output_size)
-        #self.tanh = nn.Tanh()
-    def forward(self, x):
-        return self.layernorm(self.lin(x))
-"""
 
 class Critic(nn.Module):
 
@@ -115,10 +100,8 @@ class Actor(nn.Module):
 
     def forward(self, state):
         """
-        returns policy function Pi(s) obtained from actor network
-        this function is a gaussian prob distribution for all actions
-        with mean lying in (-1,1) and sigma lying in (0,1)
-        The sampled action can , then later be rescaled
+        returns deterministic policy function mu(s) as policy action.
+        this function returns actions lying in (-1,1) 
         :param state: Input state (Torch Variable : [n,state_dim] )
         :return: Output action (Torch Variable: [n,action_dim] )
         """

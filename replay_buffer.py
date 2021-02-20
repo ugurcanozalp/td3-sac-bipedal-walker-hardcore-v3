@@ -4,6 +4,7 @@ import torch
 import numpy as np
 
 class ReplayBuffer:
+    """Simle experience replay buffer for deep reinforcement algorithms."""
     def __init__(self, action_size, buffer_size, batch_size, device):
         self.action_size = action_size
         self.memory = deque(maxlen=buffer_size)  

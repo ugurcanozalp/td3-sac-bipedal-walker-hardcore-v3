@@ -1,5 +1,5 @@
 # ddpg-td3-bipedal-walker-v3
-Various architectures and RL methods implementations for solving BipedalWalker-v3 of GYM on PyTorch.
+Various neural network architectures and RL methods implementations for solving BipedalWalker-v3 and BipedalWalkerHardcore-v3 of GYM on PyTorch using Deep Deterministic Policy Gradient (DDPG) and Twin Delayed DDPG (TD3).
 
 # How to
 Create new python environment and First install requirements. (python 3.6)

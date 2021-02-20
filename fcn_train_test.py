@@ -30,14 +30,17 @@ def train(env, agent, n_episodes=3000, model_type='unk', env_type='unk', score_l
 
             state = next_state
             score += reward
+            agent.step_end()
+
+        agent.episode_end()
 
         if i_episode>explore_episode:
             for i in range(t):
                 agent.learn_one_step()
 
         scores_deque.append(score)
-        scores.append((i_episode, score))
         avg_score_100 = np.mean(scores_deque)
+        scores.append((i_episode, score, avg_score_100))
         print('\rEpisode {}\tAverage Score: {:.2f}\tScore: {:.2f}'.format(i_episode, avg_score_100, score), end="")
 
         if i_episode % test_f == 0 or avg_score_100>score_limit:

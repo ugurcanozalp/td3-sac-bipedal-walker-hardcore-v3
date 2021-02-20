@@ -59,7 +59,6 @@ class DDPGAgent():
         Q_expected = self.train_critic(states, actions)
         
         critic_loss = torch.nn.MSELoss()(Q_expected, Q_targets)
-        #print(f"{critic_loss} - {Q_expected[0][0]} - {Q_targets[0][0]}")
         #critic_loss = torch.nn.SmoothL1Loss()(Q_expected, Q_targets)
 
         self.critic_optim.zero_grad()
@@ -126,3 +125,9 @@ class DDPGAgent():
     def freeze_networks(self):
         for p in chain(self.train_actor.parameters(), self.train_critic.parameters()):
             p.requires_grad = False
+
+    def step_end(self):
+        self.noise_generator.step_end()
+
+    def episode_end(self):
+        self.noise_generator.episode_end()   

@@ -11,11 +11,6 @@ import random
 
 EPS = 0.003
 
-def fanin_init(size, fanin=None):
-    fanin = fanin or size[0]
-    v = 1. / np.sqrt(fanin)
-    return torch.Tensor(size).uniform_(-v, v)
-
 class LastStatePooler(nn.Module):
     def forward(self,x):
         return x[:, -1]
@@ -112,10 +107,8 @@ class Actor(nn.Module):
 
     def forward(self, state):
         """
-        returns policy function Pi(s) obtained from actor network
-        this function is a gaussian prob distribution for all actions
-        with mean lying in (-1,1) and sigma lying in (0,1)
-        The sampled action can , then later be rescaled
+        returns deterministic policy function mu(s) as policy action.
+        this function returns actions lying in (-1,1) 
         :param state: Input state (Torch Variable : [n,state_dim] )
         :return: Output action (Torch Variable: [n,action_dim] )
         """
