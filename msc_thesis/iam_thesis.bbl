@@ -44,6 +44,11 @@ X.~Fu, F.~Gao, and J.~Wu, When {Do} {Drivers} {Concentrate}? {Attention}-based
   {Driver} {Behavior} {Modeling} {With} {Deep} {Reinforcement} {Learning},
   arXiv:2002.11385 [cs], June 2020, arXiv: 2002.11385.
 
+\bibitem{fujimoto_addressing_2018}
+S.~Fujimoto, H.~van Hoof, and D.~Meger, Addressing {Function} {Approximation}
+  {Error} in {Actor}-{Critic} {Methods}, arXiv:1802.09477 [cs, stat], October
+  2018, arXiv: 1802.09477 version: 3.
+
 \bibitem{heess_memory-based_2015}
 N.~Heess, J.~J. Hunt, T.~P. Lillicrap, and D.~Silver, Memory-based control with
   recurrent neural networks, arXiv:1512.04455 [cs], December 2015, arXiv:
@@ -57,6 +62,11 @@ K.~Kopşa and A.~T. Kutay, \emph{Reinforcement learning control for
 A.~Kumar, N.~Paul, and S.~N. Omkar, Bipedal {Walking} {Robot} using {Deep}
   {Deterministic} {Policy} {Gradient}, arXiv:1807.05924 [cs], July 2018, arXiv:
   1807.05924.
+
+\bibitem{lillicrap_continuous_2019}
+T.~P. Lillicrap, J.~J. Hunt, A.~Pritzel, N.~Heess, T.~Erez, Y.~Tassa,
+  D.~Silver, and D.~Wierstra, Continuous control with deep reinforcement
+  learning, arXiv:1509.02971 [cs, stat], July 2019, arXiv: 1509.02971.
 
 \bibitem{mcculloch_logical_1943}
 W.~S. McCulloch and W.~Pitts, A logical calculus of the ideas immanent in
@@ -126,6 +136,11 @@ S.~Shalev-Shwartz, S.~Shammah, and A.~Shashua, Safe, {Multi}-{Agent},
   {Reinforcement} {Learning} for {Autonomous} {Driving}, arXiv:1610.03295 [cs,
   stat], October 2016, arXiv: 1610.03295.
 
+\bibitem{silver_deterministic_2014}
+D.~Silver, G.~Lever, N.~Heess, T.~Degris, D.~Wierstra, and M.~Riedmiller,
+  Deterministic {Policy} {Gradient} {Algorithms}, in \emph{International
+  {Conference} on {Machine} {Learning}}, pp. 387--395, PMLR, January 2014.
+
 \bibitem{song_recurrent_2018}
 D.~R. Song, C.~Yang, C.~McGreavy, and Z.~Li, Recurrent {Deterministic} {Policy}
   {Gradient} {Method} for {Bipedal} {Locomotion} on {Rough} {Terrain}
@@ -141,6 +156,11 @@ R.~S. Sutton and A.~G. Barto, \emph{Reinforcement {Learning}: {An}
 U.~Upadhyay, N.~Shah, S.~Ravikanti, and M.~Medhe, Transformer {Based}
   {Reinforcement} {Learning} {For} {Games}, arXiv:1912.03918 [cs], December
   2019, arXiv: 1912.03918.
+
+\bibitem{van_hasselt_deep_2015}
+H.~van Hasselt, A.~Guez, and D.~Silver, Deep {Reinforcement} {Learning} with
+  {Double} {Q}-learning, arXiv:1509.06461 [cs], December 2015, arXiv:
+  1509.06461.
 
 \bibitem{vaswani_attention_2017}
 A.~Vaswani, N.~Shazeer, N.~Parmar, J.~Uszkoreit, L.~Jones, A.~N. Gomez,

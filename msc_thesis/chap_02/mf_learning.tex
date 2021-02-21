@@ -12,36 +12,79 @@ Model based methods are based on solving bellman equation \ref{eqn:bellman_v}\re
 \subsection{Q Learning}
 Q Learning is a value based type of learning. It is based on optimizing $Q$ function using bellman equation \ref{eqn:bellman_q} \cite{watkins_technical_1992}. 
 
-Assume that $Q$ function is parametrized by $\theta$. At time $t$,  with state, action, reward, next state tuples ($s_t,a_t,r_t,s_{t+1}$), $Q$ values are updated by minimizing following loss function with respect to $\theta$ using numerical optimization methods.
+Assume that $Q$ function is parametrized by $\theta$. Target $Q$ value is estimated by temporal difference.
+
+\begin{equation}
+\label{eqn:q_target}
+Y_t^Q = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta)
+\end{equation}
+
+At time $t$,  with state, action, reward, next state tuples ($s_t,a_t,r_t,s_{t+1}$), $Q$ values are updated by minimizing difference between target value and estimated value with respect to $\theta$ using numerical optimization methods.
 
 \begin{equation}
 \label{eqn:q_loss}
-\mathcal{L}_t(\theta_t) = \big( r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta_t) - Q(s_t,a_t;\theta_t) \big) ^ 2
+\mathcal{L}_t(\theta) = \big( Y_t - Q(s_t,a_t;\theta) \big) ^ 2
 \end{equation}
 
 \subsubsection{Deep Q Learning}
 
 Deep Q Learning overcomes instability of Q Learning. When a nonlinear approximator is used, learning is unstable. Deep Q Learning introduces Target Network and Experience Replay \cite{mnih_human-level_2015}.
 
-\textbf{Target Network}: Target network is parametrized $\theta_i^-$. It is used to evaluate target value and not updated by loss minimization. It is updated at each fixed number of update step $C$ by Q network parameter $\theta$. 
+\textbf{Target Network}: Target network is parametrized $\theta^-$. It is used to evaluate target value and not updated by loss minimization. It is updated at each fixed number of update step $C$ by Q network parameter $\theta$. Target value is obtained by using $\theta^-$.
 
-\textbf{Experience Replay}: Experience tuples are stored in dataset $\mathcal{D}$ as queue with fixed buffer size. 
+\begin{equation}
+\label{eqn:dqn_ntarget}
+Y_t^{DQN} = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta^-)
+\end{equation}
 
-At each iteration $i$, $\theta$ is updated by experiences uniformly subsampled from experience replay.
+\textbf{Experience Replay}: Experience tuples are stored in dataset $\mathcal{D}$ as queue with fixed buffer size $N_{replay}$. At each iteration $i$, $\theta$ is updated by experiences uniformly subsampled from experience replay. It allows agent to learn from experiences multiple times. More importantly, sampled experiences are close to be independent and identically distributed if buffer size is high enough. This makes learning process more stable.  
 
 \begin{equation}
 \label{eqn:dqn_loss}
-\mathcal{L}_i(\theta_i) = \mathbb{E}_{s,a,r,s'\sim U(\mathcal{D})}\Big[\big( r + \gamma \max_{a'} Q(s',a';\theta_i^-) - Q(s,a;\theta_i) \big) ^ 2 \Big]
+\mathcal{L}_i(\theta_i) = \mathbb{E}_{s,a,r,s'\sim U(\mathcal{D})}\Big[\big( Y^{DQN} - Q(s,a;\theta_i) \big) ^ 2 \Big]
 \end{equation}
 
 \subsubsection{Double Deep Q Learning}
 
-...
+In DQN, max operator is used to select and evaluate action on the same network \ref{eqn:dqn_ntarget}. This yields overestimated value estimations in noisy environments. Therefore, action selection and value estimation is decoupled in target evaluation to overcome $Q$ function overestimation \cite{van_hasselt_deep_2015}.
 
-\subsection{Deterministic Policy Gradient}
-Deterministic policy gradient is actor-critic type of learning. However, it can be thought as continious version of Q Learning.  
+\begin{equation}
+\label{eqn:ddqn_ntarget}
+Y_t^{DDQN} = r_t + \gamma Q(s_{t+1}, \argmax_{a'} Q(s_{t+1}, a'; \theta_i );\theta^-)
+\end{equation}
 
+Learning process is same with DQN except target value.
+
+\subsection{Deterministic Actor Critic Learning}
+In value based methods are not suitable for continious action spaces. Therefore, policy is explicitly defined instead of maximizing $Q$ function. Policy function can be either stochastic or deterministic.  Deterministic actor-critic is kind of learning which uses deterministic policy \cite{silver_deterministic_2014}. It can be thought as continious version of Q Learning. Value function is called critic while policy function is called actor.
+
+In discrete action space, policy is naturally obtained by argmax operation on $Q$ function as in \ref{eqn:policy_deterministic_q}. In DPG, policy $\mu$ is parametrized by another set of parameters $\theta^\mu$ while value function $Q$ is parametrized by $\theta^Q$. 
+
+The ultimate goal is to maximize value function $V$. It is done by selecting action which maximizes $Q$ value as policy \ref{eqn:policy_deterministic_q}. Therefore, value function is the criteria to be maximized by solving parameters $\theta^\mu$ given $\theta^Q$. 
+
+\begin{equation}
+\label{eqn:dpg_value_maximization}
+\theta^\mu = \argmax Q(s_t, \mu(s_t;\theta^\mu);\theta^Q)
+\end{equation}
+
+In order to learn policy, $Q$ function should also be learned simulatenously. For $Q$ function approximation, target value is parametrized by $\theta^Q$ and $\theta^\mu$ \ref{eqn:dpg_target}. And this target is used to learn $Q$ function by minimizing least squares loss \ref{eqn:dpq_loss}.
+
+\begin{equation}
+\label{eqn:dpg_target}
+Y_t^{DPG} = r_t + \gamma Q(s_{t+1}, \mu(s_{t+1};\theta^\mu);\theta^Q)
+\end{equation}
+
+\begin{equation}
+\label{eqn:dpq_loss}
+\mathcal{L}_t(\theta) = \big( Y_t^{DPG} - Q(s_t,a_t;\theta^Q) \big) ^ 2
+\end{equation}
+
+Note that both $\theta^Q$ and $\theta^\mu$ should be learned at the same time. Therefore, parameters are updated simulatenously during learning iterations.
 
 \subsubsection{Deep Deterministic Policy Gradient}
+\cite{lillicrap_continuous_2019}
+
+\textbf{Ornstein Uhlenbeck Noise}: 
 
 \subsubsection{Twin Delayed Deep Deterministic Policy Gradient}
+\cite{fujimoto_addressing_2018}

@@ -123,13 +123,23 @@
 \newlabel{sec:mf_rl}{{2.9}{13}{Model Free Reinforcement Learning}{section.2.9}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.9.1}Q Learning}{13}{subsection.2.9.1}\protected@file@percent }
 \citation{mnih_human-level_2015}
-\newlabel{eqn:q_loss}{{2.11}{14}{Q Learning}{equation.2.9.11}{}}
+\citation{van_hasselt_deep_2015}
+\newlabel{eqn:q_target}{{2.11}{14}{Q Learning}{equation.2.9.11}{}}
+\newlabel{eqn:q_loss}{{2.12}{14}{Q Learning}{equation.2.9.12}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.9.1.1}Deep Q Learning}{14}{subsubsection.2.9.1.1}\protected@file@percent }
-\newlabel{eqn:dqn_loss}{{2.12}{14}{Deep Q Learning}{equation.2.9.12}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.9.1.2}Double Deep Q Learning}{14}{subsubsection.2.9.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.9.2}Deterministic Policy Gradient}{14}{subsection.2.9.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.9.2.1}Deep Deterministic Policy Gradient}{15}{subsubsection.2.9.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.9.2.2}Twin Delayed Deep Deterministic Policy Gradient}{15}{subsubsection.2.9.2.2}\protected@file@percent }
+\newlabel{eqn:dqn_ntarget}{{2.13}{14}{Deep Q Learning}{equation.2.9.13}{}}
+\newlabel{eqn:dqn_loss}{{2.14}{14}{Deep Q Learning}{equation.2.9.14}{}}
+\citation{silver_deterministic_2014}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.9.1.2}Double Deep Q Learning}{15}{subsubsection.2.9.1.2}\protected@file@percent }
+\newlabel{eqn:ddqn_ntarget}{{2.15}{15}{Double Deep Q Learning}{equation.2.9.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.9.2}Deterministic Actor Critic Learning}{15}{subsection.2.9.2}\protected@file@percent }
+\newlabel{eqn:dpg_value_maximization}{{2.16}{15}{Deterministic Actor Critic Learning}{equation.2.9.16}{}}
+\citation{lillicrap_continuous_2019}
+\citation{fujimoto_addressing_2018}
+\newlabel{eqn:dpg_target}{{2.17}{16}{Deterministic Actor Critic Learning}{equation.2.9.17}{}}
+\newlabel{eqn:dpq_loss}{{2.18}{16}{Deterministic Actor Critic Learning}{equation.2.9.18}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.9.2.1}Deep Deterministic Policy Gradient}{16}{subsubsection.2.9.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.9.2.2}Twin Delayed Deep Deterministic Policy Gradient}{16}{subsubsection.2.9.2.2}\protected@file@percent }
 \citation{mcculloch_logical_1943}
 \citation{rosenblatt_perceptron_1958}
 \@writefile{toc}{\contentsline {chapter}{\numberline {3}\MakeUppercase  {NEURAL NETWORKS AND DEEP LEARNING}}{17}{chapter.3}\protected@file@percent }
@@ -207,30 +217,34 @@
 \bibcite{francois-lavet_introduction_2018}{8}
 \bibcite{fris_landing_2020}{9}
 \bibcite{fu_when_2020}{10}
-\bibcite{heess_memory-based_2015}{11}
-\bibcite{kopsa_reinforcement_2018}{12}
-\bibcite{kumar_bipedal_2018}{13}
-\bibcite{mcculloch_logical_1943}{14}
+\bibcite{fujimoto_addressing_2018}{11}
+\bibcite{heess_memory-based_2015}{12}
+\bibcite{kopsa_reinforcement_2018}{13}
 \@writefile{toc}{\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{33}{chapter*.14}\protected@file@percent }
-\bibcite{mitchell_machine_1997}{15}
-\bibcite{mnih_human-level_2015}{16}
-\bibcite{pan_virtual_2017}{17}
-\bibcite{parisotto_stabilizing_2019}{18}
-\bibcite{paszke_pytorch_2019}{19}
-\bibcite{rastogi_deep_2017}{20}
-\bibcite{rosenblatt_perceptron_1958}{21}
-\bibcite{rumelhart_learning_1986}{22}
-\bibcite{russell_artificial_nodate}{23}
-\bibcite{sallab_deep_2017}{24}
-\bibcite{santos_experimental_2012}{25}
-\bibcite{shalev-shwartz_safe_2016}{26}
-\bibcite{song_recurrent_2018}{27}
-\bibcite{sutton_reinforcement_1998}{28}
-\bibcite{upadhyay_transformer_2019}{29}
-\bibcite{vaswani_attention_2017}{30}
-\bibcite{wang_deep_2019}{31}
-\bibcite{watkins_technical_1992}{32}
-\bibcite{xiong_layer_2020}{33}
+\bibcite{kumar_bipedal_2018}{14}
+\bibcite{lillicrap_continuous_2019}{15}
+\bibcite{mcculloch_logical_1943}{16}
+\bibcite{mitchell_machine_1997}{17}
+\bibcite{mnih_human-level_2015}{18}
+\bibcite{pan_virtual_2017}{19}
+\bibcite{parisotto_stabilizing_2019}{20}
+\bibcite{paszke_pytorch_2019}{21}
+\bibcite{rastogi_deep_2017}{22}
+\bibcite{rosenblatt_perceptron_1958}{23}
+\bibcite{rumelhart_learning_1986}{24}
+\bibcite{russell_artificial_nodate}{25}
+\bibcite{sallab_deep_2017}{26}
+\bibcite{santos_experimental_2012}{27}
+\bibcite{shalev-shwartz_safe_2016}{28}
+\bibcite{silver_deterministic_2014}{29}
+\bibcite{song_recurrent_2018}{30}
+\bibcite{sutton_reinforcement_1998}{31}
+\bibcite{upadhyay_transformer_2019}{32}
+\bibcite{van_hasselt_deep_2015}{33}
+\bibcite{vaswani_attention_2017}{34}
+\bibcite{wang_deep_2019}{35}
+\bibcite{watkins_technical_1992}{36}
+\bibcite{xiong_layer_2020}{37}
 \bibstyle{iamBiblioStyle}
 \@writefile{toc}{\contentsline {nodots}{\numberline {}APPENDICES}{35}{chapter*.14}\protected@file@percent }
 \@writefile{toc}{\contentsline {chapter}{\numberline {A}\MakeUppercase  {Proof of Some Theorem}}{37}{appendix.A}\protected@file@percent }
