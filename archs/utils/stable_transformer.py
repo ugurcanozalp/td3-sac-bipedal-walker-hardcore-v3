@@ -34,10 +34,11 @@ class LearnablePositionalEncoding(nn.Module):
         return x + self.embedding[:x.size(1)].unsqueeze(0)
     
 class StableTransformerLayer(nn.Module):
-    def __init__(self, d_model, nhead, dim_feedforward=2048, dropout=0.1):
+    def __init__(self, d_model, nhead, dim_feedforward=2048, dropout=0.1, only_last_state=False):
         #fill in reordering of operations as done in https://arxiv.org/pdf/1910.06764.pdf
         #d_model: dimension of embedding for each input
         super(StableTransformerLayer,self).__init__()
+        self.only_last_state = only_last_state
 
         self.self_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
 
@@ -55,7 +56,7 @@ class StableTransformerLayer(nn.Module):
         self.activation = nn.GELU()
         self.relu = nn.GELU()
 
-    def forward(self, src, src_mask=None, src_key_padding_mask=None, only_last_state=False):
+    def forward(self, src, src_mask=None, src_key_padding_mask=None):
 
         '''
         #ORIGINAL TRANSFORMER ORDERING
@@ -72,7 +73,7 @@ class StableTransformerLayer(nn.Module):
         #This doesn't perfectly correspond to dropout used in TransformerXL I believe. (to do: read their code)
 
         src2 = self.norm1(src)
-        if only_last_state:
+        if self.only_last_state:
             src2 = self.self_attn(src2[-1:], src2, src2, attn_mask=src_mask,
                                 key_padding_mask=src_key_padding_mask)[0]
         else:
@@ -80,7 +81,7 @@ class StableTransformerLayer(nn.Module):
                                 key_padding_mask=src_key_padding_mask)[0]
 
 
-        if only_last_state:
+        if self.only_last_state:
             src2 = src[-1:] + self.dropout1(src2)
         else:
             src2 = src + self.dropout1(src2) # src2 = src + self.relu(self.dropout1(src2))

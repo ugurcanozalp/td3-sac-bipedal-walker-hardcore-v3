@@ -31,7 +31,11 @@ class StableTransformerEncoder(nn.Module):
         nn.init.xavier_uniform_(self.inp_embedding[0].weight, gain=nn.init.calculate_gain('tanh')) #
         nn.init.zeros_(self.inp_embedding[0].bias) 
         self.pos_embedding = PositionalEncoding(d_model, seq_len=seq_len)
-        self.encoder = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout)
+        self.encoder = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, only_last_state=True)
+        #self.encoder = nn.Sequential(
+        #    StableTransformerLayer(d_model, nhead, dim_feedforward, dropout), 
+        #    StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, only_last_state=True)
+        #)
         self.layn = nn.LayerNorm(d_model)
 
     def forward(self, src):
@@ -40,7 +44,7 @@ class StableTransformerEncoder(nn.Module):
         x = x * self.embedding_scale
         x = self.pos_embedding(x)
         x = x.permute(1,0,2) # batch, seq, emb -> seq, batch, emb
-        x = self.encoder(x, only_last_state=True)  # 1, batch, emb
+        x = self.encoder(x)  # 1, batch, emb
         x = self.layn(x.squeeze(0)) # remove sequential dimension and layernorm.
         return x
 
@@ -59,7 +63,7 @@ class Critic(nn.Module):
         
         self.state_encoder = StableTransformerEncoder(d_in=self.state_dim,
             d_model=96, nhead=4, dim_feedforward=192, dropout=0.0)
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 128), nn.GELU()) # 
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 96), nn.GELU()) # 
         nn.init.xavier_uniform_(self.action_encoder[0].weight, gain=nn.init.calculate_gain('relu')) # 
 
         self.fc2 = nn.Linear(96,128)

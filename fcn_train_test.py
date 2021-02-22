@@ -32,9 +32,8 @@ def train(env, agent, n_episodes=3000, model_type='unk', env_type='unk', score_l
             score += reward
             agent.step_end()
 
-        agent.episode_end()
-
         if i_episode>explore_episode:
+            agent.episode_end()
             for i in range(t):
                 agent.learn_one_step()
 
