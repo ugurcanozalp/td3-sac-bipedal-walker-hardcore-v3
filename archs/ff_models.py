@@ -15,6 +15,7 @@ class FeedForwardEncoder(nn.Module):
         super(FeedForwardEncoder, self).__init__()
         self.lin1 = nn.Linear(input_size, hidden_size)
         nn.init.xavier_uniform_(self.lin1.weight, gain=nn.init.calculate_gain('tanh'))
+        self.layn = nn.LayerNorm(hidden_size)
         self.lin2 = nn.Linear(hidden_size, ff_size)
         nn.init.xavier_uniform_(self.lin2.weight, gain=nn.init.calculate_gain('relu'))
         self.lin3 = nn.Linear(ff_size, hidden_size)
@@ -26,6 +27,7 @@ class FeedForwardEncoder(nn.Module):
     def forward(self, x):
         x = self.lin1(x)
         x = self.tanh(x)
+        x = self.layn(x)
         # Residual connection starts
         xx = self.lin2(x)
         xx = self.act(xx)

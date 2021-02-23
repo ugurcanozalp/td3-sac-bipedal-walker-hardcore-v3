@@ -23,7 +23,7 @@ class MaxPooler(nn.Module):
 class NormalizedLSTM(nn.Module):
     def __init__(self, input_size, hidden_size=96, batch_first=True, dropout=0.1):
         super(NormalizedLSTM, self).__init__()
-        self.embedding = nn.Sequential(nn.Linear(input_size, hidden_size), nn.Tanh())
+        self.embedding = nn.Sequential(nn.Linear(input_size, hidden_size), nn.Tanh(), nn.LayerNorm(hidden_size))
         nn.init.xavier_uniform_(self.embedding[0].weight, gain=nn.init.calculate_gain('tanh'))
         nn.init.zeros_(self.embedding[0].bias)
         self.dropout = nn.Dropout(dropout)
