@@ -14,10 +14,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--flag", type=str, choices=['train', 'test'],
                     default='train', help="train or test?")
 parser.add_argument("-e", "--env", type=str, choices=['classic', 'hardcore'],
-                    default='classic', help="environment type, classic or hardcore?")
+                    default='hardcore', help="environment type, classic or hardcore?")
 parser.add_argument("-m", "--model_type", type=str, choices=['ff','lstm','bilstm','trsf'],
                     default='ff', help="model type")
-parser.add_argument("-r", "--rl_type", type=str, choices=['ddpg', 'td3'], default='ddpg', help='RL method')
+parser.add_argument("-r", "--rl_type", type=str, choices=['ddpg', 'td3'], default='td3', help='RL method')
 parser.add_argument("-l", "--lr", type=float, default=2e-4, help='Learning Rate')
 parser.add_argument("-w", "--wd", type=float, default=0, help='Weight Decay')
 parser.add_argument("-c", "--ckpt", type=str, default='seed', help='checkpoint to start with')
