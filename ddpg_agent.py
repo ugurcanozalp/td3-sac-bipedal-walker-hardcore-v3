@@ -10,7 +10,7 @@ from itertools import chain
 class DDPGAgent():
     rl_type = 'ddpg'
     def __init__(self, Actor, Critic, state_size=24, action_size=4, 
-            lr=5e-4, weight_decay=1e-6, gamma=0.98, tau=0.001, batch_size=128, buffer_size=int(3e5)):
+            lr=2e-4, weight_decay=1e-6, gamma=0.98, tau=0.001, batch_size=256, buffer_size=int(5e5)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -24,7 +24,7 @@ class DDPGAgent():
         self.train_actor = Actor().to(self.device)
         self.target_actor= Actor().to(self.device).eval()
         self.hard_update(self.train_actor, self.target_actor)
-        self.actor_optim = optim.AdamW(self.train_actor.parameters(), lr=0.2*lr, weight_decay=0)
+        self.actor_optim = optim.AdamW(self.train_actor.parameters(), lr=0.5*lr, weight_decay=0)
         print(f'Number of paramters of Actor Net: {sum(p.numel() for p in self.train_actor.parameters())}')
         
         self.train_critic = Critic().to(self.device)
