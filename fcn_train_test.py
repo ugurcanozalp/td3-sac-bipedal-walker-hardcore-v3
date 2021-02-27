@@ -61,7 +61,7 @@ def test(env, agent, render=True, max_t_step=1000):
     t = int(0)
     while not done and t < max_t_step:
         t += int(1)
-        action = agent.get_action(state, explore=False)
+        action = agent.get_action(state, explore=True)
         action = action.clip(min=env.action_space.low, max=env.action_space.high)
         #print(action)
         next_state, reward, done, info = env.step(action)

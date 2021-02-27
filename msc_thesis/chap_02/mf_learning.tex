@@ -44,6 +44,24 @@ Y_t^{DQN} = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta^-)
 \mathcal{L}_i(\theta_i) = \mathbb{E}_{s,a,r,s'\sim U(\mathcal{D})}\Big[\big( Y^{DQN} - Q(s,a;\theta_i) \big) ^ 2 \Big]
 \end{equation}
 
+\textbf{Epsilon Greedy Exploration}: ...
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	\KwResult{Write here the result }
+	initialization;
+	\While{While condition}{
+		instructions;
+		\eIf{condition}{
+			instructions1;
+			instructions2;
+		}{
+			instructions3;
+		}
+	}
+	\caption{How to write algorithms}
+\end{algorithm}
+
 \subsubsection{Double Deep Q Learning}
 
 In DQN, max operator is used to select and evaluate action on the same network \ref{eqn:dqn_ntarget}. This yields overestimated value estimations in noisy environments. Therefore, action selection and value estimation is decoupled in target evaluation to overcome $Q$ function overestimation \cite{van_hasselt_deep_2015}.
@@ -76,15 +94,66 @@ Y_t^{DPG} = r_t + \gamma Q(s_{t+1}, \mu(s_{t+1};\theta^\mu);\theta^Q)
 
 \begin{equation}
 \label{eqn:dpq_loss}
-\mathcal{L}_t(\theta) = \big( Y_t^{DPG} - Q(s_t,a_t;\theta^Q) \big) ^ 2
+\mathcal{L}_t(\theta^Q) = \big( Y_t^{DPG} - Q(s_t,a_t;\theta^Q) \big) ^ 2
 \end{equation}
 
 Note that both $\theta^Q$ and $\theta^\mu$ should be learned at the same time. Therefore, parameters are updated simulatenously during learning iterations.
 
 \subsubsection{Deep Deterministic Policy Gradient}
-\cite{lillicrap_continuous_2019}
+Deep Deterministic Policy Gradient is continious compliment of Deep Q learning using deterministic policy \cite{lillicrap_continuous_2019}. It uses experience replay and target networks.  
 
-\textbf{Ornstein Uhlenbeck Noise}: 
+Similar to Deep Q learning, there are target networks parametrized by $\theta^{\mu^-}$ and $\theta^{Q^-}$ along with main networks parametrized by $\theta^{\mu}$ and $\theta^{Q}$. While target networks are updated in fixed number of steps in DQN, DDPG updates target network parameters at each step with polyak averaging as follows.
+
+\begin{equation}
+\label{eqn:target_update}
+\theta^- \leftarrow \tau \theta + (1-\tau) \theta^-
+\end{equation}
+
+The $\tau$ is an hyperparameter indicating how slow the target network is updated and usually close to zero.
+
+Policy network parameters are learned by maximizing resulting expected value \ref{eqn:ddpg_value_maximization}. Note that value network parameters are assumed to be learned.
+
+\begin{equation}
+\label{eqn:ddpg_value_maximization}
+\theta^\mu = \argmax \mathbb{E}_{s \sim U(\mathcal{D})} \Big[ Q(s, \mu(s_t;\theta^\mu);\theta^Q) \Big]
+\end{equation}
+ 
+Target networks are used to predict targe value \ref{eqn:ddpg_target}. This target is used to learn $Q$ function by minimizing least squares loss \ref{eqn:ddpq_loss} in each iteration.
+
+\begin{equation}
+\label{eqn:ddpg_target}
+Y_t^{DDPG} = r_t + \gamma Q(s_{t+1}, \mu(s_{t+1};\theta^{\mu^-});\theta^{Q^-})
+\end{equation}
+
+\begin{equation}
+\label{eqn:ddpg_loss}
+\mathcal{L}_i(\theta_i) = \mathbb{E}_{s,a,r,s'\sim U(\mathcal{D})}\Big[\big( Y^{DDPG} - Q(s,a;\theta^Q_i) \big) ^ 2 \Big]
+\end{equation}
+
+In DDPG, value and policy network parameters are learned simultaneously. During learning, exploration noise is added to each selection. In original paper \cite{lillicrap_continuous_2019}, authors proposed to use Ornstein Uhlenbeck Noise \cite{uhlenbeck_theory_1930} which has temporal correlation for efficiency. However, simple gaussian noise or another noise is also possible.
 
 \subsubsection{Twin Delayed Deep Deterministic Policy Gradient}
-\cite{fujimoto_addressing_2018}
+Twin Delayed Deep Deterministic Policy Gradient \cite{fujimoto_addressing_2018} is improved version of DDPG with higher stability and efficiency. There are three main tricks.
+
+\textbf{Target Policy Smoothing}: For target value assesing, actions are obtained from target policy network in DDPG, while a clipped zero centered gaussian noise is added to actions in TD3 \ref{eqn:td3_target_action}. This regularizes learning process by smoothing effects of actions on value. 
+
+\begin{equation}
+\label{eqn:td3_target_action}
+a'(s') = \mu(s';\theta^{\mu^-}) + \mathrm{clip}(\epsilon, -c, c), \quad \epsilon \sim \mathcal{N}(0, \sigma)
+\end{equation}
+
+\textbf{Clipped Double Q Learning}: There are two different $Q$ networks with their targets. During learning, both of them are learned from single target value. This value is assessed by using whichever of two networks give smaller of it. This allows to escape overestimation of values. 
+
+\begin{equation}
+\label{eqn:td3_target}
+Y_t^{TD3} = r_t + \gamma \min_{k\in\{1,2\}} Q(s_{t+1}, ;a'(s_{t+1});\theta^{Q_k^-})
+\end{equation}
+
+Policy is learned by maximizing output of first value network.
+
+\begin{equation}
+\label{eqn:td3_value_maximization}
+\theta^\mu = \argmax \mathbb{E}_{s \sim U(\mathcal{D})} \Big[ Q(s, \mu(s_t;\theta^\mu);\theta^{Q_1}) \Big]
+\end{equation}
+
+\textbf{Delayed Policy Updates}: During learning, policy network and target networks are updated less frequently (at each fixed number of step) than value network. Since policy network parameters are learned by maximizing value network, it should be learned slower.

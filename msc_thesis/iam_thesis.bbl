@@ -152,6 +152,10 @@ D.~R. Song, C.~Yang, C.~McGreavy, and Z.~Li, Recurrent {Deterministic} {Policy}
 R.~S. Sutton and A.~G. Barto, \emph{Reinforcement {Learning}: {An}
   {Introduction}}, A Bradford Book, February 1998.
 
+\bibitem{uhlenbeck_theory_1930}
+G.~E. Uhlenbeck and L.~S. Ornstein, On the {Theory} of the {Brownian} {Motion},
+  Physical Review, 36(5), pp. 823--841, September 1930.
+
 \bibitem{upadhyay_transformer_2019}
 U.~Upadhyay, N.~Shah, S.~Ravikanti, and M.~Medhe, Transformer {Based}
   {Reinforcement} {Learning} {For} {Games}, arXiv:1912.03918 [cs], December
