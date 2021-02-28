@@ -77,3 +77,30 @@ class DecayingOrnsteinUhlenbeckNoise(AbstractNoise):
     def episode_end(self):
         self.sigma *= self.sigma_decay
 
+class RandomNoise(AbstractNoise):
+    def __init__(self, mu, minval, maxval, prob=0.5):
+        self.mu = mu
+        self.minval = minval
+        self.maxval = maxval
+        self.prob = prob        
+
+    def __call__(self):
+        rand_or_not = np.random.rand(*self.mu.shape) < self.prob
+        delta = self.minval + (self.maxval-self.minval)*np.random.rand(*self.mu.shape) 
+        return self.mu + delta * rand_or_not
+
+class DecayingRandomNoise(AbstractNoise):
+    def __init__(self, mu, minval, maxval, prob=0.5, decay = 0.999):
+        self.mu = mu
+        self.minval = minval
+        self.maxval = maxval
+        self.prob = prob  
+        self.decay = decay      
+
+    def __call__(self):
+        rand_or_not = np.random.rand(*self.mu.shape) < self.prob
+        delta = self.minval + (self.maxval-self.minval)*np.random.rand(*self.mu.shape) 
+        return self.mu + delta * rand_or_not
+
+    def episode_end(self):
+        self.prob *= self.decay
