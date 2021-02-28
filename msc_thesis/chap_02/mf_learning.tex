@@ -78,20 +78,20 @@ In value based methods are not suitable for continious action spaces. Therefore,
 
 In discrete action space, policy is naturally obtained by argmax operation on $Q$ function as in \ref{eqn:policy_deterministic_q}. In DPG, policy $\mu$ is parametrized by another set of parameters $\theta^\mu$ while value function $Q$ is parametrized by $\theta^Q$. 
 
-The ultimate goal is to maximize value function $V$. It is done by selecting action which maximizes $Q$ value as policy \ref{eqn:policy_deterministic_q}. Therefore, value function is the criteria to be maximized by solving parameters $\theta^\mu$ given $\theta^Q$. 
-
+The ultimate goal is to maximize value function $V$. It is done by selecting action which maximizes $Q$ value as policy \eqref{eqn:policy_deterministic_q}. Therefore, value function is the criteria to be maximized by solving parameters $\theta^\mu$ given $\theta^Q$. 
+%
 \begin{equation}
 \label{eqn:dpg_value_maximization}
 \theta^\mu = \argmax Q(s_t, \mu(s_t;\theta^\mu);\theta^Q)
 \end{equation}
 
-In order to learn policy, $Q$ function should also be learned simulatenously. For $Q$ function approximation, target value is parametrized by $\theta^Q$ and $\theta^\mu$ \ref{eqn:dpg_target}. And this target is used to learn $Q$ function by minimizing least squares loss \ref{eqn:dpq_loss}.
-
+In order to learn policy, $Q$ function should also be learned simulatenously. For $Q$ function approximation, target value is parametrized by $\theta^Q$ and $\theta^\mu$ \eqref{eqn:dpg_target}. And this target is used to learn $Q$ function by minimizing least squares loss \eqref{eqn:dpq_loss}.
+%
 \begin{equation}
 \label{eqn:dpg_target}
 Y_t^{DPG} = r_t + \gamma Q(s_{t+1}, \mu(s_{t+1};\theta^\mu);\theta^Q)
 \end{equation}
-
+%
 \begin{equation}
 \label{eqn:dpq_loss}
 \mathcal{L}_t(\theta^Q) = \big( Y_t^{DPG} - Q(s_t,a_t;\theta^Q) \big) ^ 2
@@ -100,10 +100,10 @@ Y_t^{DPG} = r_t + \gamma Q(s_{t+1}, \mu(s_{t+1};\theta^\mu);\theta^Q)
 Note that both $\theta^Q$ and $\theta^\mu$ should be learned at the same time. Therefore, parameters are updated simulatenously during learning iterations.
 
 \subsubsection{Deep Deterministic Policy Gradient}
-Deep Deterministic Policy Gradient is continious compliment of Deep Q learning using deterministic policy \cite{lillicrap_continuous_2019}. It uses experience replay and target networks.  
+Deep Deterministic Policy Gradient is continuous compliment of Deep Q learning using deterministic policy \cite{lillicrap_continuous_2019}. It uses experience replay and target networks.  
 
-Similar to Deep Q learning, there are target networks parametrized by $\theta^{\mu^-}$ and $\theta^{Q^-}$ along with main networks parametrized by $\theta^{\mu}$ and $\theta^{Q}$. While target networks are updated in fixed number of steps in DQN, DDPG updates target network parameters at each step with polyak averaging as follows.
-
+Similar to Deep Q learning, there are target networks parametrized by $\theta^{\mu^-}$ and $\theta^{Q^-}$ along with main networks parametrized by $\theta^{\mu}$ and $\theta^{Q}$. While target networks are updated in fixed number of steps in DQN, DDPG updates target network parameters at each step with polyak averaging as follows:
+%
 \begin{equation}
 \label{eqn:target_update}
 \theta^- \leftarrow \tau \theta + (1-\tau) \theta^-
@@ -139,7 +139,7 @@ Twin Delayed Deep Deterministic Policy Gradient \cite{fujimoto_addressing_2018} 
 
 \begin{equation}
 \label{eqn:td3_target_action}
-a'(s') = \mu(s';\theta^{\mu^-}) + \mathrm{clip}(\epsilon, -c, c), \quad \epsilon \sim \mathcal{N}(0, \sigma)
+a'(s') = \mu(s';\theta^{\mu^-}) + \text{clip}(\epsilon, -c, c), \quad \epsilon \sim \mathcal{N}(0, \sigma)
 \end{equation}
 
 \textbf{Clipped Double Q Learning}: There are two different $Q$ networks with their targets. During learning, both of them are learned from single target value. This value is assessed by using whichever of two networks give smaller of it. This allows to escape overestimation of values. 

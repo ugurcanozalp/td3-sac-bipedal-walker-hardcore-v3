@@ -1083,8 +1083,8 @@ to\hsize{\hfil\box\@tempboxa\hfil}
 %\addcontentsline{loa}{nodots}{\protect\numberline{}ALGORİTMALAR}
 \else
 %\addcontentsline{loa}{nodots}{\protect\numberline{}ALGORITHMS}
-\addtocontents{loa}{\protect\numberline{}ALGORITHMS}
-\addtocontents{loa}{\par}
+%\addtocontents{loa}{\protect\numberline{}ALGORITHMS}
+%\addtocontents{loa}{\par}
 \fi}
 \def\l@algocf{\@myalgodottedtocline{1}{0em}{2.0em}}
 \makeatother
@@ -1094,10 +1094,10 @@ to\hsize{\hfil\box\@tempboxa\hfil}
 \def\endpreliminaries{
 \if@twoside\cleardoublepage\else\newpage\fi\pagestyle{headings}\pagenumbering{arabic}%
 \addtocontents{toc}{\protect\numberline {}\@chapterslabel}
-\addtocontents{lof}{\protect\numberline {}\@figureslabel}
-\addtocontents{lof}{\par}
-\addtocontents{lot}{\protect\numberline {}\@tableslabel}
-\addtocontents{lot}{\par}
+%\addtocontents{lof}{\protect\numberline {}\@figureslabel}
+%\addtocontents{lof}{\par}
+%\addtocontents{lot}{\protect\numberline {}\@tableslabel}
+%\addtocontents{lot}{\par}
 \ift@rkish
 \shorthandoff{=}
 \shorthandoff{:}

@@ -31,7 +31,7 @@
 \BOOKMARK [3][-]{subsubsection.2.9.2.2}{Twin Delayed Deep Deterministic Policy Gradient}{subsection.2.9.2}% 31
 \BOOKMARK [0][-]{chapter.3}{NEURAL NETWORKS AND DEEP LEARNING}{}% 32
 \BOOKMARK [1][-]{section.3.1}{Neural Networks}{chapter.3}% 33
-\BOOKMARK [1][-]{section.3.2}{Backpropagaion}{chapter.3}% 34
+\BOOKMARK [1][-]{section.3.2}{Backpropagation}{chapter.3}% 34
 \BOOKMARK [1][-]{section.3.3}{Neural Network Types}{chapter.3}% 35
 \BOOKMARK [2][-]{subsection.3.3.1}{Perceptron}{section.3.3}% 36
 \BOOKMARK [2][-]{subsection.3.3.2}{Feed Forward Neural Networks \(Multilayer Perceptron\)}{section.3.3}% 37
