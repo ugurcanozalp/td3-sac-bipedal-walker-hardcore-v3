@@ -3,8 +3,6 @@
 \babel@toc {english}{}
 \babel@toc {turkish}{}
 \babel@toc {english}{}
-\numberline {}FIGURES
-\par 
 \babel@toc {turkish}{}
 \babel@toc {english}{}
 \babel@toc {english}{}
@@ -15,7 +13,7 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Recurrent Layer (left) and Feed Forward Layer (right) illustration.\relax }}{22}{figure.caption.10}%
 \contentsline {figure}{\numberline {3.2}{\ignorespaces LSTM Cell.\relax }}{23}{figure.caption.11}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces (a) Post-LN Transformer layer, (b) Pre-LN Transformer layer.\relax }}{27}{figure.caption.12}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces (a) Post-LN Transformer layer, (b) Pre-LN Transformer layer.\relax }}{28}{figure.caption.12}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

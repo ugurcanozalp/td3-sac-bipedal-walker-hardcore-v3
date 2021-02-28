@@ -5,7 +5,7 @@ Despite of tons of variants, a neural network is defined as parametrized functio
 
 Neural networks can approximate any nonlinear function if designed as complex as required. Parameters are updated by backpropagation algorithm to minimize loss between its outputs and desired outputs.
 
-\section{Backpropagaion}
+\section{Backpropagation}
 Some optimization theory\\
 
 \section{Neural Network Types}
@@ -35,11 +35,11 @@ A learning algorithm of a perceptron aims determining the parameter vector $W$. 
 \subsection{Feed Forward Neural Networks (Multilayer Perceptron)}
 Structure of perceptron make a way for feed forward neural layers. Unlike stated below, a neural layer might output multiple values (say $o \in \mathbb{R}^{1 \times d_o}$) as vector from input (say $x \mathbb{R}^{1 \times d_x}$). Such a setting forces parameter $W \in \mathbb{R}^{d_x \times d_o} $ to be a matrix. Moreover, activation function is not necessariliy step function. It can be any nonlinear function like sigmoid, tanh, relu etc. Feed Forward Neural Networks are generalization of perceptron algorithm to approximate any function $f^*$. Neural layers are stacked to construct deep feed forward neural network. It defines a nonlinear mapping $y=f(x;\theta)$ between input $x$ and output $y$, parametrized by parameters $\theta = \{W\}_n,n=1,…,N.$.
 
-Assuming input signal is $x$ (output of previous layer), activation value of the layer ($h$) is evaluated as by linear transformation followed by nonlinear activation $f$ \ref{eqn:mlpact} applied elementwise.
+Assuming input signal is $x$ (output of previous layer), activation value of the layer ($h$) is evaluated as by linear transformation followed by nonlinear activation $f$ \eqref{eqn:mlpact} applied elementwise.
 
 \begin{equation}
 \label{eqn:mlpact}
-net = x W + b \text{ and } h = f(net)
+\text{net} = x W + b \quad \text{ and }\quad  h = f(\text{net})
 \end{equation}
 
 \subsection{Recurrent Neural Networks}
@@ -49,11 +49,11 @@ Sequential data can be inferred by Recurrent Neural Networks. In Feed Forward La
 
 RNN can be thought as multiple copies of same network which passes message to its successor through time. A RNN layer is similar to MLP layer \ref{eqn:mlpact}, except input is concatenation of output feedback and input itself \ref{eqn:rnnact}.
 
-Given input sequence $x \in \mathbb{R}^{T \times d_x}$, output sequence $h \in \mathbb{R}^{T \times d_h}$ is evaluated recursively. Initial output $h_0$ can be either parametrized or assigned as zeros vector. Again, nonlinear activation $f$ \ref{eqn:mlpact} applied elementwise. 
+Given input sequence $x \in \mathbb{R}^{T \times d_x}$, output sequence $h \in \mathbb{R}^{T \times d_h}$ is evaluated recursively. Initial output $h_0$ can be either parametrized or assigned as zeros vector. Again, nonlinear activation $f$ \ref{eqn:mlpact} applied element-wise. 
 
 \begin{equation}
 \label{eqn:rnnact}
-net_t = h_{t-1} \tilde{W} + x_t W + b \text{ and } h_t = f(net_t)
+net_t = h_{t-1} \tilde{W} + x_t W + b \quad \text{ and }\quad  h_t = f(net_t)
 \end{equation}
 
 
@@ -152,15 +152,16 @@ Projection matrices are model parameters, $W^Q_i \in \mathbb{R}^{d_m \times d_k}
 
 \begin{equation}
 \begin{split}
-\mathrm{MHA}(Q,K,V)= & \mathrm{Concat}(a_1, a_2, ... a_h)W^O \\
-a_i = & \mathrm{Attention}(QW^Q_i,KW^K_i,VW^V_i)
+% It is better to write these as \DeclareMathOp
+\mathrm{MHA}(Q,K,V) &=  \text{Concat}(a_1, a_2, ... a_h)W^O \\
+a_i &=  \text{Attention}(QW^Q_i,KW^K_i,VW^V_i)
 \end{split}
 \end{equation}
 
 \textbf{Feed Forward Layer}: Both encoder and decoder contains feed forward layer, containing two linear transformations with ReLU activation.
 
 \begin{equation}
-\mathrm{FFN}(x) = \mathrm{ReLU}(xW_1+b)W_2+b_2
+\mathrm{FFN}(x) = \text{ReLU}(xW_1+b)W_2+b_2
 \end{equation}
 
 \textbf{Layer Normalization}: Layer normalization is a layer to overcome xyz []. Given an input $x \in \mathbb{R}^K$, mean and variance statistics are evaluated along the dimensions \eqref{eq:layernorm_statistics}.
