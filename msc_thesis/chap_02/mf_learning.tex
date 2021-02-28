@@ -12,8 +12,8 @@ Model based methods are based on solving bellman equation \ref{eqn:bellman_v}\re
 \subsection{Q Learning}
 Q Learning is a value based type of learning. It is based on optimizing $Q$ function using bellman equation \ref{eqn:bellman_q} \cite{watkins_technical_1992}. 
 
-Assume that $Q$ function is parametrized by $\theta$. Target $Q$ value is estimated by temporal difference.
-
+Assume that $Q$ function is parametrized by $\theta$. Target $Q$ value is estimated by bootstrapping estimate itself, as shown in  \eqref{eqn:q_target}. 
+%
 \begin{equation}
 \label{eqn:q_target}
 Y_t^Q = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta)
@@ -44,14 +44,27 @@ Y_t^{DQN} = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta^-)
 \mathcal{L}_i(\theta_i) = \mathbb{E}_{s,a,r,s'\sim U(\mathcal{D})}\Big[\big( Y^{DQN} - Q(s,a;\theta_i) \big) ^ 2 \Big]
 \end{equation}
 
-\textbf{Epsilon Greedy Exploration}: ...
+\textbf{Epsilon Greedy Exploration}: As stated in \chapref{sec:chal}, exploration is an important step for reinforcement learning algorithms. In discrete action space (finite action space $\mathcal{A}$), simplest exploration strategy is epsilon-greedy approach. During learning, a random action is selected by probability $\epsilon$ or greedy action (maximizing Q value) by $1-\epsilon$ as shown in \eqref{eqn:egreedy_policy}. 
+%
+\begin{equation}
+\label{eqn:egreedy_policy}
+\pi(a|s) = 
+\begin{cases}
+1-\epsilon,   & \text{if } a = \argmax_{a} Q(s, a)\\
+\frac{\epsilon}{|\mathcal{A}|-1},     & \text{otherwise}
+\end{cases} 
+\end{equation}
+
 
 \begin{algorithm}[H]
 	\SetAlgoLined
-	\KwResult{Write here the result }
-	initialization;
-	\While{While condition}{
-		instructions;
+	\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+	Initialize: Replay memory $\mathcal{D}$ with capacity $N_{replay}$ \\
+	Initialize: Action value function parameters $\theta$ \\
+	Initialize: Target action value function parameters $\theta^- \leftarrow \theta$ \\
+	
+	\For{$\text{episode} = 1, M $}{
+		Get initial state $s_0$
 		\eIf{condition}{
 			instructions1;
 			instructions2;
@@ -59,7 +72,7 @@ Y_t^{DQN} = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta^-)
 			instructions3;
 		}
 	}
-	\caption{How to write algorithms}
+	\caption{Deep Q Learning}
 \end{algorithm}
 
 \subsubsection{Double Deep Q Learning}

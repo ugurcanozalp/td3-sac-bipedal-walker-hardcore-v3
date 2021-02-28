@@ -23,13 +23,12 @@ class MaxPooler(nn.Module):
 class NormalizedLSTM(nn.Module):
     def __init__(self, input_size, hidden_size=96, batch_first=True, dropout=0.1):
         super(NormalizedLSTM, self).__init__()
-        self.embedding = nn.Sequential(nn.Linear(input_size, hidden_size), nn.Tanh(), nn.LayerNorm(hidden_size))
+        self.embedding = nn.Sequential(nn.Linear(input_size, hidden_size), nn.LayerNorm(hidden_size), nn.Tanh())
         nn.init.xavier_uniform_(self.embedding[0].weight, gain=nn.init.calculate_gain('tanh'))
         nn.init.zeros_(self.embedding[0].bias)
         self.dropout = nn.Dropout(dropout)
         self.lstm = nn.LSTM(hidden_size, hidden_size=hidden_size, batch_first=batch_first, bidirectional=True, num_layers=1, dropout=dropout)
         self.pooler = LastStatePooler()
-        self.layernorm = nn.LayerNorm(hidden_size)
 
     def forward(self, x):
         x = self.embedding(x)
@@ -40,7 +39,6 @@ class NormalizedLSTM(nn.Module):
         x, (_, _) = self.lstm(x)
         x = self.pooler(x)
         x = 0.5*(x[:, :self.lstm.hidden_size]+x[:, self.lstm.hidden_size:])
-        x = self.layernorm(x)
         return x
 
 class Critic(nn.Module):
@@ -57,7 +55,7 @@ class Critic(nn.Module):
         self.action_dim = action_dim
 
         self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=64, batch_first=True, dropout=0.0)
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.GELU())
+        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 64), nn.LayerNorm(64), nn.GELU())
         nn.init.xavier_uniform_(self.action_encoder[0].weight, gain=nn.init.calculate_gain('relu'))
 
         self.fc2 = nn.Linear(64,128)

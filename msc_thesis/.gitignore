@@ -1,3 +1,9 @@
 msc_thesis/iam_thesis.*
 !msc_thesis/iam_thesis.tex
 
+# Pyre type checker
+.pyre/
+*.pt
+*.pth
+*.png
+*.txt
