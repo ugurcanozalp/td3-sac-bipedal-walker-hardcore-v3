@@ -28,7 +28,7 @@ At time $t$,  with state, action, reward, next state tuples ($s_t,a_t,r_t,s_{t+1
 
 \subsubsection{Deep Q Learning}
 
-Deep Q Learning overcomes instability of Q Learning. When a nonlinear approximator is used, learning is unstable. Deep Q Learning introduces Target Network and Experience Replay \cite{mnih_human-level_2015}.
+Deep Q Learning overcomes instability of Q Learning. When a nonlinear approximator is used, learning is unstable. Deep Q Learning introduces Target Network and Experience Replay \cite{mnih_human-level_2015, mnih_playing_2013}. 
 
 \textbf{Target Network}: Target network is parametrized $\theta^-$. It is used to evaluate target value and not updated by loss minimization. It is updated at each fixed number of update step $C$ by Q network parameter $\theta$. Target value is obtained by using $\theta^-$.
 
@@ -55,24 +55,32 @@ Y_t^{DQN} = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta^-)
 \end{cases} 
 \end{equation}
 
+Algorithm is summarized in Algorithm \ref{alg:dqn}. 
 
 \begin{algorithm}[H]
 	\SetAlgoLined
 	\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
 	Initialize: Replay memory $\mathcal{D}$ with capacity $N_{replay}$ \\
-	Initialize: Action value function parameters $\theta$ \\
-	Initialize: Target action value function parameters $\theta^- \leftarrow \theta$ \\
-	
+	Action value function parameters $\theta$ \\
+	Target action value function parameters $\theta^- \leftarrow \theta$ \\
+	Epsilon parameter for exploration $\epsilon$ \\
 	\For{$\text{episode} = 1, M $}{
-		Get initial state $s_0$
-		\eIf{condition}{
-			instructions1;
-			instructions2;
-		}{
-			instructions3;
+		Recieve initial state $s_1$
+		\For{$t = 1, T$}{
+			Select random action $a_t$ with probability $\epsilon$, otherwise greedy action $a_t = \argmax_{a} Q(s_t, a; \theta)$; \\
+			Execute action $a_t$ and recieve reward $r_t$ and next state $s_{t+1}$; \\
+			Store experience tuple $e_t = (s_t, a_t, r_t, s_{t+1})$ to $\mathcal{D}$ ; \\
+			Sample random batch with $N$ transitions from $\mathcal{D}$ as $\mathcal{D}_{r}$; \\
+			Set $Y_j^{DQN} = \begin{cases}
+			r_j + \gamma \max_{a'} Q(s_{j+1},a';\theta^-) & \text{if } s_{j+1} \text{not terminal } \\
+			r_j & \text{if } s_{j+1} \text{terminal }
+			\end{cases}
+			\forall e_j \in \mathcal{D}_{r}$;
+			Update $\theta$ by minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big( Y_j^{DQN} - Q(s_j,a_j;\theta) \big) ^ 2$ with a single optimization step.
 		}
 	}
-	\caption{Deep Q Learning}
+	\caption{Deep Q Learning with Experience Replay}
+	\label{alg:dqn}
 \end{algorithm}
 
 \subsubsection{Double Deep Q Learning}

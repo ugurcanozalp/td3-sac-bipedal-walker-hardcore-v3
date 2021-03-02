@@ -36,7 +36,7 @@
 \contentsline {subsection}{\numberline {2.9.1}Q Learning}{13}{subsection.2.9.1}%
 \contentsline {subsubsection}{\numberline {2.9.1.1}Deep Q Learning}{14}{subsubsection.2.9.1.1}%
 \contentsline {subsubsection}{\numberline {2.9.1.2}Double Deep Q Learning}{15}{subsubsection.2.9.1.2}%
-\contentsline {subsection}{\numberline {2.9.2}Deterministic Actor Critic Learning}{15}{subsection.2.9.2}%
+\contentsline {subsection}{\numberline {2.9.2}Deterministic Actor Critic Learning}{16}{subsection.2.9.2}%
 \contentsline {subsubsection}{\numberline {2.9.2.1}Deep Deterministic Policy Gradient}{16}{subsubsection.2.9.2.1}%
 \contentsline {subsubsection}{\numberline {2.9.2.2}Twin Delayed Deep Deterministic Policy Gradient}{17}{subsubsection.2.9.2.2}%
 \contentsline {chapter}{\numberline {3}\MakeUppercase {NEURAL NETWORKS AND DEEP LEARNING}}{19}{chapter.3}%
@@ -64,5 +64,5 @@
 \contentsline {section}{\numberline {5.1}Conclusion}{33}{section.5.1}%
 \contentsline {section}{\numberline {5.2}Future Work}{33}{section.5.2}%
 \contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{35}{chapter*.15}%
-\contentsline {nodots}{\numberline {}APPENDICES}{37}{chapter*.15}%
+\contentsline {nodots}{\numberline {}APPENDICES}{38}{chapter*.15}%
 \contentsline {chapter}{\numberline {A}\MakeUppercase {Proof of Some Theorem}}{39}{appendix.A}%

@@ -77,6 +77,11 @@ W.~S. McCulloch and W.~Pitts, A logical calculus of the ideas immanent in
 T.~M. Mitchell, \emph{Machine {Learning}}, McGraw-Hill Education, New York, 1st
   edition edition, March 1997, ISBN 9780070428072.
 
+\bibitem{mnih_playing_2013}
+V.~Mnih, K.~Kavukcuoglu, D.~Silver, A.~Graves, I.~Antonoglou, D.~Wierstra, and
+  M.~Riedmiller, Playing {Atari} with {Deep} {Reinforcement} {Learning},
+  arXiv:1312.5602 [cs], December 2013, arXiv: 1312.5602.
+
 \bibitem{mnih_human-level_2015}
 V.~Mnih, K.~Kavukcuoglu, D.~Silver, A.~A. Rusu, J.~Veness, M.~G. Bellemare,
   A.~Graves, M.~Riedmiller, A.~K. Fidjeland, G.~Ostrovski, S.~Petersen,
