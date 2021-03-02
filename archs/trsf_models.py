@@ -64,10 +64,8 @@ class Critic(nn.Module):
         
         self.state_encoder = StableTransformerEncoder(d_in=self.state_dim,
             d_model=96, nhead=4, dim_feedforward=192, dropout=0.0)
-        self.action_encoder = nn.Sequential(nn.Linear(self.action_dim, 96), nn.LayerNorm(96), nn.GELU()) # 
-        nn.init.xavier_uniform_(self.action_encoder[0].weight, gain=nn.init.calculate_gain('relu')) # 
 
-        self.fc2 = nn.Linear(96,128)
+        self.fc2 = nn.Linear(96 + self.action_dim, 128)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
         self.fc_out = nn.Linear(128,1, bias=False)
@@ -84,9 +82,7 @@ class Critic(nn.Module):
         :return: Value function : Q(S,a) (Torch Variable : [n,1] )
         """
         s = self.state_encoder(state)
-        a = self.action_encoder(action)
-        #x = torch.cat((s,a),dim=1)
-        x = s + a
+        x = torch.cat((s,action),dim=1)
         x = self.act(self.fc2(x))
         x = self.fc_out(x)*10
         return x

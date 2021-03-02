@@ -45,9 +45,7 @@ class TD3Agent():
         print(f'Number of paramters of Single Critic Net: {sum(p.numel() for p in self.train_critic_2.parameters())}')
 
         self.noise_generator = DecayingOrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=3.0, sigma=0.8, dt=0.04, sigma_decay=0.999)
-        #self.noise_generator = DecayingRandomNoise(mu=np.zeros(action_size), maxval=1, minval=-1, prob=0.7, decay=0.999)
-        #self.noise_generator = GaussianNoise(mu=np.zeros(action_size), sigma=0.4) #sigma=0.12
-        self.target_noise = GaussianNoise(mu=np.zeros(action_size), sigma=0.15, clip=0.3)
+        self.target_noise = GaussianNoise(mu=np.zeros(action_size), sigma=0.2, clip=0.4)
         
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \
             batch_size= self.batch_size, device=self.device)
