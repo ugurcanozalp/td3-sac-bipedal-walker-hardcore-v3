@@ -28,7 +28,7 @@ class FeedForwardEncoder(nn.Module):
         x = self.tanh(self.layn(self.lin1(x)))
         # Residual connection starts
         xx = self.lin3(self.act(self.lin2(x)))
-        o = self.act(self.layernorm(x+xx))
+        o = self.layernorm(x+xx)
         return o 
 
 
