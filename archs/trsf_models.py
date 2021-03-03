@@ -27,8 +27,8 @@ class StableTransformerEncoder(nn.Module):
     def __init__(self, d_in, d_model, nhead, dim_feedforward=192, dropout=0.1, seq_len=16):
         super(StableTransformerEncoder,self).__init__()
         #self.embedding_scale = d_model**0.5
-        self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model), nn.LayerNorm(d_model), nn.Tanh()) # 
-        nn.init.xavier_uniform_(self.inp_embedding[0].weight, gain=nn.init.calculate_gain('tanh')) #
+        self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model), nn.LayerNorm(d_model)) # , nn.Tanh()
+        nn.init.xavier_uniform_(self.inp_embedding[0].weight) #, gain=nn.init.calculate_gain('tanh')
         nn.init.zeros_(self.inp_embedding[0].bias) 
         self.pos_embedding = PositionalEncoding(d_model, seq_len=seq_len)
         self.encoder = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, only_last_state=True)
@@ -68,9 +68,10 @@ class Critic(nn.Module):
         self.fc2 = nn.Linear(96 + self.action_dim, 128)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
-        self.fc_out = nn.Linear(128,1, bias=False)
+        self.fc_out = nn.Linear(128,1)
         #nn.init.xavier_uniform_(self.fc_out.weight)
         nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
+        self.fc_out.bias.data.fill_(1.0)
 
         self.act = nn.GELU()
 

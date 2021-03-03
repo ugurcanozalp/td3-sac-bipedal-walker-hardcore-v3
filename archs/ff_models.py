@@ -28,7 +28,7 @@ class FeedForwardEncoder(nn.Module):
         x = self.tanh(self.layn(self.lin1(x)))
         # Residual connection starts
         xx = self.lin3(self.act(self.lin2(x)))
-        o = self.layernorm(x+xx)
+        o = self.act(self.layernorm(x+xx))
         return o 
 
 
@@ -50,9 +50,10 @@ class Critic(nn.Module):
         self.fc2 = nn.Linear(96 + self.action_dim, 128)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
-        self.fc_out = nn.Linear(128, 1, bias=False)
+        self.fc_out = nn.Linear(128, 1)
         #nn.init.xavier_uniform_(self.fc_out.weight)
         nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
+        self.fc_out.bias.data.fill_(1.0)
 
         self.act = nn.GELU()
 

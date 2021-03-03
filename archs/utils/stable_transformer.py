@@ -22,7 +22,7 @@ class PositionalEncoding(nn.Module):
 
     def forward(self, x):
         x = x + torch.flip(self.pe[:, :x.size(1), :], dims=[1]) / self.embedding_scale
-        #x = x + self.pe[:, :x.size(1), :] / self.embedding_scale*
+        #x = x + self.pe[:, :x.size(1), :] / self.embedding_scale
         return x
 
 class LearnablePositionalEncoding(nn.Module):
