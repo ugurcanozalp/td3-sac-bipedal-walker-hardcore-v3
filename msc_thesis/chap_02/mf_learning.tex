@@ -63,20 +63,23 @@ Algorithm is summarized in Algorithm \ref{alg:dqn}.
 	Initialize: Replay memory $\mathcal{D}$ with capacity $N_{replay}$ \\
 	Action value function parameters $\theta$ \\
 	Target action value function parameters $\theta^- \leftarrow \theta$ \\
-	Epsilon parameter for exploration $\epsilon$ \\
+	Epsilon parameter for exploration $\epsilon$, Update delay parameter $d$ \\
 	\For{$\text{episode} = 1, M $}{
-		Recieve initial state $s_1$
+		Recieve initial state $s_1$; \\
 		\For{$t = 1, T$}{
 			Select random action $a_t$ with probability $\epsilon$, otherwise greedy action $a_t = \argmax_{a} Q(s_t, a; \theta)$; \\
 			Execute action $a_t$ and recieve reward $r_t$ and next state $s_{t+1}$; \\
 			Store experience tuple $e_t = (s_t, a_t, r_t, s_{t+1})$ to $\mathcal{D}$ ; \\
 			Sample random batch with $N$ transitions from $\mathcal{D}$ as $\mathcal{D}_{r}$; \\
 			Set $Y_j^{DQN} = \begin{cases}
-			r_j + \gamma \max_{a'} Q(s_{j+1},a';\theta^-) & \text{if } s_{j+1} \text{not terminal } \\
-			r_j & \text{if } s_{j+1} \text{terminal }
+			r_j + \gamma \max_{a'} Q(s_{j+1},a';\theta^-) & \text{if } s_{j+1} \text{ not terminal } \\
+			r_j & \text{if } s_{j+1} \text{ terminal }
 			\end{cases}
 			\forall e_j \in \mathcal{D}_{r}$;
-			Update $\theta$ by minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big( Y_j^{DQN} - Q(s_j,a_j;\theta) \big) ^ 2$ with a single optimization step.
+			Update $\theta$ by minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big( Y_j^{DQN} - Q(s_j,a_j;\theta) \big) ^ 2$ with a single optimization step; \\
+			\lIf{$t \mod d$}{
+				Update target network: $\theta^- \leftarrow \theta$;
+			}
 		}
 	}
 	\caption{Deep Q Learning with Experience Replay}
@@ -153,6 +156,38 @@ Y_t^{DDPG} = r_t + \gamma Q(s_{t+1}, \mu(s_{t+1};\theta^{\mu^-});\theta^{Q^-})
 
 In DDPG, value and policy network parameters are learned simultaneously. During learning, exploration noise is added to each selection. In original paper \cite{lillicrap_continuous_2019}, authors proposed to use Ornstein Uhlenbeck Noise \cite{uhlenbeck_theory_1930} which has temporal correlation for efficiency. However, simple gaussian noise or another noise is also possible.
 
+Algorithm is summarized in Algorithm \ref{alg:ddpg}. 
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+	Initialize: Replay memory $\mathcal{D}$ with capacity $N_{replay}$ \\
+	Policy and action value function parameters $\theta^{\mu}$, $\theta^Q$ \\
+	Target policy and action value function parameters $\theta^{\mu^-} \leftarrow \theta^{\mu}$, $\theta^{Q^-} \leftarrow \theta^{Q}$ \\
+	Random process $\mathcal{N}$ as exploration noise\\
+	\For{$\text{episode} = 1, M $}{
+		Recieve initial state $s_1$; \\
+		\For{$t = 1, T$}{
+			Select action $a_t = \mu(s_t; \theta^{\mu}) + \epsilon$ where $\epsilon \sim \mathcal{N}$; \\
+			Execute action $a_t$ and recieve reward $r_t$ and next state $s_{t+1}$; \\
+			Store experience tuple $e_t = (s_t, a_t, r_t, s_{t+1})$ to $\mathcal{D}$ ; \\
+			Sample random batch with $N$ transitions from $\mathcal{D}$ as $\mathcal{D}_{r}$; \\
+			Set $Y_j^{DDPG} = \begin{cases}
+			r_j + \gamma Q(s_{j+1},\mu(s_{j+1}; \theta^{\mu^-}); \theta^{Q^-}) & \text{if } s_{j+1} \text{ not terminal } \\
+			r_j & \text{if } s_{j+1} \text{ terminal }
+			\end{cases}
+			\forall e_j \in \mathcal{D}_{r}$; \\
+			Update $\theta^Q$ by minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big( Y_j^{DDPG} - Q(s_j,a_j;\theta^Q) \big) ^ 2$ with a single optimization step; \\
+			Update $\theta^{\mu}$ by maximizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} Q(s_j,a_j;\theta^Q)$ with a single optimization step; \\
+			Update target networks \\
+			$\theta^{\mu^-} \leftarrow \tau \theta^{\mu} + (1-\tau) \theta^{\mu^-}$ \\
+			$\theta^{Q^-} \leftarrow \tau \theta^{Q} + (1-\tau) \theta^{Q^-}$;
+		}
+	}
+	\caption{Deep Deterministic Policy Gradient}
+	\label{alg:ddpg}
+\end{algorithm}
+
 \subsubsection{Twin Delayed Deep Deterministic Policy Gradient}
 Twin Delayed Deep Deterministic Policy Gradient \cite{fujimoto_addressing_2018} is improved version of DDPG with higher stability and efficiency. There are three main tricks.
 
@@ -178,3 +213,41 @@ Policy is learned by maximizing output of first value network.
 \end{equation}
 
 \textbf{Delayed Policy Updates}: During learning, policy network and target networks are updated less frequently (at each fixed number of step) than value network. Since policy network parameters are learned by maximizing value network, it should be learned slower.
+
+Algorithm is summarized in Algorithm \ref{alg:td3}. 
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+	Initialize: Replay memory $\mathcal{D}$ with capacity $N_{replay}$ \\
+	Policy and action value function parameters $\theta^{\mu}$, $\theta^Q_1$, $\theta^Q_2$  \\
+	Target policy and action value function parameters $\theta^{\mu^-} \leftarrow \theta^{\mu}$, $\theta^{Q^-}_1 \leftarrow \theta^{Q}_1$, $\theta^{Q^-}_2 \leftarrow \theta^{Q}_2$ \\
+	Random process $\mathcal{N}$ as exploration noise \\
+	Target policy smoothing parameters $\sigma$, $c$, Update delay parameter $d$ \\
+	\For{$\text{episode} = 1, M $}{
+		Recieve initial state $s_1$; \\
+		\For{$t = 1, T$}{
+			Select action $a_t = \mu(s_t; \theta^{\mu}) + \epsilon$ where $\epsilon \sim \mathcal{N}$
+			Execute action $a_t$ and recieve reward $r_t$ and next state $s_{t+1}$; \\
+			Store experience tuple $e_t = (s_t, a_t, r_t, s_{t+1})$ to $\mathcal{D}$ ; \\
+			Sample random batch with $N$ transitions from $\mathcal{D}$ as $\mathcal{D}_{r}$; \\
+			Evaluate target actions for value target
+			$a'(s_{j+1}) = \mu(s_{j+1};\theta^{\mu^-}) + \text{clip}(\epsilon, -c, c), \quad \epsilon \sim \mathcal{N}(0, \sigma) \quad \forall e_j \in \mathcal{D}_{r}$; \\
+			$\forall k \in \{1,2\}$, set $Y_{jk}^{TD3} = \begin{cases}
+			r_j + \gamma Q(s_{j+1},a'(s_{j+1}); \theta^{Q^-}_k) & \text{if } s_{j+1} \text{ not terminal } \\
+			r_j & \text{if } s_{j+1} \text{ terminal }
+			\end{cases}
+			\forall e_j \in \mathcal{D}_{r} $; \\
+			Set $Y_j^{TD3} = \min(Y_{j1}^{TD3}, Y_{j2}^{TD3})$; \\
+			Update $\theta^Q_1$ $\theta^Q_2$ by seperately minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big( Y_j^{TD3} - Q(s_j,a_j;\theta^Q_k) \big) ^ 2 \quad \forall k \in \{1,2\}$ with a single optimization step; \\
+			\uIf{$t \mod d$}{
+				Update $\theta^{\mu}$ by maximizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} Q(s_j,a_j;\theta^Q_1)$ with a single optimization step; \\
+				Update target networks \\
+				$\theta^{\mu^-} \leftarrow \tau \theta^{\mu} + (1-\tau) \theta^{\mu^-}$ \\
+				$\theta^{Q^-}_k \leftarrow \tau \theta^{Q}_k + (1-\tau) \theta^{Q^-}_k \quad \forall k \in \{1,2\}$ ;
+			}
+		}
+	}
+	\caption{Twin Delayed Deep Deterministic Policy Gradient}
+	\label{alg:td3}
+\end{algorithm}
