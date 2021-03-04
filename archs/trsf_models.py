@@ -70,7 +70,7 @@ class Critic(nn.Module):
         self.fc_out = nn.Linear(128,1)
         #nn.init.xavier_uniform_(self.fc_out.weight)
         nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
-        self.fc_out.bias.data.fill_(1.0)
+        self.fc_out.bias.data.fill_(0.0)
 
         self.act = nn.GELU()
 
