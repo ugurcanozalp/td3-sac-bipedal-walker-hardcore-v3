@@ -40,29 +40,30 @@
 \contentsline {subsubsection}{\numberline {2.9.2.1}Deep Deterministic Policy Gradient}{16}{subsubsection.2.9.2.1}%
 \contentsline {subsubsection}{\numberline {2.9.2.2}Twin Delayed Deep Deterministic Policy Gradient}{18}{subsubsection.2.9.2.2}%
 \contentsline {chapter}{\numberline {3}\MakeUppercase {NEURAL NETWORKS AND DEEP LEARNING}}{21}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Neural Networks}{21}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Backpropagation}{22}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Neural Network Types}{22}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Perceptron}{22}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Feed Forward Neural Networks (Multilayer Perceptron)}{22}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}Recurrent Neural Networks}{23}{subsection.3.3.3}%
-\contentsline {subsubsection}{\numberline {3.3.3.1}Long Term Dependence Problem of Vanilla RNNs}{24}{subsubsection.3.3.3.1}%
-\contentsline {subsubsection}{\numberline {3.3.3.2}Long Short Term Memory}{24}{subsubsection.3.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.4}Attention Mechanism}{26}{subsection.3.3.4}%
-\contentsline {subsubsection}{\numberline {3.3.4.1}Transformer}{26}{subsubsection.3.3.4.1}%
-\contentsline {subsubsection}{\numberline {3.3.4.2}Pre-Layer Normalized Transformer}{29}{subsubsection.3.3.4.2}%
-\contentsline {chapter}{\numberline {4}\MakeUppercase {BIPEDAL WALKING BY TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}}{31}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Details of the Environment}{31}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Partial Observability}{32}{subsection.4.1.1}%
-\contentsline {section}{\numberline {4.2}Proposed Neural Networks}{32}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Feed Forward Network}{33}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Long Short Term Memory}{33}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}Transformer (Pre-layer Normalized)}{33}{subsection.4.2.3}%
-\contentsline {section}{\numberline {4.3}RL Method and hyperparameters}{33}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Results}{33}{section.4.4}%
-\contentsline {chapter}{\numberline {5}\MakeUppercase {CONCLUSION AND FUTURE WORK}}{35}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Conclusion}{35}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Future Work}{35}{section.5.2}%
-\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{37}{chapter*.15}%
-\contentsline {nodots}{\numberline {}APPENDICES}{40}{chapter*.15}%
-\contentsline {chapter}{\numberline {A}\MakeUppercase {Proof of Some Theorem}}{41}{appendix.A}%
+\contentsline {section}{\numberline {3.1}Backpropagation}{21}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Building Units}{22}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Perceptron}{22}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Activation Functions}{22}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Neural Network Types}{23}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Feed Forward Neural Networks (Multilayer Perceptron)}{23}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Recurrent Neural Networks}{23}{subsection.3.3.2}%
+\contentsline {subsubsection}{\numberline {3.3.2.1}Long Term Dependence Problem of Vanilla RNNs}{24}{subsubsection.3.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.3.2.2}Long Short Term Memory}{24}{subsubsection.3.3.2.2}%
+\contentsline {subsection}{\numberline {3.3.3}Attention Mechanism}{26}{subsection.3.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.3.1}Transformer}{26}{subsubsection.3.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.3.2}Pre-Layer Normalized Transformer}{29}{subsubsection.3.3.3.2}%
+\contentsline {chapter}{\numberline {4}\MakeUppercase {BIPEDAL WALKING BY TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}}{33}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Details of the Environment}{33}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Partial Observability}{34}{subsection.4.1.1}%
+\contentsline {section}{\numberline {4.2}Proposed Neural Networks}{34}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Feed Forward Network}{35}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Long Short Term Memory}{35}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Transformer (Pre-layer Normalized)}{35}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}RL Method and hyperparameters}{35}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Results}{35}{section.4.4}%
+\contentsline {chapter}{\numberline {5}\MakeUppercase {CONCLUSION AND FUTURE WORK}}{37}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Conclusion}{37}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Future Work}{37}{section.5.2}%
+\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{39}{chapter*.15}%
+\contentsline {nodots}{\numberline {}APPENDICES}{42}{chapter*.15}%
+\contentsline {chapter}{\numberline {A}\MakeUppercase {Proof of Some Theorem}}{43}{appendix.A}%
