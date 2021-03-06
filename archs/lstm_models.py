@@ -28,6 +28,7 @@ class NormalizedLSTM(nn.Module):
         nn.init.zeros_(self.embedding[0].bias)
         self.dropout = nn.Dropout(dropout)
         self.lstm = nn.LSTM(hidden_size, hidden_size=hidden_size, batch_first=batch_first, bidirectional=False, num_layers=1, dropout=dropout)
+        self.lstm.bias_hh_l0.data.fill_(-3.0) # force lstm to output to depend on only last state at the initialization.
         self.pooler = LastStatePooler()
 
     def forward(self, x):

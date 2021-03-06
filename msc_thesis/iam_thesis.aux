@@ -169,52 +169,65 @@
 \newlabel{eqn:perceptron1}{{3.1}{22}{Perceptron}{equation.3.2.1}{}}
 \newlabel{eqn:stepfun}{{3.2}{22}{Perceptron}{equation.3.2.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Activation Functions}{22}{subsection.3.2.2}\protected@file@percent }
+\citation{glorot_deep_2011}
+\citation{hendrycks_gaussian_2020}
+\newlabel{fig:relu_gelu}{{3.1a}{23}{ReLU and GELU functions\relax }{figure.caption.10}{}}
+\newlabel{sub@fig:relu_gelu}{{a}{23}{ReLU and GELU functions\relax }{figure.caption.10}{}}
+\newlabel{fig:sigmoid_tanh}{{3.1b}{23}{Sigmoid and Tanh functions\relax }{figure.caption.10}{}}
+\newlabel{sub@fig:sigmoid_tanh}{{b}{23}{Sigmoid and Tanh functions\relax }{figure.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Activation Functions\relax }}{23}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:activation_functions}{{3.1}{23}{Activation Functions\relax }{figure.caption.10}{}}
+\newlabel{eqn:sigmoid_fcn}{{3.3}{23}{Activation Functions}{equation.3.2.3}{}}
+\newlabel{eqn:tanh_fcn}{{3.4}{23}{Activation Functions}{equation.3.2.4}{}}
+\newlabel{eqn:relu_fcn}{{3.5}{23}{Activation Functions}{equation.3.2.5}{}}
+\newlabel{eqn:gelu_fcn}{{3.6}{23}{Activation Functions}{equation.3.2.6}{}}
 \citation{rumelhart_learning_1986}
-\@writefile{toc}{\contentsline {section}{\numberline {3.3}Neural Network Types}{23}{section.3.3}\protected@file@percent }
-\newlabel{sec:nnet_types}{{3.3}{23}{Neural Network Types}{section.3.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Feed Forward Neural Networks (Multilayer Perceptron)}{23}{subsection.3.3.1}\protected@file@percent }
-\newlabel{eqn:mlpact}{{3.3}{23}{Feed Forward Neural Networks (Multilayer Perceptron)}{equation.3.3.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Recurrent Neural Networks}{23}{subsection.3.3.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Recurrent Layer (left) and Feed Forward Layer (right) illustration.\relax }}{24}{figure.caption.10}\protected@file@percent }
-\newlabel{fig:rnn_vs_ffnn}{{3.1}{24}{Recurrent Layer (left) and Feed Forward Layer (right) illustration.\relax }{figure.caption.10}{}}
-\newlabel{eqn:rnnact}{{3.4}{24}{Recurrent Neural Networks}{equation.3.3.4}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.1}Long Term Dependence Problem of Vanilla RNNs}{24}{subsubsection.3.3.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.2}Long Short Term Memory}{24}{subsubsection.3.3.2.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces LSTM Cell.\relax }}{25}{figure.caption.11}\protected@file@percent }
-\newlabel{fig:lstm_cell}{{3.2}{25}{LSTM Cell.\relax }{figure.caption.11}{}}
-\newlabel{eqn:lstm_forget}{{3.5}{25}{Long Short Term Memory}{equation.3.3.5}{}}
-\newlabel{eqn:lstm_inp}{{3.6}{25}{Long Short Term Memory}{equation.3.3.6}{}}
-\newlabel{eqn:lstm_cellstcand}{{3.7}{25}{Long Short Term Memory}{equation.3.3.7}{}}
-\newlabel{eqn:lstm_cellstupt}{{3.8}{25}{Long Short Term Memory}{equation.3.3.8}{}}
-\newlabel{eqn:lstm_out}{{3.9}{25}{Long Short Term Memory}{equation.3.3.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Neural Network Types}{24}{section.3.3}\protected@file@percent }
+\newlabel{sec:nnet_types}{{3.3}{24}{Neural Network Types}{section.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Feed Forward Neural Networks (Multilayer Perceptron)}{24}{subsection.3.3.1}\protected@file@percent }
+\newlabel{eqn:mlpact}{{3.7}{24}{Feed Forward Neural Networks (Multilayer Perceptron)}{equation.3.3.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Recurrent Neural Networks}{24}{subsection.3.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Recurrent Layer (left) and Feed Forward Layer (right) illustration.\relax }}{25}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:rnn_vs_ffnn}{{3.2}{25}{Recurrent Layer (left) and Feed Forward Layer (right) illustration.\relax }{figure.caption.11}{}}
+\newlabel{eqn:rnnact}{{3.8}{25}{Recurrent Neural Networks}{equation.3.3.8}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.1}Long Term Dependence Problem of Vanilla RNNs}{25}{subsubsection.3.3.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.2}Long Short Term Memory}{25}{subsubsection.3.3.2.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces LSTM Cell.\relax }}{26}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:lstm_cell}{{3.3}{26}{LSTM Cell.\relax }{figure.caption.12}{}}
+\newlabel{eqn:lstm_forget}{{3.9}{26}{Long Short Term Memory}{equation.3.3.9}{}}
+\newlabel{eqn:lstm_inp}{{3.10}{26}{Long Short Term Memory}{equation.3.3.10}{}}
+\newlabel{eqn:lstm_cellstcand}{{3.11}{26}{Long Short Term Memory}{equation.3.3.11}{}}
+\newlabel{eqn:lstm_cellstupt}{{3.12}{26}{Long Short Term Memory}{equation.3.3.12}{}}
+\newlabel{eqn:lstm_out}{{3.13}{26}{Long Short Term Memory}{equation.3.3.13}{}}
 \citation{vaswani_attention_2017}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}Attention Mechanism}{26}{subsection.3.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3.1}Transformer}{26}{subsubsection.3.3.3.1}\protected@file@percent }
-\newlabel{eq:layernorm_statistics}{{3.15}{28}{Transformer}{equation.3.3.15}{}}
-\newlabel{eqn:layernorm}{{3.16}{28}{Transformer}{equation.3.3.16}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}Attention Mechanism}{27}{subsection.3.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3.1}Transformer}{27}{subsubsection.3.3.3.1}\protected@file@percent }
+\newlabel{eq:layernorm_statistics}{{3.19}{29}{Transformer}{equation.3.3.19}{}}
+\newlabel{eqn:layernorm}{{3.20}{29}{Transformer}{equation.3.3.20}{}}
 \citation{xiong_layer_2020}
 \citation{parisotto_stabilizing_2019}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3.2}Pre-Layer Normalized Transformer}{29}{subsubsection.3.3.3.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces (a) Post-LN Transformer layer, (b) Pre-LN Transformer layer.\relax }}{30}{figure.caption.12}\protected@file@percent }
-\newlabel{fig:post_pre_trsf}{{3.3}{30}{(a) Post-LN Transformer layer, (b) Pre-LN Transformer layer.\relax }{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3.2}Pre-Layer Normalized Transformer}{30}{subsubsection.3.3.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces (a) Post-LN Transformer layer, (b) Pre-LN Transformer layer.\relax }}{31}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:post_pre_trsf}{{3.4}{31}{(a) Post-LN Transformer layer, (b) Pre-LN Transformer layer.\relax }{figure.caption.13}{}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {4}\MakeUppercase  {BIPEDAL WALKING BY TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}}{33}{chapter.4}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
 \newlabel{chap:exp_setup}{{4}{33}{BIPEDAL WALKING BY TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}{chapter.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.1}Details of the Environment}{33}{section.4.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Observation Space of Bipedal Walker\relax }}{33}{table.caption.13}\protected@file@percent }
-\newlabel{table:bpw_obs_space}{{4.1}{33}{Observation Space of Bipedal Walker\relax }{table.caption.13}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Observation Space of Bipedal Walker\relax }}{33}{table.caption.14}\protected@file@percent }
+\newlabel{table:bpw_obs_space}{{4.1}{33}{Observation Space of Bipedal Walker\relax }{table.caption.14}{}}
 \citation{dulac-arnold_challenges_2019}
-\@writefile{lot}{\contentsline {table}{\numberline {4.2}{\ignorespaces Action Space of Bipedal Walker\relax }}{34}{table.caption.14}\protected@file@percent }
-\newlabel{table:bpw_act_space}{{4.2}{34}{Action Space of Bipedal Walker\relax }{table.caption.14}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.2}{\ignorespaces Action Space of Bipedal Walker\relax }}{34}{table.caption.15}\protected@file@percent }
+\newlabel{table:bpw_act_space}{{4.2}{34}{Action Space of Bipedal Walker\relax }{table.caption.15}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Partial Observability}{34}{subsection.4.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Proposed Neural Networks}{34}{section.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Feed Forward Network}{35}{subsection.4.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Long Short Term Memory}{35}{subsection.4.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}Transformer (Pre-layer Normalized)}{35}{subsection.4.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}RL Method and hyperparameters}{35}{section.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}Results}{35}{section.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Modifications on Original Envrionment}{34}{section.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Proposed Neural Networks}{34}{section.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Feed Forward Network}{35}{subsection.4.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Long Short Term Memory}{35}{subsection.4.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.3}Transformer (Pre-layer Normalized)}{35}{subsection.4.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}RL Method and hyperparameters}{35}{section.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Results}{35}{section.4.5}\protected@file@percent }
 \bibdata{myBiblio}
 \@writefile{toc}{\contentsline {chapter}{\numberline {5}\MakeUppercase  {CONCLUSION AND FUTURE WORK}}{37}{chapter.5}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
@@ -234,37 +247,39 @@
 \bibcite{fris_landing_2020}{9}
 \bibcite{fu_when_2020}{10}
 \bibcite{fujimoto_addressing_2018}{11}
-\bibcite{heess_memory-based_2015}{12}
-\bibcite{kopsa_reinforcement_2018}{13}
-\@writefile{toc}{\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{39}{chapter*.15}\protected@file@percent }
-\bibcite{kumar_bipedal_2018}{14}
-\bibcite{lillicrap_continuous_2019}{15}
-\bibcite{mcculloch_logical_1943}{16}
-\bibcite{mitchell_machine_1997}{17}
-\bibcite{mnih_playing_2013}{18}
-\bibcite{mnih_human-level_2015}{19}
-\bibcite{pan_virtual_2017}{20}
-\bibcite{parisotto_stabilizing_2019}{21}
-\bibcite{paszke_pytorch_2019}{22}
-\bibcite{rastogi_deep_2017}{23}
-\bibcite{rosenblatt_perceptron_1958}{24}
-\bibcite{rumelhart_learning_1986}{25}
-\bibcite{russell_artificial_nodate}{26}
-\bibcite{sallab_deep_2017}{27}
-\bibcite{santos_experimental_2012}{28}
-\bibcite{shalev-shwartz_safe_2016}{29}
-\bibcite{silver_deterministic_2014}{30}
-\bibcite{song_recurrent_2018}{31}
-\bibcite{sutton_reinforcement_1998}{32}
-\bibcite{uhlenbeck_theory_1930}{33}
-\bibcite{upadhyay_transformer_2019}{34}
-\bibcite{van_hasselt_deep_2015}{35}
-\bibcite{vaswani_attention_2017}{36}
-\bibcite{wang_deep_2019}{37}
-\bibcite{watkins_technical_1992}{38}
-\bibcite{xiong_layer_2020}{39}
+\bibcite{glorot_deep_2011}{12}
+\bibcite{heess_memory-based_2015}{13}
+\@writefile{toc}{\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{39}{chapter*.16}\protected@file@percent }
+\bibcite{hendrycks_gaussian_2020}{14}
+\bibcite{kopsa_reinforcement_2018}{15}
+\bibcite{kumar_bipedal_2018}{16}
+\bibcite{lillicrap_continuous_2019}{17}
+\bibcite{mcculloch_logical_1943}{18}
+\bibcite{mitchell_machine_1997}{19}
+\bibcite{mnih_playing_2013}{20}
+\bibcite{mnih_human-level_2015}{21}
+\bibcite{pan_virtual_2017}{22}
+\bibcite{parisotto_stabilizing_2019}{23}
+\bibcite{paszke_pytorch_2019}{24}
+\bibcite{rastogi_deep_2017}{25}
+\bibcite{rosenblatt_perceptron_1958}{26}
+\bibcite{rumelhart_learning_1986}{27}
+\bibcite{russell_artificial_nodate}{28}
+\bibcite{sallab_deep_2017}{29}
+\bibcite{santos_experimental_2012}{30}
+\bibcite{shalev-shwartz_safe_2016}{31}
+\bibcite{silver_deterministic_2014}{32}
+\bibcite{song_recurrent_2018}{33}
+\bibcite{sutton_reinforcement_1998}{34}
+\bibcite{uhlenbeck_theory_1930}{35}
+\bibcite{upadhyay_transformer_2019}{36}
+\bibcite{van_hasselt_deep_2015}{37}
+\bibcite{vaswani_attention_2017}{38}
+\bibcite{wang_deep_2019}{39}
+\bibcite{watkins_technical_1992}{40}
+\bibcite{xiong_layer_2020}{41}
 \bibstyle{iamBiblioStyle}
-\@writefile{toc}{\contentsline {nodots}{\numberline {}APPENDICES}{42}{chapter*.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {nodots}{\numberline {}APPENDICES}{42}{chapter*.16}\protected@file@percent }
 \@writefile{toc}{\contentsline {chapter}{\numberline {A}\MakeUppercase  {Proof of Some Theorem}}{43}{appendix.A}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}

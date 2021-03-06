@@ -49,10 +49,20 @@ S.~Fujimoto, H.~van Hoof, and D.~Meger, Addressing {Function} {Approximation}
   {Error} in {Actor}-{Critic} {Methods}, arXiv:1802.09477 [cs, stat], October
   2018, arXiv: 1802.09477 version: 3.
 
+\bibitem{glorot_deep_2011}
+X.~Glorot, A.~Bordes, and Y.~Bengio, Deep {Sparse} {Rectifier} {Neural}
+  {Networks}, in \emph{Proceedings of the {Fourteenth} {International}
+  {Conference} on {Artificial} {Intelligence} and {Statistics}}, pp. 315--323,
+  JMLR Workshop and Conference Proceedings, June 2011.
+
 \bibitem{heess_memory-based_2015}
 N.~Heess, J.~J. Hunt, T.~P. Lillicrap, and D.~Silver, Memory-based control with
   recurrent neural networks, arXiv:1512.04455 [cs], December 2015, arXiv:
   1512.04455.
+
+\bibitem{hendrycks_gaussian_2020}
+D.~Hendrycks and K.~Gimpel, Gaussian {Error} {Linear} {Units} ({GELUs}),
+  arXiv:1606.08415 [cs], July 2020, arXiv: 1606.08415.
 
 \bibitem{kopsa_reinforcement_2018}
 K.~Kopşa and A.~T. Kutay, \emph{Reinforcement learning control for

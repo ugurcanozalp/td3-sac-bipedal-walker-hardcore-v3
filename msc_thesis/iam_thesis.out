@@ -45,15 +45,16 @@
 \BOOKMARK [0][-]{chapter.4}{BIPEDAL WALKING BY TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}{}% 45
 \BOOKMARK [1][-]{section.4.1}{Details of the Environment}{chapter.4}% 46
 \BOOKMARK [2][-]{subsection.4.1.1}{Partial Observability}{section.4.1}% 47
-\BOOKMARK [1][-]{section.4.2}{Proposed Neural Networks}{chapter.4}% 48
-\BOOKMARK [2][-]{subsection.4.2.1}{Feed Forward Network}{section.4.2}% 49
-\BOOKMARK [2][-]{subsection.4.2.2}{Long Short Term Memory}{section.4.2}% 50
-\BOOKMARK [2][-]{subsection.4.2.3}{Transformer \(Pre-layer Normalized\)}{section.4.2}% 51
-\BOOKMARK [1][-]{section.4.3}{RL Method and hyperparameters}{chapter.4}% 52
-\BOOKMARK [1][-]{section.4.4}{Results}{chapter.4}% 53
-\BOOKMARK [0][-]{chapter.5}{CONCLUSION AND FUTURE WORK}{}% 54
-\BOOKMARK [1][-]{section.5.1}{Conclusion}{chapter.5}% 55
-\BOOKMARK [1][-]{section.5.2}{Future Work}{chapter.5}% 56
-\BOOKMARK [0][-]{chapter*.15}{REFERENCES}{}% 57
-\BOOKMARK [0][-]{chapter*.15}{APPENDICES}{}% 58
-\BOOKMARK [0][-]{appendix.A}{Proof of Some Theorem}{}% 59
+\BOOKMARK [1][-]{section.4.2}{Modifications on Original Envrionment}{chapter.4}% 48
+\BOOKMARK [1][-]{section.4.3}{Proposed Neural Networks}{chapter.4}% 49
+\BOOKMARK [2][-]{subsection.4.3.1}{Feed Forward Network}{section.4.3}% 50
+\BOOKMARK [2][-]{subsection.4.3.2}{Long Short Term Memory}{section.4.3}% 51
+\BOOKMARK [2][-]{subsection.4.3.3}{Transformer \(Pre-layer Normalized\)}{section.4.3}% 52
+\BOOKMARK [1][-]{section.4.4}{RL Method and hyperparameters}{chapter.4}% 53
+\BOOKMARK [1][-]{section.4.5}{Results}{chapter.4}% 54
+\BOOKMARK [0][-]{chapter.5}{CONCLUSION AND FUTURE WORK}{}% 55
+\BOOKMARK [1][-]{section.5.1}{Conclusion}{chapter.5}% 56
+\BOOKMARK [1][-]{section.5.2}{Future Work}{chapter.5}% 57
+\BOOKMARK [0][-]{chapter*.16}{REFERENCES}{}% 58
+\BOOKMARK [0][-]{chapter*.16}{APPENDICES}{}% 59
+\BOOKMARK [0][-]{appendix.A}{Proof of Some Theorem}{}% 60

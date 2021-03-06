@@ -23,4 +23,49 @@ f(a) =
 A learning algorithm of a perceptron aims determining the parameter vector $W$. It is best motivated by error minimization of data samples once a cost function is constructed. 
 
 \subsection{Activation Functions}
-As in \eqref{eqn:stepfun}, step function is used in perceptron. However, any other nonlinear function can be used instead. This nonlinearity allows a model to capture nonlinearity in data. There are tons of activation function in use today. Commonly used activations are sigmoid, hyperbolic tangent, rectified linear unit, gaussian error linear units.
+As in \eqref{eqn:stepfun}, step function is used in perceptron. However, any other nonlinear function can be used instead. This nonlinearity allows a model to capture nonlinearity in data. There are tons of activation function in use today. Commonly used activations are \textit{sigmoid}, \textit{hyperbolic tangent (Tanh)}, \textit{rectified linear unit (ReLU)}, \textit{gaussian error linear unit (GELU)}.
+
+\textbf{Sigmoid Function}: Sigmoid ($\sigma$) is used when an output is required to be in $[0,1]$, like probability value. However, it has small derivative values at value near 0 and 1. 
+
+\begin{equation}
+\label{eqn:sigmoid_fcn}
+\sigma(x) = \frac{1}{1+e^{-x}}
+\end{equation}
+
+\textbf{Hyperbolic Tangent}: Tanh is used when an output is required to be in $[-1,1]$. It has similar behavior with sigmoid function except it is zero centered. Their difference is visualized in \figref{fig:sigmoid_tanh}
+
+\begin{equation}
+\label{eqn:tanh_fcn}
+\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
+\end{equation}
+
+\textbf{ReLU}: ReLU is a simple function mapping negative values to zero while passing positive values as it is. It is computationally cheap and allows to train deep and complex networks \cite{glorot_deep_2011}.
+
+\begin{equation}
+\label{eqn:relu_fcn}
+\textrm{ReLU}(x) = \max(0, x)
+\end{equation}
+
+\textbf{GELU}: GELU is smoothed version of ReLU function. It is continious but non-convex and has several advantages \cite{hendrycks_gaussian_2020}. ReLU and GELU are visualized in  \figref{fig:relu_gelu}.
+
+\begin{equation}
+\label{eqn:gelu_fcn}
+\textrm{GELU}(x) = x \Phi(x) = \frac{x}{2} \bigg[ 1 + \textrm{erf} \Big( \frac{x}{\sqrt{2}} \Big) \bigg]
+\end{equation}
+
+\begin{figure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{figures/ml_theory/relu_gelu.png}
+		\caption{ReLU and GELU functions}
+		\label{fig:relu_gelu}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{figures/ml_theory/sigmoid_tanh.png}
+		\caption{Sigmoid and Tanh functions}
+		\label{fig:sigmoid_tanh}
+	\end{subfigure}
+	\caption{Activation Functions}
+	\label{fig:activation_functions}
+\end{figure}
