@@ -54,17 +54,16 @@
 \contentsline {subsubsection}{\numberline {3.3.3.2}Pre-Layer Normalized Transformer}{30}{subsubsection.3.3.3.2}%
 \contentsline {chapter}{\numberline {4}\MakeUppercase {BIPEDAL WALKING BY TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}}{33}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Details of the Environment}{33}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Partial Observability}{34}{subsection.4.1.1}%
-\contentsline {section}{\numberline {4.2}Modifications on Original Envrionment}{34}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Proposed Neural Networks}{34}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Feed Forward Network}{35}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Long Short Term Memory}{35}{subsection.4.3.2}%
-\contentsline {subsection}{\numberline {4.3.3}Transformer (Pre-layer Normalized)}{35}{subsection.4.3.3}%
-\contentsline {section}{\numberline {4.4}RL Method and hyperparameters}{35}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Results}{35}{section.4.5}%
+\contentsline {subsection}{\numberline {4.1.1}Partial Observability}{35}{subsection.4.1.1}%
+\contentsline {section}{\numberline {4.2}Proposed Neural Networks}{35}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Feed Forward Network}{35}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Long Short Term Memory}{36}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Transformer (Pre-layer Normalized)}{36}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}RL Method and hyperparameters}{36}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Results}{36}{section.4.4}%
 \contentsline {chapter}{\numberline {5}\MakeUppercase {CONCLUSION AND FUTURE WORK}}{37}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Conclusion}{37}{section.5.1}%
 \contentsline {section}{\numberline {5.2}Future Work}{37}{section.5.2}%
-\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{39}{chapter*.16}%
-\contentsline {nodots}{\numberline {}APPENDICES}{42}{chapter*.16}%
+\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{39}{chapter*.17}%
+\contentsline {nodots}{\numberline {}APPENDICES}{42}{chapter*.17}%
 \contentsline {chapter}{\numberline {A}\MakeUppercase {Proof of Some Theorem}}{43}{appendix.A}%
