@@ -21,7 +21,7 @@ def train(env, agent, n_episodes=5000, model_type='unk', env_type='unk', score_l
             if i_episode>explore_episode:
                 action = agent.get_action(state, explore=True)
                 action = action.clip(min=env.action_space.low, max=env.action_space.high)
-                env.render()
+                #env.render()
             else:
                 action = env.action_space.sample()
 
