@@ -1,4 +1,5 @@
 import gym
+from gym.wrappers import Monitor
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,7 +12,7 @@ import argparse
 import os
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f", "--flag", type=str, choices=['train', 'test'],
+parser.add_argument("-f", "--flag", type=str, choices=['train', 'test', 'test-record'],
                     default='train', help="train or test?")
 parser.add_argument("-e", "--env", type=str, choices=['classic', 'hardcore'],
                     default='hardcore', help="environment type, classic or hardcore?")
@@ -81,10 +82,18 @@ if args.flag == 'train':
     np.savetxt(os.path.join("results", "test"+"-"+args.env+'-'+args.model_type+'-'+args.rl_type+'.txt'), test_scores, fmt="%.6e")
 
 elif args.flag == 'test':
-    #agent.freeze_networks()
     agent.eval_mode()
     #env.seed(0)
     scores = test(env, agent)
     env.close()
+
+elif args.flag == 'test-record':
+    # sudo apt-get install ffmpeg
+    agent.eval_mode()
+    #env.seed(0)
+    env = Monitor(env, os.path.join('.', 'results', 'video'), force=False)
+    scores = test(env, agent)
+    env.close()
+
 else:
     print('Wrong flag!')
