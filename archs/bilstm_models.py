@@ -56,9 +56,9 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=64, batch_first=True, dropout=0.0)
+        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=72, batch_first=True, dropout=0.0)
 
-        self.fc2 = nn.Linear(64 + self.action_dim, 128)
+        self.fc2 = nn.Linear(72 + self.action_dim, 128)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
         self.fc_out = nn.Linear(128, 1, bias=False)
@@ -96,9 +96,9 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=64, batch_first=True, dropout=0.0)
+        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=72, batch_first=True, dropout=0.0)
 
-        self.fc = nn.Linear(64,action_dim)
+        self.fc = nn.Linear(72,action_dim)
         nn.init.uniform_(self.fc.weight, -0.003,+0.003)
         nn.init.zeros_(self.fc.bias)
         self.tanh = nn.Tanh()
