@@ -64,25 +64,33 @@ The robot has kinematic and lidar sensors. It is modeled as Markov Decision Proc
 \textbf{Modifications on Original Envrionment}: In original version, agent gets -100 points when its hull hits the floor. In order to make the robot more greedy, this is changed to -10 points. In addition, time frequency of simulation is halved (from 50 Hz to 25 Hz) by only observing one of each two consecutive frames using a custom wrapper function. 
 
 \subsection{Partial Observability}
-In DRL, partial observability is handled by 2 ways in literature \cite{dulac-arnold_challenges_2019}. First is incorprating fixed number of last observations while second way is updating hidden belief state using recurrent neural network at each time step. 
-
-Our approach is using fixed number of past states into LSTM, BiLSTM and Transformer based networks. 
+In DRL, partial observability is handled by 2 ways in literature \cite{dulac-arnold_challenges_2019}. First is incorprating fixed number of last observations while second way is updating hidden belief state using recurrent neural network at each time step. Our approach is using fixed number of past observation into LSTM, BiLSTM and Transformer based networks for both actor and critic networks. 
 
 \section{Proposed Neural Networks}
 
-For all networks, varing backbones used to encode state information from observations for both actor and critic networks. As backbones, following networks are proposed.
+For all networks, varing backbones used to encode state information from observations for both actor and critic networks. In critic network, actions are concatenated by state information coming from backbones. Then, this concatenated vector is passed through feed forward layer with GELU activation then a linear layer with single output. In actor network, backbone is followed by a single layer with tanh activation for action estimation. As backbones, following networks are proposed.
 
-Actions are passed through feed forward layer with GELU activation and summed up by state encoding. Then, this summation is again passed through feed forward layer with GELU activation. Lastly, a linear layer is used for value estimation in critic network and feed forward layer with tanh activation for action estimation in actor network.
+\subsection{Feed Forward Network with residual connection}
+Observations are passed through a layer with tanh activation to 96 dimensional output. Then it is passed through 2 layers with 192 dimensional hidden size and 96 dimensional output. This output is summed with first layer's output and this is lastly passed through layer normalization.
 
-\subsection{Feed Forward Network}
-Feed Forward Network with residual connection (hidden dim: 96, feed forward dim: 192)
 \subsection{Long Short Term Memory}
-LSTM (hidden dim: 96, number of layer: 1)
+Sequence of observations are passed through a layer with tanh activation to 96 dimensional output. Then it is passed though vanilla lstm layer with 96 dimensional hidden state.
 
 \subsection{Transformer (Pre-layer Normalized)}
-Transformer (hidden dim: 96, feed forward dim: 192, number of layer: 1)
+Sequence of observations are passed through a layer with tanh activation to 96 dimensional output. Then it is passed though pre-layer normalized transformer with 192 dimensional feed forward layer. The output is lastly passed through layer normalization.
+
 
 \section{RL Method and hyperparameters}
-TD3 algorithm is used for learning task. For all networks following hyperparameters are used.\\
+TD3 algorithm is used for learning task. Hyperparameters are selected by grid search and best performing values are used. Adam optimizer is used as optimizer. \\
+As exploration noise, ornstein-uhlenbeck noise is used and standart deviation is multiplied  by $0.999$ at the end of each episode. Initially $\theta=4.0$ and $\sigma=1.0$ are used. \\
+Other hyperparameters are as follows. \\
+\begin{itemize}
+	\item $\alpha=7.0 \cdot 10^{-4}$ (For LSTM)
+	\item $\alpha=1.0 \cdot 10^{-3}$ (For Other networks)
+	\item $\beta_1=0.9$
+	\item $\beta_2=0.999$
+	\item $\gamma=0.99$
+	\item $N_{replay} = 500000$.
+\end{itemize}
 
 \section{Results}

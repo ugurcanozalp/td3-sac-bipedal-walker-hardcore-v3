@@ -56,7 +56,7 @@
 \contentsline {section}{\numberline {4.1}Details of the Environment}{33}{section.4.1}%
 \contentsline {subsection}{\numberline {4.1.1}Partial Observability}{35}{subsection.4.1.1}%
 \contentsline {section}{\numberline {4.2}Proposed Neural Networks}{35}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Feed Forward Network}{35}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.1}Feed Forward Network with residual connection}{35}{subsection.4.2.1}%
 \contentsline {subsection}{\numberline {4.2.2}Long Short Term Memory}{36}{subsection.4.2.2}%
 \contentsline {subsection}{\numberline {4.2.3}Transformer (Pre-layer Normalized)}{36}{subsection.4.2.3}%
 \contentsline {section}{\numberline {4.3}RL Method and hyperparameters}{36}{section.4.3}%

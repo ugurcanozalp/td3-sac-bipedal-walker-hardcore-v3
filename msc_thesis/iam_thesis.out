@@ -46,7 +46,7 @@
 \BOOKMARK [1][-]{section.4.1}{Details of the Environment}{chapter.4}% 46
 \BOOKMARK [2][-]{subsection.4.1.1}{Partial Observability}{section.4.1}% 47
 \BOOKMARK [1][-]{section.4.2}{Proposed Neural Networks}{chapter.4}% 48
-\BOOKMARK [2][-]{subsection.4.2.1}{Feed Forward Network}{section.4.2}% 49
+\BOOKMARK [2][-]{subsection.4.2.1}{Feed Forward Network with residual connection}{section.4.2}% 49
 \BOOKMARK [2][-]{subsection.4.2.2}{Long Short Term Memory}{section.4.2}% 50
 \BOOKMARK [2][-]{subsection.4.2.3}{Transformer \(Pre-layer Normalized\)}{section.4.2}% 51
 \BOOKMARK [1][-]{section.4.3}{RL Method and hyperparameters}{chapter.4}% 52
