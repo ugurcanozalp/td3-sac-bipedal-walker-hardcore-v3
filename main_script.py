@@ -16,7 +16,7 @@ parser.add_argument("-f", "--flag", type=str, choices=['train', 'test', 'test-re
                     default='train', help="train or test?")
 parser.add_argument("-e", "--env", type=str, choices=['classic', 'hardcore'],
                     default='hardcore', help="environment type, classic or hardcore?")
-parser.add_argument("-m", "--model_type", type=str, choices=['ff','lstm','bilstm','trsf'],
+parser.add_argument("-m", "--model_type", type=str, choices=['ff','mlp','lstm','bilstm','trsf'],
                     default='ff', help="model type")
 parser.add_argument("-r", "--rl_type", type=str, choices=['ddpg', 'td3'], default='td3', help='RL method')
 parser.add_argument("-l", "--lr", type=float, default=1e-3, help='Learning Rate')
@@ -29,6 +29,8 @@ args = parser.parse_args()
 
 if args.model_type=='ff':
     from archs.ff_models import Actor, Critic
+if args.model_type=='mlp':
+    from archs.mlp_models import Actor, Critic
 elif args.model_type=='lstm':
     from archs.lstm_models import Actor, Critic
 elif args.model_type=='bilstm':

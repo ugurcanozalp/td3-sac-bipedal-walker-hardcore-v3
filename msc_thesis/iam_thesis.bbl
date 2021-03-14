@@ -1,10 +1,12 @@
 \begin{thebibliography}{10}
 
 \bibitem{noauthor_bipedalwalker-v2_2021}
-{BipedalWalker}-v2, January 2021.
+{BipedalWalker}-v2, \url{https://gym.openai.com/envs/BipedalWalker-v2/},
+  January 2021.
 
 \bibitem{noauthor_bipedalwalkerhardcore-v2_2021}
-{BipedalWalkerHardcore}-v2, January 2021.
+{BipedalWalkerHardcore}-v2,
+  \url{https://gym.openai.com/envs/BipedalWalkerHardcore-v2/}, January 2021.
 
 \bibitem{abbeel_application_2006}
 P.~Abbeel, A.~Coates, M.~Quigley, and A.~Ng, An {Application} of
@@ -23,6 +25,11 @@ G.~Brockman, V.~Cheung, L.~Pettersson, J.~Schneider, J.~Schulman, J.~Tang, and
 \bibitem{collobert_torch7_2011}
 R.~Collobert, K.~Kavukcuoglu, and C.~Farabet, Torch7: {A} {Matlab}-like
   {Environment} for {Machine} {Learning}, 2011.
+
+\bibitem{duchi_adaptive_2011}
+J.~Duchi, E.~Hazan, and Y.~Singer, Adaptive {Subgradient} {Methods} for
+  {Online} {Learning} and {Stochastic} {Optimization}, The Journal of Machine
+  Learning Research, 12(null), pp. 2121--2159, July 2011, ISSN 1532-4435.
 
 \bibitem{dulac-arnold_challenges_2019}
 G.~Dulac-Arnold, D.~Mankowitz, and T.~Hester, Challenges of {Real}-{World}
@@ -63,6 +70,14 @@ N.~Heess, J.~J. Hunt, T.~P. Lillicrap, and D.~Silver, Memory-based control with
 \bibitem{hendrycks_gaussian_2020}
 D.~Hendrycks and K.~Gimpel, Gaussian {Error} {Linear} {Units} ({GELUs}),
   arXiv:1606.08415 [cs], July 2020, arXiv: 1606.08415.
+
+\bibitem{hinton_lecture_nodate}
+G.~Hinton, Lecture 6e rmsprop: {Divide} the gradient by a running average of
+  its recent magnitude.
+
+\bibitem{kingma_adam_2017}
+D.~P. Kingma and J.~Ba, Adam: {A} {Method} for {Stochastic} {Optimization},
+  arXiv:1412.6980 [cs], January 2017, arXiv: 1412.6980.
 
 \bibitem{kopsa_reinforcement_2018}
 K.~Kopşa and A.~T. Kutay, \emph{Reinforcement learning control for

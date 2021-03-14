@@ -10,10 +10,27 @@ import random
 
 EPS = 0.003
 
-def fanin_init(size, fanin=None):
-    fanin = fanin or size[0]
-    v = 1. / np.sqrt(fanin)
-    return torch.Tensor(size).uniform_(-v, v)
+class MLPEncoder(nn.Module):
+    def __init__(self, input_size, hidden_size, ff_size):
+        super(MLPEncoder, self).__init__()
+        self.lin1 = nn.Linear(input_size, hidden_size)
+        nn.init.xavier_uniform_(self.lin1.weight, gain=nn.init.calculate_gain('tanh'))
+        self.layn = nn.LayerNorm(hidden_size)
+        self.lin2 = nn.Linear(hidden_size, ff_size)
+        nn.init.xavier_uniform_(self.lin2.weight, gain=nn.init.calculate_gain('relu'))
+        self.lin3 = nn.Linear(ff_size, hidden_size)
+        nn.init.xavier_uniform_(self.lin3.weight, gain=nn.init.calculate_gain('relu'))
+        self.tanh = nn.Tanh()
+        self.act = nn.GELU()
+        self.layernorm = nn.LayerNorm(hidden_size)
+
+    def forward(self, x):
+        x = self.tanh(self.layn(self.lin1(x)))
+        # No Residual Residual connection starts
+        xx = self.lin3(self.act(self.lin2(x)))
+        o = self.layernorm(xx)
+        return o 
+
 
 class Critic(nn.Module):
 
@@ -28,20 +45,17 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.fcs1 = nn.Linear(state_dim,96)
-        self.fcs1.weight.data = fanin_init(self.fcs1.weight.data.size())
+        self.state_encoder = MLPEncoder(self.state_dim, 96, 192)
 
-        self.fca1 = nn.Linear(action_dim,96)
-        self.fca1.weight.data = fanin_init(self.fca1.weight.data.size())
+        self.fc2 = nn.Linear(96 + self.action_dim, 128)
+        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
+        
+        self.fc_out = nn.Linear(128, 1, bias=False)
+        #nn.init.xavier_uniform_(self.fc_out.weight)
+        nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
+        #self.fc_out.bias.data.fill_(0.0)
 
-        self.fc2 = nn.Linear(256,128)
-        self.fc2.weight.data = fanin_init(self.fc2.weight.data.size())
-
-        self.fc3 = nn.Linear(128,1)
-        self.fc3.weight.data.uniform_(-EPS,EPS)
-        self.fc2.bias.data.fill_(-1.0)
-
-        self.relu = nn.ReLU()
+        self.act = nn.GELU()
 
     def forward(self, state, action):
         """
@@ -50,13 +64,10 @@ class Critic(nn.Module):
         :param action: Input Action (Torch Variable : [n,action_dim] )
         :return: Value function : Q(S,a) (Torch Variable : [n,1] )
         """
-        s1 = self.relu(self.fcs1(state))
-        a1 = self.relu(self.fca1(action))
-        x = torch.cat((s1,a1),dim=1)
-
-        x = self.relu(self.fc2(x))
-        x = self.fc3(x)*10
-
+        s = self.state_encoder(state)
+        x = torch.cat((s,action),dim=1)
+        x = self.act(self.fc2(x))
+        x = self.fc_out(x)*10
         return x
 
 
@@ -74,30 +85,21 @@ class Actor(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.fc1 = nn.Linear(state_dim,128)
-        self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
+        self.state_encoder = MLPEncoder(self.state_dim, 96, 192)
 
-        self.fc2 = nn.Linear(128,64)
-        self.fc2.weight.data = fanin_init(self.fc2.weight.data.size())
-
-        self.fc3 = nn.Linear(64,action_dim)
-        self.fc3.weight.data.uniform_(-EPS,EPS)
-        self.fc3.bias.data.zero_()
-
-        self.relu = nn.ReLU()
+        self.fc = nn.Linear(96,action_dim)
+        nn.init.uniform_(self.fc.weight, -0.003,+0.003)
+        nn.init.zeros_(self.fc.bias)
         self.tanh = nn.Tanh()
+
 
     def forward(self, state):
         """
-        returns policy function Pi(s) obtained from actor network
-        this function is a gaussian prob distribution for all actions
-        with mean lying in (-1,1) and sigma lying in (0,1)
-        The sampled action can , then later be rescaled
+        returns deterministic policy function mu(s) as policy action.
+        this function returns actions lying in (-1,1) 
         :param state: Input state (Torch Variable : [n,state_dim] )
         :return: Output action (Torch Variable: [n,action_dim] )
         """
-        x = self.relu(self.fc1(state))
-        x = self.relu(self.fc2(x))
-        action = self.tanh(self.fc3(x))
-
+        s = self.state_encoder(state)
+        action = self.tanh(self.fc(s))
         return action

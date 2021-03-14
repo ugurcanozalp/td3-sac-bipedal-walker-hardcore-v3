@@ -69,3 +69,22 @@ As in \eqref{eqn:stepfun}, step function is used in perceptron. However, any oth
 	\caption{Activation Functions}
 	\label{fig:activation_functions}
 \end{figure}
+
+\subsection{Layer Normalization}
+
+Layer normalization is a layer to overcome xyz []. Given an input $x \in \mathbb{R}^K$, mean and variance statistics are evaluated along the dimensions \eqref{eq:layernorm_statistics}.
+
+\begin{equation}
+\label{eq:layernorm_statistics}
+\begin{split}
+\mu = & \frac{1}{K} \sum_{n=1}^{K} x_k \\
+\sigma^2 = & \frac{1}{K} \sum_{n=1}^{K} (x_k-\mu)^2
+\end{split}
+\end{equation} 
+
+Then, the input is first scaled to have zero mean and unity variance along dimensions. The term $\epsilon$ is added to prevent division by zero. Optionally, the result is scaled by elementwise multiplication by $\gamma \in \mathbb{R}^K$ and addition by $\beta \in \mathbb{R}^K$ where these are learnable parameters. 
+
+\begin{equation}
+\label{eqn:layernorm}
+\mathrm{LN}(x) = \frac{x-\mu}{\sigma+\epsilon} * \gamma + \beta
+\end{equation}
