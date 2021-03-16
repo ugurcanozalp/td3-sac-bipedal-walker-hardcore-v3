@@ -13,6 +13,10 @@ P.~Abbeel, A.~Coates, M.~Quigley, and A.~Ng, An {Application} of
   {Reinforcement} {Learning} to {Aerobatic} {Helicopter} {Flight}, in
   \emph{{NIPS}}, 2006.
 
+\bibitem{ba_layer_2016}
+J.~L. Ba, J.~R. Kiros, and G.~E. Hinton, Layer {Normalization},
+  arXiv:1607.06450 [cs, stat], July 2016, arXiv: 1607.06450.
+
 \bibitem{bellman_dynamic_2003}
 R.~Bellman, \emph{Dynamic {Programming}}, Dover Publications, Mineola, N.Y,
   reprint edition edition, March 2003, ISBN 9780486428093.
@@ -25,11 +29,6 @@ G.~Brockman, V.~Cheung, L.~Pettersson, J.~Schneider, J.~Schulman, J.~Tang, and
 \bibitem{collobert_torch7_2011}
 R.~Collobert, K.~Kavukcuoglu, and C.~Farabet, Torch7: {A} {Matlab}-like
   {Environment} for {Machine} {Learning}, 2011.
-
-\bibitem{duchi_adaptive_2011}
-J.~Duchi, E.~Hazan, and Y.~Singer, Adaptive {Subgradient} {Methods} for
-  {Online} {Learning} and {Stochastic} {Optimization}, The Journal of Machine
-  Learning Research, 12(null), pp. 2121--2159, July 2011, ISSN 1532-4435.
 
 \bibitem{dulac-arnold_challenges_2019}
 G.~Dulac-Arnold, D.~Mankowitz, and T.~Hester, Challenges of {Real}-{World}
@@ -74,6 +73,10 @@ D.~Hendrycks and K.~Gimpel, Gaussian {Error} {Linear} {Units} ({GELUs}),
 \bibitem{hinton_lecture_nodate}
 G.~Hinton, Lecture 6e rmsprop: {Divide} the gradient by a running average of
   its recent magnitude.
+
+\bibitem{hochreiter_long_1997}
+S.~Hochreiter and J.~Schmidhuber, Long {Short}-{Term} {Memory}, Neural
+  Computation, 9(8), pp. 1735--1780, November 1997, ISSN 0899-7667.
 
 \bibitem{kingma_adam_2017}
 D.~P. Kingma and J.~Ba, Adam: {A} {Method} for {Stochastic} {Optimization},

@@ -35,12 +35,11 @@ net_t = h_{t-1} \tilde{W} + x_t W + b \quad \text{ and }\quad  h_t = f(net_t)
 \end{figure}
 
 \subsubsection{Long Term Dependence Problem of Vanilla RNNs}
-Conventional RNNs have problem with vanishing/exploding gradient problem. This causes long term dependence problem. For example, given word sequence, bold words in the following sentences are hard to predict with Vanilla RNN.
 
-\centerline{The clouds are in the \textbf{sky}.}
-\centerline{I grew up in France... I speak fluent \textbf{French}.}
 
-In order to overcome this problem new architectures are developed such as Long Short Term Memory (LSTM) and Gated Recurrent Units (GRU).
+Conventional RNNs have problem with vanishing/exploding gradient problem.  As the sequence gets longer, effect of initial inputs in sequence decreases. This causes long term dependence problem. If information from initial inputs required, gradients either vanish or explode. 
+
+In order to overcome this problem another architecture is developed called Long Short Term Memory (LSTM) \cite{hochreiter_long_1997}.
 
 \subsubsection{Long Short Term Memory}
 LSTM is a special type of RNN. It is explicitly designed to allow learning long-term dependencies. A single LSTM cell has 4 neural layer while vanilla RNN layer has only one neural layer. In addition to hidden state $h_t$ , there is another state called cell state $C_t$. Information flow is controlled by 3 gates. 
@@ -169,7 +168,7 @@ Original transformer architecture includes layer normalization operations after 
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.95\textwidth]{figures/ml_theory/post_pre_trsf.png}
+	\includegraphics[width=0.55\textwidth]{figures/ml_theory/post_pre_trsf.png}
 	\caption{(a) Post-LN Transformer layer, (b) Pre-LN Transformer
 		layer.}
 	\label{fig:post_pre_trsf}
@@ -184,13 +183,13 @@ y = & att+ \mathrm{FFN}(\mathrm{LN}(att))
 \end{split}
 \end{equation}
 
-Decoder equations are as follows.
+%Decoder equations are as follows.
 
-\begin{equation}
-\begin{split}
-att = & d_{1:t}+\mathrm{MHA}(\mathrm{LN}(d_{1:t}),\mathrm{LN}(d_{1:t}),\mathrm{LN}(d_{1:t})) \\
-dec = & att+ \mathrm{MHA}(\mathrm{LN}(att),\mathrm{LN}(att),\mathrm{LN}(att)) \\
-d_{t+1} = & dec+ \mathrm{FFN}(\mathrm{LN}(dec))
-\end{split}
-\end{equation}
+%\begin{equation}
+%\begin{split}
+%att = & %d_{1:t}+\mathrm{MHA}(\mathrm{LN}(d_{1:t}),\mathrm{LN}(d_{1:t}),\mathrm%{LN}(d_{1:t})) \\
+%dec = & att+ \mathrm{MHA}(\mathrm{LN}(att),\mathrm{LN}(att),\mathrm{LN}(att)) \\
+%d_{t+1} = & dec+ \mathrm{FFN}(\mathrm{LN}(dec))
+%\end{split}
+%\end{equation}
 

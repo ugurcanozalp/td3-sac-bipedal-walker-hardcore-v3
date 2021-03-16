@@ -21,14 +21,46 @@ In machine learning problems, loss functions have usually summed form of sample 
 
 \begin{equation}
 \label{eqn:stch_grad_desc}
-\theta \leftarrow \theta - \eta \nabla \mathcal{L}_i(\theta) \forall i \in {1,N}
+\theta \leftarrow \theta - \eta \nabla \mathcal{L}_i(\theta) \quad \forall i \in \{1,2, \cdots N\}
+\end{equation}
+
+However, in practice, mini-batches are used to estimate loss gradient. In that case, batches with size $N_b$ are sampled from instances (\eqref{eqn:mb_summed_loss}) and updates are performed accordingly (\eqref{eqn:mb_grad_desc}).
+
+\begin{equation}
+\label{eqn:mb_summed_loss}
+\mathcal{L}_j(\theta) = \frac{1}{N_b} \sum_{i=1 + (j-1) N_b}^{j N_b} \mathcal{L}_i(\theta) 
+\end{equation}
+
+\begin{equation}
+\label{eqn:mb_grad_desc}
+\theta \leftarrow \theta - \eta  \nabla \mathcal{L}_j(\theta) \quad \forall j \in \{1,2, \cdots \Big\lfloor\frac{N}{N_b}\Big\rfloor\}
 \end{equation}
 
 \subsection{Adam Optimization}
 
-Adam \cite{kingma_adam_2017}  (short for Adaptive Moment Estimation) is a variant of stocastic gradient descent as combination of RMSProp \cite{hinton_lecture_nodate} and AdaGrad \cite{duchi_adaptive_2011} algorithms. It is one of mostly used optimization method in deep learning nowadays. Adam adjusts learning rate based on training data to overcome issues arised due to stochastic updates to accelerate training and make it robust to learning rate. \\
+Adam \cite{kingma_adam_2017}  (short for Adaptive Moment Estimation) is a variant of stocastic gradient descent as improvement of RMSProp \cite{hinton_lecture_nodate} algorithm. It scales the learning rate using second moment of gradients as in RMSprop and uses momentum estimation for both first and second moment of gradients.
+
+It is one of mostly used optimization method in deep learning nowadays. Adam adjusts learning rate based on training data to overcome issues arised due to stochastic updates to accelerate training and make it robust to learning rate. It is summarized in \ref{alg:adam} \\
 
 
-
+\begin{algorithm}[H]
+	\SetAlgoLined
+	\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+	Initialize: Learning Rate $\eta$, Moving average parameters $\beta_1$, $\beta_2$\\
+	Initial Model parameters $\theta_0$ \\
+	Initial first and second moment of gradients $m \leftarrow 0$, $v \leftarrow 0$ \\
+	Initial step $j \leftarrow 0$ \\
+	\While{$\theta_j$ not converged}{
+		$j \leftarrow j+1$ \\
+		$g_j \leftarrow \nabla \mathcal{L}_j(\theta)$ (Obtain gradient) \\
+		$m_j \leftarrow \beta_1 m_{j-1} + (1-\beta_1) g_j$ (Update first moment estimate) \\
+		$v_j \leftarrow \beta_2 v_{j-1} + (1-\beta_2) g_j \odot g_j$ (Update second moment estimate) \\
+		$\hat{m}_j \leftarrow \frac{m_j}{1-\beta_1^j}$ (First moment bias correction) \\
+		$\hat{v}_j \leftarrow \frac{v_j}{1-\beta_2^j}$ (Second moment bias correction) \\
+		$\theta_j \leftarrow \theta_{j-1} - \eta \hat{m}_j \oslash (\hat{v}_j + \epsilon)$ (Update parameters) \\
+	}
+	\caption{Adam Optimization Algorithm}
+	\label{alg:adam}
+\end{algorithm}
 
 
