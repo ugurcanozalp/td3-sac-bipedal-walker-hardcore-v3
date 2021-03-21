@@ -136,6 +136,11 @@ A.~Paszke, S.~Gross, F.~Massa, A.~Lerer, J.~Bradbury, G.~Chanan, T.~Killeen,
   {Deep} {Learning} {Library}, Advances in Neural Information Processing
   Systems, 32, pp. 8026--8037, 2019.
 
+\bibitem{plappert_parameter_2018}
+M.~Plappert, R.~Houthooft, P.~Dhariwal, S.~Sidor, R.~Y. Chen, X.~Chen,
+  T.~Asfour, P.~Abbeel, and M.~Andrychowicz, Parameter {Space} {Noise} for
+  {Exploration}, arXiv:1706.01905 [cs, stat], January 2018, arXiv: 1706.01905.
+
 \bibitem{rastogi_deep_2017}
 D.~Rastogi, Deep {Reinforcement} {Learning} for {Bipedal} {Robots}, 2017.
 

@@ -7,11 +7,14 @@ In this thesis, bipedal robot walking is investigated by deep  reinforcement lea
 
 First of all, none of our approaches solved the problem since 300 points required in 100 random simulations as solution. However, our methods partially solved problems by exceeding 200 point limit, while some simulations yield around 280 points in all models. Feed Forward Neural Network seems to be enough for solving the problem, although there exist partial observability in the environment. The robot was able to walk by LSTM model but yield worse results and cannot exceed 120 points in average. Transformer model yield best results by reaching 230 points. 
 
-We believe that these results are not enough to say any model is superior to another, because there are other factors such as DRL method, number of episodes, network size etc. 
+We believe that these results are not enough to say any model is superior to another, because there are other factors such as DRL method, number of episodes, network size etc. However, networks are designed to have similar sizes and good model requires to converge in less episodes. As a result, it is possible to say that transformers are able to surpass performance of LSTMs for partially observed RL problems. Note that this is valid where layer normalization is applied before multihead attention and feed-forward layers \cite{xiong_layer_2020} as opposed to vanilla transformer proposed in \cite{vaswani_attention_2017}.
 
-Twin Delayed Deep Deterministic Policy Gradient (TD3) 
-
-We were expecting to have better results with xxyy.
+Another result is that incorprating past observations did not improve performance drastically, although the opposite was expected. We can interpret that either the history length is less or the partial observability is not a big deal for the agent. 
 
 \section{Future Work}
 
+First of all, longer observation history can be used to handle partial observability for LSTM and Transformer models. However, this makes learning slower and difficult and requires stable RL algorithms. 
+
+Secondly, different exploration strategies might be followed. Especially parameter space exploration \cite{plappert_parameter_2018} may perform better since it works better for environments with sparse reward like our environment.
+
+Lastly, another RL algorithms might be applied. Especially, stochastic policy models might handle exploration problem since they do not require hyperparameters for exploration, learn randomness during iterations.

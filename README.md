@@ -12,8 +12,11 @@ In this repository, my thesis work is available. Various neural network architec
 
 Only Hardcore environment is solved by TD3 algorithm. Reward is manipulated and frame rate is halved. 
 
+
+#### Feed Forward Neural Network with Residual connection (Episode 4000)
 ![FeedForward](results/video/ff-slow.gif)
 
+#### Transformer (Episode 4600)
 ![Transformer](results/video/trsf-slow.gif)
 
 # How to

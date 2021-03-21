@@ -94,12 +94,12 @@ As stated earlier, recurrent neural networks are prone to forget long term depen
 
 Assume that input sequence $X \in \mathbb{R}^{T \times d_X}$ is encoded to $H \in \mathbb{R}^{T \times d_H}$. The context vector is calculated using weight vector $\alpha \in \mathbb{R}^{1 \times T}$. 
 
-Calculation of weight vector depends on the task. For each time step, a score function is calculated between hidden state $H \in \mathbb{R}^{T \times d_H}$ and query $\boldsymbol{q}$ (which may be many things depending on task). Also, score function is also depends on choice. Then, attention score is $\boldsymbol{\alpha} \in \mathbb{R}^{T}$ is calculated using arbitrary function $f$ depending on choice.
+Calculation of weight vector depends on the task. For each time step, a score function is calculated between hidden state $H \in \mathbb{R}^{T \times d_H}$ and query $q$ (which may be many things depending on task). Also, score function is also depends on choice. Then, attention score is $\alpha \in \mathbb{R}^{T}$ is calculated using arbitrary function $f$ depending on choice.
 
 \begin{equation}
 \begin{split}
-\boldsymbol{\alpha} = & f(\boldsymbol{q}, H) \\
-\mathrm{Attention}(q, H) = & \sum_{\tau=0}^{T} \alpha_{\tau} h_{\tau}
+\alpha = & f(q, H) \\
+\mathrm{Attention}(q, H) = & \sum_{\tau=1}^{T} \alpha_{\tau} h_{\tau}
 \end{split}
 \end{equation}
 

@@ -10,45 +10,45 @@ Warning--to sort, need author or key in noauthor_bipedalwalkerhardcore-v2_2021
 Warning--empty journal in fris_landing_2020
 Warning--empty journal in rastogi_deep_2017
 Warning--empty booktitle in vaswani_attention_2017
-You've used 45 entries,
+You've used 46 entries,
             2531 wiz_defined-function locations,
-            813 strings with 13471 characters,
-and the built_in function-call counts, 21669 in all, are:
-= -- 1354
-> -- 1065
+            818 strings with 13756 characters,
+and the built_in function-call counts, 22284 in all, are:
+= -- 1388
+> -- 1113
 < -- 14
-+ -- 427
-- -- 376
-* -- 1460
-:= -- 2717
-add.period$ -- 45
-call.type$ -- 45
-change.case$ -- 341
++ -- 446
+- -- 394
+* -- 1508
+:= -- 2802
+add.period$ -- 46
+call.type$ -- 46
+change.case$ -- 354
 chr.to.int$ -- 0
-cite$ -- 50
-duplicate$ -- 1956
-empty$ -- 1686
-format.name$ -- 413
-if$ -- 4340
+cite$ -- 51
+duplicate$ -- 2006
+empty$ -- 1721
+format.name$ -- 432
+if$ -- 4454
 int.to.chr$ -- 0
-int.to.str$ -- 45
-missing$ -- 549
-newline$ -- 138
-num.names$ -- 86
-pop$ -- 978
+int.to.str$ -- 46
+missing$ -- 566
+newline$ -- 141
+num.names$ -- 88
+pop$ -- 1009
 preamble$ -- 1
-purify$ -- 278
+purify$ -- 289
 quote$ -- 0
-skip$ -- 519
+skip$ -- 526
 stack$ -- 0
-substring$ -- 735
-swap$ -- 1285
+substring$ -- 742
+swap$ -- 1319
 text.length$ -- 14
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 170
+type$ -- 174
 warning$ -- 5
-while$ -- 128
-width$ -- 47
-write$ -- 402
+while$ -- 130
+width$ -- 48
+write$ -- 411
 (There were 5 warnings)
