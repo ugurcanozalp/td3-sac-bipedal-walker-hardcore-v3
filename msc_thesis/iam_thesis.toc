@@ -67,6 +67,6 @@
 \contentsline {chapter}{\numberline {5}\MakeUppercase {CONCLUSION AND FUTURE WORK}}{39}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Conclusion}{39}{section.5.1}%
 \contentsline {section}{\numberline {5.2}Future Work}{40}{section.5.2}%
-\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{41}{chapter*.17}%
-\contentsline {nodots}{\numberline {}APPENDICES}{44}{chapter*.17}%
+\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{41}{chapter*.19}%
+\contentsline {nodots}{\numberline {}APPENDICES}{44}{chapter*.19}%
 \contentsline {chapter}{\numberline {A}\MakeUppercase {Proof of Some Theorem}}{45}{appendix.A}%

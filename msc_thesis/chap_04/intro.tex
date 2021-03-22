@@ -96,3 +96,21 @@ Other hyperparameters are as follows. \\
 
 \section{Results}
 
+For each episode, episode scores are calculated. \\
+In \figref{fig:scatter_ep_rewards}, a scatter plot is visualized for each model's episode scores. \\
+In \figref{fig:std_ep_rewards}, moving average and standard deviation is visualized for each model's episode scores.
+\\
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.95\textwidth]{figures/bipedal/SCATTER_TD3_RFFNN_LSTM_TRSF.png}
+	\caption{Scatter Plot with Moving Average for Episode Scores}
+	\label{fig:scatter_ep_rewards}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.95\textwidth]{figures/bipedal/STD_TD3_RFFNN_LSTM_TRSF.png}
+	\caption{Moving Average and Standard Deviation for Episode Scores}
+	\label{fig:std_ep_rewards}
+\end{figure}
