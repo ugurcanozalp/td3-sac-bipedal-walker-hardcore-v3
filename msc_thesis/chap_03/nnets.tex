@@ -1,32 +1,31 @@
 
 \section{Neural Network Types}
 \label{sec:nnet_types}
-
 \subsection{Feed Forward Neural Networks (Multilayer Perceptron)}
-Structure of perceptron make a way for feed forward neural layers. Unlike stated below, a neural layer might output multiple values (say $o \in \mathbb{R}^{1 \times d_o}$) as vector from input (say $x \mathbb{R}^{1 \times d_x}$). Such a setting forces parameter $W \in \mathbb{R}^{d_x \times d_o} $ to be a matrix. Moreover, activation function is not necessariliy step function. It can be any nonlinear function like sigmoid, tanh, relu etc. Feed Forward Neural Networks are generalization of perceptron algorithm to approximate any function $f^*$. Neural layers are stacked to construct deep feed forward neural network. It defines a nonlinear mapping $y=f(x;\theta)$ between input $x$ and output $y$, parametrized by parameters $\theta = \{W\}_n,n=1,…,N.$.
-
-Assuming input signal is $x$ (output of previous layer), activation value of the layer ($h$) is evaluated as by linear transformation followed by nonlinear activation $f$ \eqref{eqn:mlpact} applied elementwise.
-
+Structure of perceptron make a way for feed forward neural layers. Unlike stated below, a neural layer might output multiple values (say $o \in \mathbb{R}^{1 \times d_o}$) as vector from input (say $x \in \mathbb{R}^{1 \times d_x}$). Such a setting forces parameter $W \in \mathbb{R}^{d_x \times d_o} $ to be a matrix. Moreover, activation function is not necessariliy step function. It can be any nonlinear function like sigmoid, tanh, relu etc. Feed Forward Neural Networks are generalization of perceptron algorithm to approximate any function $f^*$. Neural layers are stacked to construct deep feed forward neural network. It defines a nonlinear mapping $y=f(x;\theta)$ between input $x$ and output $y$, parametrized by parameters $\theta = \{W\}_n,n=1,…,N.$. \\
+Assuming input signal is $x$ (output of previous layer), activation value of the layer ($h$) is evaluated as by linear transformation followed by nonlinear activation $f$ \eqref{eqn:mlpact} applied elementwise. \\
 \begin{equation}
 \label{eqn:mlpact}
 \text{net} = x W + b \quad \text{ and }\quad  h = f(\text{net})
 \end{equation}
+\subsection{Residual Feed Forward Neural Networks}
+As Feed Forward Networks becomes deeper, optimizing weights gets difficult. Therefore, people come with the idea of residual connections \cite{he_deep_2015}. For a fixed number of stacked layers (usually 2), input and output of the stack is summed up for next calculations. Replacing feed forward layers with other types yield different kind of residual network. The difference is demonstrated in \figref{fig:rffnn_ffnn}. \\
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\textwidth]{figures/ml_theory/rffnn_ffnn.png}
+	\caption{Deep Feed Forward (left) and Deep Residual Feed Forward Network (right)}
+	\label{fig:rffnn_ffnn}
+\end{figure}
 
 \subsection{Recurrent Neural Networks}
-Recurrent Neural Networks (RNNs) \cite{rumelhart_learning_1986} are type of neural network to process sequential data. It is specialized for data having sequential topology. It is used commonly used for sequence based applications.
-
-Sequential data can be inferred by Recurrent Neural Networks. In Feed Forward Layers, output only depends on its input, while Recurrent Layer output is dependent on both input at time $t$ and its output in previous time step $t-1$.
-
-RNN can be thought as multiple copies of same network which passes message to its successor through time. A RNN layer is similar to MLP layer \ref{eqn:mlpact}, except input is concatenation of output feedback and input itself \ref{eqn:rnnact}.
-
-Given input sequence $x \in \mathbb{R}^{T \times d_x}$, output sequence $h \in \mathbb{R}^{T \times d_h}$ is evaluated recursively. Initial output $h_0$ can be either parametrized or assigned as zeros vector. Again, nonlinear activation $f$ \ref{eqn:mlpact} applied element-wise. 
-
+Recurrent Neural Networks (RNNs) \cite{rumelhart_learning_1986} are type of neural network to process sequential data. It is specialized for data having sequential topology. It is used commonly used for sequence based applications. \\
+Sequential data can be inferred by Recurrent Neural Networks. In Feed Forward Layers, output only depends on its input, while Recurrent Layer output is dependent on both input at time $t$ and its output in previous time step $t-1$. \\
+RNN can be thought as multiple copies of same network which passes message to its successor through time. A RNN layer is similar to MLP layer \ref{eqn:mlpact}, except input is concatenation of output feedback and input itself \ref{eqn:rnnact}. \\
+Given input sequence $x \in \mathbb{R}^{T \times d_x}$, output sequence $h \in \mathbb{R}^{T \times d_h}$ is evaluated recursively. Initial output $h_0$ can be either parametrized or assigned as zeros vector. Again, nonlinear activation $f$ \ref{eqn:mlpact} applied element-wise. \\
 \begin{equation}
 \label{eqn:rnnact}
 net_t = h_{t-1} \tilde{W} + x_t W + b \quad \text{ and }\quad  h_t = f(net_t)
 \end{equation}
-
-
 \begin{figure}
 	\centering
 	\includegraphics[width=0.5\textwidth]{figures/ml_theory/rnn_vs_ffnn_layer.png}
@@ -35,67 +34,48 @@ net_t = h_{t-1} \tilde{W} + x_t W + b \quad \text{ and }\quad  h_t = f(net_t)
 \end{figure}
 
 \subsubsection{Long Term Dependence Problem of Vanilla RNNs}
-
-
-Conventional RNNs have problem with vanishing/exploding gradient problem.  As the sequence gets longer, effect of initial inputs in sequence decreases. This causes long term dependence problem. If information from initial inputs required, gradients either vanish or explode. 
-
-In order to overcome this problem another architecture is developed called Long Short Term Memory (LSTM) \cite{hochreiter_long_1997}.
-
+Conventional RNNs have problem with vanishing/exploding gradient problem.  As the sequence gets longer, effect of initial inputs in sequence decreases. This causes long term dependence problem. If information from initial inputs required, gradients either vanish or explode. \\
+In order to overcome this problem another architecture is developed called Long Short Term Memory (LSTM) \cite{hochreiter_long_1997}. \\
 \subsubsection{Long Short Term Memory}
-LSTM is a special type of RNN. It is explicitly designed to allow learning long-term dependencies. A single LSTM cell has 4 neural layer while vanilla RNN layer has only one neural layer. In addition to hidden state $h_t$ , there is another state called cell state $C_t$. Information flow is controlled by 3 gates. 
-
+LSTM is a special type of RNN. It is explicitly designed to allow learning long-term dependencies. A single LSTM cell has 4 neural layer while vanilla RNN layer has only one neural layer. In addition to hidden state $h_t$ , there is another state called cell state $C_t$. Information flow is controlled by 3 gates. \\
 \begin{figure}
 	\centering
 	\includegraphics[width=0.95\textwidth]{figures/ml_theory/lstm/lstm_module.png}
 	\caption{LSTM Cell.}
 	\label{fig:lstm_cell}
 \end{figure}
-
-\textbf{Forget Gate}: Forget gate controls past memory. According to input, past memory is either kept or forgotten. Sigmoid function ($\sigma$) is used as activation function, applied elementwise.
-
+\textbf{Forget Gate}: Forget gate controls past memory. According to input, past memory is either kept or forgotten. Sigmoid function ($\sigma$) is used as activation function, applied elementwise. \\
 \begin{equation}
 \label{eqn:lstm_forget}
 f_t = \sigma( [h_{t-1}; x_t] W_f + b_f) 
 \end{equation}
-
-\textbf{Input Gate}: Input gate controls contribution from input to cell state (memory). Hyperbolic tangent layer creates new candidate of cell state from input.
-
+\textbf{Input Gate}: Input gate controls contribution from input to cell state (memory). Hyperbolic tangent layer creates new candidate of cell state from input. \\
 \begin{equation}
 \label{eqn:lstm_inp}
 i_t = \sigma( [h_{t-1}; x_t] W_i + b_{i}) 
 \end{equation}
-
 \begin{equation}
 \label{eqn:lstm_cellstcand}
 \hat{C}_t = \tanh( [h_{t-1}; x_t] W_C + b_C) 
 \end{equation}
-
-\textbf{Cell State Update}: Once what are to be forget and added are decided, cell state is updated.
-
+\textbf{Cell State Update}: Once what are to be forget and added are decided, cell state is updated. \\
 \begin{equation}
 \label{eqn:lstm_cellstupt}
 C_t = f_t \odot C_{t-1} + i_t \odot \hat{C}_t
 \end{equation}
-
-
-\textbf{Output Gate}: Sigmoid layer decides what part of new cell state to be output. Cell state is filtered by tanh to push values to be in $(-1,1)$.
-
+\textbf{Output Gate}: Sigmoid layer decides what part of new cell state to be output. Cell state is filtered by tanh to push values to be in $(-1,1)$. \\
 \begin{equation}
 \label{eqn:lstm_out}
 o_t = \sigma( [h_{t-1}; x_t] W_o + b_o) 
 \end{equation}
-
 \begin{equation}
 h_t = o_t \odot \tanh(C_t)
 \end{equation}
 
 \subsection{Attention Mechanism}
-As stated earlier, recurrent neural networks are prone to forget long term dependencies. LSTM and GRU are invented to overcome this problem. Although they reduced this problem, they cannot attend specific parts of the input. Therefore, people came with the idea of weighted avearing all states through time where weights depends on both input and output. 
-
-Assume that input sequence $X \in \mathbb{R}^{T \times d_X}$ is encoded to $H \in \mathbb{R}^{T \times d_H}$. The context vector is calculated using weight vector $\alpha \in \mathbb{R}^{1 \times T}$. 
-
-Calculation of weight vector depends on the task. For each time step, a score function is calculated between hidden state $H \in \mathbb{R}^{T \times d_H}$ and query $q$ (which may be many things depending on task). Also, score function is also depends on choice. Then, attention score is $\alpha \in \mathbb{R}^{T}$ is calculated using arbitrary function $f$ depending on choice.
-
+As stated earlier, recurrent neural networks are prone to forget long term dependencies. LSTM and GRU are invented to overcome this problem. Although they reduced this problem, they cannot attend specific parts of the input. Therefore, people came with the idea of weighted avearing all states through time where weights depends on both input and output. \\
+Assume that input sequence $X \in \mathbb{R}^{T \times d_X}$ is encoded to $H \in \mathbb{R}^{T \times d_H}$. The context vector is calculated using weight vector $\alpha \in \mathbb{R}^{1 \times T}$. \\
+Calculation of weight vector depends on the task. For each time step, a score function is calculated between hidden state $H \in \mathbb{R}^{T \times d_H}$ and query $q$ (which may be many things depending on task). Also, score function is also depends on choice. Then, attention score is $\alpha \in \mathbb{R}^{T}$ is calculated using arbitrary function $f$ depending on choice. \\
 \begin{equation}
 \begin{split}
 \alpha = & f(q, H) \\
@@ -105,11 +85,9 @@ Calculation of weight vector depends on the task. For each time step, a score fu
 
 
 \subsubsection{Transformer}
-The Transformer was proposed in the paper Attention is All You Need \cite{vaswani_attention_2017} . Unlike recurrent networks, this architecture is solely builded on attention layers. 
-
-A transformer layer consists of feed-forward and attention layers, which makes the mechanism special. Like RNNs, it can be used as both encoder and decoder. While encoder layers attend to itself, decoder layers attends both itself and encoded input.
-
-\textbf{Attention Layer}: An attention layer is a mapping from 3 vectors called query $Q \in \mathbb{R}^{T \times d_k}$, key $K \in \mathbb{R}^{T \times d_k}$ and value $V \in \mathbb{R}^{T \times d_v}$ to output, where $T$ is time length, $d_k$ and $d_v$ are embedding dimensions. Output is weighted sum of values $V$ while weights are evaluated by compatibility metric of query $Q$ and key $K$. In vanilla transformer, compatibility of query and key is evaluated by dot product, normalizing by $sqrt(d_k)$. For a query, dot product with all keys are evaluated, then softmax function is applied to get weights of values. This approach is called Scaled Dot-product Attention.
+The Transformer was proposed in the paper Attention is All You Need \cite{vaswani_attention_2017} . Unlike recurrent networks, this architecture is solely builded on attention layers. \\
+A transformer layer consists of feed-forward and attention layers, which makes the mechanism special. Like RNNs, it can be used as both encoder and decoder. While encoder layers attend to itself, decoder layers attends both itself and encoded input. \\
+\textbf{Attention Layer}: An attention layer is a mapping from 3 vectors called query $Q \in \mathbb{R}^{T \times d_k}$, key $K \in \mathbb{R}^{T \times d_k}$ and value $V \in \mathbb{R}^{T \times d_v}$ to output, where $T$ is time length, $d_k$ and $d_v$ are embedding dimensions. Output is weighted sum of values $V$ while weights are evaluated by compatibility metric of query $Q$ and key $K$. In vanilla transformer, compatibility of query and key is evaluated by dot product, normalizing by $\sqrt{d_k}$. For a query, dot product with all keys are evaluated, then softmax function is applied to get weights of values. This approach is called Scaled Dot-product Attention.
 
 \begin{equation}
 \mathrm{Attention}(Q, K, V) = \mathrm{softmax}(\frac{Q^{T} K}{\sqrt{d_k}}) V

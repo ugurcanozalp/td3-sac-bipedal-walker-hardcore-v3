@@ -25,10 +25,10 @@
 \contentsline {section}{\numberline {1.4}Outline of the Thesis}{5}{section.1.4}%
 \contentsline {chapter}{\numberline {2}\MakeUppercase {REINFORCEMENT LEARNING}}{7}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Reinforcement Learning and Optimal Control}{8}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Challenges}{9}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Sequential Decision Making}{10}{section.2.3}%
+\contentsline {section}{\numberline {2.2}Challenges}{8}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Sequential Decision Making}{9}{section.2.3}%
 \contentsline {section}{\numberline {2.4}Markov Decision Process}{10}{section.2.4}%
-\contentsline {section}{\numberline {2.5}Partially Observed Markov Decision Process}{11}{section.2.5}%
+\contentsline {section}{\numberline {2.5}Partially Observed Markov Decision Process}{10}{section.2.5}%
 \contentsline {section}{\numberline {2.6}Policy}{11}{section.2.6}%
 \contentsline {section}{\numberline {2.7}Return, Value Functions and Policy Learning}{11}{section.2.7}%
 \contentsline {section}{\numberline {2.8}Bellman Equation}{12}{section.2.8}%
@@ -42,31 +42,34 @@
 \contentsline {chapter}{\numberline {3}\MakeUppercase {NEURAL NETWORKS AND DEEP LEARNING}}{21}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Backpropagation and Numerical Optimization}{21}{section.3.1}%
 \contentsline {subsection}{\numberline {3.1.1}Stochastic Gradient Descent Optimization}{22}{subsection.3.1.1}%
-\contentsline {subsection}{\numberline {3.1.2}Adam Optimization}{23}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.2}Adam Optimization}{22}{subsection.3.1.2}%
 \contentsline {section}{\numberline {3.2}Building Units}{23}{section.3.2}%
 \contentsline {subsection}{\numberline {3.2.1}Perceptron}{23}{subsection.3.2.1}%
 \contentsline {subsection}{\numberline {3.2.2}Activation Functions}{24}{subsection.3.2.2}%
 \contentsline {subsection}{\numberline {3.2.3}Layer Normalization}{25}{subsection.3.2.3}%
 \contentsline {section}{\numberline {3.3}Neural Network Types}{26}{section.3.3}%
 \contentsline {subsection}{\numberline {3.3.1}Feed Forward Neural Networks (Multilayer Perceptron)}{26}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Recurrent Neural Networks}{26}{subsection.3.3.2}%
-\contentsline {subsubsection}{\numberline {3.3.2.1}Long Term Dependence Problem of Vanilla RNNs}{27}{subsubsection.3.3.2.1}%
-\contentsline {subsubsection}{\numberline {3.3.2.2}Long Short Term Memory}{28}{subsubsection.3.3.2.2}%
-\contentsline {subsection}{\numberline {3.3.3}Attention Mechanism}{29}{subsection.3.3.3}%
-\contentsline {subsubsection}{\numberline {3.3.3.1}Transformer}{30}{subsubsection.3.3.3.1}%
-\contentsline {subsubsection}{\numberline {3.3.3.2}Pre-Layer Normalized Transformer}{32}{subsubsection.3.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.2}Residual Feed Forward Neural Networks}{26}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Recurrent Neural Networks}{26}{subsection.3.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.3.1}Long Term Dependence Problem of Vanilla RNNs}{28}{subsubsection.3.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.3.2}Long Short Term Memory}{28}{subsubsection.3.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.4}Attention Mechanism}{29}{subsection.3.3.4}%
+\contentsline {subsubsection}{\numberline {3.3.4.1}Transformer}{30}{subsubsection.3.3.4.1}%
+\contentsline {subsubsection}{\numberline {3.3.4.2}Pre-Layer Normalized Transformer}{32}{subsubsection.3.3.4.2}%
 \contentsline {chapter}{\numberline {4}\MakeUppercase {BIPEDAL WALKING BY TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}}{33}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Details of the Environment}{33}{section.4.1}%
 \contentsline {subsection}{\numberline {4.1.1}Partial Observability}{35}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Reward Sparsity}{35}{subsection.4.1.2}%
 \contentsline {section}{\numberline {4.2}Proposed Neural Networks}{35}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Feed Forward Network with residual connection}{35}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.1}Feed Forward Network with residual connection}{36}{subsection.4.2.1}%
 \contentsline {subsection}{\numberline {4.2.2}Long Short Term Memory}{36}{subsection.4.2.2}%
 \contentsline {subsection}{\numberline {4.2.3}Transformer (Pre-layer Normalized)}{36}{subsection.4.2.3}%
 \contentsline {section}{\numberline {4.3}RL Method and hyperparameters}{36}{section.4.3}%
 \contentsline {section}{\numberline {4.4}Results}{37}{section.4.4}%
-\contentsline {chapter}{\numberline {5}\MakeUppercase {CONCLUSION AND FUTURE WORK}}{39}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Conclusion}{39}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Future Work}{40}{section.5.2}%
-\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{41}{chapter*.19}%
-\contentsline {nodots}{\numberline {}APPENDICES}{44}{chapter*.19}%
-\contentsline {chapter}{\numberline {A}\MakeUppercase {Proof of Some Theorem}}{45}{appendix.A}%
+\contentsline {section}{\numberline {4.5}Discussion}{37}{section.4.5}%
+\contentsline {chapter}{\numberline {5}\MakeUppercase {CONCLUSION AND FUTURE WORK}}{41}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Conclusion}{41}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Future Work}{41}{section.5.2}%
+\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{43}{chapter*.20}%
+\contentsline {nodots}{\numberline {}APPENDICES}{46}{chapter*.20}%
+\contentsline {chapter}{\numberline {A}\MakeUppercase {Proof of Some Theorem}}{47}{appendix.A}%

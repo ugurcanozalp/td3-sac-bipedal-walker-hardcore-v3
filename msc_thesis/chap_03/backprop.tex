@@ -1,48 +1,33 @@
 \section{Backpropagation and Numerical Optimization}
 Neural networks are composed of weight parameters. Learning is process of updating weights to give desired behavior. This is represented in a loss function. Learning is nothing but minimizing it by numerical optimization methods. \\
-
-In order to minimize a loss function, its gradient with respect to weight parameters needs to be calculated. These gradients are computed by chain rule. Therefore, gradient information propagates backward, and this process is called backpropagation. 
-
+In order to minimize a loss function, its gradient with respect to weight parameters needs to be calculated. These gradients are computed by chain rule. Therefore, gradient information propagates backward, and this process is called backpropagation. \\
 \subsection{Stochastic Gradient Descent Optimization}
-
-Gradient Descent minimizes loss function $\mathcal{L}$ by updating weight parameters $\theta$ to inverse of gradient direction with a learning rate $\eta$. 
-
+Gradient Descent minimizes loss function $\mathcal{L}$ by updating weight parameters $\theta$ to inverse of gradient direction with a learning rate $\eta$. \\
 \begin{equation}
 \label{eq: grad_desc}
 \theta \leftarrow \theta - \eta \nabla \mathcal{L}(\theta)
 \end{equation}
-
-In machine learning problems, loss functions have usually summed form of sample losses \eqref{eqn:summed_loss}. Stochastic Gradient Descent approximate gradient of loss function by sample losses and updates parameters accordingly \eqref{eqn:stch_grad_desc}. 
-
+In machine learning problems, loss functions have usually summed form of sample losses \eqref{eqn:summed_loss}. Stochastic Gradient Descent approximate gradient of loss function by sample losses and updates parameters accordingly \eqref{eqn:stch_grad_desc}. \\
 \begin{equation}
 \label{eqn:summed_loss}
 \mathcal{L}(\theta) = \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}_i(\theta)
 \end{equation}
-
 \begin{equation}
 \label{eqn:stch_grad_desc}
 \theta \leftarrow \theta - \eta \nabla \mathcal{L}_i(\theta) \quad \forall i \in \{1,2, \cdots N\}
 \end{equation}
-
-However, in practice, mini-batches are used to estimate loss gradient. In that case, batches with size $N_b$ are sampled from instances (\eqref{eqn:mb_summed_loss}) and updates are performed accordingly (\eqref{eqn:mb_grad_desc}).
-
+However, in practice, mini-batches are used to estimate loss gradient. In that case, batches with size $N_b$ are sampled from instances (\eqref{eqn:mb_summed_loss}) and updates are performed accordingly (\eqref{eqn:mb_grad_desc}). \\
 \begin{equation}
 \label{eqn:mb_summed_loss}
 \mathcal{L}_j(\theta) = \frac{1}{N_b} \sum_{i=1 + (j-1) N_b}^{j N_b} \mathcal{L}_i(\theta) 
 \end{equation}
-
 \begin{equation}
 \label{eqn:mb_grad_desc}
 \theta \leftarrow \theta - \eta  \nabla \mathcal{L}_j(\theta) \quad \forall j \in \{1,2, \cdots \Big\lfloor\frac{N}{N_b}\Big\rfloor\}
 \end{equation}
-
 \subsection{Adam Optimization}
-
-Adam \cite{kingma_adam_2017}  (short for Adaptive Moment Estimation) is a variant of stocastic gradient descent as improvement of RMSProp \cite{hinton_lecture_nodate} algorithm. It scales the learning rate using second moment of gradients as in RMSprop and uses momentum estimation for both first and second moment of gradients.
-
-It is one of mostly used optimization method in deep learning nowadays. Adam adjusts learning rate based on training data to overcome issues arised due to stochastic updates to accelerate training and make it robust to learning rate. It is summarized in \ref{alg:adam} \\
-
-
+Adam \cite{kingma_adam_2017}  (short for Adaptive Moment Estimation) is a variant of stocastic gradient descent as improvement of RMSProp \cite{hinton_lecture_nodate} algorithm. It scales the learning rate using second moment of gradients as in RMSprop and uses momentum estimation for both first and second moment of gradients. \\
+It is one of mostly used optimization method in deep learning nowadays. Adam adjusts learning rate based on training data to overcome issues arised due to stochastic updates to accelerate training and make it robust to learning rate. It is summarized in \ref{alg:adam}. \\
 \begin{algorithm}[H]
 	\SetAlgoLined
 	\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
@@ -62,5 +47,3 @@ It is one of mostly used optimization method in deep learning nowadays. Adam adj
 	\caption{Adam Optimization Algorithm}
 	\label{alg:adam}
 \end{algorithm}
-
-

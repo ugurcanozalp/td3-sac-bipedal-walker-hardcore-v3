@@ -1,20 +1,11 @@
 \chapter{REINFORCEMENT LEARNING}
-
 \label{chap:rl_chap}
-
-Machine Learning is ability of computer program which allows adaptation to new situations through experience, without explicitly programmed~\cite{mitchell_machine_1997}. There are three main paradigm.
-
-\textbf{Supervised Learning}: It is task of learning a function $f \colon X \rightarrow Y$ that maps an input to an output based on $N$ example input-output pairs $(x_i,y_i)$ such that $ f(x_i) \approx y_i$, for all $i \in {1,2,...,N} $~\cite{russell_artificial_nodate}.
-
-Input $x$ can be thought as state of an agent. That makes $y$ correct action at state $x$. For supervised learning, both $x$ and $y$ should be available, where the correct action are provided by a friendly supervisor []. 
-
+Machine Learning is ability of computer program which allows adaptation to new situations through experience, without explicitly programmed~\cite{mitchell_machine_1997}. There are three main paradigm. \\
+\textbf{Supervised Learning}: It is task of learning a function $f \colon X \rightarrow Y$ that maps an input to an output based on $N$ example input-output pairs $(x_i,y_i)$ such that $ f(x_i) \approx y_i$, for all $i \in {1,2,...,N}$ \cite{russell_artificial_nodate}. \\
+Input $x$ can be thought as state of an agent. That makes $y$ correct action at state $x$. For supervised learning, both $x$ and $y$ should be available, where the correct action are provided by a friendly supervisor. \\
 \textbf{Unsupervised Learning}:
-Unsupervised learning is discovering structure on input examples without any label on it. Based on $N$ example input pairs $(x_i)$, it is discovering function $f \colon X \rightarrow Y$ $ f(x_i) = y_i$, for all $i \in {1,2,...,N} $, where $y_i$ is discovered output. 
-
-Again, input $x$ can be thought as state of an agent. However, correct action is not available and there is no given hint in this case. It can learn relations among states but it does not know what to do since there is no target or utility \cite{russell_artificial_nodate}.
-
-\textbf{Reinforcement Learning}: This is one of three main machine learning paradigm along with Supervised and Unsupervised Learning. It is closest kind of learning demonstrated by humans and animals since it is grounded by biological learning systems. It is based on maximizing cumulative reward over time to make agent learn how to act in an environment \cite{sutton_reinforcement_1998}. Each action of agent is either rewarded or punished according to reward criteria. Therefore, reward function is mathematical representation of what to teach agent. The agent explores environment by taking various actions in different states to get experience, based on trial-and-error. Then it exploits experiences to get highest reward from environment considering instant and future rewards over time. 
-
-Formally, Reinforcement Learning is learning a policy function $\pi \colon S\rightarrow A$ which maps inputs (states) $s \in S$ to outputs (actions) $a \in A$. Learning is done by maximizing value function $V^{\pi}(s)$ (cumulative reward) for all possible states, which depends on policy $\pi$. 
-
+Unsupervised learning is discovering structure on input examples without any label on it. Based on $N$ example input pairs $(x_i)$, it is discovering function $f \colon X \rightarrow Y$ $ f(x_i) = y_i$, for all $i \in {1,2,...,N} $, where $y_i$ is discovered output. \\
+Again, input $x$ can be thought as state of an agent. However, correct action is not available and there is no given hint in this case. It can learn relations among states but it does not know what to do since there is no target or utility \cite{russell_artificial_nodate}. \\
+\textbf{Reinforcement Learning}: This is one of three main machine learning paradigm along with Supervised and Unsupervised Learning. It is closest kind of learning demonstrated by humans and animals since it is grounded by biological learning systems. It is based on maximizing cumulative reward over time to make agent learn how to act in an environment \cite{sutton_reinforcement_1998}. Each action of agent is either rewarded or punished according to reward criteria. Therefore, reward function is mathematical representation of what to teach agent. The agent explores environment by taking various actions in different states to get experience, based on trial-and-error. Then it exploits experiences to get highest reward from environment considering instant and future rewards over time. \\
+Formally, Reinforcement Learning is learning a policy function $\pi \colon S\rightarrow A$ which maps inputs (states) $s \in S$ to outputs (actions) $a \in A$. Learning is done by maximizing value function $V^{\pi}(s)$ (cumulative reward) for all possible states, which depends on policy $\pi$. \\
 Reinforcement Learning is different than Supervised Learning because correct actions are not provided. Meanwhile, it is also different than unsupervised learning because the agent is forced to learn a behaviour. The agent is evaluated at each time step without supervision.

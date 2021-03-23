@@ -61,6 +61,10 @@ X.~Glorot, A.~Bordes, and Y.~Bengio, Deep {Sparse} {Rectifier} {Neural}
   {Conference} on {Artificial} {Intelligence} and {Statistics}}, pp. 315--323,
   JMLR Workshop and Conference Proceedings, June 2011.
 
+\bibitem{he_deep_2015}
+K.~He, X.~Zhang, S.~Ren, and J.~Sun, Deep {Residual} {Learning} for {Image}
+  {Recognition}, arXiv:1512.03385 [cs], December 2015, arXiv: 1512.03385.
+
 \bibitem{heess_memory-based_2015}
 N.~Heess, J.~J. Hunt, T.~P. Lillicrap, and D.~Silver, Memory-based control with
   recurrent neural networks, arXiv:1512.04455 [cs], December 2015, arXiv:

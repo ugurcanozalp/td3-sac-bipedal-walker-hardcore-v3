@@ -2,20 +2,15 @@
 \label{chap:exp_setup}
 
 \section{Details of the Environment}
-
-\textit{Bipedal-Walker-v3} and \textit{Bipedal-Walker-Hardocore-v3} are simulation environments of a bipedal robot, with relatively flat course and obstacle course respectively. Dynamics of the robot are exactly identical in both environments. Components of the hardcore environment is visualized in \figref{fig:bipedal_hardcore_components}.
-
+\textit{Bipedal-Walker-v3} and \textit{Bipedal-Walker-Hardocore-v3} are simulation environments of a bipedal robot, with relatively flat course and obstacle course respectively. Dynamics of the robot are exactly identical in both environments. Components of the hardcore environment is visualized in \figref{fig:bipedal_hardcore_components}. \\
 \begin{figure}
 	\centering
 	\includegraphics[width=0.95\textwidth]{figures/bipedal/bpedal_annotated.png}
 	\caption{Bipedal Walker Hardcore Components}
 	\label{fig:bipedal_hardcore_components}
 \end{figure}
-
-The robot has kinematic and lidar sensors. It is modeled as Markov Decision Process with deterministic dynamics. 
-
-\textbf{Observation Space}: Hull angle, hull angular velocity, translational velocity on two dimension, joint positions, joint angular speeds, leg ground concats and 10 lidar rangefinder measurements. Details are summarized at Table \ref{table:bpw_obs_space}
-
+The robot has kinematic and lidar sensors. It is modeled as Markov Decision Process with deterministic dynamics. \\
+\textbf{Observation Space}: Hull angle, hull angular velocity, translational velocity on two dimension, joint positions, joint angular speeds, leg ground concats and 10 lidar rangefinder measurements. Details are summarized at Table \ref{table:bpw_obs_space}. \\
 \begin{table}[h!]
 	\begin{center}
 	\begin{tabular}{cccc}
@@ -41,9 +36,7 @@ The robot has kinematic and lidar sensors. It is modeled as Markov Decision Proc
 	\caption{Observation Space of Bipedal Walker}
 	\label{table:bpw_obs_space}
 \end{table}
-
-\textbf{Action Space}: The robot has 2 legs with 2 joints at knee and hip. Torque provided to knee and pelvis joints of both legs. Details are presented in Table \ref{table:bpw_act_space}.
-
+\textbf{Action Space}: The robot has 2 legs with 2 joints at knee and hip. Torque provided to knee and pelvis joints of both legs. Details are presented in Table \ref{table:bpw_act_space}. \\
 \begin{table}[h!]
 	\begin{center}
 		\begin{tabular}{cccc}
@@ -58,28 +51,20 @@ The robot has kinematic and lidar sensors. It is modeled as Markov Decision Proc
 	\caption{Action Space of Bipedal Walker}
 	\label{table:bpw_act_space}
 \end{table}
-
-\textbf{Rewarding}: The robot should run fast with little energy while should not stumble and fall to ground. Therefore reward is shaped accordingly. Directly proportional to distance traveled forward, +300 points given if agent reaches end of path. -10 points (-100 points in original version)  if agent falls, and small amount of negative reward proportional to applied motor torque (preventing applying unnecessary torque). Lastly, the robots gets negative reward propotional to absolut value of hull angle for reinforcing to keep hull straigth. 
-
-\textbf{Modifications on Original Envrionment}: In original version, agent gets -100 points when its hull hits the floor. In order to make the robot more greedy, this is changed to -10 points. In addition, time frequency of simulation is halved (from 50 Hz to 25 Hz) by only observing one of each two consecutive frames using a custom wrapper function. 
-
+\textbf{Rewarding}: The robot should run fast with little energy while should not stumble and fall to ground. Therefore reward is shaped accordingly. Directly proportional to distance traveled forward, +300 points given if agent reaches end of path. -10 points (-100 points in original version)  if agent falls, and small amount of negative reward proportional to applied motor torque (preventing applying unnecessary torque). Lastly, the robots gets negative reward propotional to absolut value of hull angle for reinforcing to keep hull straigth. \\
+\textbf{Modifications on Original Envrionment}: In original version, agent gets -100 points when its hull hits the floor. In order to make the robot more greedy, this is changed to -10 points. In addition, time frequency of simulation is halved (from 50 Hz to 25 Hz) by only observing one of each two consecutive frames using a custom wrapper function. \\
 \subsection{Partial Observability}
-In DRL, partial observability is handled by 2 ways in literature \cite{dulac-arnold_challenges_2019}. First is incorprating fixed number of last observations while second way is updating hidden belief state using recurrent neural network at each time step. Our approach is using fixed number of past observation into LSTM, BiLSTM and Transformer based networks for both actor and critic networks. 
-
+In DRL, partial observability is handled by 2 ways in literature \cite{dulac-arnold_challenges_2019}. First is incorprating fixed number of last observations while second way is updating hidden belief state using recurrent neural network at each time step. Our approach is using fixed number of past observation into LSTM and Transformer based networks for both actor and critic networks. \\
+\subsection{Reward Sparsity}
+Emtpy for now.
 \section{Proposed Neural Networks}
-
-For all networks, varing backbones used to encode state information from observations for both actor and critic networks. In critic network, actions are concatenated by state information coming from backbones. Then, this concatenated vector is passed through feed forward layer with GELU activation then a linear layer with single output. In actor network, backbone is followed by a single layer with tanh activation for action estimation. As backbones, following networks are proposed.
-
+For all networks, varing backbones used to encode state information from observations for both actor and critic networks. In critic network, actions are concatenated by state information coming from backbones. Then, this concatenated vector is passed through feed forward layer with GELU activation then a linear layer with single output. In actor network, backbone is followed by a single layer with tanh activation for action estimation. As backbones, following networks are proposed. \\
 \subsection{Feed Forward Network with residual connection}
-Observations are passed through a layer with tanh activation to 96 dimensional output. Then it is passed through 2 layers with 192 dimensional hidden size and 96 dimensional output. This output is summed with first layer's output and this is lastly passed through layer normalization.
-
+Observations are passed through a layer with tanh activation to 96 dimensional output. Then it is passed through 2 layers with 192 dimensional hidden size and 96 dimensional output. This output is summed with first layer's output and this is lastly passed through layer normalization. \\
 \subsection{Long Short Term Memory}
-Sequence of observations are passed through a layer with tanh activation to 96 dimensional output. Then it is passed though vanilla lstm layer with 96 dimensional hidden state.
-
+Sequence of observations are passed through a layer with tanh activation to 96 dimensional output. Then it is passed though vanilla lstm layer with 96 dimensional hidden state. \\
 \subsection{Transformer (Pre-layer Normalized)}
-Sequence of observations are passed through a layer with tanh activation to 96 dimensional output. Then it is passed though pre-layer normalized transformer with 192 dimensional feed forward layer. The output is lastly passed through layer normalization.
-
-
+Sequence of observations are passed through a layer with tanh activation to 96 dimensional output. Then it is passed though pre-layer normalized transformer with 192 dimensional feed forward layer. The output is lastly passed through layer normalization. \\
 \section{RL Method and hyperparameters}
 TD3 algorithm is used for learning task. Hyperparameters are selected by grid search and best performing values are used. Adam optimizer is used as optimizer. \\
 As exploration noise, ornstein-uhlenbeck noise is used and standart deviation is multiplied  by $0.999$ at the end of each episode. Initially $\theta=4.0$ and $\sigma=1.0$ are used. \\
@@ -95,22 +80,20 @@ Other hyperparameters are as follows. \\
 \end{itemize}
 
 \section{Results}
-
-For each episode, episode scores are calculated. \\
-In \figref{fig:scatter_ep_rewards}, a scatter plot is visualized for each model's episode scores. \\
-In \figref{fig:std_ep_rewards}, moving average and standard deviation is visualized for each model's episode scores.
-\\
-
+For each episode, episode scores are calculated by summing rewards of each time step. In \figref{fig:scatter_ep_rewards}, a scatter plot is visualized for each model's episode scores. In \figref{fig:std_ep_rewards}, moving average and standard deviation is visualized for each model's episode scores. \\
 \begin{figure}
 	\centering
 	\includegraphics[width=0.95\textwidth]{figures/bipedal/SCATTER_TD3_RFFNN_LSTM_TRSF.png}
 	\caption{Scatter Plot with Moving Average for Episode Scores}
 	\label{fig:scatter_ep_rewards}
 \end{figure}
-
 \begin{figure}
 	\centering
 	\includegraphics[width=0.95\textwidth]{figures/bipedal/STD_TD3_RFFNN_LSTM_TRSF.png}
 	\caption{Moving Average and Standard Deviation for Episode Scores}
 	\label{fig:std_ep_rewards}
 \end{figure}
+First of all, none of our approaches solved the problem since 300 points required in 100 random simulations as solution. However, our methods partially solved problems by exceeding 200 point limit, while some simulations yield around 280 points in all models. Feed Forward Neural Network seems to be enough for solving the problem, although there exist partial observability in the environment. The robot was able to walk by LSTM model but yield worse results and cannot exceed 120 points in average. Transformer model yield best results by reaching 230 points.  \\
+\section{Discussion}
+We believe that these results are not enough to say any model is superior to another, because there are other factors such as DRL method, number of episodes, network size etc. However, networks are designed to have similar sizes and good model requires to converge in less episodes. As a result, it is possible to say that transformers are able to surpass performance of LSTMs for partially observed RL problems. Note that this is valid where layer normalization is applied before multihead attention and feed-forward layers \cite{xiong_layer_2020} as opposed to vanilla transformer proposed in \cite{vaswani_attention_2017}. \\
+Another result is that incorprating past observations did not improve performance drastically, although the opposite was expected. We can interpret that either the history length is less or the partial observability is not a big deal for the agent. 
