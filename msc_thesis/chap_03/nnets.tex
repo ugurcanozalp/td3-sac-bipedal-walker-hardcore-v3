@@ -6,7 +6,7 @@ Structure of perceptron make a way for feed forward neural layers. Unlike stated
 Assuming input signal is $x$ (output of previous layer), activation value of the layer ($h$) is evaluated as by linear transformation followed by nonlinear activation $f$ \eqref{eqn:mlpact} applied elementwise. \\
 \begin{equation}
 \label{eqn:mlpact}
-\text{net} = x W + b \quad \text{ and }\quad  h = f(\text{net})
+net = x W + b \quad \text{ and }\quad  h = f(net)
 \end{equation}
 \subsection{Residual Feed Forward Neural Networks}
 As Feed Forward Networks becomes deeper, optimizing weights gets difficult. Therefore, people come with the idea of residual connections \cite{he_deep_2015}. For a fixed number of stacked layers (usually 2), input and output of the stack is summed up for next calculations. Replacing feed forward layers with other types yield different kind of residual network. The difference is demonstrated in \figref{fig:rffnn_ffnn}. \\
@@ -40,7 +40,7 @@ In order to overcome this problem another architecture is developed called Long 
 LSTM is a special type of RNN. It is explicitly designed to allow learning long-term dependencies. A single LSTM cell has 4 neural layer while vanilla RNN layer has only one neural layer. In addition to hidden state $h_t$ , there is another state called cell state $C_t$. Information flow is controlled by 3 gates. \\
 \begin{figure}
 	\centering
-	\includegraphics[width=0.95\textwidth]{figures/ml_theory/lstm/lstm_module.png}
+	\includegraphics[width=0.98\textwidth]{figures/ml_theory/lstm/lstm_module.png}
 	\caption{LSTM Cell.}
 	\label{fig:lstm_cell}
 \end{figure}
@@ -71,9 +71,9 @@ o_t = \sigma( [h_{t-1}; x_t] W_o + b_o)
 \begin{equation}
 h_t = o_t \odot \tanh(C_t)
 \end{equation}
-
+%
 \subsection{Attention Mechanism}
-As stated earlier, recurrent neural networks are prone to forget long term dependencies. LSTM and GRU are invented to overcome this problem. Although they reduced this problem, they cannot attend specific parts of the input. Therefore, people came with the idea of weighted avearing all states through time where weights depends on both input and output. \\
+As stated earlier, recurrent neural networks are prone to forget long term dependencies. LSTM and other variants are invented to overcome this problem. Although they reduced this problem, they cannot attend specific parts of the input. Therefore, people came with the idea of weighted avearing all states through time where weights depends on both input and output. \\
 Assume that input sequence $X \in \mathbb{R}^{T \times d_X}$ is encoded to $H \in \mathbb{R}^{T \times d_H}$. The context vector is calculated using weight vector $\alpha \in \mathbb{R}^{1 \times T}$. \\
 Calculation of weight vector depends on the task. For each time step, a score function is calculated between hidden state $H \in \mathbb{R}^{T \times d_H}$ and query $q$ (which may be many things depending on task). Also, score function is also depends on choice. Then, attention score is $\alpha \in \mathbb{R}^{T}$ is calculated using arbitrary function $f$ depending on choice. \\
 \begin{equation}
@@ -82,21 +82,16 @@ Calculation of weight vector depends on the task. For each time step, a score fu
 \mathrm{Attention}(q, H) = & \sum_{\tau=1}^{T} \alpha_{\tau} h_{\tau}
 \end{split}
 \end{equation}
-
-
+%
 \subsubsection{Transformer}
 The Transformer was proposed in the paper Attention is All You Need \cite{vaswani_attention_2017} . Unlike recurrent networks, this architecture is solely builded on attention layers. \\
 A transformer layer consists of feed-forward and attention layers, which makes the mechanism special. Like RNNs, it can be used as both encoder and decoder. While encoder layers attend to itself, decoder layers attends both itself and encoded input. \\
-\textbf{Attention Layer}: An attention layer is a mapping from 3 vectors called query $Q \in \mathbb{R}^{T \times d_k}$, key $K \in \mathbb{R}^{T \times d_k}$ and value $V \in \mathbb{R}^{T \times d_v}$ to output, where $T$ is time length, $d_k$ and $d_v$ are embedding dimensions. Output is weighted sum of values $V$ while weights are evaluated by compatibility metric of query $Q$ and key $K$. In vanilla transformer, compatibility of query and key is evaluated by dot product, normalizing by $\sqrt{d_k}$. For a query, dot product with all keys are evaluated, then softmax function is applied to get weights of values. This approach is called Scaled Dot-product Attention.
-
+\textbf{Attention Layer}: An attention layer is a mapping from 3 vectors called query $Q \in \mathbb{R}^{T \times d_k}$, key $K \in \mathbb{R}^{T \times d_k}$ and value $V \in \mathbb{R}^{T \times d_v}$ to output, where $T$ is time length, $d_k$ and $d_v$ are embedding dimensions. Output is weighted sum of values $V$ while weights are evaluated by compatibility metric of query $Q$ and key $K$. In vanilla transformer, compatibility of query and key is evaluated by dot product, normalizing by $\sqrt{d_k}$. For a query, dot product with all keys are evaluated, then softmax function is applied to get weights of values. This approach is called Scaled Dot-product Attention. \\
 \begin{equation}
 \mathrm{Attention}(Q, K, V) = \mathrm{softmax}(\frac{Q^{T} K}{\sqrt{d_k}}) V
 \end{equation}
-
 \textbf{Multi-Head Attention}: Instead of performing single attention; keys, queries and values are linearly projected from $d_m$ dimensional vector space to $h$ different spaces using projection matrices. Then, attention is done $h$ times, and results are then concatenated and linearly projected to final values of the layer.
-
-Projection matrices are model parameters, $W^Q_i \in \mathbb{R}^{d_m \times d_k}$, $W^K_i \in \mathbb{R}^{d_m \times d_k}$, $W^V_i \in \mathbb{R}^{d_m \times d_v}$ for $i=1,...,h$. Also output matrix is used to project multiple values into single one, $W^O \in \mathbb{R}^{h d_v \times d_m}$.
-
+Projection matrices are model parameters, $W^Q_i \in \mathbb{R}^{d_m \times d_k}$, $W^K_i \in \mathbb{R}^{d_m \times d_k}$, $W^V_i \in \mathbb{R}^{d_m \times d_v}$ for $i=1,...,h$. Also output matrix is used to project multiple values into single one, $W^O \in \mathbb{R}^{h d_v \times d_m}$. \\
 \begin{equation}
 \begin{split}
 % It is better to write these as \DeclareMathOp
@@ -104,26 +99,18 @@ Projection matrices are model parameters, $W^Q_i \in \mathbb{R}^{d_m \times d_k}
 a_i &=  \text{Attention}(QW^Q_i,KW^K_i,VW^V_i)
 \end{split}
 \end{equation}
-
 \textbf{Feed Forward Layer}: Both encoder and decoder contains feed forward layer, containing two linear transformations with ReLU activation.
-
 \begin{equation}
 \mathrm{FFN}(x) = \text{ReLU}(xW_1+b)W_2+b_2
 \end{equation}
-
-
-
-\textbf{Encoder Layer}: Encoder Layer starts with a residual self attention layer. Self attention means that query, key and value are same vectors. Then it is followed by feed forward neural layer, Both sublayers are employed with resudial connection with layer normalization, i.e summation of layer input and output is passed through layer normalization.
-
+\textbf{Encoder Layer}: Encoder Layer starts with a residual self attention layer. Self attention means that query, key and value are same vectors. Then it is followed by feed forward neural layer, Both sublayers are employed with resudial connection with layer normalization, i.e summation of layer input and output is passed through layer normalization. \\
 \begin{equation}
 \begin{split}
 att = & \mathrm{LN}(x+ \mathrm{MHA}(x,x,x)) \\
 y = & \mathrm{LN}(att+ \mathrm{FFN}(att))
 \end{split}
 \end{equation}
-
-\textbf{Decoder Layer}: Similar to encoder layer, decoder layer has also self-attention and feed forward layers. In addition, there is another attention layer which is over encoder outputs. Same as encoder, all sublayers have resudial connection with layer normalization. Let's call encoded sequence $e \in \mathbb{R}^{T \times d_m}$ and decoded sequence $d \in \mathbb{R}^{T \times d_m}$ (masked). Assume that the sequence decoded up to $t$th point in sequence. Then, $d_{t+1}$ is calculated as follows.
-
+\textbf{Decoder Layer}: Similar to encoder layer, decoder layer has also self-attention and feed forward layers. In addition, there is another attention layer which is over encoder outputs. Same as encoder, all sublayers have resudial connection with layer normalization. Let's call encoded sequence $e \in \mathbb{R}^{T \times d_m}$ and decoded sequence $d \in \mathbb{R}^{T \times d_m}$ (masked). Assume that the sequence decoded up to $t$th point in sequence. Then, $d_{t+1}$ is calculated as follows. \\
 \begin{equation}
 \begin{split}
 att = & \mathrm{LN}(d_{1:t}+\mathrm{MHA}(d_{1:t},d_{1:t},d_{1:t})) \\
@@ -131,19 +118,15 @@ dec = & \mathrm{LN}(att+ \mathrm{MHA}(att,e,e)) \\
 d_{t+1} = & \mathrm{LN}(dec+ \mathrm{FFN}(dec))
 \end{split}
 \end{equation}
-
-\textbf{Positional encoding}: Since there are no recurrent or convolutional architecture in the model, sequential information needs to be embedded. Positional encodings has same dimension, so that input embeddings can be added to at the beginning of encoder or decoder stacks. For position $pos$, $2i$ or $2i+1$th dimension has following values ($i \in \mathbb{N}$), as proposed in the original paper.
-
+\textbf{Positional encoding}: Since there are no recurrent or convolutional architecture in the model, sequential information needs to be embedded. Positional encodings has same dimension, so that input embeddings can be added to at the beginning of encoder or decoder stacks. For position $pos$, $2i$ or $2i+1$th dimension has following values ($i \in \mathbb{N}$), as proposed in the original paper. \\
 \begin{equation}
 \begin{split}
 \mathrm{PE}_{pos,2i} = \sin(pos/10000^{2i/d_m}) \\
 \mathrm{PE}_{pos,2i+1} = \cos(pos/10000^{2i/d_m})
 \end{split}
 \end{equation}
-
 \subsubsection{Pre-Layer Normalized Transformer}
-Original transformer architecture includes layer normalization operations after attention and feed-forward layers. It is unstable since gradients of output layers are high, so Pre-Layer Normalized transformer is proposed by \cite{xiong_layer_2020}. Moreover,  Parisotto et al. Xiong et al. \cite{parisotto_stabilizing_2019}. proposed gated transformer which also includes layer normalizations before attention and feedforward layer. They also stated that although gated architecture improves many RL tasks drastically, non-gated pre-layer normalized transformer are good enough. 
-
+Original transformer architecture includes layer normalization operations after attention and feed-forward layers. It is unstable since gradients of output layers are high, so Pre-Layer Normalized transformer is proposed by \cite{xiong_layer_2020}. Moreover,  Parisotto et al. Xiong et al. \cite{parisotto_stabilizing_2019}. proposed gated transformer which also includes layer normalizations before attention and feedforward layer. They also stated that although gated architecture improves many RL tasks drastically, non-gated pre-layer normalized transformer are good enough. \\
 \begin{figure}
 	\centering
 	\includegraphics[width=0.55\textwidth]{figures/ml_theory/post_pre_trsf.png}
@@ -151,18 +134,14 @@ Original transformer architecture includes layer normalization operations after 
 		layer.}
 	\label{fig:post_pre_trsf}
 \end{figure}
-
-Encoder equations are as follows.
-
+Encoder equations are as follows.\\
 \begin{equation}
 \begin{split}
 att = & x+ \mathrm{MHA}(\mathrm{LN}(x),\mathrm{LN}(x),\mathrm{LN}(x)) \\
 y = & att+ \mathrm{FFN}(\mathrm{LN}(att))
 \end{split}
 \end{equation}
-
 %Decoder equations are as follows.
-
 %\begin{equation}
 %\begin{split}
 %att = & %d_{1:t}+\mathrm{MHA}(\mathrm{LN}(d_{1:t}),\mathrm{LN}(d_{1:t}),\mathrm%{LN}(d_{1:t})) \\

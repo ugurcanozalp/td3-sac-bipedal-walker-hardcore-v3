@@ -55,18 +55,19 @@
 \contentsline {subsubsection}{\numberline {3.3.3.2}Long Short Term Memory}{30}{subsubsection.3.3.3.2}%
 \contentsline {subsection}{\numberline {3.3.4}Attention Mechanism}{31}{subsection.3.3.4}%
 \contentsline {subsubsection}{\numberline {3.3.4.1}Transformer}{32}{subsubsection.3.3.4.1}%
-\contentsline {subsubsection}{\numberline {3.3.4.2}Pre-Layer Normalized Transformer}{34}{subsubsection.3.3.4.2}%
+\contentsline {subsubsection}{\numberline {3.3.4.2}Pre-Layer Normalized Transformer}{33}{subsubsection.3.3.4.2}%
 \contentsline {chapter}{\numberline {4}\MakeUppercase {BIPEDAL WALKING BY TWIN DELAYED DEEP DETERMINISTIC POLICY GRADIENTS}}{35}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Details of the Environment}{35}{section.4.1}%
 \contentsline {subsection}{\numberline {4.1.1}Partial Observability}{37}{subsection.4.1.1}%
 \contentsline {subsection}{\numberline {4.1.2}Reward Sparsity}{37}{subsection.4.1.2}%
-\contentsline {section}{\numberline {4.2}Proposed Neural Networks}{37}{section.4.2}%
+\contentsline {subsection}{\numberline {4.1.3}Modifications on Original Envrionment}{37}{subsection.4.1.3}%
+\contentsline {section}{\numberline {4.2}Proposed Neural Networks}{38}{section.4.2}%
 \contentsline {subsection}{\numberline {4.2.1}Feed Forward Network with residual connection}{38}{subsection.4.2.1}%
 \contentsline {subsection}{\numberline {4.2.2}Long Short Term Memory}{38}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}Transformer (Pre-layer Normalized)}{38}{subsection.4.2.3}%
-\contentsline {section}{\numberline {4.3}RL Method and hyperparameters}{38}{section.4.3}%
+\contentsline {subsection}{\numberline {4.2.3}Transformer (Pre-layer Normalized)}{39}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}RL Method and hyperparameters}{39}{section.4.3}%
 \contentsline {section}{\numberline {4.4}Results}{39}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Discussion}{39}{section.4.5}%
+\contentsline {section}{\numberline {4.5}Discussion}{40}{section.4.5}%
 \contentsline {chapter}{\numberline {5}\MakeUppercase {CONCLUSION AND FUTURE WORK}}{43}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Conclusion}{43}{section.5.1}%
 \contentsline {section}{\numberline {5.2}Future Work}{43}{section.5.2}%

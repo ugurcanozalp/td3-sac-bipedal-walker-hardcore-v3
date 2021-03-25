@@ -2,7 +2,7 @@
 \label{chap:exp_setup}
 
 \section{Details of the Environment}
-\textit{Bipedal-Walker-v3} and \textit{Bipedal-Walker-Hardocore-v3} are simulation environments of a bipedal robot, with relatively flat course and obstacle course respectively. Dynamics of the robot are exactly identical in both environments. Components of the hardcore environment is visualized in \figref{fig:bipedal_hardcore_components}. \\
+\textit{Bipedal-Walker-v3} and \textit{Bipedal-Walker-Hardocore-v3} are simulation environments of a bipedal robot, with relatively flat course and obstacle course respectively. Dynamics of the robot are exactly identical in both environments. Our task is to solve hardcore version where the agent is expected to learn to run and walk in different road conditions. Components of the hardcore environment is visualized in \figref{fig:bipedal_hardcore_components}. \\
 \begin{figure}
 	\centering
 	\includegraphics[width=0.95\textwidth]{figures/bipedal/bpedal_annotated.png}
@@ -52,11 +52,20 @@ The robot has kinematic and lidar sensors. It is modeled as Markov Decision Proc
 	\label{table:bpw_act_space}
 \end{table}
 \textbf{Rewarding}: The robot should run fast with little energy while should not stumble and fall to ground. Therefore reward is shaped accordingly. Directly proportional to distance traveled forward, +300 points given if agent reaches end of path. -10 points (-100 points in original version)  if agent falls, and small amount of negative reward proportional to applied motor torque (preventing applying unnecessary torque). Lastly, the robots gets negative reward propotional to absolut value of hull angle for reinforcing to keep hull straigth. \\
-\textbf{Modifications on Original Envrionment}: In original version, agent gets -100 points when its hull hits the floor. In order to make the robot more greedy, this is changed to -10 points. In addition, time frequency of simulation is halved (from 50 Hz to 25 Hz) by only observing one of each two consecutive frames using a custom wrapper function. \\
 \subsection{Partial Observability}
+The environment is partially observable due to following reasons.
+xxxxx
 In DRL, partial observability is handled by 2 ways in literature \cite{dulac-arnold_challenges_2019}. First is incorprating fixed number of last observations while second way is updating hidden belief state using recurrent neural network at each time step. Our approach is using fixed number of past observation into LSTM and Transformer based networks for both actor and critic networks. \\
 \subsection{Reward Sparsity}
-Emtpy for now.
+Rewards given to the agent is sparse in some circumstances. 
+xxx
+\subsection{Modifications on Original Envrionment}
+It is difficult to solve directly available environment as it is. Therefore, there are few works on the literature demonstrating a solution. 
+\begin{itemize}
+	\item In original version, agent gets -100 points when its hull hits the floor. In order to make the robot more greedy, this is changed to -10 points. Otherwise, agent cannot explore environment since it gets too much punisment when failed.
+	\item Time frequency of simulation is halved (from 50 Hz to 25 Hz) by only observing last of each two consecutive frames using a custom wrapper function. Since there is not a high frequency dynamics, this allows nothing but speeding up the learning process.
+	\item In original implementation, an episode has time limit. Once this limit is reached, simulation stops with terminal flag. On the other hand, when agent fails before time limit, the episode ends with terminal flag too. In first case, the terminal flag causes instability since next step's value is not used in value update. The environment changed such that terminal flag is not given in this case unless agent fails.
+\end{itemize}
 \section{Proposed Neural Networks}
 For all networks, varing backbones used to encode state information from observations for both actor and critic networks. In critic network, actions are concatenated by state information coming from backbones. Then, this concatenated vector is passed through feed forward layer with GELU activation then a linear layer with single output. In actor network, backbone is followed by a single layer with tanh activation for action estimation. As backbones, following networks are proposed. \\
 \subsection{Feed Forward Network with residual connection}

@@ -10,7 +10,7 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {1.1}{\ignorespaces Bipedal Walkers Snapshots\relax }}{3}{figure.caption.9}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Ornstein-Uhlenbeck Process and Gaussian Process comparision\relax }}{19}{figure.caption.10}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Ornstein-Uhlenbeck Process and Gaussian Process comparison\relax }}{19}{figure.caption.10}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Activation Functions\relax }}{27}{figure.caption.11}%
 \contentsline {figure}{\numberline {3.2}{\ignorespaces Deep Feed Forward (left) and Deep Residual Feed Forward Network (right)\relax }}{29}{figure.caption.12}%
@@ -20,6 +20,6 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Bipedal Walker Hardcore Components\relax }}{36}{figure.caption.16}%
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Scatter Plot with Moving Average for Episode Scores\relax }}{40}{figure.caption.19}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Moving Average and Standard Deviation for Episode Scores\relax }}{40}{figure.caption.20}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Moving Average and Standard Deviation for Episode Scores\relax }}{41}{figure.caption.20}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
