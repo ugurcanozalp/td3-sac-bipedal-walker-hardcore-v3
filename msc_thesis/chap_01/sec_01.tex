@@ -24,10 +24,10 @@ For both settings, the task is to move forward the robot as much as possible. It
 Locomotion of the Bipedal Walker is difficult control problem due to following reasons. \\
 \begin{itemize}
 	\item \textbf{Nonlinearity}: The dynamics is nonlinear, unstable and multimodal. Dynamical behavior of robot changes for different situations like ground contact, single leg contact and double leg concact. 
-	\item \textbf{Uncertainity}: The terrain where robot walks may vary. Designing a controller for all types of terrain is difficult.s
+	\item \textbf{Uncertainity}: The terrain where robot walks may vary. Designing a controller for all types of terrain is difficult.
 	\item \textbf{Partially Observability}: The robot observes ahead of it with lidar measurements and cannot observe behind. 
 \end{itemize}
 These difficulties make hard to implement analytical methods for control task. RL approach is better to tackle first 2 one. For partial observability problem, more elegant solution is required. This is done by creating a belief state from past observations to inform agent. Agent uses its belief state and observations to choose how to act. However, relying on observations is also possible. \\
 \subsection{Deep Learning Library: PyTorch}
 \label{dl_pytorch}
-PyTorch is an open source library developed byFacebook's AI Research lab (FAIR) \cite{paszke_pytorch_2019}. It is based on Torch library \cite{collobert_torch7_2011} and has Python and C++ interface. It is an automatic differentation library with accelerated math operations backed by graphical processing units (GPUs). This is what a deep learning library requires. And the clean pythonic syntax made it most famous deep learning tool among researches. 
+PyTorch is an open source library developed by Facebook's AI Research lab (FAIR) \cite{paszke_pytorch_2019}. It is based on Torch library \cite{collobert_torch7_2011} and has Python and C++ interface. It is an automatic differentation library with accelerated math operations backed by graphical processing units (GPUs). This is what a deep learning library requires. And the clean pythonic syntax made it most famous deep learning tool among researches. 
