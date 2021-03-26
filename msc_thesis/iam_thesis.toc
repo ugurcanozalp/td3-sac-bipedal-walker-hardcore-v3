@@ -60,17 +60,17 @@
 \contentsline {section}{\numberline {4.1}Details of the Environment}{35}{section.4.1}%
 \contentsline {subsection}{\numberline {4.1.1}Partial Observability}{37}{subsection.4.1.1}%
 \contentsline {subsection}{\numberline {4.1.2}Reward Sparsity}{37}{subsection.4.1.2}%
-\contentsline {subsection}{\numberline {4.1.3}Modifications on Original Envrionment}{37}{subsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.1.3}Modifications on Original Envrionment}{38}{subsection.4.1.3}%
 \contentsline {section}{\numberline {4.2}Proposed Neural Networks}{38}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Feed Forward Network with residual connection}{38}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Long Short Term Memory}{38}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}Transformer (Pre-layer Normalized)}{39}{subsection.4.2.3}%
-\contentsline {section}{\numberline {4.3}RL Method and hyperparameters}{39}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Results}{39}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Discussion}{40}{section.4.5}%
-\contentsline {chapter}{\numberline {5}\MakeUppercase {CONCLUSION AND FUTURE WORK}}{43}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Conclusion}{43}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Future Work}{43}{section.5.2}%
-\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{45}{chapter*.21}%
-\contentsline {nodots}{\numberline {}APPENDICES}{48}{chapter*.21}%
-\contentsline {chapter}{\numberline {A}\MakeUppercase {Proof of Some Theorem}}{49}{appendix.A}%
+\contentsline {subsection}{\numberline {4.2.1}Residual Feed Forward Network}{39}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Long Short Term Memory}{40}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Transformer (Pre-layer Normalized)}{40}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}RL Method and hyperparameters}{40}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Results}{41}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Discussion}{42}{section.4.5}%
+\contentsline {chapter}{\numberline {5}\MakeUppercase {CONCLUSION AND FUTURE WORK}}{45}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Conclusion}{45}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Future Work}{45}{section.5.2}%
+\contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{47}{chapter*.25}%
+\contentsline {nodots}{\numberline {}APPENDICES}{50}{chapter*.25}%
+\contentsline {chapter}{\numberline {A}\MakeUppercase {Proof of Some Theorem}}{51}{appendix.A}%
