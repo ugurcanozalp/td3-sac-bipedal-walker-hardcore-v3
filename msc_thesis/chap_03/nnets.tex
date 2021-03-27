@@ -1,4 +1,3 @@
-
 \section{Neural Network Types}
 \label{sec:nnet_types}
 \subsection{Feed Forward Neural Networks (Multilayer Perceptron)}
@@ -16,7 +15,7 @@ As Feed Forward Networks becomes deeper, optimizing weights gets difficult. Ther
 	\caption{Deep Feed Forward (left) and Deep Residual Feed Forward Network (right)}
 	\label{fig:rffnn_ffnn}
 \end{figure}
-
+%
 \subsection{Recurrent Neural Networks}
 Recurrent Neural Networks (RNNs) \cite{rumelhart_learning_1986} are type of neural network to process sequential data. It is specialized for data having sequential topology. It is used commonly used for sequence based applications. \\
 Sequential data can be inferred by Recurrent Neural Networks. In Feed Forward Layers, output only depends on its input, while Recurrent Layer output is dependent on both input at time $t$ and its output in previous time step $t-1$. \\
@@ -32,7 +31,7 @@ net_t = h_{t-1} \tilde{W} + x_t W + b \quad \text{ and }\quad  h_t = f(net_t)
 	\caption{Recurrent Layer (left) and Feed Forward Layer (right) illustration.}
 	\label{fig:rnn_vs_ffnn}
 \end{figure}
-
+%
 \subsubsection{Long Term Dependence Problem of Vanilla RNNs}
 Conventional RNNs have problem with vanishing/exploding gradient problem.  As the sequence gets longer, effect of initial inputs in sequence decreases. This causes long term dependence problem. If information from initial inputs required, gradients either vanish or explode. \\
 In order to overcome this problem another architecture is developed called Long Short Term Memory (LSTM) \cite{hochreiter_long_1997}. \\

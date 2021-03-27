@@ -10,19 +10,20 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {1.1}{\ignorespaces Bipedal Walkers Snapshots\relax }}{3}{figure.caption.9}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Ornstein-Uhlenbeck Process and Gaussian Process comparison\relax }}{19}{figure.caption.10}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Reinforcement Learning Diagram\relax }}{10}{figure.caption.10}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Ornstein-Uhlenbeck Process and Gaussian Process comparison\relax }}{20}{figure.caption.11}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Activation Functions\relax }}{27}{figure.caption.11}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Deep Feed Forward (left) and Deep Residual Feed Forward Network (right)\relax }}{29}{figure.caption.12}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Recurrent Layer (left) and Feed Forward Layer (right) illustration.\relax }}{29}{figure.caption.13}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces LSTM Cell.\relax }}{30}{figure.caption.14}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces (a) Post-LN Transformer layer, (b) Pre-LN Transformer layer.\relax }}{34}{figure.caption.15}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Activation Functions\relax }}{27}{figure.caption.12}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Deep Feed Forward (left) and Deep Residual Feed Forward Network (right)\relax }}{29}{figure.caption.13}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Recurrent Layer (left) and Feed Forward Layer (right) illustration.\relax }}{29}{figure.caption.14}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces LSTM Cell.\relax }}{30}{figure.caption.15}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces (a) Post-LN Transformer layer, (b) Pre-LN Transformer layer.\relax }}{34}{figure.caption.16}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Bipedal Walker Hardcore Components\relax }}{36}{figure.caption.16}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Perspective of agent and possible realities\relax }}{37}{figure.caption.19}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Neural Architecture Design\relax }}{39}{figure.caption.20}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Scatter Plot with Moving Average for Episode Scores\relax }}{41}{figure.caption.21}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Moving Average and Standard Deviation for Episode Scores\relax }}{42}{figure.caption.22}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Walking Simulation of RFFNN model at best version\relax }}{43}{figure.caption.23}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Walking Simulation of Transformer model at best version\relax }}{44}{figure.caption.24}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Bipedal Walker Hardcore Components\relax }}{36}{figure.caption.17}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Perspective of agent and possible realities\relax }}{37}{figure.caption.20}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Neural Architecture Design\relax }}{39}{figure.caption.21}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Scatter Plot with Moving Average for Episode Scores\relax }}{41}{figure.caption.22}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Moving Average and Standard Deviation for Episode Scores\relax }}{42}{figure.caption.23}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Walking Simulation of RFFNN model at best version\relax }}{43}{figure.caption.24}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Walking Simulation of Transformer model at best version\relax }}{44}{figure.caption.25}%
 \addvspace {10\p@ }
