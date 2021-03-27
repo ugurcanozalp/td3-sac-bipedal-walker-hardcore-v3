@@ -70,7 +70,6 @@
 \contentsline {section}{\numberline {4.5}Discussion}{42}{section.4.5}%
 \contentsline {chapter}{\numberline {5}\MakeUppercase {CONCLUSION AND FUTURE WORK}}{45}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Conclusion}{45}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Future Work}{45}{section.5.2}%
+\contentsline {section}{\numberline {5.2}Future Work}{46}{section.5.2}%
 \contentsline {leads}{\numberline {}\uppercase {REFERENCES}}{47}{chapter*.25}%
 \contentsline {nodots}{\numberline {}APPENDICES}{50}{chapter*.25}%
-\contentsline {chapter}{\numberline {A}\MakeUppercase {Proof of Some Theorem}}{51}{appendix.A}%
