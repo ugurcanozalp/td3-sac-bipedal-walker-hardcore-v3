@@ -1,11 +1,11 @@
 \section{Model Free Reinforcement Learning}
 \label{sec:mf_rl}
 Model based methods are based on solving bellman equation \ref{eqn:bellman_v}\ref{eqn:bellman_q} with given model $T$. On the other hand, Model Free Reinforcement Learning is suitable if environment model is not available but agent can experience environment by consequences of its actions. There are 3 main types. \\
-\textbf{Value Based Learning}: Value functions are learned, then policy arises naturally from value function as shown in \ref{eqn:policy_stochastic_q} \ref{eqn:policy_deterministic_q}. Since argmax operation is used, this type of learning is suitable for problems where action space is discrete. \\
+\textbf{Value Based Learning}: Value functions are learned, then policy arises naturally from value function as shown in \eqref{eqn:policy_stochastic_q} \eqref{eqn:policy_deterministic_q}. Since argmax operation is used, this type of learning is suitable for problems where action space is discrete. \\
 \textbf{Policy Based Learning}: Policy is learned directly, return values are used instead of learning a value function. Unlike value based methods, it is suitable for continious action spaces. \\
 \textbf{Actor Critic Learning}: Both policy (actor) and value (critic) functions are learned simulatenously. It is also suitable for continious action spaces. \\
 \subsection{Q Learning}
-Q Learning is a value based type of learning. It is based on optimizing $Q$ function using bellman equation \ref{eqn:bellman_q} \cite{watkins_technical_1992}. \\ 
+Q Learning is a value based type of learning. It is based on optimizing $Q$ function using bellman equation \eqref{eqn:bellman_q} \cite{watkins_technical_1992}. \\ 
 Assume that $Q$ function is parametrized by $\theta$. Target $Q$ value is estimated by bootstrapping estimate itself, as shown in  \eqref{eqn:q_target}. \\
 %
 \begin{equation}
@@ -69,7 +69,7 @@ Algorithm is summarized in Algorithm \ref{alg:dqn}. \\
 	\label{alg:dqn}
 \end{algorithm}
 \subsubsection{Double Deep Q Learning}
-In DQN, max operator is used to select and evaluate action on the same network \ref{eqn:dqn_ntarget}. This yields overestimated value estimations in noisy environments. Therefore, action selection and value estimation is decoupled in target evaluation to overcome $Q$ function overestimation \cite{van_hasselt_deep_2015}. \\
+In DQN, max operator is used to select and evaluate action on the same network \eqref{eqn:dqn_ntarget}. This yields overestimated value estimations in noisy environments. Therefore, action selection and value estimation is decoupled in target evaluation to overcome $Q$ function overestimation \cite{van_hasselt_deep_2015}. \\
 \begin{equation}
 \label{eqn:ddqn_ntarget}
 Y_t^{DDQN} = r_t + \gamma Q(s_{t+1}, \argmax_{a'} Q(s_{t+1}, a'; \theta_i );\theta^-)
@@ -77,7 +77,7 @@ Y_t^{DDQN} = r_t + \gamma Q(s_{t+1}, \argmax_{a'} Q(s_{t+1}, a'; \theta_i );\the
 Learning process is same with DQN except target value. \\
 \subsection{Deterministic Actor Critic Learning}
 Value based methods are not suitable for continious action spaces. Therefore, policy is explicitly defined instead of maximizing $Q$ function. Policy function can be either stochastic or deterministic.  Deterministic actor-critic is kind of learning which uses deterministic policy \cite{silver_deterministic_2014}. It can be thought as continious version of Q Learning. Value function is called critic while policy function is called actor. \\
-In discrete action space, policy is naturally obtained by argmax operation on $Q$ function as in \ref{eqn:policy_deterministic_q}. In DPG, policy $\mu$ is parametrized by another set of parameters $\theta^\mu$ while value function $Q$ is parametrized by $\theta^Q$. \\
+In discrete action space, policy is naturally obtained by argmax operation on $Q$ function as in \eqref{eqn:policy_deterministic_q}. In DPG, policy $\mu$ is parametrized by another set of parameters $\theta^\mu$ while value function $Q$ is parametrized by $\theta^Q$. \\
 The ultimate goal is to maximize value function $V$. It is done by selecting action which maximizes $Q$ value as policy \eqref{eqn:policy_deterministic_q}. Therefore, value function is the criteria to be maximized by solving parameters $\theta^\mu$ given $\theta^Q$. 
 \begin{equation}
 \label{eqn:dpg_value_maximization}
@@ -101,7 +101,7 @@ Similar to Deep Q learning, there are target networks parametrized by $\theta^{\
 \theta^- \leftarrow \tau \theta + (1-\tau) \theta^-
 \end{equation}
 The $\tau$ is an hyperparameter indicating how slow the target network is updated and usually close to zero. \\
-Policy network parameters are learned by maximizing resulting expected value \ref{eqn:ddpg_value_maximization}. Note that value network parameters are assumed to be learned. \\
+Policy network parameters are learned by maximizing resulting expected value \eqref{eqn:ddpg_value_maximization}. Note that value network parameters are assumed to be learned. \\
 \begin{equation}
 \label{eqn:ddpg_value_maximization}
 \theta^\mu = \argmax_{\theta^\mu} \mathbb{E}_{s \sim U(\mathcal{D})} \Big[ Q(s, \mu(s_t;\theta^\mu);\theta^Q) \Big]
