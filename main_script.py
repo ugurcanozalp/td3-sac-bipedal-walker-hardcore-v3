@@ -29,7 +29,7 @@ args = parser.parse_args()
 
 if args.model_type=='ff':
     from archs.ff_models import Actor, Critic
-if args.model_type=='mlp':
+elif args.model_type=='mlp':
     from archs.mlp_models import Actor, Critic
 elif args.model_type=='lstm':
     from archs.lstm_models import Actor, Critic
