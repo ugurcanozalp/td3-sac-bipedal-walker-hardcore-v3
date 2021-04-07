@@ -3,14 +3,13 @@ from torch import optim
 import numpy as np
 import os
 from replay_buffer import ReplayBuffer
-from noise import OrnsteinUhlenbeckNoise, DecayingOrnsteinUhlenbeckNoise, GaussianNoise, DecayingGaussianNoise, DecayingRandomNoise
 from itertools import chain
 
 # https://github.com/A-Raafat/DDPG-bipedal/blob/master/My_DDPG.ipynb
-class TD3Agent():
-    rl_type = 'td3'
+class SACAgent():
+    rl_type = 'sac'
     def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(2),
-            lr=1e-3, weight_decay=0, gamma=0.98, tau=0.005, batch_size=128, buffer_size=int(5e5)):
+            lr=1e-3, weight_decay=0, gamma=0.98, alpha=0.2, tau=0.005, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -18,6 +17,7 @@ class TD3Agent():
 
         self.learn_call = int(0)
 
+        self.alpha = alpha
         self.gamma = gamma
         self.tau = tau
         self.batch_size = batch_size
@@ -27,9 +27,7 @@ class TD3Agent():
         self.clip_low = torch.tensor(clip_low)
         self.clip_high = torch.tensor(clip_high)
 
-        self.train_actor = Actor().to(self.device)
-        self.target_actor= Actor().to(self.device).eval()
-        self.hard_update(self.train_actor, self.target_actor) # hard update at the beginning
+        self.train_actor = Actor(stochastic=True).to(self.device)
         self.actor_optim = optim.AdamW(self.train_actor.parameters(), lr=lr, weight_decay=0) 
         print(f'Number of paramters of Actor Net: {sum(p.numel() for p in self.train_actor.parameters())}')
         
@@ -43,9 +41,6 @@ class TD3Agent():
         self.hard_update(self.train_critic_2, self.target_critic_2) # hard update at the beginning
         self.critic_2_optim = optim.AdamW(self.train_critic_2.parameters(), lr=lr, weight_decay=weight_decay)
         print(f'Number of paramters of Single Critic Net: {sum(p.numel() for p in self.train_critic_2.parameters())}')
-
-        self.noise_generator = DecayingOrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=4.0, sigma=1.0, dt=0.04, sigma_decay=0.999)
-        self.target_noise = GaussianNoise(mu=np.zeros(action_size), sigma=0.2, clip=0.4)
         
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \
             batch_size= self.batch_size, device=self.device)
@@ -65,12 +60,10 @@ class TD3Agent():
         
         #update critic
         with torch.no_grad():
-            next_actions = self.target_actor(next_states)
-            next_actions = next_actions + torch.from_numpy(self.target_noise()).float().to(self.device)
-            next_actions = torch.clamp(next_actions, self.clip_low, self.clip_high)
+            next_actions, next_entropies = self.train_actor(next_states)
             Q_targets_next_1 = self.target_critic_1(next_states, next_actions)
             Q_targets_next_2 = self.target_critic_2(next_states, next_actions)
-            Q_targets_next = torch.min(Q_targets_next_1, Q_targets_next_2).detach()
+            Q_targets_next = torch.min(Q_targets_next_1, Q_targets_next_2) + self.alpha * next_entropies
             Q_targets = rewards + (self.gamma * Q_targets_next * (1-done))
             #Q_targets = rewards + (self.gamma * Q_targets_next)
         
@@ -89,34 +82,29 @@ class TD3Agent():
         self.critic_2_optim.zero_grad()
         critic_2_loss.backward()
         self.critic_2_optim.step()
+
+        #update actor
+        actions_pred, entropies_pred = self.train_actor(states)
+        actor_loss = -(self.train_critic_1(states, actions_pred) + self.alpha * entropies_pred).mean()
         
+        self.actor_optim.zero_grad()
+        actor_loss.backward()
+        self.actor_optim.step()
+
         if self.learn_call % self.update_freq == 0:
-            self.learn_call = 0
-            #update actor
-            actions_pred = self.train_actor(states)
-            actor_loss = -self.train_critic_1(states, actions_pred).mean()
-            
-            self.actor_optim.zero_grad()
-            actor_loss.backward()
-            self.actor_optim.step()
-        
+            self.learn_call = 0        
             #using soft upates
-            self.soft_update(self.train_actor, self.target_actor)
             self.soft_update(self.train_critic_1, self.target_critic_1)
             self.soft_update(self.train_critic_2, self.target_critic_2)
         
     @torch.no_grad()        
-    def get_action(self, state, explore=False):
+    def get_action(self, state, explore=True):
         #self.train_actor.eval()
         state = torch.from_numpy(state).unsqueeze(0).float().to(self.device)
         #with torch.no_grad():
-        action = self.train_actor(state).cpu().data.numpy()[0]
+        action, _ = self.train_actor(state)
+        action = action.cpu().data.numpy()[0]
         #self.train_actor.train()
-
-        if explore:
-            noise = self.noise_generator()
-            #print(noise)
-            action += noise
         return action
     
     def soft_update(self, local_model, target_model):
@@ -164,17 +152,8 @@ class TD3Agent():
             p.requires_grad = False
 
     def step_end(self):
-        self.noise_generator.step_end()
+        pass
 
     def episode_end(self):
-        self.noise_generator.episode_end()    
+        pass 
 
-"""
-def eval_grad_norm(name, model):
-    total_norm = 0
-    for p in filter(lambda p: p.grad is not None, model.parameters()):
-        param_norm = p.grad.data.norm(2)
-        total_norm += param_norm.item() ** 2
-    total_norm = total_norm ** (1. / 2)
-    print(f"{name}:{total_norm}")
-"""

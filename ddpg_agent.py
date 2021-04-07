@@ -103,8 +103,8 @@ class DDPGAgent():
         torch.save(self.train_critic.state_dict(), critic_file)
 
     def load_ckpt(self, model_type, env_type, prefix='last'):
-        actor_file = os.path.join("models", "ddpg", env_type, "_".join([prefix, model_type, "actor.pth"]))
-        critic_file = os.path.join("models", "ddpg", env_type, "_".join([prefix, model_type, "critic.pth"]))
+        actor_file = os.path.join("models", self.rl_type, env_type, "_".join([prefix, model_type, "actor.pth"]))
+        critic_file = os.path.join("models", self.rl_type, env_type, "_".join([prefix, model_type, "critic.pth"]))
         try:
             self.train_actor.load_state_dict(torch.load(actor_file, map_location=self.device))
         except:

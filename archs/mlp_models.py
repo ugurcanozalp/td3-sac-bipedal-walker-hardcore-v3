@@ -5,6 +5,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import gym
 import random
+from torch.distributions import Normal
 
 # https://github.com/vy007vikas/PyTorch-ActorCriticRL
 
@@ -73,7 +74,7 @@ class Critic(nn.Module):
 
 class Actor(nn.Module):
 
-    def __init__(self, state_dim=24, action_dim=4):
+    def __init__(self, state_dim=24, action_dim=4, stochastic=False):
         """
         :param state_dim: Dimension of input state (int)
         :param action_dim: Dimension of output action (int)
@@ -84,12 +85,19 @@ class Actor(nn.Module):
 
         self.state_dim = state_dim
         self.action_dim = action_dim
+        self.stochastic = stochastic
 
         self.state_encoder = MLPEncoder(self.state_dim, 96, 192)
 
         self.fc = nn.Linear(96,action_dim)
         nn.init.uniform_(self.fc.weight, -0.003,+0.003)
         nn.init.zeros_(self.fc.bias)
+
+        if self.stochastic:
+            self.log_std = nn.Linear(96, action_dim)
+            nn.init.uniform_(self.log_std.weight, -0.003,+0.003)
+            nn.init.zeros_(self.log_std.bias)   
+
         self.tanh = nn.Tanh()
 
 
@@ -101,5 +109,17 @@ class Actor(nn.Module):
         :return: Output action (Torch Variable: [n,action_dim] )
         """
         s = self.state_encoder(state)
-        action = self.tanh(self.fc(s))
-        return action
+        if self.stochastic:
+            means = self.fc(s)
+            log_stds = self.log_std(s)
+            log_stds = torch.clamp(log_stds, min=-10.0, max=2.0)
+            dists = Normal(means, stds)
+            x = dists.rsample()
+            actions = self.tanh(x)
+            log_probs = dists.log_prob(x) - torch.log(1-actions.pow(2) + 1e-6)
+            entropies = -log_probs.sum(dim=1, keepdim=True)
+            return actions, entropies
+
+        else:
+            actions = self.tanh(self.fc(s))
+            return actions

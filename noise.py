@@ -8,7 +8,7 @@ class AbstractNoise:
     def step_end(self):
         pass
 
-    def epoch_end(self):
+    def episode_end(self):
         pass
 
 class GaussianNoise(AbstractNoise):
