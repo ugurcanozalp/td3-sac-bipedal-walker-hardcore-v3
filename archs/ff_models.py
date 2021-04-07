@@ -114,7 +114,6 @@ class Actor(nn.Module):
             log_stds = self.log_std(s)
             log_stds = torch.clamp(log_stds, min=-10.0, max=2.0)
             stds = log_stds.exp()
-            print(stds)
             dists = Normal(means, stds)
             x = dists.rsample()
             actions = self.tanh(x)
