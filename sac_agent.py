@@ -5,11 +5,10 @@ import os
 from replay_buffer import ReplayBuffer
 from itertools import chain
 
-# https://github.com/A-Raafat/DDPG-bipedal/blob/master/My_DDPG.ipynb
 class SACAgent():
     rl_type = 'sac'
     def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(2),
-            lr=1e-3, weight_decay=0, gamma=0.98, alpha=0.2, tau=0.005, batch_size=128, buffer_size=int(5e5)):
+            lr=1e-3, weight_decay=0, gamma=0.98, alpha=0.01, tau=0.005, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -102,7 +101,7 @@ class SACAgent():
         #self.train_actor.eval()
         state = torch.from_numpy(state).unsqueeze(0).float().to(self.device)
         #with torch.no_grad():
-        action, _ = self.train_actor(state)
+        action, entropy = self.train_actor(state, explore=explore)
         action = action.cpu().data.numpy()[0]
         #self.train_actor.train()
         return action

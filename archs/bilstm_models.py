@@ -111,9 +111,11 @@ class Actor(nn.Module):
                   
         self.tanh = nn.Tanh()
 
-    def forward(self, state):
+    def forward(self, state, explore=True):
         """
-        returns deterministic policy function mu(s) as policy action.
+        returns either:
+        - deterministic policy function mu(s) as policy action.
+        - stochastic action sampled from tanh-gaussian policy, with its entropy value.
         this function returns actions lying in (-1,1) 
         :param state: Input state (Torch Variable : [n,state_dim] )
         :return: Output action (Torch Variable: [n,action_dim] )
@@ -124,7 +126,7 @@ class Actor(nn.Module):
             log_stds = self.log_std(s)
             log_stds = torch.clamp(log_stds, min=-10.0, max=2.0)
             dists = Normal(means, stds)
-            x = dists.rsample()
+            x = dists.rsample() if explore else means
             actions = self.tanh(x)
             log_probs = dists.log_prob(x) - torch.log(1-actions.pow(2) + 1e-6)
             entropies = -log_probs.sum(dim=1, keepdim=True)

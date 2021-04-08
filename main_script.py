@@ -25,7 +25,7 @@ parser.add_argument("-w", "--wd", type=float, default=0, help='Weight Decay')
 parser.add_argument("-c", "--ckpt", type=str, default='seed', help='checkpoint to start with')
 parser.add_argument("-x", "--explore_episode", type=int, default=30, help='number of exploration steps')
 parser.add_argument("-g", "--gamma", type=float, default=0.98, help='discount rate')
-parser.add_argument("-a", "--alpha", type=float, default=0.2, help='entropy regularization term in SAC')
+parser.add_argument("-a", "--alpha", type=float, default=0.01, help='entropy regularization term in SAC')
 
 args = parser.parse_args()
 

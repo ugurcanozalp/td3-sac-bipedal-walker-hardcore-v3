@@ -57,9 +57,8 @@ class StableTransformerLayer(nn.Module):
         self.relu = nn.GELU()
 
     def forward(self, src, src_mask=None, src_key_padding_mask=None):
-
         '''
-        #ORIGINAL TRANSFORMER ORDERING
+        #ORIGINAL TRANSFORMER
         src2 = self.self_attn(src, src, src, attn_mask=src_mask,
                               key_padding_mask=src_key_padding_mask)[0]
         src = src + self.dropout1(src2)
@@ -68,9 +67,6 @@ class StableTransformerLayer(nn.Module):
         src = src + self.dropout2(src2)
         src = self.norm2(src)
         '''
-
-        #HOW SHOULD THE DROPOUT BE APPLIED, it seems like dropout is completely missing the original source that residually connects?
-        #This doesn't perfectly correspond to dropout used in TransformerXL I believe. (to do: read their code)
 
         src2 = self.norm1(src)
         if self.only_last_state:

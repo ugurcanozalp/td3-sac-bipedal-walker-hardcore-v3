@@ -6,7 +6,6 @@ from replay_buffer import ReplayBuffer
 from noise import OrnsteinUhlenbeckNoise
 from itertools import chain
 
-# https://github.com/A-Raafat/DDPG-bipedal/blob/master/My_DDPG.ipynb
 class DDPGAgent():
     rl_type = 'ddpg'
     def __init__(self, Actor, Critic, state_size=24, action_size=4, 
