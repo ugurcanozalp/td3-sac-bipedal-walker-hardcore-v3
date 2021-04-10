@@ -1,0 +1,22 @@
+\section{Proposed Methods and Contribution}
+\label{sec:proposed_methods}
+
+Partially observable environments are always a hard work for reinforcement learning algorithms. 
+In this work, the walker environment assumed as fully observable environment at first. 
+A feed-forward neural network architecture is proposed to control 
+the robot under fully observability assumption since no memory is used during decision making. 
+Then, the environment is assumed to be partially observable. 
+In order to recover belief states, Long Short Term Memory and 
+Transformer neural networks are proposed using fixed number of 
+last observations (4 in our case) during decision making. 
+
+LSTMs are used in many deep learning applications which includes sequential data. 
+It is a variant of Recurrent Neural Networks (RNN). 
+It is a good candidate for RL algorithms which solves partially observable environments. 
+
+Transformers are developed to handle sequential data as RNN models does. 
+However, it processes the whole sequence at same time, while RNNs process the sequence in order. 
+It replaced RNNs in Natural Language Processing (NLP) tasks over RNNs due to its major improvements. 
+However, this is not the case for Reinforcement Learning, yet.
+As RL algorithm, Twin Delayed Deep Deterministic Policy Gradient (TD3) is used. 
+TD3 is improved version of Deep Deterministic Policy Gradient (DDPG) Algorithm.

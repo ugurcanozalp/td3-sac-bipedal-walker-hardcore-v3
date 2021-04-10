@@ -1,7 +1,49 @@
 \chapter{INTRODUCTION}
 \label{chap:intro}
-Artificial intelligence is the ability of a computer program or a machine to think and learn like natural intelligence performed by humans and animals.  One way is to create an intellgent agent is using some methods to detect patterns on data and use it to make predictions on unseen data. This approach is called Machine Learning.  \\
-Humans and animals exhibit several different behaviours in terms of interaction with environment, such as utterance and movement. Their behavior is based on past experience, the situation they are in and their objective. Like humans and animals, an intelligent agent is expected to take action according to its perception based some objective. A major challenge to machine learning is creating agents that will act more natural and humanlike. As a subfield of Machine Learning, Reinforcement Learning allows an agent to learn how to control (or act) itself in different situations. It models environment to give reward or punishment to agent according to environmental state and agent actions, and focuses on learning to predict what actions will lead to highest reward (or lowest punishment, based on its objective) in the future using past experience. \\
-Traditional RL algorithms need feature engineering from observation. For complex problems, the way to extract features is ambiguous or observations are not enough to create a good model. As a newer technique, deep neural networks allows to extract high level features from data which has huge state-space (like visual observation, many kinematic sensors etc.) and missing observation. Along with recent developments in DNNs, Deep Reinforcement Learning algorithms allows an agent to interact with environment in more complex way. DRL is based on neural networks which are function approximators. The problem with DRL is selection of a correct neural network, but there is still no analytical method to design a neural network for a particular task. Therefore, neural design is commonly based on trial-error. \\
-Since its discovery, robots have been crucial devices for the human race, whether smart or not. Intelligent humanoid and animaloid robots have been in continuous development since early 1980s. This type of robots has legs unlike driving robots. Since most of world terrain is unpaved, this type of robots are good alternative to driving robots. Locomotion is major task for such robots. Stable bipedal (2 legged) walking is one of the most challenging problem among the control problems. It is hard to create accurate model due to high order of dynamics, friction and discontinuities. Even so, design of walking controller using traditional methods is difficult due to same reasons. Therefore, for bipedal walking, DRL approach is an easier choice if simulation environment is available. \\
+
+Artificial intelligence is the ability of a computer program 
+or a machine to think and learn like natural intelligence 
+performed by humans and animals. 
+One way is to create an intellgent agent is using pattern detection  methods on data and use it to make predictions on unseen data. 
+This approach is called Machine Learning. 
+
+Humans and animals exhibit several different behaviours in terms of 
+interaction with environment, such as utterance and movement. 
+Their behavior is based on past experience, the situation they are in  and their objective. 
+Like humans and animals, an intelligent agent is expected to take 
+action according to its perception based some objective. 
+A major challenge to machine learning is creating agents that will 
+act more natural and humanlike. 
+As a subfield of Machine Learning, Reinforcement Learning allows an 
+agent to learn how to control (or act) itself in different situations. 
+In RL, environment is modeled to give reward or punishment to agent 
+according to environmental state and agent actions, and focuses on 
+learning to predict what actions will lead to highest reward (or 
+lowest punishment, based on its objective) in the future using past  experience. 
+
+Traditional RL algorithms need feature engineering from observation. 
+For complex problems, the way to extract features is ambiguous or 
+observations are not enough to create a good model. 
+As a newer  technique, deep neural networks allows to extract 
+high level features from data with large state-space 
+(pixelwise visual, many kinematic sensors etc.) and missing  observations. 
+Along with recent developments in DNNs, Deep Reinforcement Learning 
+allows an agent to interact with environment in more complex way. 
+DRL is based on neural networks which are function approximators. 
+The problem with DRL is selection of a correct neural network, 
+but there is still no analytical method to design a neural network for a particular task. 
+Therefore, neural design is commonly based on trial-error. 
+
+Since its discovery, robots have been crucial devices for the human race, whether smart or not. 
+Intelligent humanoid and animaloid robots have been in 
+continuous development since early 1980s. 
+This type of robots has legs unlike driving robots. 
+Since most of world terrain is unpaved, this type of robots are good alternative to driving robots. 
+Locomotion is major task for such robots. Stable bipedal (2 legged)  walking 
+is one of the most challenging problem among the control problems. 
+It is hard to create accurate model due to high order of dynamics, 
+friction and discontinuities. 
+Even so, design of walking controller using traditional methods is difficult due to same reasons. 
+Therefore, for bipedal walking, DRL approach is an easier choice if simulation environment is available. 
+
 In this thesis, Bipedal Locomotion Deep Reinforcement Learning (DRL) by is investigated through \textit{Bipedal-Walker-v3} \cite{noauthor_bipedalwalker-v2_2021} and \textit{Bipedal-Walker-Hardcore-v3} \cite{noauthor_bipedalwalkerhardcore-v2_2021} environment of open source GYM library \cite{brockman_openai_2016}. Different neural architectures are used and results are compared. 
