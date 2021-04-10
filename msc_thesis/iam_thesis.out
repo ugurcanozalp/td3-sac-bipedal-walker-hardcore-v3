@@ -26,7 +26,7 @@
 \BOOKMARK [2][-]{subsection.2.9.1}{Q Learning}{section.2.9}% 26
 \BOOKMARK [3][-]{subsubsection.2.9.1.1}{Deep Q Learning}{subsection.2.9.1}% 27
 \BOOKMARK [3][-]{subsubsection.2.9.1.2}{Double Deep Q Learning}{subsection.2.9.1}% 28
-\BOOKMARK [2][-]{subsection.2.9.2}{Deterministic Actor Critic Learning}{section.2.9}% 29
+\BOOKMARK [2][-]{subsection.2.9.2}{Deterministic Policy Gradient}{section.2.9}% 29
 \BOOKMARK [3][-]{subsubsection.2.9.2.1}{Deep Deterministic Policy Gradient}{subsection.2.9.2}% 30
 \BOOKMARK [3][-]{subsubsection.2.9.2.2}{Twin Delayed Deep Deterministic Policy Gradient}{subsection.2.9.2}% 31
 \BOOKMARK [0][-]{chapter.3}{NEURAL NETWORKS AND DEEP LEARNING}{}% 32

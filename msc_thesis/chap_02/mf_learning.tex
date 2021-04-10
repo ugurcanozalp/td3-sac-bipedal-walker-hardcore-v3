@@ -5,7 +5,7 @@ Model based methods are based on solving bellman equation \ref{eqn:bellman_v}\re
 \textbf{Policy Based Learning}: Policy is learned directly, return values are used instead of learning a value function. Unlike value based methods, it is suitable for continious action spaces. \\
 \textbf{Actor Critic Learning}: Both policy (actor) and value (critic) functions are learned simulatenously. It is also suitable for continious action spaces. \\
 \subsection{Q Learning}
-Q Learning is a value based type of learning. It is based on optimizing $Q$ function using bellman equation \eqref{eqn:bellman_q} \cite{watkins_technical_1992}. \\ 
+Q Learning is a value based type of learning. It is based on optimizing $Q$ function using Bellman Equation \eqref{eqn:bellman_q} \cite{watkins_technical_1992}. \\ 
 Assume that $Q$ function is parametrized by $\theta$. Target $Q$ value is estimated by bootstrapping estimate itself, as shown in  \eqref{eqn:q_target}. \\
 %
 \begin{equation}
@@ -19,13 +19,13 @@ At time $t$,  with state, action, reward, next state tuples ($s_t,a_t,r_t,s_{t+1
 \end{equation}
 %
 \subsubsection{Deep Q Learning}
-Deep Q Learning overcomes instability of Q Learning. When a nonlinear approximator is used, learning is unstable. Deep Q Learning introduces Target Network and Experience Replay \cite{mnih_human-level_2015, mnih_playing_2013}. \\
+Deep Q Learning overcomes instability of Q Learning, using Deep Q Network (DQN). When a nonlinear approximator is used, learning is unstable. Deep Q Learning introduces Target Network and Experience Replay \cite{mnih_human-level_2015, mnih_playing_2013}. \\
 \textbf{Target Network}: Target network is parametrized $\theta^-$. It is used to evaluate target value and not updated by loss minimization. It is updated at each fixed number of update step $C$ by Q network parameter $\theta$. Target value is obtained by using $\theta^-$. \\
 \begin{equation}
 \label{eqn:dqn_ntarget}
 Y_t^{DQN} = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta^-)
 \end{equation}
-\textbf{Experience Replay}: Experience tuples are stored in dataset $\mathcal{D}$ as queue with fixed buffer size $N_{replay}$. At each iteration $i$, $\theta$ is updated by experiences uniformly subsampled from experience replay. It allows agent to learn from experiences multiple times. More importantly, sampled experiences are close to be independent and identically distributed if buffer size is high enough. This makes learning process more stable. \\
+\textbf{Experience Replay}: Experience tuples are stored in a replay memory $\mathcal{D}$ as queue with fixed buffer size $N_{replay}$. At each iteration $i$, $\theta$ is updated by experiences uniformly subsampled from experience replay. It allows agent to learn from experiences multiple times. More importantly, sampled experiences are close to be independent and identically distributed if buffer size is high enough. This makes learning process more stable. \\
 \begin{equation}
 \label{eqn:dqn_loss}
 \mathcal{L}_i(\theta_i) = \mathbb{E}_{s,a,r,s'\sim U(\mathcal{D})}\Big[\big( Y^{DQN} - Q(s,a;\theta_i) \big) ^ 2 \Big]
@@ -40,7 +40,7 @@ Y_t^{DQN} = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta^-)
 \end{cases} 
 \end{equation}
 Algorithm is summarized in Algorithm \ref{alg:dqn}. \\
-\begin{algorithm}[H]
+\begin{algorithm}
 	\SetAlgoLined
 	\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
 	Initialize: Replay memory $\mathcal{D}$ with capacity $N_{replay}$ \\
@@ -68,15 +68,16 @@ Algorithm is summarized in Algorithm \ref{alg:dqn}. \\
 	\caption{Deep Q Learning with Experience Replay}
 	\label{alg:dqn}
 \end{algorithm}
+%
 \subsubsection{Double Deep Q Learning}
-In DQN, max operator is used to select and evaluate action on the same network \eqref{eqn:dqn_ntarget}. This yields overestimated value estimations in noisy environments. Therefore, action selection and value estimation is decoupled in target evaluation to overcome $Q$ function overestimation \cite{van_hasselt_deep_2015}. \\
+In DQN, max operator is used to select and evaluate action on the same network \eqref{eqn:dqn_ntarget}. This yields overestimated value estimations in noisy environments. Therefore, action selection and value estimation is decoupled in target evaluation to overcome $Q$ function overestimation \cite{van_hasselt_deep_2015} using Double Deep Q Network (DDQN). \\
 \begin{equation}
 \label{eqn:ddqn_ntarget}
 Y_t^{DDQN} = r_t + \gamma Q(s_{t+1}, \argmax_{a'} Q(s_{t+1}, a'; \theta_i );\theta^-)
 \end{equation}
 Learning process is same with DQN except target value. \\
-\subsection{Deterministic Actor Critic Learning}
-Value based methods are not suitable for continious action spaces. Therefore, policy is explicitly defined instead of maximizing $Q$ function. Policy function can be either stochastic or deterministic.  Deterministic actor-critic is kind of learning which uses deterministic policy \cite{silver_deterministic_2014}. It can be thought as continious version of Q Learning. Value function is called critic while policy function is called actor. \\
+\subsection{Deterministic Policy Gradient}
+Value based methods are not suitable for continious action spaces. Therefore, policy is explicitly defined instead of maximizing $Q$ function. For such problems, actor-critic type learning methods which uses both value and policy models seperately. Policy function can be either stochastic or deterministic.  Deterministic Policy Gradient is kind of actor-critic learning which uses deterministic policy \cite{silver_deterministic_2014}. It can be thought as continious version of Q Learning. Value function is called critic while policy function is called actor. \\
 In discrete action space, policy is naturally obtained by argmax operation on $Q$ function as in \eqref{eqn:policy_deterministic_q}. In DPG, policy $\mu$ is parametrized by another set of parameters $\theta^\mu$ while value function $Q$ is parametrized by $\theta^Q$. \\
 The ultimate goal is to maximize value function $V$. It is done by selecting action which maximizes $Q$ value as policy \eqref{eqn:policy_deterministic_q}. Therefore, value function is the criteria to be maximized by solving parameters $\theta^\mu$ given $\theta^Q$. 
 \begin{equation}
@@ -94,7 +95,7 @@ Y_t^{DPG} = r_t + \gamma Q(s_{t+1}, \mu(s_{t+1};\theta^\mu);\theta^Q)
 \end{equation}
 Note that both $\theta^Q$ and $\theta^\mu$ should be learned at the same time. Therefore, parameters are updated simulatenously during learning iterations. \\
 \subsubsection{Deep Deterministic Policy Gradient}
-Deep Deterministic Policy Gradient is continuous compliment of Deep Q learning using deterministic policy \cite{lillicrap_continuous_2019}. It uses experience replay and target networks. \\
+Deep Deterministic Policy Gradient (DDPG) is continuous compliment of DQN using deterministic policy \cite{lillicrap_continuous_2019}. It uses experience replay and target networks. \\
 Similar to Deep Q learning, there are target networks parametrized by $\theta^{\mu^-}$ and $\theta^{Q^-}$ along with main networks parametrized by $\theta^{\mu}$ and $\theta^{Q}$. While target networks are updated in fixed number of steps in DQN, DDPG updates target network parameters at each step with polyak averaging as follows. \\
 \begin{equation}
 \label{eqn:target_update}
@@ -116,7 +117,7 @@ Y_t^{DDPG} = r_t + \gamma Q(s_{t+1}, \mu(s_{t+1};\theta^{\mu^-});\theta^{Q^-})
 \mathcal{L}_i(\theta_i) = \mathbb{E}_{s,a,r,s'\sim U(\mathcal{D})}\Big[\big( Y^{DDPG} - Q(s,a;\theta^Q_i) \big) ^ 2 \Big]
 \end{equation}
 In DDPG, value and policy network parameters are learned simultaneously. During learning, exploration noise is added to each selection. In original paper \cite{lillicrap_continuous_2019}, authors proposed to use Ornstein Uhlenbeck Noise \cite{uhlenbeck_theory_1930} which has temporal correlation for efficiency. However, simple gaussian noise or another noise is also possible. Algorithm is summarized in Algorithm \ref{alg:ddpg}. \\
-\begin{algorithm}[H]
+\begin{algorithm}
 	\SetAlgoLined
 	\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
 	Initialize: Replay memory $\mathcal{D}$ with capacity $N_{replay}$ \\
@@ -145,7 +146,7 @@ In DDPG, value and policy network parameters are learned simultaneously. During 
 	\caption{Deep Deterministic Policy Gradient}
 	\label{alg:ddpg}
 \end{algorithm}
-\textbf{Ornstein-Uhlenbeck Process}: It is continious analogue of discrete AR(1) process \cite{uhlenbeck_theory_1930}. The process $x$ is defined by a stochastic differential equation \eqref{eqn:ou_process}
+\textbf{Ornstein-Uhlenbeck Process}: It is continious analogue of discrete first order autoregressive (AR(1)) process \cite{uhlenbeck_theory_1930}. The process $x$ is defined by a stochastic differential equation \eqref{eqn:ou_process}
 \begin{equation}
 \label{eqn:ou_process}
 \frac{dx}{dt} = -\theta x + \sigma \eta(t)
@@ -159,7 +160,7 @@ where $\eta(t)$ is white noise. Its standard deviation in time is equal to $\fra
 \end{figure}
 %
 \subsubsection{Twin Delayed Deep Deterministic Policy Gradient}
-Twin Delayed Deep Deterministic Policy Gradient \cite{fujimoto_addressing_2018} is improved version of DDPG with higher stability and efficiency. There are three main tricks. \\
+Twin Delayed Deep Deterministic Policy Gradient (TD3) \cite{fujimoto_addressing_2018} is improved version of DDPG with higher stability and efficiency. There are three main tricks. \\
 \textbf{Target Policy Smoothing}: For target value assesing, actions are obtained from target policy network in DDPG, while a clipped zero centered gaussian noise is added to actions in TD3  \eqref{eqn:td3_target_action}. This regularizes learning process by smoothing effects of actions on value. \\
 \begin{equation}
 \label{eqn:td3_target_action}
@@ -176,7 +177,7 @@ Policy is learned by maximizing output of first value network \eqref{eqn:td3_val
 \theta^\mu = \argmax_{\theta^\mu} \mathbb{E}_{s \sim U(\mathcal{D})} \Big[ Q(s, \mu(s_t;\theta^\mu);\theta^{Q_1}) \Big]
 \end{equation}
 \textbf{Delayed Policy Updates}: During learning, policy network and target networks are updated less frequently (at each fixed number of step) than value network. Since policy network parameters are learned by maximizing value network, it should be learned slower. Algorithm is summarized in Algorithm \ref{alg:td3}. \\
-\begin{algorithm}[H]
+\begin{algorithm}
 	\SetAlgoLined
 	\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
 	Initialize: Replay memory $\mathcal{D}$ with capacity $N_{replay}$ \\

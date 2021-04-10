@@ -83,7 +83,7 @@ Calculation of weight vector depends on the task. For each time step, a score fu
 \end{equation}
 %
 \subsubsection{Transformer}
-The Transformer was proposed in the paper Attention is All You Need \cite{vaswani_attention_2017} . Unlike recurrent networks, this architecture is solely builded on attention layers. \\
+The Transformer was proposed in Attention is All You Need \cite{vaswani_attention_2017} paper. Unlike recurrent networks, this architecture is solely builded on attention layers. \\
 A transformer layer consists of feed-forward and attention layers, which makes the mechanism special. Like RNNs, it can be used as both encoder and decoder. While encoder layers attend to itself, decoder layers attends both itself and encoded input. \\
 \textbf{Attention Layer}: An attention layer is a mapping from 3 vectors called query $Q \in \mathbb{R}^{T \times d_k}$, key $K \in \mathbb{R}^{T \times d_k}$ and value $V \in \mathbb{R}^{T \times d_v}$ to output, where $T$ is time length, $d_k$ and $d_v$ are embedding dimensions. Output is weighted sum of values $V$ while weights are evaluated by compatibility metric of query $Q$ and key $K$. In vanilla transformer, compatibility of query and key is evaluated by dot product, normalizing by $\sqrt{d_k}$. For a query, dot product with all keys are evaluated, then softmax function is applied to get weights of values. This approach is called Scaled Dot-product Attention. \\
 \begin{equation}

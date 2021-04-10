@@ -35,10 +35,10 @@
 \contentsline {section}{\numberline {2.9}Model Free Reinforcement Learning}{13}{section.2.9}%
 \contentsline {subsection}{\numberline {2.9.1}Q Learning}{14}{subsection.2.9.1}%
 \contentsline {subsubsection}{\numberline {2.9.1.1}Deep Q Learning}{14}{subsubsection.2.9.1.1}%
-\contentsline {subsubsection}{\numberline {2.9.1.2}Double Deep Q Learning}{16}{subsubsection.2.9.1.2}%
-\contentsline {subsection}{\numberline {2.9.2}Deterministic Actor Critic Learning}{17}{subsection.2.9.2}%
+\contentsline {subsubsection}{\numberline {2.9.1.2}Double Deep Q Learning}{15}{subsubsection.2.9.1.2}%
+\contentsline {subsection}{\numberline {2.9.2}Deterministic Policy Gradient}{15}{subsection.2.9.2}%
 \contentsline {subsubsection}{\numberline {2.9.2.1}Deep Deterministic Policy Gradient}{17}{subsubsection.2.9.2.1}%
-\contentsline {subsubsection}{\numberline {2.9.2.2}Twin Delayed Deep Deterministic Policy Gradient}{20}{subsubsection.2.9.2.2}%
+\contentsline {subsubsection}{\numberline {2.9.2.2}Twin Delayed Deep Deterministic Policy Gradient}{18}{subsubsection.2.9.2.2}%
 \contentsline {chapter}{\numberline {3}\MakeUppercase {NEURAL NETWORKS AND DEEP LEARNING}}{23}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Backpropagation and Numerical Optimization}{23}{section.3.1}%
 \contentsline {subsection}{\numberline {3.1.1}Stochastic Gradient Descent Optimization}{24}{subsection.3.1.1}%

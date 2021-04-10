@@ -32,7 +32,7 @@ Policy is logic of how agent acts according to state of environment. It can be e
 \section{Return, Value Functions and Policy Learning}
 \textbf{Return and Discount Factor}: At time $t$, $G_t$ is return which is cumulative sum of future rewards, scaled by discount factor $\gamma$. \\
 \begin{equation}
-G_t = \sum_{i=t}^{\infty} \gamma^{i-t} r_i = r_t + + \gamma G_{t+1}
+G_t = \sum_{i=t}^{\infty} \gamma^{i-t} r_i = r_t + \gamma G_{t+1}
 \end{equation}
 Since return depends on future rewards, it also depends on policy of agent since policy affects future rewards. \\
 \textbf{State Value Function}: State Value Function $V^{\pi}$ is expected return when policy $\pi$ is followed in future. \\

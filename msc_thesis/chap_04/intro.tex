@@ -55,7 +55,7 @@ The robot has kinematic and lidar sensors. It is modeled as Markov Decision Proc
 \subsection{Partial Observability}
 The environment is partially observable due to following reasons.
 \begin{itemize}
-	\item The agent is not able to track behind with lidar sensor. Unless it has a memory, it cannot know whether a pitfall or hurdle behind. Illustration is shown in x.
+	\item The agent is not able to track behind with lidar sensor. Unless it has a memory, it cannot know whether a pitfall or hurdle behind. Illustration is shown in \figref{fig:partial_obs_pitfall}.
 	\item There is no accelerometer sensor. Therefore, the agent do not know whether it is accelerating or decelerating.
 \end{itemize}
 \begin{figure}
@@ -145,7 +145,7 @@ For each episode, episode scores are calculated by summing up rewards of each ti
 	\includegraphics[width=0.95\textwidth]{figures/bipedal/STD_TD3_RFFNN_LSTM_TRSF.png}
 	\caption{Moving Average and Standard Deviation for Episode Scores}
 	\label{fig:std_ep_rewards}
-\end{figure}
+\end{figure} 
 First of all, none of our approaches solved the problem since 300 points required in 100 random simulations as solution. However, our methods partially solved problems by exceeding 200 point limit, while some simulations yield around 280 points in all models. \\
 RFFNN seems to be enough for solving the problem, although there exist partial observability in the environment. That model reaches around 220 points in average. \\
 The robot was able to walk by LSTM model but yield worse results and cannot exceed 120 points in average. \\
