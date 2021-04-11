@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from scipy.ndimage import uniform_filter1d
 import os
 
-def plot_result(file_names, model_types, rl_type):
+def plot_result(file_names, model_types, rl_type, plot_type=0):
     if not isinstance(file_names, list):
         file_names = [file_names]
 
@@ -26,10 +26,14 @@ def plot_result(file_names, model_types, rl_type):
           datarep[i, i:] = datarep[i, :-i]
 
         stds = np.sqrt(np.mean(np.square(datarep - avg_rewards[None, :]), 0))
-        ax.scatter(episodes,cum_rewards, s=1, color=color, alpha=0.3)
-        ax.plot(episodes,avg_rewards, color=color, alpha=0.9, label=model_type) # 
-        #ax.fill_between(episodes, avg_rewards - stds, avg_rewards + stds, color=color, alpha=0.3) # label=model_type
-    
+        ax.plot(episodes,avg_rewards, color=color, alpha=0.9, label=model_type) #
+        if plot_type==0:
+            ax.scatter(episodes,cum_rewards, s=1, color=color, alpha=0.3)
+        elif plot_type=1: 
+        	ax.fill_between(episodes, avg_rewards - stds, avg_rewards + stds, color=color, alpha=0.3) # label=model_type
+    	else:
+    		print("wrong plot type.")
+
     ax.set_ylabel('Score')
     ax.set_xlabel('Episode #')
     ax.set_title('Score History with ' + rl_type)
@@ -41,4 +45,5 @@ if __name__=='__main__':
     file_names = ["train-hardcore-ff-td3.txt", "train-hardcore-lstm-td3.txt", "train-hardcore-trsf-td3.txt"]
     model_types = ["RFFNN", "LSTM", "TRSF"]
     rl_type = "TD3"
-    plot_result(file_names, model_types, rl_type)
+    plot_type = 0
+    plot_result(file_names, model_types, rl_type, plot_type)

@@ -1,8 +1,39 @@
 \section{Challenges}
 \label{sec:chal}
-The Reinforcement Learning Environment poses a variety of obstacles that we need to address and potentially make trade-offs among them \cite{dulac-arnold_challenges_2019} \cite{sutton_reinforcement_1998}. \\
-\textbf{Exploration Explotation Dilemma}: A RL agent is supposed to maximize rewards (knowledge exploration) by observing the environment (exploration of environment). This gives rise to the exploration-exploitation dilemma that is the inevitable trade-off between them. Exploration is taking a range of acts to benefit about the consequences. Typically results in low immediate rewards and high rewards for the future. Explotation is taking action that has been learned. Typically results in high immediate rewards and low rewards in the future. \\
-\textbf{Generalization and Curse of Dimensionality}: A RL agent should also be able to generalize experiences to act on unseen situation before. This issue arises when state space and action space is high dimensional since experiencing all possibilities is impractical. This is solved by introducing function approximator. Deep Reinforcement Learning uses neural network as function approximator. \\
-\textbf{Delayed Consequences}: A RL agent should be aware reason of reward or punishment. Once it gets reward or punishment, it should be able to discriminate whether reward is caused by instant actions or past actions. \\
-\textbf{Partial Observability}: Partial observability is absence of all required observation to infer instant state. For instance, a driver does not know engine temperature or rotational speed of gears. Although driver is able to drive in that case, s/he would not be able to drive well on traffic in absence of rear view mirror or side mirror. In real world, most of systems are partially observable. This problem is usually tackled by incorprating observation history from agents memory in acting. \\
-\textbf{Safety of Agent}: Mechanical agents can kill or degrade themselves and their surroundings. This safety problem is important on both exploration stage and full operation. Simulation of environment is a good way to train agent with safety but causes incomplete learning due to inaccuracy compared to real environment. \\
+
+The Reinforcement Learning Environment poses a variety of obstacles 
+that we need to address and potentially make trade-offs among them~\cite{dulac-arnold_challenges_2019, sutton_reinforcement_1998}.
+
+\subsection{Exploration Explotation Dilemma}
+
+A RL agent is supposed to maximize rewards (knowledge exploration) by observing the environment (exploration of environment). 
+This gives rise to the exploration-exploitation dilemma that is the inevitable trade-off between them. 
+Exploration is taking a range of acts to benefit about the consequences. 
+Typically results in low immediate rewards and high rewards for the future. 
+Explotation is taking action that has been learned. Typically results in high immediate rewards and low rewards in the future. 
+
+\subsection{Generalization and Curse of Dimensionality}
+
+A RL agent should also be able to generalize experiences to act on unseen situation before. 
+This issue arises when state space and action space is high dimensional since experiencing all possibilities is impractical. 
+This is solved by introducing function approximator. Deep Reinforcement Learning uses neural network as function approximator. 
+
+\subsection{Delayed Consequences}
+
+A RL agent should be aware reason of reward or punishment. 
+Once it gets reward or punishment, it should be able to discriminate whether reward is caused by instant actions or past actions. 
+
+\subsection{Partial Observability}
+
+Partial observability is absence of all required observation to infer instant state. 
+For instance, a driver does not know engine temperature or rotational speed of gears. 
+Although driver is able to drive in that case, s/he would not be able to drive well on traffic in absence of rear view mirror or side mirror. 
+In real world, most of systems are partially observable. 
+This problem is usually tackled by incorprating observation history from agents memory in acting. 
+
+\subsection{Safety of Agent}
+
+Mechanical agents can kill or degrade themselves and their surroundings. 
+This safety problem is important on both exploration stage and full operation. 
+Simulation of environment is a good way to train agent with safety but causes incomplete learning 
+due to inaccuracy compared to real environment. 

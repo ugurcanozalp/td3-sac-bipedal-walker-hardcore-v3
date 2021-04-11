@@ -1,0 +1,25 @@
+\chapter{CONCLUSION AND FUTURE WORK}
+\label{chap:conclusion_future_work}
+
+\section{Conclusion}
+\label{sec:conclusion}
+In this thesis, bipedal robot walking is investigated by deep  reinforcement learning due to complex dynamics. 
+For real world robot control by RL, simulation is an important step. 
+Usually, models are pretrained in simulation environment before learning in reality due to safety and exploration reasons. 
+
+TD3 algorthim is used since it is robust and well suited for continious control. 
+Also, environment is slightly modified by reward shaping, halving simulation frequency, cancelling terminal state information at time limit so that learning becomes easier.  
+As stated in previous chapters, most of the real world environments are partially observable. 
+In BipedalWalker-Hardcore, the environment is also partially observable since agent cannot observe behind of it lacks of acceleration sensors which is better to have for controlling mechanical systems. 
+Therefore, we used Long Short Term Memory and Transformer Neural Networks to capture more information from past observations compared to Residual Feed Forward Neural Network (RFFNN) using single instant observation as input. 
+
+RFFNN model performed well thanks to carefully selected hyperparameters and modifications on the environment. 
+Since there is no major differences between sequential models (Transformer), the problem is mainly about rewards and exploration, not partial observability. 
+
+Although LSTM is used commonly for partially observed problems, results are worst compared to other two models, but keeps learning slowly. 
+Without knowing exact reason, it is probably its functional properties. 
+
+Transformer model worked with best performance among all models. 
+It is surprising because it is not succesfully used in RL problems in general. 
+In natural language processing, this type of attention models completely replaced recurrent models, and our results seems promising for this in RL domain. 
+

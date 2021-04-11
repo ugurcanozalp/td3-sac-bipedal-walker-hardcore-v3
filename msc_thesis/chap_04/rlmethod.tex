@@ -1,0 +1,17 @@
+\section{RL Method and hyperparameters}
+\label{sec:rlmethod}
+
+TD3 is used as RL algorithm. 
+Hyperparameters are selected by grid search and best performing values are used. Adam optimizer is used as optimizer. 
+
+As exploration noise, Ornstein-Uhlenbeck noise is used and standart deviation is multiplied  by $0.999$ at the end of each episode. 
+Initially $\theta=4.0$ and $\sigma=1.0$ are used. Other hyperparameters are as follows. 
+\begin{itemize}
+	\item $\alpha=7.0 \cdot 10^{-4}$ (For LSTM)
+	\item $\alpha=1.0 \cdot 10^{-3}$ (For Other networks)
+	\item $\beta_1=0.9$
+	\item $\beta_2=0.999$
+	\item $\gamma=0.98$
+	\item $N_{replay} = 500000$
+	\item $N = 128$
+\end{itemize}
