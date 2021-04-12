@@ -132,6 +132,7 @@ class Actor(nn.Module):
             means = self.fc(s)
             log_stds = self.log_std(s)
             log_stds = torch.clamp(log_stds, min=-10.0, max=2.0)
+            stds = log_stds.exp()
             dists = Normal(means, stds)
             x = dists.rsample() if explore else means
             actions = self.tanh(x)
