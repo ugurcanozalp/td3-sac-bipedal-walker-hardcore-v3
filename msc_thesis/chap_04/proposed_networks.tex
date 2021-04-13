@@ -34,12 +34,12 @@ This output is summed with initial vector and this is lastly passed through laye
 
 \subsection{Long Short Term Memory}
 
-Sequence of incoming vectors is passed though vanilla LSTM layer with 96 dimensional hidden state. 
+Sequence of incoming vectors is passed though single layer vanilla LSTM layer with 96 dimensional hidden state. 
 Output at last time step is outputted. 
 
 \subsection{Transformer (Pre-layer Normalized)}
 
-Sequence of incoming vectors is passed though pre-layer normalized transformer with 192 dimensional feed forward layer with GELU activation. 
+Sequence of incoming vectors is passed through single layer pre-layer normalized transformer with 192 dimensional feed forward layer with GELU activation. 
 The output is lastly passed through layer normalization. 
 During multi-head attention, only last state is fed as query so that attentions are calculated for only last state. 
 
