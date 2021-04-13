@@ -96,7 +96,7 @@ class Actor(nn.Module):
         if self.stochastic:
             self.log_std = nn.Linear(96, action_dim)
             nn.init.uniform_(self.log_std.weight, -0.003,+0.003)
-            nn.init.zeros_(self.log_std.bias)   
+            nn.init.zeros_(self.log_std.bias)  
 
         self.tanh = nn.Tanh()
 
