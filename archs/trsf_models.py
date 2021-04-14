@@ -46,7 +46,7 @@ class StableTransformerEncoder(nn.Module):
         x = self.pos_embedding(x)
         x = x.permute(1,0,2) # batch, seq, emb -> seq, batch, emb
         x = self.encoder(x)  # 1, batch, emb
-        x = self.layn(x.squeeze(0)) # remove sequential dimension and layernorm.
+        x = self.layn(x[0]) # remove sequential dimension and layernorm.
         return x
 
 class Critic(nn.Module):
@@ -135,7 +135,10 @@ class Actor(nn.Module):
             stds = log_stds.exp()
             #print(stds)
             dists = Normal(means, stds)
-            x = dists.rsample() if explore else means
+            if explore:
+                x = dists.rsample()
+            else:
+                x = means
             actions = self.tanh(x)
             log_probs = dists.log_prob(x) - torch.log(1-actions.pow(2) + 1e-6)
             entropies = -log_probs.sum(dim=1, keepdim=True)

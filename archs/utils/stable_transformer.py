@@ -41,7 +41,8 @@ class StableTransformerLayer(nn.Module):
         self.only_last_state = only_last_state
 
         self.self_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
-
+        #self.self_attn.in_proj_weight.data = torch.cat([torch.eye(d_model), torch.eye(d_model), torch.eye(d_model)])
+        #self.self_attn.out_proj.weight.data = torch.eye(d_model)
         self.linear1 = nn.Linear(d_model, dim_feedforward)
         nn.init.xavier_uniform_(self.linear1.weight, gain=1.0)
         self.dropout = nn.Dropout(dropout)
