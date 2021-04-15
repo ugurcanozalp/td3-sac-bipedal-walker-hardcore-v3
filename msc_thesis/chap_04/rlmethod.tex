@@ -4,18 +4,18 @@
 TD3 is used as RL algorithm. 
 Hyperparameters are selected by grid search and best performing values are used. Adam optimizer is used as optimizer. 
 
-As exploration noise, Ornstein-Uhlenbeck noise is used, and standart deviation is multiplied  by $0.999$ at the end of each episode. Hyperparameters of learning are summarized in \tabref{table:hyperparams}. Unlisted ones have default values which PyTorch gives.
+As exploration noise, Ornstein-Uhlenbeck noise is used, and standart deviation is multiplied  by $0.999$ at the end of each episode. Adam optimizer is used. All hyperparameters are found after a trial-error process. They  are summarized in \tabref{table:hyperparams}. Unlisted ones have default values which PyTorch gives. 
 
 \begin{table}
 	\begin{tabular}{|l||*{3}{c|}}\hline
 		\backslashbox{Hyperparameter}{Model}
 		&\makebox[5em]{RFFNN}&\makebox[5em]{LSTM}&\makebox[5em]{Transformer}\\\hline\hline
-		$\gamma$ &\multicolumn{3}{|c|}{$0.98$} \\\hline
-		$N_{replay}$ &\multicolumn{3}{|c|}{$500000$} \\\hline
-		$N$ &\multicolumn{3}{|c|}{$128$}\\\hline
+		$\eta$ (Learning Rate) & $1.0\times10^{-3}$ & $7.0\times10^{-4}$ & $1.0\times10^{-3}$\\\hline
+		$\beta$ (Momentum) & \multicolumn{3}{|c|}{$(0.9, 0.999)$}\\\hline
+		$\gamma$ (Discount Factor) & \multicolumn{3}{|c|}{$0.98$} \\\hline
+		$N_{replay}$ (Replay Buffer Size) &\multicolumn{3}{|c|}{$500000$} \\\hline
+		$N$ (Batch Size) &\multicolumn{3}{|c|}{$128$}\\\hline
 		Exploration &\multicolumn{3}{|c|}{$OU(\theta=4.0, \sigma=1.0)$}\\\hline
-		Optimizer &\multicolumn{3}{|c|}{$Adam(\eta=1.0\times10^{-3})$} \\\hline
-
 	\end{tabular}
 	\caption{Hyperparmeters and Exploration of Learning Processes}
 	\label{table:hyperparams}

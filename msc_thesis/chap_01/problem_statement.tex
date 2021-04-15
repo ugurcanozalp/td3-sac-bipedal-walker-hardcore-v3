@@ -9,7 +9,7 @@ OpenAI Gym \cite{brockman_openai_2016} is open source framework,
 containing many environments to service development of 
 reinforcement learning algorithms. 
 
-BipedalWalker environments~\cite{noauthor_bipedalwalker-v2_2021, noauthor_bipedalwalkerhardcore-v2_2021} are part of Gym environment library. 
+\textit{BipedalWalker} environments~\cite{noauthor_bipedalwalker-v2_2021, noauthor_bipedalwalkerhardcore-v2_2021} are part of Gym environment library. 
 One of them is classical version where the terrain is relatively smooth, while other one is hardcore version which contains ladders, stumps and pitfalls in terrain. 
 Those environments have continious action and observation space. 
 For both settings, the task is to move forward the robot as much as possible. 
@@ -41,17 +41,20 @@ Locomotion of the Bipedal Walker is difficult control problem due to following r
 	\item \textbf{Partially Observability}: The robot observes 
 	ahead of it with lidar measurements and cannot observe behind. 
 	In addition, it lacks of acceleration sensors.
+	\item \textbf{Reward Sparsity}: 
 \end{itemize}
 These difficulties make hard to implement analytical methods for control task. 
 RL approach is better to tackle first 2 one. 
+
 For partial observability problem, more elegant solution is required. 
 This is done by creating a belief state from past observations to inform agent. 
 Agent uses this belief state to choose how to act. 
 If belief state is evaluated sufficiently, 
-this increases performance of control better.
+this increases performance of control.
 However, relying on observations is also possible for control, 
 and this may be enough sometimes if advanced control is not required. 
 
+Reward sparsity problem can be solved by a good exploration strategy and reward shaping. 
 
 \subsection{Deep Learning Library: PyTorch}
 \label{dl_pytorch}
