@@ -1,7 +1,8 @@
 \section{Partially Observed Markov Decision Process}
 \label{sec:pomdp}
 
-Sometimes, observation space is not enough to represent all information (state) about environment. 
+In MDP, agent observes states as it is. 
+However, observation space is not enough to represent all information (state) about environment sometimes. 
 In such cases, past and instant observations are used to filter out a belief state. 
 It is represented as a tuple $(\mathcal{S},\mathcal{A},T,R,\mathcal{O},O,\gamma)$. 
 In addition to MDP, it introduces observation space $\mathcal{O}$ and observation model $O$ \cite{francois-lavet_introduction_2018}. 
@@ -9,7 +10,8 @@ In addition to MDP, it introduces observation space $\mathcal{O}$ and observatio
 \begin{description}
 	\item[Observation Space $\mathcal{O}$] A set of all possible observations of agent.
 	\item[Observation Model $O \colon \mathcal{O} \times \mathcal{S} \mapsto \lbrack 0,1 \rbrack$] Function of how observations are related to states, 
-	representing observation probabilities as $O(o,s) = p(o|s)$ 
+	representing observation probabilities as $O(o|s) = p(o|s)$ 
 	where $s \in \mathcal{S}$ is instant state and $o \in \mathcal{O}$ is observation.
 \end{description}
 
+Since states are not observed directly, agent must use observations while deriving a control policy. 

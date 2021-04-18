@@ -1,9 +1,8 @@
-Mekanik kontrol üzerine Derin Pekiştirmeli Öğrenme yöntemleri birçok ortamda başarılıdır ve bazı karmaşık durumlarda geleneksel optimal ve uyarlanabilir kontrol yöntemleri yerine kullanılır. 
+Mekanik kontrol üzerine Derin Pekiştirmeli Öğrenme yöntemleri birçok ortamda başarılıdır ve bazı karmaşık problemlerde geleneksel optimal ve uyarlanabilir kontrol yöntemleri yerine kullanılır. 
 Ancak, Derin Pekiştirmeli Öğrenme algoritmalarının hala zorlukları vardır. 
 Bunlardan biri kısmen gözlemlenebilir ortamlarda kontroldür. 
 Bir özne ortam hakkında yeterince bilgilendirilmediğinde, geçmiş gözlemleri anlık gözlemlere ek olarak kullanmalıdır. 
-Bu tezde, Bipedal Walker (Çift bacaklı yürüyen robot, OpenAI GYM) ortamının yürüyüşü, sürekli aktör-eleştirmen pekiştirmeli öğrenme algoritması olan İkiz Gecikmeli Derin Belirleyici Poliçe Gradyanı ile incelenmiştir. 
-Robot arkasını göremediği için çevre kısmen gözlemlenebilirdir. 
+Bu tezde, kısmi gözlemlenebilir olan Bipedal Walker (Çift bacaklı yürüyen robot, OpenAI GYM) ortamının yürüyüşü, sürekli aktör-eleştirmen pekiştirmeli öğrenme algoritması olan İkiz Gecikmeli Derin Belirleyici Poliçe Gradyanı ve Hafif Aktör Eleştirmen metodları ile incelenmiştir.
 Çalışmada birkaç sinir mimarisi uygulanmıştır. 
 Birincisi, gözlemlenebilir ortam varsayımı altında artık bağlantıya sahip ileri beslemeli sinir ağı iken, ikinci ve üçüncü olanlar, 
 ortamın kısmen gözlemlenebilir olduğu varsayıldığından girdi olarak gözlem geçmişini kullanan Uzun Kısa Süreli Bellek (LSTM) ve Dönüştürücüdür (Transformer). 

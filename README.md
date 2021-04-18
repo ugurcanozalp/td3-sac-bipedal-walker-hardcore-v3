@@ -14,10 +14,10 @@ Only Hardcore environment is solved by TD3 algorithm. Reward is manipulated and 
 
 
 #### Feed Forward Neural Network with Residual connection (Episode 4000)
-![FeedForward](results/video/ff-slow.gif)
+![FeedForward](results/video/ff-td3-slow.gif)
 
 #### Transformer (Episode 4600)
-![Transformer](results/video/trsf-slow.gif)
+![Transformer](results/video/trsf-td3-slow.gif)
 
 # How to
 Create new python environment and First install requirements. (python 3.6)

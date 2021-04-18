@@ -169,6 +169,14 @@ Also output matrix is used to project multiple values into single one, $W^O \in 
 \mathrm{head}_i &=  \text{Attention}(QW^Q_i,KW^K_i,VW^V_i)
 \end{split}.
 \end{equation}
+Scaled dot-product attention and Multi-Head attention are demonstrated in \figref{fig:att_and_mha}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.98\textwidth]{figures/ml_theory/att.png}
+	\caption{Scaled Dot-Product Attention (left) and Multi-Head Attention (right)}
+	\label{fig:att_and_mha}
+\end{figure}
 
 Both encoder and decoder contains \textbf{Feed Forward Layer}, containing two linear transformations with ReLU activation.
 \begin{equation}
@@ -196,7 +204,7 @@ Then, $d_{t+1}$ is calculated as follows.
 \begin{equation}
 \begin{split}
 a = & \mathrm{LN}(d_{1:t}+\mathrm{MHA}(d_{1:t},d_{1:t},d_{1:t})) \\
-s = & \mathrm{LN}(att+ \mathrm{MHA}(a,e,e)) \\
+s = & \mathrm{LN}(a + \mathrm{MHA}(a,e,e)) \\
 d_{t+1} = & \mathrm{LN}(s+ \mathrm{FFN}(s))
 \end{split}
 \end{equation}
@@ -223,15 +231,15 @@ They also stated that although gated architecture improves many RL tasks drastic
 In pre-layer normalized transformer, encoder equations are as follows,
 \begin{equation}
 \begin{split}
-att = & x+ \mathrm{MHA}(\mathrm{LN}(x),\mathrm{LN}(x),\mathrm{LN}(x)) \\
-y = & att+ \mathrm{FFN}(\mathrm{LN}(att))
+a = & x+ \mathrm{MHA}(\mathrm{LN}(x),\mathrm{LN}(x),\mathrm{LN}(x)) \\
+y = & a + \mathrm{FFN}(\mathrm{LN}(a))
 \end{split}.
 \end{equation}
 The difference between post-layer and pre-layer transformer encoders are visualized in \figref{fig:post_pre_trsf}
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.55\textwidth]{figures/ml_theory/post_pre_trsf.png}
+	\includegraphics[width=0.7\textwidth]{figures/ml_theory/post_pre_trsf.png}
 	\caption{(a) Post-LN Transformer layer, (b) Pre-LN Transformer
 		layer.}
 	\label{fig:post_pre_trsf}

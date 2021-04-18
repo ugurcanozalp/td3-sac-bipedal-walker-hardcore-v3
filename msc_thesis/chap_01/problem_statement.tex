@@ -1,7 +1,6 @@
 \section{Problem Statement: Bipedal Walker Robot Control}
 \label{sec:problem_statement}
 
-
 \subsection{OpenAI Gym and Bipedal Walker Environment}
 \label{ssec:gym_bipedal}
 
@@ -32,19 +31,22 @@ Snapshots for both environments are in \figref{fig:bipedal_walkers}.
 \end{figure}
 
 Locomotion of the Bipedal Walker is difficult control problem due to following reasons. 
-\begin{itemize}
-	\item \textbf{Nonlinearity}: The dynamics is nonlinear, unstable and multimodal. 
+\begin{description}
+	\item[Nonlinearity] The dynamics is nonlinear, unstable and multimodal. 
 	Dynamical behavior of robot changes for different situations 
-	like ground contact, single leg contact and double leg concact. 
-	\item \textbf{Uncertainity}: The terrain where robot walks may vary. 
+	like ground contact, single leg contact and double leg concact.
+	\item[Uncertainity] The terrain where robot walks may vary. 
 	Designing a controller for all types of terrain is difficult.
-	\item \textbf{Partially Observability}: The robot observes 
+	\item[Reward Sparsity] Overcoming some obstacles requires a specific maneuver,which is hard to explore sometimes.	
+	\item[Partially Observability] The robot observes 
 	ahead of it with lidar measurements and cannot observe behind. 
 	In addition, it lacks of acceleration sensors.
-	\item \textbf{Reward Sparsity}: 
-\end{itemize}
+\end{description}
+
 These difficulties make hard to implement analytical methods for control task. 
 RL approach is better to tackle first 2 one. 
+
+Reward sparsity problem brings local minimums to objective function of optimal control. It can be solved by a good exploration strategy and reward shaping. 
 
 For partial observability problem, more elegant solution is required. 
 This is done by creating a belief state from past observations to inform agent. 
@@ -52,9 +54,7 @@ Agent uses this belief state to choose how to act.
 If belief state is evaluated sufficiently, 
 this increases performance of control.
 However, relying on observations is also possible for control, 
-and this may be enough sometimes if advanced control is not required. 
-
-Reward sparsity problem can be solved by a good exploration strategy and reward shaping. 
+and this may be enough sometimes if advanced type of control is not required. 
 
 \subsection{Deep Learning Library: PyTorch}
 \label{dl_pytorch}

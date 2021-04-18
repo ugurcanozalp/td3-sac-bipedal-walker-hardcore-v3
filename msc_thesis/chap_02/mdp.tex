@@ -12,7 +12,7 @@ Therefore, agent can decide action based on only instant observation $o_t$ inste
 	
 	\item[Action Space $\mathcal{A}$]  A set of all possible actions of agent. 
 	
-	\item[Model $T \colon \mathcal{S} \times \mathcal{S} \times \mathcal{A} \mapsto \lbrack 0,1 \rbrack$] Function of how environment evolves through time, representing transition probabilities as $T(s',s,a) = p(s'|s,a)$ 
+	\item[Model $T \colon \mathcal{S} \times \mathcal{S} \times \mathcal{A} \mapsto \lbrack 0,1 \rbrack$] Function of how environment evolves through time, representing transition probabilities as $T(s'|s,a) = p(s'|s,a)$ 
 	where $s' \in \mathcal{S}$ is next state, $s \in \mathcal{S}$ is instant state and $a \in \mathcal{A}$ is taken action.
 	
 	\item[Reward Function $R \colon \mathcal{S} \times \mathcal{A} \mapsto \mathbb{R}$] Function of rewards coming from environment. 

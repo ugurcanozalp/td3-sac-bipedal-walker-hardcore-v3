@@ -19,7 +19,7 @@ Components of the hardcore environment is visualized in \figref{fig:bipedal_hard
 The robot has kinematic and lidar sensors. 
 It is modeled as Markov Decision Process with deterministic dynamics. 
 
-\textbf{Observation Space} contains hull angle, hull angular velocity, hull translational velocities, joint positions, joint angular speeds, leg ground concats and 10 lidar rangefinder measurements. Details are summarized at Table \tabref{table:bpw_obs_space}. 
+\textbf{Observation Space} contains hull angle, hull angular velocity, hull translational velocities, joint positions, joint angular speeds, leg ground concats and 10 lidar rangefinder measurements. Details are summarized in \tabref{table:bpw_obs_space}. 
 
 \begin{table}%[h!]
 	\begin{center}
@@ -28,16 +28,16 @@ It is modeled as Markov Decision Process with deterministic dynamics.
 		\hline 
 		0  & Hull Angle & $[-\pi,\pi]$ \\
 		1  & Hull Angular Speed & $[-\infty,\infty]$ \\
-		2  & Hull Horizontal Speed x & $[-1,1]$ \\
+		2  & Hull Horizontal Speed & $[-1,1]$ \\
 		3  & Hull Vertical Speed &$[-1,1]$ \\
-		4  & Hip 1 Joint Angle & $[-\infty,\infty]$ \\
+		4  & Hip 1 Joint Angle & $[-\pi,\pi]$ \\
 		5  & Hip 1 Joint Speed & $[-\infty,\infty]$ \\
-		6  & Knee 1 Joint Angle & $[-\infty,\infty]$ \\
+		6  & Knee 1 Joint Angle & $[-\pi,\pi]$ \\
 		7  & Knee 1 Joint Speed & $[-\infty,\infty]$ \\
 		8  & Leg 1 Ground Contact Flag & $\{0,1\}$ \\
-		9  & Hip 2 Joint Angle & $[-\infty,\infty]$ \\
+		9  & Hip 2 Joint Angle & $[-\pi,\pi]$ \\
 		10  & Hip 2 Joint Speed & $[-\infty,\infty]$ \\
-		11  & Knee 2 Joint Angle & $[-\infty,\infty]$ \\
+		11  & Knee 2 Joint Angle & $[-\pi,\pi]$ \\
 		12  & Knee 2 Joint Speed & $[-\infty,\infty]$ \\
 		13  & Leg 2 Ground Contact Flag & $\{0,1\}$ \\
 		14-23  & Lidar measures  & $[-\infty,\infty]$

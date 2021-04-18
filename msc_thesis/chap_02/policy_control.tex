@@ -18,6 +18,7 @@ It can be either deterministic or stochastic.
 At time $t$, Return $G_t$ is cumulative sum of future rewards scaled by discount factor $\gamma$. 
 It is mathematically defined by 
 \begin{equation}
+\label{eqn:return_dfn}
 G_t = \sum_{i=t}^{\infty} \gamma^{i-t} r_i = r_t + \gamma G_{t+1}.
 \end{equation}
 Since return depends on future rewards, it also depends on policy of agent since policy affects future rewards.
@@ -49,16 +50,16 @@ Q^{*}(s,a) = \max_{\pi} Q^{\pi}(s,a).
 Similarly, the optimal policy $\pi^*$ can be obtained by $Q^{*}(s,a)$. For stochastic policy, it is defined as follows.
 \begin{equation}
 \label{eqn:policy_stochastic_q}
-\pi^{*}(s,a) = 
+\pi^{*}(a|s) = 
 \begin{cases}
-1,   & \text{if  } a = \argmax_{a} Q^{*}(s,a) \\
+1,   & \text{if  } a = \arg\max_{a} Q^{*}(s,a) \\
 0,   & \text{otherwise  }
 \end{cases} 
 \end{equation}
 For deterministic policy, 
 \begin{equation}
 \label{eqn:policy_deterministic_q}
-\mu^{*}(s) = \argmax_{a} Q^{*}(s,a)
+\mu^{*}(s) = \arg\max_{a} Q^{*}(s,a)
 \end{equation}
 
 \subsection{Bellman Equation}

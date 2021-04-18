@@ -78,6 +78,15 @@ is a simple function mapping negative values to zero while passing positive valu
 \end{equation}
 is smoothed version of ReLU function. It is continious but non-convex and has several advantages \cite{hendrycks_gaussian_2020}. ReLU and GELU are visualized in  \figref{fig:relu_gelu}. 
 
+\subsection{Softmax}
+
+Softmax function is generalization upon sigmoid function and used for multinomial classifications. It is smooth type of $\argmax$ operator. Assume that there is a vector $x \in \mathbb{R}^K$. Softmax assigns probability values to each element, summing up to 1. It is defined as,
+\begin{equation}
+\label{eqn:softmax_fcn}
+\text{softmax}(x) = \frac{\exp(x)}{\sum \exp(x)},
+\end{equation}
+where exponentiation in denominator applied elementwise and denominator is scalar.
+
 \subsection{Layer Normalization}
 
 Layer normalization is a layer to overcome unstablity and divergence during learning~\cite{ba_layer_2016}. 
@@ -96,4 +105,4 @@ Optionally, the result is scaled by elementwise multiplication by $\gamma \in \m
 \label{eqn:layernorm}
 \mathrm{LN}(x) = \frac{x-\mu}{\sigma+\epsilon} * \gamma + \beta,
 \end{equation}
-where $\gamma$  $\beta$ are learnable parameters. 
+where $\gamma$ and $\beta$ are learnable parameters. 
