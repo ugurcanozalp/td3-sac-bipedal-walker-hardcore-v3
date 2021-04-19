@@ -1,12 +1,12 @@
 \section{Sequential Decision Making}
 \label{sec:decision_making}
 
-RL is stochastic control process in discrete time~\cite{sutton_reinforcement_1998}. 
+RL is a stochastic control process in discrete time~\cite{sutton_reinforcement_1998}. 
 At time $t$, the agent starts with state $s_t$ and observes $o_t$, 
 then takes action $a_t$ according to its policy $\pi$ and obtains reward $r_t$ at time $t$. 
-Then state transition to $s_{t+1}$ as a consequence of action and agent observes next observation $o_{t+1}$. 
+Then state transition to $s_{t+1}$ occurs as a consequence of action and agent observes next observation $o_{t+1}$. 
 History is set of past actions observations and rewards, $h_t=\{ a_0, o_0, r_0, ... a_t, o_t, r_t\}$. 
-State $s_t$ is function of the history, $s_t=f(h_t)$, which represents situtaion of environment as much as possible. 
+State $s_t$ is a function of the history, $s_t=f(h_t)$, which represents situation of environment as much as possible. 
 The RL diagram is visualized in \figref{fig:rl_diagram}. 
 \begin{figure}
 	\centering

@@ -6,9 +6,9 @@
 Structure of perceptron make a way for feed forward neural layers. 
 Unlike stated above, a neural layer might output multiple values (say $o \in \mathbb{R}^{1 \times d_o}$) as vector from input (say $x \in \mathbb{R}^{1 \times d_x}$). 
 Such a setting forces parameter $W \in \mathbb{R}^{d_x \times d_o} $ to be a matrix. 
-Moreover, activation function is not necessariliy step function. 
+Moreover, activation function is not necessarily step function. 
 It can be any nonlinear function like sigmoid, tanh, ReLU etc. 
-Feed Forward Neural Networks are generalization of perceptron to approximate any function $f^*$. 
+Feed Forward Neural Networks are the generalization of perceptron to approximate any function $f^*$. 
 Neural layers are stacked to construct deep feed forward neural network. 
 It defines a nonlinear mapping $y=f(x;\theta)$ between input $x$ and output $y$, parametrized by $\theta$ which is set of all learnable parameters like weights, bias and other possible values.
 
@@ -39,7 +39,7 @@ The difference is demonstrated in \figref{fig:rffnn_ffnn}.
 
 Recurrent Neural Networks (RNNs) \cite{rumelhart_learning_1986} are type of neural network to process sequential data. 
 It is specialized for data having sequential topology. 
-It is used commonly used for sequence based applications. 
+It is commonly used for sequence based applications. 
 
 In FFNN layer, output only depends on its input, while Recurrent Layer output is dependent on both input at time $t$ and its output in previous time step $t-1$. 
 
@@ -184,7 +184,7 @@ Both encoder and decoder contains \textbf{Feed Forward Layer}, containing two li
 \end{equation}
 
 \textbf{Encoder Layer} starts with a residual self attention layer. 
-Self attention means that query, key and value are same vectors. 
+Self attention means that query, key and value are the same vectors. 
 Then it is followed by feed forward neural layer. 
 Both sublayers are employed with resudial connection with layer normalization, 
 i.e summation of layer input and output is passed through layer normalization. 
@@ -197,7 +197,7 @@ y = & \mathrm{LN}(a + \mathrm{FFN}(att))
 
 \textbf{Decoder Layer} has also self-attention and feed forward layers similar to encoder layer. 
 In addition, there is another attention layer which is over encoder outputs. 
-Same as encoder, all sublayers have resudial connection with layer normalization. 
+Same as encoder, all sublayers have residual connection with layer normalization. 
 Let's call encoded sequence $e \in \mathbb{R}^{T \times d_m}$ and decoded sequence $d \in \mathbb{R}^{T \times d_m}$ (masked). 
 Assume that the sequence decoded up to $t$th point in sequence. 
 Then, $d_{t+1}$ is calculated as follows. 
@@ -224,7 +224,7 @@ as proposed in the original paper.
 \subsubsection{Pre-Layer Normalized Transformer}
 
 Original transformer architecture includes layer normalization operations after attention and feed-forward layers. 
-It is unstable since gradients of output layers are high, so Pre-Layer Normalized transformer is proposed by \cite{xiong_layer_2020} by carrying layer normalization operation to in front of attention and feed-forward layers. 
+It is unstable since the values of gradients of output layers are high, so Pre-Layer Normalized transformer is proposed by \cite{xiong_layer_2020} by carrying layer normalization operation to in front of attention and feed-forward layers. 
 Moreover, Parisotto et al. Xiong et al.~ \cite{parisotto_stabilizing_2019} proposed gated transformer which also includes layer normalizations before attention and feedforward layer. 
 They also stated that although gated architecture improves many RL tasks drastically, non-gated pre-layer normalized transformer are good enough. 
 

@@ -1,7 +1,7 @@
 \section{Model Free Reinforcement Learning}
 \label{sec:mf_rl}
 
-Model based methods are based on solving bellman equation \eqref{eqn:bellman_v}, \eqref{eqn:bellman_q} with given model $T$. 
+Model based methods are based on solving Bellman equation \eqref{eqn:bellman_v}, \eqref{eqn:bellman_q} with given model $T$. 
 On the other hand, Model Free Reinforcement Learning is suitable 
 if environment model is not available but agent can experience environment by consequences of its actions. There are 3 main types. 
 
@@ -12,10 +12,10 @@ if environment model is not available but agent can experience environment by co
 	
 	\item[Policy Based Learning] Policy is learned directly, 
 	return values are used instead of learning a value function. 
-	Unlike value based methods, it is suitable for continious action spaces. 
+	Unlike value based methods, it is suitable for continuous action spaces. 
 	
 	\item[Actor Critic Learning] Both policy (actor) and value (critic) functions are learned simulatenously. 
-	It is also suitable for continious action spaces. 
+	It is also suitable for continuous action spaces. 
 	
 \end{description}
 
@@ -37,7 +37,7 @@ $Q$ values are updated by minimizing difference between target value and estimat
 with respect to $\theta$ using numerical optimization methods. 
 
 \subsubsection{Deep Q Learning}
-Deep Q Learning overcomes instability of Q Learning, using Deep Q Network (DQN). 
+Deep Q Learning overcomes the instability of Q Learning, using Deep Q Network (DQN). 
 When a nonlinear approximator is used, learning is unstable. 
 Deep Q Learning introduces Target Network and Experience Replay \cite{mnih_human-level_2015, mnih_playing_2013}. 
 
@@ -50,7 +50,7 @@ Target value is obtained by using $\theta^-$,
 Y_t^{DQN} = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta^-).
 \end{equation}
 
-\textbf{Experience Replay} stores experience tuples in a replay memory $\mathcal{D}$ as queue with fixed buffer size $N_{replay}$. 
+\textbf{Experience Replay} stores experience tuples in the replay memory $\mathcal{D}$ as a queue with fixed buffer size $N_{replay}$. 
 At each iteration $i$, $\theta$ is updated by experiences uniformly subsampled from experience replay by minimizing loss
 \begin{equation}
 \label{eqn:dqn_loss}
@@ -59,7 +59,7 @@ At each iteration $i$, $\theta$ is updated by experiences uniformly subsampled f
 It allows agent to learn from experiences multiple times at different stages of learning. More importantly, sampled experiences are close to be independent and identically distributed if buffer size is high enough. 
 This makes learning process more stable. 
 
-As stated in \chapref{sec:chal}, exploration is an important step for reinforcement learning algorithms. 
+As stated in \chapref{sec:chal}, exploration is an important step for RL algorithms. 
 \textbf{Epsilon Greedy Exploration} is used to let agent explore environment. 
 In discrete action space (finite action space $\mathcal{A}$), this is 
 simplest exploration strategy.
@@ -115,7 +115,7 @@ Learning process is same with DQN except target value.
 
 \subsection{Actor Critic Learning}
 
-Value based methods are not suitable for continious action spaces. 
+Value based methods are not suitable for continuous action spaces. 
 Therefore, policy is explicitly defined instead of maximizing $Q$ function. 
 For such problems, actor-critic type learning methods which uses both value and policy models seperately. 
 Policy functions can be either stochastic or deterministic as stated in \chapref{sec:policy_control}.  
@@ -133,7 +133,7 @@ Therefore, value function is the criteria to be maximized by solving parameters 
 \mathcal{L}_t(\theta^\pi) = - Q(s_t, \widetilde{a}_t;\theta^Q), \quad \widetilde{a}_t \sim \pi(\cdot|s_t;\theta^\pi).
 \end{equation}
 
-In order to learn policy $\pi$, $Q$ function should also be learned simulatenously. 
+In order to learn policy $\pi$, $Q$ function should also be learned simultaneously. 
 For $Q$ function approximation, target value is parametrized by $\theta^Q$ and $\theta^\mu$,
 \begin{equation}
 \label{eqn:ac_target}
@@ -145,7 +145,7 @@ And this target is used to learn $Q$ function by minimizing least squares loss,
 \mathcal{L}_t(\theta^Q) = \big( Y_t^{AC} - Q(s_t,a_t;\theta^Q) \big) ^ 2.
 \end{equation}
 
-Note that both actor and critic should be learned at the same time. Therefore, parameters are updated simulatenously during learning iterations. 
+Note that both actor and critic should be learned at the same time. Therefore, parameters are updated simultaneously during learning iterations. 
 
 \subsubsection{Deep Deterministic Policy Gradient}
 Deep Deterministic Policy Gradient (DDPG) is continuous compliment of DQN using deterministic policy~\cite{lillicrap_continuous_2019}. 
@@ -154,7 +154,7 @@ Similar to Deep Q Learning, there are target networks parametrized by $\theta^{\
 along with main networks parametrized by $\theta^{\mu}$ and $\theta^{Q}$. 
 
 While target networks are updated in fixed number of steps in DQN, 
-DDPG updates target network parameters at each step with polyak averaging, 
+DDPG updates target network parameters at each step with Polyak averaging, 
 \begin{equation}
 \label{eqn:target_update}
 \theta^- \leftarrow \tau \theta + (1-\tau) \theta^- .
@@ -181,8 +181,8 @@ In each iteration, this target is used to learn $Q$ function by minimizing least
 
 In DDPG, value and policy network parameters are learned simultaneously. 
 During learning, exploration noise is added to each selection. 
-In original paper~\cite{lillicrap_continuous_2019}, authors proposed to use Ornstein Uhlenbeck Noise~\cite{uhlenbeck_theory_1930} which has temporal correlation for efficiency. 
-However, simple gaussian noise or another noise is also possible. 
+In original paper~\cite{lillicrap_continuous_2019}, authors proposed to use Ornstein-Uhlenbeck Noise~\cite{uhlenbeck_theory_1930} which has temporal correlation for efficiency. 
+However, simple Gaussian noise or another noise is also possible. 
 
 Algorithm is summarized in Algorithm \ref{alg:ddpg}. 
 \begin{algorithm}
@@ -214,7 +214,7 @@ Algorithm is summarized in Algorithm \ref{alg:ddpg}.
 	\label{alg:ddpg}
 \end{algorithm}
 
-\textbf{Ornstein-Uhlenbeck Process} is continious analogue of discrete first order autoregressive (AR(1)) process~\cite{uhlenbeck_theory_1930}. 
+\textbf{Ornstein-Uhlenbeck Process} is continuous analogue of discrete first order autoregressive (AR(1)) process~\cite{uhlenbeck_theory_1930}. 
 The process $x$ is defined by a stochastic differential equation,
 \begin{equation}
 \label{eqn:ou_process}
@@ -233,10 +233,10 @@ A sample with different parameters is visualized in \figref{fig:ou_vs_gaussian}.
 \end{figure}
 
 \subsubsection{Twin Delayed Deep Deterministic Policy Gradient}
-Twin Delayed Deep Deterministic Policy Gradient (TD3)~\cite{fujimoto_addressing_2018} is improved version of DDPG with higher stability and efficiency. 
+Twin Delayed Deep Deterministic Policy Gradient (TD3)~\cite{fujimoto_addressing_2018} is an improved version of DDPG with higher stability and efficiency. 
 There are three main tricks upon DDPG. 
 
-\textbf{Target Policy Smoothing} to regularize learning process by smoothing effects of actions on value. For target value assesing, actions are obtained from target policy network in DDPG, while a clipped zero centered gaussian noise is added to actions in TD3 as follows,
+\textbf{Target Policy Smoothing} to regularize learning process by smoothing effects of actions on value. For target value assessing, actions are obtained from target policy network in DDPG, while a clipped zero centered Gaussian noise is added to actions in TD3 as follows,
 \begin{equation}
 \label{eqn:td3_target_action}
 \widetilde{a}' = \mu(s';\theta^{\mu^-}) + \text{clip}(\epsilon, -c, c), \quad \epsilon \sim \mathcal{N}(0, \sigma).
@@ -302,9 +302,9 @@ Algorithm is summarized in Algorithm \ref{alg:td3}.
 %%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection{Soft Actor Critic}
-Soft Actor Critic (SAC)~\cite{haarnoja_soft_2018} is as stochastic actor critic method and other characteristics are similar to TD3 and DDPG. Its main advantage is that it learns to maximize exploration with entropy regularization. 
+Soft Actor Critic (SAC)~\cite{haarnoja_soft_2018} is a stochastic actor critic method and other characteristics are similar to TD3 and DDPG. Its main advantage is that it learns to maximize exploration with entropy regularization. 
 
-SAC is an entropy regularized RL method. Such methods gives bonus reward to agent propotional to policy entropy. Given state $s$, entropy of a policy is defined as,
+SAC is an entropy regularized RL method. Such methods give bonus reward to agent propotional to policy entropy. Given state $s$, entropy of a policy is defined as,
 \begin{equation}
 \label{eqn:policy_entropy}
 H(\pi(\cdot|s)) = \mathbb{E}_{\widetilde{a}\sim\pi(\cdot|s)}[-\log(\pi(\widetilde{a}|s))]
@@ -316,7 +316,7 @@ Given entropy coefficient $\alpha$, definition of state-action value function is
 Q^{\pi}(s,a) = \mathbb{E}_{\substack{s'\sim T(\cdot|s,a)\\\widetilde{a}'\sim \pi(\cdot|s')} } \Big[r + \gamma \Big(Q^{\pi}(s',\widetilde{a}') -\log(\pi(\widetilde{a}'|s') \Big) \Big]. %\quad \forall t = 0,1, ...
 \end{equation}
 
-This modification changes $Q$ value target definition of TD3 as,
+This modification changes $Q$ value target definition,
 \begin{equation}
 \label{eqn:q_target_sac}
 Y_t^{SAC} = r_t + \gamma \Big(\min_{k\in\{1,2\}} Q(s_{t+1}, ;\widetilde{a}_{t+1};\theta^{Q_k^-}) -\alpha\log(\pi(\widetilde{a}_{t+1}|s_{t+1})) \Big), \quad \widetilde{a}_{t+1} \sim \pi(\cdot|s_{t+1}).
@@ -327,7 +327,7 @@ Unlike TD3, policy updated according to minimum value of $Q$, while in TD3, poli
 \mathcal{L}_i(\theta^\pi_i) = - \mathbb{E}_{\substack{s \sim U(\mathcal{D})\\\widetilde{a} \sim \pi(\cdot|s)}} \Big[ \min_{k\in\{1,2\}} Q(s, \widetilde{a};\theta^{Q_k^-}) - \alpha\log(\pi(\widetilde{a}|s;\theta^\pi_i)) \Big].
 \end{equation}
 
-Since policy function is stochastic in SAC, it must be parametrized probability disribution. Most common one is 
+Since policy function is stochastic in SAC, it must be a parametrized probability disribution. Most common one is 
 Squashed Gaussian policy to squash actions in $(-1,1)$ range by $\tanh$ function, which has parametrized mean and standart deviation, i.e $\theta^{\pi}=(\theta^{\mu}, \theta^{\sigma})$. Actions are sampled as,
 \begin{equation}
 \label{eqn:squashed_gp_sampling}

@@ -4,13 +4,13 @@
 The Reinforcement Learning Environment poses a variety of obstacles 
 that we need to address and potentially make trade-offs among them~\cite{dulac-arnold_challenges_2019, sutton_reinforcement_1998}.
 
-\subsection{Exploration Explotation Dilemma}
+\subsection{Exploration Exploitation Dilemma}
 
-A RL agent is supposed to maximize rewards (explotation of knowledge) by observing the environment (exploration of environment). 
+A RL agent is supposed to maximize rewards (exploitation of knowledge) by observing the environment (exploration of environment). 
 This gives rise to the exploration-exploitation dilemma which is inevitable trade-off. 
 Exploration is taking a range of acts to benefit about the consequences. 
 Typically results in low immediate rewards and high rewards for the future. 
-Explotation is taking action that has been learned. Typically results in high immediate rewards and low rewards in the future. 
+Exploitation is taking action that has been learned. Typically results in high immediate rewards and low rewards in the future. 
 
 \subsection{Generalization and Curse of Dimensionality}
 
@@ -20,7 +20,7 @@ This is solved by introducing function approximators. In Deep Reinforcement Lear
 
 \subsection{Delayed Consequences}
 
-A RL agent should be aware reason of reward or punishment. 
+A RL agent should be aware of the reason of reward or punishment. 
 Once it gets reward or punishment, it should be able to discriminate whether reward is caused by instant or past actions. 
 
 \subsection{Partial Observability}

@@ -18,10 +18,10 @@ Therefore, agent can decide action based on only instant observation $o_t$ inste
 	\item[Reward Function $R \colon \mathcal{S} \times \mathcal{A} \mapsto \mathbb{R}$] Function of rewards coming from environment. 
 	At each state transition $s_t \rightarrow s_{t+1}$, a reward $r_t$ is given to agent. 
 	Rewards can be either deterministic or stochastic. 
-	Reward function is expected value of reward at given state $s$ and taken action $a$, defined by 
+	Reward function is the expected value of reward at given state $s$ and taken action $a$, defined by,
 	\begin{equation}
 	R(s,a) = \mathbb{E}[r_t|s_t=s, a_t=a]. %\: \forall t = 0,1, ...
 	\end{equation}
 	
-	\item[Discount Factor $\gamma \in \lbrack 0,1 \rbrack$] Measure of importance of rewards in the future for value function.
+	\item[Discount Factor $\gamma \in \lbrack 0,1 \rbrack$] Measure of the importance of rewards in the future for value function.
 \end{description}

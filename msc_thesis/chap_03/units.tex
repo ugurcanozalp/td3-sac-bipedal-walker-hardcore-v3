@@ -76,7 +76,7 @@ is a simple function mapping negative values to zero while passing positive valu
 \label{eqn:gelu_fcn}
 \textrm{GELU}(x) = x \Phi(x) = \frac{x}{2} \bigg[ 1 + \textrm{erf} \Big( \frac{x}{\sqrt{2}} \Big) \bigg],
 \end{equation}
-is smoothed version of ReLU function. It is continious but non-convex and has several advantages \cite{hendrycks_gaussian_2020}. ReLU and GELU are visualized in  \figref{fig:relu_gelu}. 
+is smoothed version of ReLU function. It is continuous but non-convex and has several advantages \cite{hendrycks_gaussian_2020}. ReLU and GELU are visualized in  \figref{fig:relu_gelu}. 
 
 \subsection{Softmax}
 
@@ -89,7 +89,7 @@ where exponentiation in denominator applied elementwise and denominator is scala
 
 \subsection{Layer Normalization}
 
-Layer normalization is a layer to overcome unstablity and divergence during learning~\cite{ba_layer_2016}. 
+Layer normalization is a layer to overcome instability and divergence during learning~\cite{ba_layer_2016}. 
 Given an input $x \in \mathbb{R}^K$, mean and variance statistics are evaluated along the dimensions as  
 \begin{equation}
 \label{eq:layernorm_statistics}

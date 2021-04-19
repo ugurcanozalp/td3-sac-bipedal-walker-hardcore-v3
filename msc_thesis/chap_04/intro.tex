@@ -3,7 +3,7 @@
 
 \section{Details of the Environment}
 
-\textit{BipedalWalker-v3} and \textit{BipedalWalker-Hardocore-v3} are simulation environments of a bipedal robot, 
+\textit{BipedalWalker-v3} and \textit{BipedalWalker-Hardcore-v3} are simulation environments of a bipedal robot, 
 with relatively flat course and obstacle course respectively. 
 Dynamics of the robot are exactly identical in both environments. 
 Our task is to solve hardcore version where the agent is expected to learn to run and walk in different road conditions. 
@@ -70,7 +70,7 @@ Therefore reward is shaped accordingly.
 Directly proportional to distance traveled forward, +300 points given if agent reaches end of path. 
 -10 points (-100 points in original version) if agent falls, 
 and small amount of negative reward proportional to applied motor torque (to prevent applying unnecessary torque). 
-Lastly, the robots gets negative reward propotional to absolut value of hull angle for reinforcing to keep hull straigth. 
+Lastly, the robots gets negative reward propotional to absolute value of hull angle for reinforcing to keep hull straigth. 
 
 \subsection{Partial Observability}
 
@@ -107,8 +107,8 @@ The environment is partially observable due to following reasons.
 \end{figure}
 
 In DRL, partial observability is handled by 2 ways in literature~ \cite{dulac-arnold_challenges_2019}. 
-First is incorprating fixed number of last observations while second way is updating hidden belief state using recurrent neural network at each time step. 
-Our approach is using fixed number of past observation into LSTM and Transformer based networks for both actor and critic networks. 
+First is incorporating fixed number of last observations while second way is updating hidden belief state using recurrent neural network at each time step. 
+Our approach is using fixed number of past observations into LSTM and Transformer based networks for both actor and critic networks. 
 
 \subsection{Reward Sparsity}
 
@@ -128,7 +128,7 @@ Therefore, following modifications are proposed.
 \begin{itemize}
 	\item In original version, agent gets -100 points when its hull hits the floor. 
 	In order to make the robot more greedy, this is changed to -10 points. 
-	Otherwise, agent cannot explore environment since it gets too much punisment when failed.
+	Otherwise, agent cannot explore environment since it gets too much punishment when failed.
 	\item Time frequency of simulation is halved (from 50 Hz to 25 Hz) by only observing last of each two consecutive frames using a custom wrapper function. 
 	Since there is not a high frequency dynamics, this allows nothing but speeding up the learning process.
 	\item In original implementation, an episode has time limit. 
