@@ -45,5 +45,5 @@ if __name__=='__main__':
     file_names = ["train-hardcore-ff-sac.txt", "train-hardcore-lstm-sac.txt", "train-hardcore-trsf-sac.txt"]
     model_types = ["RFFNN", "LSTM", "TRSF"]
     rl_type = "SAC"
-    plot_type = 1
+    plot_type = 0
     plot_result(file_names, model_types, rl_type, plot_type)
