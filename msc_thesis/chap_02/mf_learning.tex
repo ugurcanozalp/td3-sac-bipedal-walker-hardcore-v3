@@ -164,7 +164,7 @@ The $\tau$ is an hyperparameter indicating how slow the target network is update
 Policy network parameters are learned by maximizing resulting expected value, or minimizing its negative,
 \begin{equation}
 \label{eqn:ddpg_policy_loss}
-\mathcal{L}_i(\theta^\mu_i) = \mathbb{E}_{s \sim U(\mathcal{D})} \Big[ -Q(s, \mu(s_t;\theta^\mu_i);\theta^Q) \Big].
+\mathcal{L}_i(\theta^\mu_i) = -\mathbb{E}_{s \sim U(\mathcal{D})} \Big[ Q(s, \mu(s\theta^\mu_i);\theta^Q) \Big].
 \end{equation} 
 Note that value network parameters are also assumed to be learned. 
 

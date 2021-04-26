@@ -11,8 +11,13 @@ The environment is a difficult one.
 There are really few available models which gets close to a solution. 
 Apart from neural networks, there are other factors affecting performance such as RL algorithm, rewarding, exploration etc. 
 In this work, all of them are manipulated such that the environment becomes solvable. 
-TD3 algorithm is selected since it is a good choice for continuous RL. 
-Punishment of failing reduced, so the agent is allowed to learn by mistakes. 
-Ornstein-Uhlenbeck noise is used for better exploration since it has momentum, and its variance reduced by time to make agent learn small actions well in late episodes. 
 Time frequency is reduced for sample efficiency and speed. 
-Lastly, the agent is not informed for terminal state when it reaches time limit, because it is logically wrong. Those modifications seems to be behind getting close to a solution. 
+Also, the agent is not informed for terminal state when it reaches time limit, because it is logically wrong. Those modifications seems to be behind getting close to a solution. 
+Lastly, Punishment of failing reduced, so the agent is allowed to learn by mistakes. 
+
+As RL algorithm, TD3 is selected first, since it is a good choice for continuous RL. 
+Ornstein-Uhlenbeck noise is used for better exploration since it has momentum, and its variance reduced by time to make agent learn small actions well in late episodes. 
+In addition, SAC is used for learning along with TD3. Results seem better compared to TD3. 
+SAC policy maximizes randomness (entropy) in policy if agent cannot get sufficient reward and this allows to decide where/when to explore more and less. 
+The environment has sparse rewards, so SAC might be handled this problem better compared to TD3 thanks to this reason.
+

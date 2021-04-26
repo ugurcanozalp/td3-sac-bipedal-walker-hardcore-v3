@@ -7,7 +7,7 @@ In this thesis, bipedal robot walking is investigated by deep  reinforcement lea
 For real world robot control by RL, simulation is an important step. 
 Usually, models are pretrained in simulation environment before learning in reality due to safety and exploration reasons. 
 
-TD3 algorthim is used since it is robust and well suited for continuous control. 
+TD3 and SAC algorthims are used since it is robust and well suited for continuous control. 
 Also, environment is slightly modified by reward shaping, halving simulation frequency, cancelling terminal state information at time limit so that learning becomes easier.  
 As stated in previous chapters, most of the real world environments are partially observable. 
 In BipedalWalker-Hardcore, the environment is also partially observable since agent cannot observe behind of it lacks of acceleration sensors which is better to have for controlling mechanical systems. 
@@ -23,3 +23,4 @@ Transformer model worked with the best performance among all models.
 It is surprising because it is not succesfully used in RL problems in general. 
 In natural language processing, this type of attention models completely replaced recurrent models, and our results seems promising for this in RL domain. 
 
+The environment was difficult for exploration. SAC performed better than TD3, handling exploration problem since they do not require hyperparameters for exploration, learn randomness during iterations. 
