@@ -54,8 +54,8 @@ python main_script -f test -m lstm -c ep4900
 
 # Author
 
-![https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white]({https://www.linkedin.com/in/ugurcanozalp/})
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ugurcanozalp/)
 
-![https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white]({https://medium.com/@uurcann94})
+[![Medium](https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@uurcann94)
 
-![https://img.shields.io/badge/Stack_Overflow-FE7A16?style=for-the-badge&logo=stack-overflow&logoColor=white]({https://stackoverflow.com/users/11985314/u%c4%9fur-can-%c3%96zalp})
+[![StackOverFlow](https://img.shields.io/badge/Stack_Overflow-FE7A16?style=for-the-badge&logo=stack-overflow&logoColor=white)](https://stackoverflow.com/users/11985314/u%c4%9fur-can-%c3%96zalp)
