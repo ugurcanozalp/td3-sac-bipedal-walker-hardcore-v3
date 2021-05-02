@@ -1,8 +1,8 @@
-# Bipedal Walker Hardcore (and Classic) with TD3
+# Bipedal Walker Hardcore (and Classic) with TD3 and SAC
 
 Bipedal Walker environments of GYM are difficult problems to solve by reinforcement learning. 
 
-In this repository, my thesis work is available. Various neural network architectures and RL methods implementations for solving BipedalWalker-v3 and BipedalWalkerHardcore-v3 of GYM on PyTorch using Deep Deterministic Policy Gradient (DDPG) and Twin Delayed DDPG (TD3). 
+In this repository, my thesis work is available. Various neural network architectures and RL methods implementations for solving BipedalWalker-v3 and BipedalWalkerHardcore-v3 of GYM on PyTorch using Soft Actor Critic (SAC) and Twin Delayed DDPG (TD3). 
 
 ## Neural Nets
 - [x] Feed Forward Neural Network with Residual connection
@@ -10,13 +10,13 @@ In this repository, my thesis work is available. Various neural network architec
 - [x] Bidirectional Long Short Term Memory (4 last observations)
 - [x] Transformer (4 last observations)
 
-Only Hardcore environment is solved by TD3 algorithm. Reward is manipulated and frame rate is halved. 
+Only Hardcore environment is solved by TD3 and SAC algorithms. Reward is manipulated and frame rate is halved. 
 
 
-#### Feed Forward Neural Network with Residual connection (Episode 4000)
+#### Feed Forward Neural Network with Residual connection (TD3) (Episode 4000)
 ![FeedForward](results/video/ff-td3-slow.gif)
 
-#### Transformer (Episode 4600)
+#### Transformer (TD3) (Episode 4600)
 ![Transformer](results/video/trsf-td3-slow.gif)
 
 # How to
@@ -54,3 +54,8 @@ python main_script -f test -m lstm -c ep4900
 
 # Author
 
+![https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white]({https://www.linkedin.com/in/ugurcanozalp/})
+
+![https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white]({https://medium.com/@uurcann94})
+
+![https://img.shields.io/badge/Stack_Overflow-FE7A16?style=for-the-badge&logo=stack-overflow&logoColor=white]({https://stackoverflow.com/users/11985314/u%c4%9fur-can-%c3%96zalp})
