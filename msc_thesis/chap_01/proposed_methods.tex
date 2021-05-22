@@ -4,21 +4,19 @@
 Partially observable environments are always a hard work for reinforcement learning algorithms. 
 In this work, the walker environment assumed as fully observable environment at first. 
 A Residual Feed-Forward Neural Network architecture is proposed to control 
-the robot under fully observability assumption since no memory is used during decision making. 
+the robot under fully observability assumption due to the fact that no memory is used during decision making. 
 Then, the environment is assumed to be partially observable. 
 In order to recover belief states, Long Short Term Memory (LSTM) and 
 Transformer neural networks are proposed using fixed number of 
-last observations (4 in our case) during decision making. 
+past observations (4 in our case) during decision making. 
 
-LSTMs are used in many deep learning applications which includes sequential data. 
-It is a variant of Recurrent Neural Networks (RNN). 
-It is a good candidate for RL algorithms which solves partially observable environments. 
+LSTM is used in many deep learning applications including sequential data. 
+It is a variant of Recurrent Neural Networks (RNN) and a good candidate for RL algorithms to be applied in partially observable environments. 
 
-Transformers are developed to handle sequential data as RNN models does. 
-However, it processes the whole sequence at the same time, while RNNs process the sequence in order. 
-It replaced RNNs in Natural Language Processing (NLP) tasks over RNNs due to its major improvements. 
-However, this is not the case for Reinforcement Learning, yet.
+Transformer is developed to handle sequential data as RNN models do. 
+However, it processes the whole sequence at the same time, while RNN processes the sequence in order. 
+Transformers are commonly used in Natural Language Processing (NLP) thanks to major performance improvements, however, this is not the case for Reinforcement Learning, yet.
 
-In order to handle reward sparsity problem, reward function is reshaped. Also, a exploration strategy is formed such that agent both explores and learns well. 
+In order to handle the reward sparsity problem, reward function is reshaped in this thesis. Also, a exploration strategy is formed so that the agent both explores and learns sufficiently well. 
 
-As RL algorithm, Twin Delayed Deep Deterministic Policy Gradient (TD3) and Soft Actor Critic (SAC) is used. TD3 is improved version of Deep Deterministic Policy Gradient (DDPG) Algorithm. And SAC is stochastic type of RL method which encourages agent to explore without explicit exploration definition.
+In this thesis, as a RL algorithm, Twin Delayed Deep Deterministic Policy Gradient (TD3) and Soft Actor Critic (SAC) are chosen. TD3 is an improved version of Deep Deterministic Policy Gradient (DDPG) Algorithm; and SAC is a stochastic type of RL methods and lets the agent to learn how much to explore depending on observations.

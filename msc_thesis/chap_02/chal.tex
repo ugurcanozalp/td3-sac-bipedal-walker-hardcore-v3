@@ -7,32 +7,33 @@ that we need to address and potentially make trade-offs among them~\cite{dulac-a
 \subsection{Exploration Exploitation Dilemma}
 
 A RL agent is supposed to maximize rewards (exploitation of knowledge) by observing the environment (exploration of environment). 
-This gives rise to the exploration-exploitation dilemma which is inevitable trade-off. 
-Exploration is taking a range of acts to benefit about the consequences. 
-Typically results in low immediate rewards and high rewards for the future. 
-Exploitation is taking action that has been learned. Typically results in high immediate rewards and low rewards in the future. 
+This gives rise to the exploration-exploitation dilemma which is an inevitable trade-off. 
+Exploration means taking a range of acts to benefit about the consequences, which typically results in low immediate rewards but high rewards for the future. 
+Exploitation means taking action that has been learned, and typically results in high immediate rewards but low rewards in the future. 
 
 \subsection{Generalization and Curse of Dimensionality}
 
-A RL agent should also be able to generalize experiences to act on unseen situation before. 
-This issue arises when state space and action space is high dimensional since experiencing all possibilities is impractical. 
-This is solved by introducing function approximators. In Deep Reinforcement Learning, neural networks are used as function approximator. 
+A RL agent should also be able to generalize experiences to act on previously unseen situations. 
+This issue arises when state space and action space is high-dimensional since experiencing all possibilities is impractical. 
+However, this is solved by introducing function approximators. In Deep Reinforcement Learning, neural networks are used as function approximators. 
 
 \subsection{Delayed Consequences}
 
 A RL agent should be aware of the reason of reward or punishment. 
-Once it gets reward or punishment, it should be able to discriminate whether reward is caused by instant or past actions. 
+Sometimes, a wrong action may cause punishment later. 
+For example, once a self-driving car enters a dead end way, it is not punished unless the way ends. 
+Therefore, once an agent gets a reward or punishment, it should be able to discriminate whether reward is caused by instant or past actions. 
 
 \subsection{Partial Observability}
 
-Partial observability is absence of all required observation to infer instant state. 
-For instance, a driver does not know engine temperature or rotational speed of gears. 
-Although driver is able to drive in that case, s/he would not be able to drive well on traffic in absence of rear view mirror or side mirror. 
-In real world, most of systems are partially observable. 
-This problem is usually tackled by incorprating observation history from agents memory in acting. 
+Partial observability is the absence of all required observations to infer the instant state. 
+For instance, a driver may not need to know engine temperature or rotational speed of gears. 
+Although driver is able to drive in that case, s/he would not be able to drive well on traffic in the absence of rear view mirror or side mirrors. 
+In real world, most systems are partially observable. 
+This problem is usually tackled by incorporating observation history from the agents memory for action selection. 
 
 \subsection{Safety of Agent}
 
 Mechanical agents can kill or degrade themselves and their surroundings. 
 This safety problem is important on both exploration stage and full operation. 
-Simulation of environment is a good way to train agent with safety but causes incomplete learning due to inaccuracy compared to real environment. 
+Simulation of environment is a good way to train the agent with safety but this causes an incomplete learning due to inaccuracy compared to the real environment. 

@@ -2,16 +2,16 @@
 \label{sec:pomdp}
 
 In MDP, agent observes states as it is. 
-However, observation space is not enough to represent all information (state) about environment sometimes. 
+However, observation space is not enough to represent all information (states) about in the environment sometimes. 
 In such cases, past and instant observations are used to filter out a belief state. 
 It is represented as a tuple $(\mathcal{S},\mathcal{A},T,R,\mathcal{O},O,\gamma)$. 
-In addition to MDP, it introduces observation space $\mathcal{O}$ and observation model $O$ \cite{francois-lavet_introduction_2018}. 
+In addition to MDP, it introduces observation space $\mathcal{O}$ and observation model $O$ \cite{francois-lavet_introduction_2018}: 
 
 \begin{description}
-	\item[Observation Space $\mathcal{O}$] A set of all possible observations of agent.
-	\item[Observation Model $O \colon \mathcal{O} \times \mathcal{S} \rightarrow \lbrack 0,1 \rbrack$] Function of how observations are related to states, 
+	\item[Observation Space $\mathcal{O}$]. A set of all possible observations of the agent.
+	\item[Observation Model $O \colon \mathcal{O} \times \mathcal{S} \rightarrow \lbrack 0,1 \rbrack$]. A function of how observations are related to the states, 
 	representing observation probabilities as $O(o|s) = p(o|s)$ 
-	where $s \in \mathcal{S}$ is instant state and $o \in \mathcal{O}$ is observation.
+	where $s \in \mathcal{S}$ is the instant state and $o \in \mathcal{O}$ is the observation.
 \end{description}
 
-Since states are not observed directly, agent must use observations while deriving a control policy. 
+Since states are not observed directly, the agent needs to use the observations while deriving a control policy. 

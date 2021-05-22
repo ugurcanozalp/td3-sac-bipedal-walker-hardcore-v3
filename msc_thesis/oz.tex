@@ -1,9 +1,9 @@
-Mekanik kontrol üzerine Derin Pekiştirmeli Öğrenme yöntemleri birçok ortamda başarılıdır ve bazı karmaşık problemlerde geleneksel optimal ve uyarlanabilir kontrol yöntemleri yerine kullanılır. 
-Ancak, Derin Pekiştirmeli Öğrenme algoritmalarının hala zorlukları vardır. 
-Bunlardan biri kısmen gözlemlenebilir ortamlarda kontroldür. 
-Bir özne ortam hakkında yeterince bilgilendirilmediğinde, geçmiş gözlemleri anlık gözlemlere ek olarak kullanmalıdır. 
-Bu tezde, kısmi gözlemlenebilir olan Bipedal Walker (Çift bacaklı yürüyen robot, OpenAI GYM) ortamının yürüyüşü, sürekli aktör-eleştirmen pekiştirmeli öğrenme algoritması olan İkiz Gecikmeli Derin Belirleyici Poliçe Gradyanı ve Hafif Aktör Eleştirmen metodları ile incelenmiştir.
-Çalışmada birkaç sinir mimarisi uygulanmıştır. 
-Birincisi, gözlemlenebilir ortam varsayımı altında artık bağlantıya sahip ileri beslemeli sinir ağı iken, ikinci ve üçüncü olanlar, 
-ortamın kısmen gözlemlenebilir olduğu varsayıldığından girdi olarak gözlem geçmişini kullanan Uzun Kısa Süreli Bellek (LSTM) ve Dönüştürücüdür (Transformer). 
-Ek olarak, öğrenme sürecini kolaylaştırmak için ortamda değişiklikler yapılmıştır. 
+Mekanik kontrol üzerine Derin Pekiştirmeli Öğrenme yöntemleri birçok ortamda başarıyla uygulanmış ve bazı karmaşık problemler için geleneksel optimal ve uyarlanabilir kontrol yöntemleri yerine kullanılmıştır.
+Bununla birlikte, Derin Pekiştirmeli Öğrenme algoritmalarının hala bazı zorlukları vardır.
+Birincisi, kısmen gözlemlenebilir ortamları kontrol etmektir.
+Bir özne ortam hakkında yeterince bilgilendirilmediğinde, geçmiş gözlemleri anlık gözlemlere ek olarak kullanmalıdır.
+Bu tezde kısmen gözlemlenebilir olan Bipedal Walker Hardcore (OpenAI GYM) ortamında yürüyüş,
+iki sürekli aktör-eleştirmen pekiştirmeli öğrenme algoritması tarafından incelenmiştir; İkiz Gecikmeli Derin Belirleyici Poliçe Gradyanı (Twin Delayed Deep Determinstic Policy Gradient) ve Hafif Aktör Eleştirmen (Soft Actor Critic).
+Birkaç sinir mimarisi uygulanmıştır.
+Birincisi, gözlemlenebilir ortam varsayımına göre Artık Bağlantılı İleri Beslemeli Sinir Ağıdır,
+ikincisi ve üçüncüsü ise, ortamın kısmen gözlemlenebilir olduğu varsayıldığından, gizli durumu kurtarmak için girdi olarak gözlem geçmişini kullanan Uzun Kısa Süreli Bellek (LSTM) ve Transformatördür (Transformer).
