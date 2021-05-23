@@ -204,8 +204,8 @@ DDPG is summarized in Algorithm \ref{alg:ddpg}.
 			\end{cases}$ \\
 			Update $\theta^Q$ by minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big( Y_j - Q(s_j,a_j;\theta^Q) \big) ^ 2$ with a single optimization step; \\
 			Update $\theta^{\mu}$ by maximizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} Q(s_j,a_j;\theta^Q)$ with a single optimization step; \\
-			Update target networks \\
-			$\theta^{\mu^-} \leftarrow \tau \theta^{\mu} + (1-\tau) \theta^{\mu^-}$ \\
+			Update target networks: \\
+			$\theta^{\mu^-} \leftarrow \tau \theta^{\mu} + (1-\tau) \theta^{\mu^-}$ and \\
 			$\theta^{Q^-} \leftarrow \tau \theta^{Q} + (1-\tau) \theta^{Q^-}$;
 		}
 	}
@@ -285,8 +285,8 @@ TD3 is summarized in Algorithm \ref{alg:td3}.
 			Update $\theta^Q_1$ $\theta^Q_2$ by seperately minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big( Y_j - Q(s_j,a_j;\theta^Q_k) \big) ^ 2 \quad \forall k \in \{1,2\}$ with a single optimization step; \\
 			\uIf{$t \mod d$}{
 				Update $\theta^{\mu}$ by maximizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} Q(s_j,a_j;\theta^Q_1)$ with a single optimization step; \\
-				Update target networks \\
-				$\theta^{\mu^-} \leftarrow \tau \theta^{\mu} + (1-\tau) \theta^{\mu^-}$ \\
+				Update target networks: \\
+				$\theta^{\mu^-} \leftarrow \tau \theta^{\mu} + (1-\tau) \theta^{\mu^-}$ and \\
 				$\theta^{Q^-}_k \leftarrow \tau \theta^{Q}_k + (1-\tau) \theta^{Q^-}_k \quad \forall k \in \{1,2\}$ ;
 			}
 		}
@@ -298,13 +298,13 @@ TD3 is summarized in Algorithm \ref{alg:td3}.
 \subsubsection{Soft Actor-Critic}
 SAC~\cite{haarnoja_soft_2018} is a stochastic actor-critic method and many characteristics are similar to TD3 and DDPG. Its main advantage is that it learns to maximize exploration with entropy regularization. 
 
-SAC is an entropy regularized RL method. Such methods give bonus reward to the agent propotional to the policy entropy. Given state $s$, entropy of a policy is defined as,
+SAC is an entropy-regularized RL method. Such methods give bonus reward to the agent propotional to the policy entropy. Given state $s$, entropy of a policy is defined by the following: 
 \begin{equation}
 \label{eqn:policy_entropy}
 H(\pi(\cdot|s)) = \mathbb{E}_{\widetilde{a}\sim\pi(\cdot|s)}[-\log(\pi(\widetilde{a}|s))]
 \end{equation}
 
-Given entropy coefficient $\alpha$, definition of state-action value function is redefined as,
+Given the entropy coefficient $\alpha$, definition of state-action value function is redefined as follows: 
 \begin{equation}
 \label{eqn:q_dfn_entreg}
 Q^{\pi}(s,a) = \mathbb{E}_{\substack{s'\sim T(\cdot|s,a)\\\widetilde{a}'\sim \pi(\cdot|s')} } \Big[r + \gamma \Big(Q^{\pi}(s',\widetilde{a}') -\log(\pi(\widetilde{a}'|s') \Big) \Big]. %\quad \forall t = 0,1, ...
@@ -313,23 +313,23 @@ Q^{\pi}(s,a) = \mathbb{E}_{\substack{s'\sim T(\cdot|s,a)\\\widetilde{a}'\sim \pi
 This modification changes $Q$ value target definition,
 \begin{equation}
 \label{eqn:q_target_sac}
-Y_t^{SAC} = r_t + \gamma \Big(\min_{k\in\{1,2\}} Q(s_{t+1}, ;\widetilde{a}_{t+1};\theta^{Q_k^-}) -\alpha\log(\pi(\widetilde{a}_{t+1}|s_{t+1})) \Big), \quad \widetilde{a}_{t+1} \sim \pi(\cdot|s_{t+1}).
+Y_t^{SAC} = r_t + \gamma \Big(\min_{k\in\{1,2\}} Q(s_{t+1}, ;\widetilde{a}_{t+1};\theta^{Q_k^-}) -\alpha\log(\pi(\widetilde{a}_{t+1}|s_{t+1})) \Big), \quad \text{where} \quad \widetilde{a}_{t+1} \sim \pi(\cdot|s_{t+1}).
 \end{equation}
-Unlike TD3, policy updated according to minimum value of $Q$, while in TD3, policy is updated according to first $Q$ network as in \eqref{eqn:td3_policy_loss}. Mathematically, 
+While the policy is updated according to first value network by \eqref{eqn:td3_policy_loss} in TD3, the policy is updated according to minimum value of both networks output along with entropy regularization, 
 \begin{equation}
 \label{eqn:sac_policy_loss}
 \mathcal{L}_i(\theta^\pi_i) = - \mathbb{E}_{\substack{s \sim U(\mathcal{D})\\\widetilde{a} \sim \pi(\cdot|s)}} \Big[ \min_{k\in\{1,2\}} Q(s, \widetilde{a};\theta^{Q_k^-}) - \alpha\log(\pi(\widetilde{a}|s;\theta^\pi_i)) \Big].
 \end{equation}
 
-Since policy function is stochastic in SAC, it must be a parametrized probability disribution. Most common one is 
-Squashed Gaussian policy to squash actions in $(-1,1)$ range by $\tanh$ function, which has parametrized mean and standart deviation, i.e $\theta^{\pi}=(\theta^{\mu}, \theta^{\sigma})$. Actions are sampled as,
+The policy function is stochastic in SAC, and in practice, it is a parametrized probability disribution. Most common one is 
+Squashed Gaussian policy to squash actions in $(-1,1)$ range by $\tanh$ function, which is parametrized by its mean and standart deviation, i.e., $\theta^{\pi}=(\theta^{\mu}, \theta^{\sigma})$. Actions are then sampled as follows: 
 \begin{equation}
 \label{eqn:squashed_gp_sampling}
 a(s) = \tanh(\mu(s; \theta^{\mu}) + \eta \odot \sigma(s; \theta^{\sigma})), \quad \eta \sim \mathcal{N}(0, I). 
 \end{equation}
 
-Lastly, SAC method does not include policy delay, target policy smoothing and target policy network. 
-Algorithm is summarized in Algorithm \ref{alg:sac}.
+Finally, we note that SAC method does not include policy delay, target policy smoothing and target policy network. 
+SAC is summarized in Algorithm \ref{alg:sac}.
 \begin{algorithm}
 	\SetAlgoLined
 	\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
@@ -348,20 +348,20 @@ Algorithm is summarized in Algorithm \ref{alg:sac}.
 			$\widetilde{a}_{j+1} \sim \pi(\cdot|s_{j+1};\theta^{\pi}) \quad \forall e_j \in \mathcal{D}_{r}$; \\
 			$\forall e_j \in \mathcal{D}_{r}$, $\forall k \in \{1,2\}$, Set \\
 			$Y_{jk} = \begin{cases}
-			r_j & \text{if } s_{j+1} \text{ terminal} \\
-			r_j + \gamma \Big(Q(s_{j+1},\widetilde{a}_{j+1}; \theta^{Q^-}_k) - \alpha\log(\widetilde{a}_{j+1} | s_{j+1}; \theta^\pi)\Big) &  \text{else}
-			\end{cases}$; \\
+			r_j & \text{if } s_{j+1} \text{ terminal, } \\
+			r_j + \gamma \Big(Q(s_{j+1},\widetilde{a}_{j+1}; \theta^{Q^-}_k) - \alpha\log(\widetilde{a}_{j+1} | s_{j+1}; \theta^\pi)\Big) &  \text{otherwise, }
+			\end{cases}$ \\
 			Set $Y_j = \min(Y_{j1}, Y_{j2})$; \\	
 			Update $\theta^Q_1$ $\theta^Q_2$ by seperately minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big( Y_j - Q(s_j,a_j;\theta^Q_k) \big) ^ 2 \quad \forall k \in \{1,2\}$ with a single optimization step; \\
 			Sample actions for policy update,
 			$\widetilde{a}_j \sim \pi(\cdot|s_j;\theta^{\pi}) \quad \forall e_j \in \mathcal{D}_{r}$; \\		
 			Update $\theta^\pi$ by maximizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} [\min_{k\in\{1,2\}} Q(s_j,\widetilde{a}_j;\theta^{Q_k})-\alpha\log(\pi(\widetilde{a}_j|s_j;\theta^\pi))]$ with a single optimization step; \\
-			Update target networks \\
+			Update target networks: \\
 			$\theta^{Q^-}_k \leftarrow \tau \theta^{Q}_k + (1-\tau) \theta^{Q^-}_k \quad \forall k \in \{1,2\}$ ;
 
 		}
 	}
-	\caption{Soft Actor Critic}
+	\caption{Soft Actor-Critic}
 	\label{alg:sac}
 \end{algorithm}
   
