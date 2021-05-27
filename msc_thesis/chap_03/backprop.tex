@@ -2,16 +2,16 @@
 \label{sec:backprop}
 
 Neural networks are composed of weight parameters. 
-Learning is process of updating weights to give desired behavior. 
-This is represented in a loss function. Thus the learning is nothing but minimizing it by numerical optimization methods. 
+Learning is the process of updating weights to give desired behavior. 
+This is represented in a loss function. Thus, learning is nothing but minimization of loss by numerical optimization methods. 
 
 In order to minimize a loss function, its gradient with respect to weight parameters needs to be calculated. 
-These gradients are computed by chain rule. 
+These gradients are obtained by chain rule. 
 Therefore, gradient information propagates backward, and this process is called backpropagation. 
 
 \subsection{Stochastic Gradient Descent Optimization}
 
-Gradient Descent minimizes loss function $\mathcal{L}$ by updating weight parameters $\theta$ to inverse of gradient direction with a predefined learning rate $\eta$, 
+Gradient Descent minimizes the loss function $\mathcal{L}$ by updating the weight parameters $\theta$ to inverse of gradient direction with a predefined learning rate $\eta$, 
 \begin{equation}
 \label{eq: grad_desc}
 \theta \leftarrow \theta - \eta \nabla \mathcal{L}(\theta).
@@ -45,7 +45,7 @@ Adam~\cite{kingma_adam_2017}  (short for Adaptive Moment Estimation) is a varian
 It scales the learning rate using second moment of gradients as in RMSprop and uses momentum estimation for both first and second moment of gradients. 
 
 It is one of mostly used optimization method in deep learning nowadays. 
-Adam adjusts learning rate based on training data to overcome issues arised due to stochastic updates to accelerate training and make it robust to learning rate. 
+Adam adjusts learning rate based on training data to overcome issues arised due to stochastic updates in order to accelerate training and make it robust to learning rate. 
 It is summarized in \ref{alg:adam}. 
 
 \begin{algorithm}[H]
