@@ -1,8 +1,8 @@
 iam_thesis.*
 !iam_thesis.tex
-!iam_thesis.tcp
-!iam_thesis.tps
-!iam_thesis.dvi
+#!iam_thesis.tcp
+#!iam_thesis.tps
+#!iam_thesis.dvi
 
 # Pyre type checker
 .pyre/
