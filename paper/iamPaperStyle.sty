@@ -1,0 +1,182 @@
+% Written by
+% Omur Ugur
+% Email: ougur@metu.edu.tr
+%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{iamPaperStyle}[2014/08/24 IAM Paper Style]
+
+\RequirePackage{graphicx}
+\RequirePackage{xcolor}
+\definecolor{metuColour}{HTML}{E31837}
+\definecolor{iamColour}{HTML}{007A5E}
+
+\def\metuLogo{%
+%  \includegraphics[width=.75\textwidth]{odtu-lang-en}\\
+  {\large {\color{metuColour}MIDDLE EAST TECHNICAL UNIVERSITY}}%
+  \hfill Ankara, Turkey
+}
+
+\def\iamLogo{
+	%\includegraphics[]{odtu_metu}
+  {\large {\color{iamColour}INSTITUTE OF APPLIED MATHEMATICS}\\
+%  \begin{small}
+%    Ankara, Turkey\\
+    \texttt{http://iam.metu.edu.tr}}
+%  \end{small}
+}
+\def\iamDetails{%
+  \begin{tabular}{rl}
+%    \emph{Phone}: +90 312 210 2987 & %\hspace{1em}
+%    \emph{Fax}: +90 312 210 2985\\
+    \emph{E-Mail}: \texttt{wwwiam@metu.edu.tr} &
+    \emph{Url}: \texttt{http://iam.metu.edu.tr}
+  \end{tabular}
+}
+
+\def\makeTop{%
+%  \begin{small}
+  \begin{center}
+%    \begin{flushleft}
+      \raggedright{\metuLogo{}}\par
+%    \end{flushleft}
+    \rule[.25\baselineskip]{\textwidth}{1pt}\par
+%    \begin{flushright}
+      \raggedleft{\iamLogo{}}\par
+%    \end{flushright}
+%    \begin{center}
+%      \centering{\iamDetails{}}\par
+%    \end{center}
+    \rule[.25\baselineskip]{\textwidth}{1pt}\par
+  \end{center}
+%  \end{small}
+}
+
+\def\makeBottom#1#2#3#4#5{%
+	\noindent $\star$ {\small Submitted to IAM, \underline{\emph{#3}} 
+	in {#4}}.\\
+	\phantom{Type}\hfill\framebox{\textsc{#5}}
+	\bigskip
+  \begin{flushright}
+		\begin{tabular}{lcl}
+			Student &:& {#1}\\
+			Advisor &:& {#2}%\\
+			%Department &:& {#3} \\
+			%Date &:& {#4}
+		\end{tabular}
+%    {
+%      \large \emph{Submitted To:} METU -- IAM {#1}\\
+%			\large by\\
+%			\@paperAuthor\\
+%      \medskip 
+%      {#2}
+%      \bigskip\bigskip
+%    }		
+%    Middle East Technical University\\
+%    Institute of Applied Mathematics\\
+%    06800 \c{C}ankaya, Ankara, Turkey
+  \end{flushright}
+}
+
+% \def\paperTitle#1#2{%
+%   {\Large{#1}}\\%
+%   \bigskip%
+%   {#2}\\
+%   \bigskip %\bigskip%
+%   % \raggedleft{\emph{Submitted To:}: {#3}}
+% }
+
+\def\makePaperTitle#1#2{%
+  %\vfill
+  \begin{center}
+    {\Large\textbf{#1}}\\
+    \bigskip
+    {#2}\\
+    \bigskip
+%    \paperTitle{#1}{#2} %{#3}
+  \end{center}
+}
+
+%\newcommand{\bstract}[1]{\newcommand{\@abstracttext}{#1}}
+
+\def\makeAbstract#1#2{%
+	%\begin{quotation}
+%	\phantom{Type}\hfill\framebox{\textsc{#3}}
+  \rule[.1\baselineskip]{\textwidth}{.5pt}\par
+  \noindent{\textbf{Abstract.}}
+  {{#1}} \par %\hspace*{\stretch{1}}
+%  {\raggedleft \copyright{} Institute of Applied Mathematics, METU.}\par
+  \bigskip\medskip
+  \noindent\emph{Keywords.}
+  {#2} \par	
+  \noindent\rule[.1\baselineskip]{\textwidth}{.5pt}\par	
+  \medskip
+	%\end{quotation}
+}
+
+
+\def\makeCoverPage#1#2#3#4#5#6#7#8#9{%
+	\setcounter{page}{0}
+  \thispagestyle{empty}
+  \makeTop{}
+  \vfill
+  \makePaperTitle{#1}{#2} %{#3}
+  \bigskip
+  \makeAbstract{#3}{#4}%{#9}
+  \vfill
+  \makeBottom{#6}{#7}{#8}{#5}{#9}
+  \bigskip
+  \clearpage
+}
+
+%\newcommand{\abstract}[1]{\newcommand{\@abstracttext}{#1}}
+
+\def\@studentName{} \def\studentName#1{\def\@studentName{#1}}
+\def\@adviserName{} \def\advisorName#1{\def\@advisorName{#1}}
+\def\@departmentName{} \def\departmentName#1{\def\@departmentName{#1}}
+\def\@paperType{} \def\paperType#1{\def\@paperType{#1}}
+%\def\@paperAbstract{} \def\paperAbstract#1{\def\@paperAbstract{#1}}
+\def\@paperTitle{} \def\paperTitle#1{\def\@paperTitle{#1}}
+\def\@paperAuthor{} \def\paperAuthor#1{\def\@paperAuthor{#1}}
+\newcommand{\paperAbstract}[1]{\newcommand{\@paperAbstractText}{#1}}
+\def\@paperKeywords{} \def\paperKeywords#1{\def\@paperKeywords{#1}}
+\def\@paperDate{} \def\paperDate#1{\def\@paperDate{#1}}
+%\def\@submittedTo{} \def\submittedTo#1{\def\@submittedTo{#1}}
+
+\def\makePaperCoverPage{
+  \makeCoverPage{\@paperTitle}%
+                {\@paperAuthor}%
+                {\@paperAbstractText}%
+                {\@paperKeywords}%
+                {\@paperDate}%
+                %{\@submittedTo}%
+								{\@studentName}%
+								{\@advisorName}%
+								{\@departmentName}%
+                {\@paperType}%								
+	%\clearpage\thispagestyle{empty}
+	%\setcounter{page}{1}
+}
+
+\def\makeSmallTitle#1#2{%
+  %\vfill
+  \begin{center}
+    {\large \textbf{#1}}\\
+    \bigskip
+    {#2}\\
+    \bigskip
+%    \paperTitle{#1}{#2} %{#3}
+  \end{center}
+}
+
+\def\makeTitle{
+	\makeSmallTitle{\@paperTitle}%
+								 {\@paperAuthor}%
+}
+
+\def\blankpage{%
+      \clearpage%
+      \thispagestyle{empty}%
+      \addtocounter{page}{-1}%
+      \null%
+      \clearpage}

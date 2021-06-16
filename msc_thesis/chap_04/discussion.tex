@@ -14,6 +14,7 @@ In this work, all of them are manipulated such that the environment becomes solv
 Time frequency is reduced for sample efficiency and speed. 
 Also, the agent is not informed for terminal state when it reaches time limit, because it is logically wrong. Those modifications seems to be behind getting close to a solution. 
 Lastly, Punishment of failing reduced, so the agent is allowed to learn by mistakes. 
+Since neural design does not seem to affect performance significantly, such modifications are probably source of our high performance.
 
 As RL algorithm, TD3 is selected first, since it is a good choice for continuous RL. 
 Ornstein-Uhlenbeck noise is used for better exploration since it has momentum, and its variance reduced by time to make agent learn small actions well in late episodes. 

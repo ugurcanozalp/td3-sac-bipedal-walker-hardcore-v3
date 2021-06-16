@@ -65,7 +65,7 @@ The robot has 2 legs with 2 joints at knee and hip. Torque provided to knee and 
 \end{table}
 
 \textbf{Reward Function} is a bit complex. 
-The robot should run fast with little energy while should not stumble and fall to ground. 
+The robot should run fast with little energy while not stumble and fall to ground. 
 Therefore reward is shaped accordingly. 
 Directly proportional to distance traveled forward, +300 points given if agent reaches end of path. 
 -10 points (-100 points in original version) if agent falls, 
@@ -129,13 +129,13 @@ Therefore, following modifications are proposed.
 	\item In original version, agent gets -100 points when its hull hits the floor. 
 	In order to make the robot more greedy, this is changed to -10 points. 
 	Otherwise, agent cannot explore environment since it gets too much punishment when failed.
-	\item Time frequency of simulation is halved (from 50 Hz to 25 Hz) by only observing last of each two consecutive frames using a custom wrapper function. 
+	\item Time resolution of simulation is halved (from 50 Hz to 25 Hz) by only observing last of each two consecutive frames using a custom wrapper function. 
 	Since there is not a high frequency dynamics, this allows nothing but speeding up the learning process.
 	\item In original implementation, an episode has time limit. 
 	Once this limit is reached, simulation stops with terminal flag. 
 	On the other hand, when agent fails before time limit, the episode ends with terminal flag too. 
-	In first case, the terminal flag causes instability since next step's value is not used in value update. 
-	The environment changed such that terminal flag is not given in this case unless agent fails.
+	In first case, the terminal flag causes instability since next step's value is not used in value update, since it is not a logical terminal, just time up indicator.
+	The environment changed such that terminal flag is not given in this case unless agent fails. 
 \end{itemize}
 
 

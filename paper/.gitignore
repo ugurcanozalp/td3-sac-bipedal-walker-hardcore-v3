@@ -1,0 +1,10 @@
+new_iamPaper.*
+!new_iamPaper.tex
+#!iam_thesis.tcp
+#!iam_thesis.tps
+#!iam_thesis.dvi
+
+# Pyre type checker
+.pyre/
+*.pt
+*.pth

@@ -3,10 +3,11 @@
 
 \section{Conclusion}
 \label{sec:conclusion}
-In this thesis, bipedal robot walking is investigated by deep  reinforcement learning due to complex dynamics. 
-For real world robot control by RL, simulation is an important step. 
+For robot control by RL in real world, simulation is an important step. 
 Usually, models are pretrained in simulation environment before learning in reality due to safety and exploration reasons. 
+Today, RL is rarely used in real world applications due to such constraints. 
 
+In this thesis, bipedal robot walking is investigated by deep  reinforcement learning due to complex dynamics in OpenAI Gym's simulation environment. 
 TD3 and SAC algorthims are used since it is robust and well suited for continuous control. 
 Also, environment is slightly modified by reward shaping, halving simulation frequency, cancelling terminal state information at time limit so that learning becomes easier.  
 As stated in previous chapters, most of the real world environments are partially observable. 

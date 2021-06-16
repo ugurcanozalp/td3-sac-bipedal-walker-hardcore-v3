@@ -1,12 +1,11 @@
 \section{Proposed Neural Networks}
 \label{sec:proposed_networks}
 
-For all networks, varing backbones used to encode state information from observations for both actor and critic networks. 
+For all networks, varing neural backbones used to encode state information from observations for both actor and critic networks. 
 In critic network, actions are concatenated by state information coming from backbones. 
 Then, this concatenated vector is passed through feed forward layer with GELU activation then a linear layer with single output. 
 Before feeding observations to backbone, they are passed through a layer with layer normalization with tanh activation to 96 dimensional output. 
 In actor network, backbone is followed by a single layer with tanh activation for action estimation. 
-As backbones, following networks are proposed. 
 Again, observations are passed through a layer with layer normalization with tanh activation to 96 dimensional output before feeding to backbone. 
 Critic and Actor networks are illustrated in \figref{fig:nets} 
 
@@ -26,6 +25,8 @@ Critic and Actor networks are illustrated in \figref{fig:nets}
 	\caption{Neural Architecture Design}
 	\label{fig:nets}
 \end{figure}
+
+As backbones, following networks are proposed. 
 
 \subsection{Residual Feed Forward Network}
 

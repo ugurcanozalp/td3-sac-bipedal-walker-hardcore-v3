@@ -43,4 +43,11 @@ It is hard to create accurate model due to high order of dynamics,  friction and
 Even further, the design of walking controller using traditional methods is difficult due to the same reasons. 
 Therefore, for bipedal walking, DRL approach is an easier choice if a simulation environment is available. 
 
-In this thesis, Bipedal Locomotion is investigated through \textit{BipedalWalker-Hardcore-v3} \cite{noauthor_bipedalwalkerhardcore-v2_2021} environment of open source GYM library \cite{brockman_openai_2016} by DRL. Different neural architectures are used and results are compared. 
+In this thesis, Bipedal Locomotion is investigated through \textit{BipedalWalker-Hardcore-v3} \cite{noauthor_bipedalwalkerhardcore-v2_2021} environment of open source GYM library \cite{brockman_openai_2016} by DRL. 
+Our contributions are as follows:
+\begin{itemize}
+	\item Sequential neural networks are used (LSTM and Transformer) for solution, along with Residual Feed Forward Neural Network.
+	\item Twin Delayed DDPG (TD3) and Soft Actor-Critic (SAC) algorithms are used and compared.
+	\item Reward shaping and small modifications are applied on environment to hinder possible problems.
+\end{itemize}
+
