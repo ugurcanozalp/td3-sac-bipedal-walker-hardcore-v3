@@ -82,24 +82,26 @@
 %\logo{\includegraphics[height=1cm]{logo.png}\vspace{220pt}}
 %\logo{\includegraphics[height=1cm]{logo.png}}
 
-\title[Write a short title]{The Title of Your Presentation}
+\title[Robot Walking by RL]{Bipedal Robot Walking by Reinforcement Learning in Partially Observed Environment}
 
 % A subtitle is optional and this may be deleted
 %\subtitle{Optional Subtitle}
 
-\author[Speaker]{F. author*\inst{1} \and S. author\inst{2} \and T. author\inst{3}}
+\author[U. Özalp]{Uğurcan Özalp*\inst{1}}
 % - Give the names in the same order as the appear in the paper.
 % - Use the \inst{?} command only if the authors have different
 %   affiliation.
 
 \institute[METU] % (optional, but mostly needed)
 {
-  \inst{1}%
-	Financial Mathematics
-	\inst{2}%
-		Actuarial Sciences
-	\inst{3}
-	Scientific Computing\\
+	\inst{1}
+	Scientific Computing
+%  \inst{1}%
+%	Financial Mathematics
+%	\inst{2}%
+%		Actuarial Sciences
+%	\inst{3}
+%	Scientific Computing\\
 	
 	Institute of Applied Mathematics\\
   Middle East Technical University\\
@@ -108,13 +110,13 @@
 % - Use the \inst command only if there are several affiliations.
 % - Keep it simple, no one is interested in your street address.
 
-\date[Conference Short name]{Conference long name\\
+\date[Thesis Presentation]{Thesis Presentation\\
 \today}
 % - Either use conference name or its abbreviation.
 % - Not really informative to the audience, more for people (including
 %   yourself) who are reading the slides online
 
-\subject{STATISTICS}
+\subject{DEEP REINFORCEMENT LEARNING}
 % This is only inserted into the PDF information catalog. Can be left
 % out.
 
@@ -151,22 +153,46 @@
 
 \section{Introduction}
 \begin{frame}
-You can write your motivation and aim in this part. You may add more frame if it is necessary.
+In this thesis, we investigate;
+\begin{itemize}
+	\item Performance of varying Neural Network architectures
+	\item Deep Reinforcement Learning methods
+	\item Environmental settings
+\end{itemize}
+for bipedal robot walking on \textit{BipedalWalker-Hardcore-v3}~ \cite{noauthor_bipedalwalkerhardcore-v2_2021} environment from open source Gym~\cite{brockman_openai_2016} library of OpenAI.
+
 \end{frame}
-\subsection{Citation}
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\section{Reinforcement Learning}
+\subsection{Basics}
 \begin{frame}
-You can use your bib-file for citations as like this example\cite{Chauvet2016}.
+content...
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%
-\section{Figure}
-\subsection{Only 1 Figure}
+\section{Environment}
+\subsection{Environment}
+\begin{frame}
+\textit{BipedalWalker-Hardcore-v3} environment is;
+\begin{itemize}
+	\item Agent has deterministic dynamics, but terrain is randomly generated.
+	\item Observation space consists of kinematic observations and lidar rangefinders.
+	\item Action space has torque actions from knee and joints.
+\end{itemize}
+However, walking is a hard control problem due to following reasons.
+\begin{itemize}
+	\item The dynamics are nonlinear, unstable and multimodal. The terrain where the robot walks also varies. 
+	\item Overcoming some obstacles requires a specific maneuver, which is hard to explore sometimes (Sparse Rewards).
+	\item The robot observes ahead with lidar measurements and cannot observe behind (Partial observability).
+	Also, it lacks of acceleration sensors. 
+\end{itemize}
+\end{frame}
 \begin{frame}
 \begin{figure}
-    \centering
-    \includegraphics[width = 0.85\textwidth]{logo.jpg}
-    \caption{Enjoy your life}
-  \end{figure}
+	\centering
+	\includegraphics[width=0.95\textwidth]{figures/bipedal/bpedal_annotated.png}
+	\caption{Bipedal Walker Hardcore Components~\cite{noauthor_bipedalwalkerhardcore-v2_2021}}
+	\label{fig:bipedal_hardcore_components}
+\end{figure}
 \end{frame}
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
@@ -243,7 +269,7 @@ Name & Sutendet ID & Departmant \\ \hline
 
 \bibliographystyle{apalike}
 %\bibliographystyle{abbrvnat}
-\bibliography{mybib}
+\bibliography{myBiblio}
 
 \end{frame}
 
