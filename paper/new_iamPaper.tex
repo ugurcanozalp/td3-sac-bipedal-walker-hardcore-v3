@@ -16,6 +16,7 @@
 % any other styles you need
 % not mandatory, but helful 
 \usepackage{graphicx} % although loaded by iamPaperStyle.sty
+\usepackage{wrapfig}
 \usepackage{amsmath, amssymb, amsthm} % others
 \usepackage{hyperref} % other
 
@@ -23,6 +24,8 @@
 \usepackage{a4wide} % not necessary but generally useful
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage[ruled,vlined]{algorithm2e} % package for algorithms.
+\usepackage{amsmath,amsfonts}
 
 % now you may begin
 \begin{document}
@@ -128,6 +131,7 @@ Our contributions are as follows:
 
 \textit{BipedalWalker} environments~\cite{noauthor_bipedalwalker-v2_2021, noauthor_bipedalwalkerhardcore-v2_2021} are parts of Gym environment library. 
 One of them is classical where the terrain is relatively smooth, while other is a hardcore version containing ladders, stumps and pitfalls in terrain. 
+However, terrain is randomly generated at the beginning of each episode.
 Dynamics of the robot are exactly identical in both environments. 
 The robot has kinematic and lidar sensors. 
 It is modeled as Markov Decision Process with deterministic dynamics.
@@ -136,7 +140,13 @@ Those environments have continuous action and observation space.
 \textbf{Observation Space} contains hull angle, hull angular velocity, hull translational velocities, joint positions, joint angular speeds, leg ground concats and 10 lidar rangefinder measurements.
 The robot has 2 legs with 2 joints at knee and hip. Torque provided to knee and pelvis joints of both legs. These 4 torque values forms  \textbf{Action Space}.
 
-For both settings, the task is to move the robot forward as much as possible.
+\textbf{Reward Function} is designed to move the robot forward as much as possible.
+The robot should run fast with little energy while not stumble and fall to ground. 
+Directly proportional to distance traveled forward, +300 points given if agent reaches end of path. 
+-10 points (-100 points in original version) if agent falls, 
+and small amount of negative reward proportional to applied motor torque (to prevent applying unnecessary torque). 
+Lastly, the robots gets negative reward propotional to absolute value of hull angle for reinforcing to keep hull straigth. 
+
 Snapshots for both environments are depicted in Figure \ref{fig:bipedal_walkers}.
 
 \begin{figure}
@@ -167,9 +177,32 @@ Locomotion of the Bipedal Walker is a difficult control problem due to following
 	Designing a controller for all types of terrain is difficult.
 	\item \textbf{Reward Sparsity}: Overcoming some obstacles requires a specific maneuver, which is hard to explore sometimes.	
 	\item \textbf{Partially Observability}: The robot observes 
-	ahead of it with lidar measurements and cannot observe behind. 
+	ahead of it with lidar measurements and cannot observe behind, as illustrated in Figure \ref{eqn:partial_obs_pitfall}. 
 	In addition, it lacks of acceleration sensors.
 \end{itemize}
+
+\begin{figure}
+	\begin{subfigure}{.32\textwidth}
+		\centering
+		\includegraphics[width=0.99\linewidth]{figures/bipedal/po/lidarcover.png}
+		\caption{Perspective}
+		\label{fig:lidar_cover}
+	\end{subfigure}
+	\begin{subfigure}{.32\textwidth}
+		\centering
+		\includegraphics[width=0.99\linewidth]{figures/bipedal/po/pitfall_behind.png}
+		\caption{Pitfall Behind}
+		\label{fig:pitfall_behind}
+	\end{subfigure}
+	\begin{subfigure}{.32\textwidth}
+		\centering
+		\includegraphics[width=0.99\linewidth]{figures/bipedal/po/no_pitfall_behind.png}
+		\caption{No Pitfall Behind}
+		\label{fig:no_pitfall_behind}
+	\end{subfigure}
+	\caption{Perspective of agent and possible realities}
+	\label{fig:partial_obs_pitfall}
+\end{figure}
 
 These reasons make it hard to implement analytical methods for control tasks. 
 However, approach can easily overcome nonlinearity and uncertainity problems.
@@ -200,27 +233,412 @@ then it takes an action $a_t \in \mathcal{A}$ according to its policy $\pi$ and 
 Then state transition to $s_{t+1} \in \mathcal{S}$ occurs as a consequence of the action and the agent gets the next observation $o_{t+1} \in \mathcal{O}$. 
 Along with state transitions, the agent is expected to develop (learn) a policy function 
 $\pi \colon \mathcal{S} \rightarrow \mathcal{A}$ which maps 
-inputs (observations) $s \in \mathcal{S}$ to outputs (actions) $a \in \mathcal{A}$.
+inputs (observations) $s \in \mathcal{S}$ to outputs (actions) $a \in \mathcal{A}$ to maximize rewards over time.
 
 \subsection{Policy Learning}
 
-Policy learning is achieved by maximization of the value function $V^{\pi}(s)$ (cumulative reward) for all possible states, which depends on policy $\pi$. 
+Policy learning is achieved by maximization of the action value function, which is expected cumulative sum of future rewards scaled by discount factor $\gamma$. Action value function is defined as follows;
+\begin{equation}
+Q^{\pi}(s,a) = \mathbb{E}\bigg[\sum_{i=t}^{\infty} \gamma^{i-t} r_i|s_t=s, a_t=a, \pi\bigg]. %\quad \forall t = 0,1, ...
+\end{equation}
+for all possible states and actions. 
+Bellman proved that optimal value function should satisfy following conditions~\cite{bellman_dynamic_2003}. 
+\begin{equation}
+\label{eqn:bellman_q}
+Q^{*}(s,a) = \mathbb{E}[r|s,a] + \gamma \max_{a'} \Big\{ \sum_{s'} T(s'|s,a) Q^{*}(s',a') \Big\}
+\end{equation}
 
-\section{Twin Delayed Deep Deterministic Policy Graidient}
+\subsection{Q Learning}
+Q Learning is based on optimizing $Q$ function using Bellman Equation \eqref{eqn:bellman_q}~\cite{watkins_technical_1992}. 
+In this learning strategy, $Q$ function is assumed to be parametrized by $\theta$. 
+Target $Q$ value is estimated by bootstrapping estimate, 
+\begin{equation}
+\label{eqn:q_target}
+Y_t^Q = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta).
+\end{equation}
+At time $t$,  with state, action, reward, next state tuples ($s_t,a_t,r_t,s_{t+1}$), 
+$Q$ values are updated by minimizing difference between the target value and the estimated value, hence the loss 
+\begin{equation}
+\label{eqn:q_loss}
+\mathcal{L}_t(\theta) = \big( Y_t - Q(s_t,a_t;\theta) \big) ^ 2, 
+\end{equation}
+with respect to $\theta$ using numerical optimization methods. 
 
-\section{Soft Actor-Critic}
+\subsection{Deep Q Learning}
+Deep Q Learning overcomes the instability problem arising in Q Learning, using Deep Q Network (DQN). 
+When a nonlinear approximator is used, learning is unstable in general. 
+Deep Q Learning introduces Target Network and Experience Replay \cite{mnih_human-level_2015, mnih_playing_2013}. 
 
-\section{Neural Networks}
+\textbf{Target Network} is parametrized by $\theta^-$. 
+It is used to evaluate target value and it is not updated by the loss minimization. 
+It is updated at each fixed number of update step by Q network parameter $\theta$. 
+Then, the target value is obtained by using $\theta^-$: 
+\begin{equation}
+\label{eqn:dqn_ntarget}
+Y_t^{DQN} = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta^-).
+\end{equation}
 
-\subsection{Residual Feed Forward Neural Network}
+\textbf{Experience Replay} stores experience tuples in the replay memory $\mathcal{D}$ as a queue with fixed buffer size $N_{replay}$. 
+At each iteration $i$, $\theta$ is updated by experiences uniformly subsampled from experience replay by minimizing the expected loss
+\begin{equation}
+\label{eqn:dqn_loss}
+\mathcal{L}_i(\theta_i) = \mathbb{E}_{s,a,r,s'\sim U(\mathcal{D})}\Big[\big( Y^{DQN} - Q(s,a;\theta_i) \big) ^ 2 \Big].
+\end{equation}
+It allows agent to learn from experiences multiple times at different stages of learning. More importantly, sampled experiences are close to be independent and identically distributed if buffer size is large enough. 
+This makes learning process more stable. 
 
-\subsection{Long Short Term Memory}
+\textbf{Epsilon Greedy Exploration} is used to let agent explore environment. 
+In discrete action space (finite action space $\mathcal{A}$), this is 
+the simplest exploration strategy used in RL algorithms.
+During the learning process, a random action with probability $\epsilon$ is selected or greedy action (maximizing Q value) with probability $1-\epsilon$. In order to construct policy:   
+\begin{equation}
+\label{eqn:egreedy_policy}
+\pi(a|s) = 
+\begin{cases}
+1-\epsilon,   & \text{if } a = \arg \max_{a} Q(s, a), \\
+\frac{\epsilon}{|\mathcal{A}|-1},     & \text{otherwise}.
+\end{cases}
+\end{equation}
 
-\subsection{Transformer}
+\subsection{Deep Deterministic Policy Gradient}
+DDPG is continuous complement of DQN using a deterministic policy~\cite{lillicrap_continuous_2019}. 
+It also uses experience replay and target networks. 
+Similar to Deep Q Learning, there are target networks parametrized by $\theta^{\mu^-}$ and $\theta^{Q^-}$ 
+along with the main networks parametrized by $\theta^{\mu}$ and $\theta^{Q}$. 
 
-\section{Proposed Method}
+While target networks are updated in fixed number of steps in DQN, 
+DDPG updates target network parameters at each step with Polyak averaging, 
+\begin{equation}
+\label{eqn:target_update}
+\theta^- \leftarrow \tau \theta + (1-\tau) \theta^- .
+\end{equation}
+The $\tau$ is an hyperparameter indicating how slow the target network is updated and it is usually close to zero. 
+
+Policy network parameters are learned by maximizing resulting expected value, or minimizing its negative,
+\begin{equation}
+\label{eqn:ddpg_policy_loss}
+\mathcal{L}_i(\theta^\mu_i) = -\mathbb{E}_{s \sim U(\mathcal{D})} \Big[ Q(s, \mu(s\theta^\mu_i);\theta^Q) \Big].
+\end{equation} 
+Note that value network parameters are also assumed to be learned. 
+
+In addition, target networks are used to predict target value and the target is defined by: 
+\begin{equation}
+\label{eqn:ddpg_target}
+Y_t^{DDPG} = r_t + \gamma Q(s_{t+1}, \mu(s_{t+1};\theta^{\mu^-});\theta^{Q^-}).
+\end{equation}
+In each iteration, this target is used to learn $Q$ function by minimizing the least squares loss: 
+\begin{equation}
+\label{eqn:ddpg_loss}
+\mathcal{L}_i(\theta^Q_i) = \mathbb{E}_{s,a,r,s'\sim U(\mathcal{D})}\Big[\big( Y^{DDPG} - Q(s,a;\theta^Q_i) \big) ^ 2 \Big].
+\end{equation}
+
+In DDPG, value and policy network parameters are learned simultaneously. 
+During the learning process, exploration noise is added to each selected action. 
+In ~\cite{lillicrap_continuous_2019}, authors proposed to use Ornstein-Uhlenbeck Noise~\cite{uhlenbeck_theory_1930} in order to have temporal correlation for efficiency. 
+However, a simple Gaussian noise or any other noise is also possible. 
+
+\subsection{Twin Delayed Deep Deterministic Policy Gradient}
+TD3~\cite{fujimoto_addressing_2018} is an improved version of DDPG with higher stability and efficiency. 
+There are "three" main tricks upon DDPG: 
+
+\textbf{Target Policy Smoothing} is to regularize the learning process by smoothing effects of actions on value. For target value assessing, actions are obtained from the target policy network in DDPG, while a clipped zero-centered Gaussian noise is added to actions in TD3 as follows,
+\begin{equation}
+\label{eqn:td3_target_action}
+\widetilde{a}' = \mu(s';\theta^{\mu^-}) + \text{clip}(\epsilon, -c, c), \quad \epsilon \sim \mathcal{N}(0, \sigma).
+\end{equation}
+
+\textbf{Clipped Double Q Learning} is to escape from $Q$ value overestimation. 
+There are two different value networks with their targets. 
+During learning, both are learned from single target value assessed by using whichever of the two networks give smaller. In other words, 
+\begin{equation}
+\label{eqn:td3_target}
+Y_t^{TD3} = r_t + \gamma \min_{k\in\{1,2\}} Q(s_{t+1}, ;\widetilde{a}_{j+1};\theta^{Q_k^-}).
+\end{equation}
+On the other hand, the policy is learned by maximizing the output of the first value network, or minimizing its negative,
+\begin{equation}
+\label{eqn:td3_policy_loss}
+\mathcal{L}_i(\theta^\mu_i) = -\mathbb{E}_{s \sim U(\mathcal{D})} \Big[ Q(s, \mu(s;\theta^\mu_i);\theta^{Q_1}) \Big].
+\end{equation} 
+
+\textbf{Delayed Policy Updates} is for stable training. 
+During learning, policy network and target networks are updated less frequently (at each fixed number of steps) than the value network. 
+Since the policy network parameters are learned by maximizing the value network, they are learned slower.  
+
+\subsection{Soft Actor-Critic}
+SAC~\cite{haarnoja_soft_2018} is a stochastic actor-critic method and many characteristics are similar to TD3 and DDPG. Its main advantage is that it learns to maximize exploration with entropy regularization. 
+
+SAC is an entropy-regularized RL method. Such methods give bonus reward to the agent propotional to the policy entropy. Given state $s$, entropy of a policy is defined by the following: 
+\begin{equation}
+\label{eqn:policy_entropy}
+H(\pi(\cdot|s)) = \mathbb{E}_{\widetilde{a}\sim\pi(\cdot|s)}[-\log(\pi(\widetilde{a}|s))]
+\end{equation}
+
+Given the entropy coefficient $\alpha$, definition of state-action value function is redefined as follows: 
+\begin{equation}
+\label{eqn:q_dfn_entreg}
+Q^{\pi}(s,a) = \mathbb{E}_{\substack{s'\sim T(\cdot|s,a)\\\widetilde{a}'\sim \pi(\cdot|s')} } \Big[r + \gamma \Big(Q^{\pi}(s',\widetilde{a}') -\log(\pi(\widetilde{a}'|s') \Big) \Big]. %\quad \forall t = 0,1, ...
+\end{equation}
+
+This modification changes $Q$ value target definition,
+\begin{equation}
+\label{eqn:q_target_sac}
+Y_t^{SAC} = r_t + \gamma \Big(\min_{k\in\{1,2\}} Q(s_{t+1}, ;\widetilde{a}_{t+1};\theta^{Q_k^-}) -\alpha\log(\pi(\widetilde{a}_{t+1}|s_{t+1})) \Big), \quad \text{where} \quad \widetilde{a}_{t+1} \sim \pi(\cdot|s_{t+1}).
+\end{equation}
+While the policy is updated according to first value network by \eqref{eqn:td3_policy_loss} in TD3, the policy is updated according to minimum value of both networks output along with entropy regularization, 
+\begin{equation}
+\label{eqn:sac_policy_loss}
+\mathcal{L}_i(\theta^\pi_i) = - \mathbb{E}_{\substack{s \sim U(\mathcal{D})\\\widetilde{a} \sim \pi(\cdot|s)}} \Big[ \min_{k\in\{1,2\}} Q(s, \widetilde{a};\theta^{Q_k^-}) - \alpha\log(\pi(\widetilde{a}|s;\theta^\pi_i)) \Big].
+\end{equation}
+
+The policy function is stochastic in SAC, and in practice, it is a parametrized probability disribution. Most common one is 
+Squashed Gaussian policy to squash actions in $(-1,1)$ range by $\tanh$ function, which is parametrized by its mean and standart deviation, i.e., $\theta^{\pi}=(\theta^{\mu}, \theta^{\sigma})$. Actions are then sampled as follows: 
+\begin{equation}
+\label{eqn:squashed_gp_sampling}
+a(s) = \tanh(\mu(s; \theta^{\mu}) + \eta \odot \sigma(s; \theta^{\sigma})), \quad \eta \sim \mathcal{N}(0, I). 
+\end{equation}
+
+Finally, we note that SAC method does not include policy delay, target policy smoothing and target policy network.
+
+\section{Methodology}
+
+\subsection{Modifications on Original Envrionment}
+
+It is difficult to solve directly available environment as it is. 
+There are few works on the literature demonstrating a solution. 
+Therefore, following modifications are proposed.
+
+\begin{itemize}
+	\item In original version, agent gets -100 points when its hull hits the floor. 
+	In order to make the robot more greedy, this is changed to -10 points. 
+	Otherwise, agent cannot explore environment since it gets too much punishment when failed.
+	\item Time resolution of simulation is halved (from 50 Hz to 25 Hz) by only observing last of each two consecutive frames using a custom wrapper function. 
+	Since there is not a high frequency dynamics, this allows nothing but speeding up the learning process.
+	\item In original implementation, an episode has time limit. 
+	Once this limit is reached, simulation stops with terminal flag. 
+	On the other hand, when agent fails before time limit, the episode ends with terminal flag too. 
+	In first case, the terminal flag causes instability since next step's value is not used in value update, since it is not a logical terminal, just time up indicator.
+	The environment changed such that terminal flag is not given in this case unless agent fails. 
+\end{itemize}
+
+\subsection{Proposed Neural Networks}
+\label{sec:proposed_networks}
+
+For all networks, varing neural backbones used to encode state information from observations for both actor and critic networks. 
+In critic network, actions are concatenated by state information coming from backbones. 
+Then, this concatenated vector is passed through feed forward layer with GELU activation then a linear layer with single output. 
+Before feeding observations to backbone, they are passed through a layer with layer normalization with tanh activation to 96 dimensional output. 
+In actor network, backbone is followed by a single layer with tanh activation for action estimation. 
+Again, observations are passed through a layer with layer normalization with tanh activation to 96 dimensional output before feeding to backbone. 
+Critic and Actor networks are illustrated in Figure \ref{fig:nets} 
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{.35\textwidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{figures/nets/critic.png}
+		\caption{Critic Architecture}
+		\label{fig:critic_net}
+	\end{subfigure}
+	\begin{subfigure}{.35\textwidth}
+		\centering
+		\includegraphics[width=0.6\linewidth]{figures/nets/actor.png}
+		\caption{Actor Architecture}
+		\label{fig:actor_net}
+	\end{subfigure}
+	\caption{Neural Architecture Design}
+	\label{fig:nets}
+\end{figure}
+
+As backbones, following networks are proposed. 
+
+\subsubsection{Residual Feed Forward Network}
+
+As Feed Forward Networks becomes deeper, optimizing weights gets difficult. 
+Therefore, people come with the idea of residual connections~\cite{he_deep_2015}. 
+For a fixed number of stacked layers (usually 2), input and output of the stack is summed up for next calculations. 
+Replacing feed forward layers with other types yield different kind of residual network. 
+The difference is demonstrated in Figure \ref{fig:rffnn_ffnn}. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\textwidth]{figures/ml_theory/rffnn_ffnn.png}
+	\caption{Deep Feed Forward (left) and Deep Residual Feed Forward Network (right)}
+	\label{fig:rffnn_ffnn}
+\end{figure}
+
+In our application, incoming vector is passed through 2 layers with 192 dimensional hidden size and 96 dimensional output, where there is GELU activation between 2 layers. 
+This output is summed with initial vector and this is lastly passed through layer normalization. 
+
+\subsubsection{Long Short Term Memory}
+
+Long Short Term Memory (LSTM)~\cite{hochreiter_long_1997} is a special type of Recurrent Neural Network. 
+It is explicitly designed to allow learning long-term dependencies~\cite{olah_understanding_2015}. 
+A single LSTM cell has 4 neural layer while vanilla RNN layer has only one neural layer. 
+In addition to hidden state $h_t$, there is another state called cell state $C_t$. 
+Information flow is controlled by 3 gates. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.85\textwidth]{figures/ml_theory/lstm/lstm_module.png}
+	\caption{LSTM Cell~\cite{olah_understanding_2015}}
+	\label{fig:lstm_cell}
+\end{figure}
+
+In our application, sequence of incoming vectors is passed though single layer vanilla LSTM layer with 96 dimensional hidden state. 
+Output at last time step is outputted. 
+
+\subsubsection{Transformer (Pre-layer Normalized)}
+
+The Transformer was proposed in Attention is All You Need~ \cite{vaswani_attention_2017} paper. 
+Unlike recurrent networks, this architecture is solely builded on attention layers. 
+However, original transformer architecture includes layer normalization operations after attention and feed-forward layers. 
+It is unstable since the values of gradients of output layers are high, so Pre-Layer Normalized transformer is proposed by \cite{xiong_layer_2020} by carrying layer normalization operation to in front of attention and feed-forward layers. 
+Moreover, Parisotto et al. Xiong et al.~ \cite{parisotto_stabilizing_2019} proposed gated transformer which also includes layer normalizations before attention and feedforward layer. 
+They also stated that although gated architecture improves many RL tasks drastically, non-gated pre-layer normalized transformer are good enough. 
+The difference between post-layer and pre-layer transformer encoders are visualized in Figure \ref{fig:post_pre_trsf}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\textwidth]{figures/ml_theory/post_pre_trsf.png}
+	\caption{(a) Post-LN Transformer layer, (b) Pre-LN Transformer
+		layer~\cite{xiong_layer_2020}}
+	\label{fig:post_pre_trsf}
+\end{figure}
+
+In our application, sequence of incoming vectors is passed through single layer pre-layer normalized transformer with 192 dimensional feed forward layer with GELU activation. 
+The output is lastly passed through layer normalization. 
+During multi-head attention, only the last state is fed as query so that attentions are calculated for only last state. 
+
+\subsection{Algorithm Settings}
+TD3 and SAC is used as RL algorithm. 
+Hyperparameters are selected by grid search and best performing values are used. Adam optimizer is used for optimization. 
+
+In TD3, as exploration noise, Ornstein-Uhlenbeck noise is used, and standart deviation is multiplied  by $0.999$ at the end of each episode. 
+
+In SAC model, squashed gaussian policy is implemented. Therefore, along with layer giving mean actions, an additive layer is implemented for standart deviation along with it. 
+
+\subsection{Results}
+
+For each episode, episode scores are calculated by summing up rewards of each time step. 
+In Figure \ref{fig:td3_std_ep_rewards} and Figure \ref{fig:sac_std_ep_rewards}, moving average and standard deviation is visualized for each model's episode scores. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{figures/bipedal/STD_TD3_RFFNN_LSTM_TRSF.png}
+	\caption{Moving Average and Standard Deviation for Episode Scores (TD3)}
+	\label{fig:td3_std_ep_rewards}
+\end{figure} 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{figures/bipedal/STD_SAC_RFFNN_LSTM_TRSF.png}
+	\caption{Moving Average and Standard Deviation for Episode Scores (SAC)}
+	\label{fig:sac_std_ep_rewards}
+\end{figure} 
+
+First of all, none of our approaches solved the problem since 300 points required in 100 random simulations as solution. 
+However, our methods partially solved problems by exceeding 200 point limit, while some simulations yield around 280 points in all models. 
+
+RFFNN seems to be enough for solving the problem, although there exist partial observability in the environment. 
+That model reaches around 220 points in average with TD3 and 225 points with SAC. In addition, learning was unstable. 
+
+The robot was able to walk by LSTM model but yield worse results and cannot exceed 120 points in average with both models. 
+
+Transformer model yield best results by reaching 230 points with TD3 and exceeds 250 points with SAC. 
+
+As Transformer and RFFNN are relatively succesfull, their behavior is visualized in Figure \ref{fig:rffnn_simulation} and Figure \ref{fig:trsf_simulation} for TD3 model. 
+The main behavior difference is when the agent faces with a big hurdle. 
+First model passes it by jumping while other does by taking a very big step, shown in Figure \ref{fig:anim_rffnn_hurdle} and Figure \ref{fig:anim_trsf_hurdle}.
+
+In SAC simulations at best models, RFFNN and Transformer models do not exhibit a noteworthy difference.
+
+Also, SAC model performed better than TD3 in general. 
+Agent cannot exceed 280 points in any simulation with TD3 (Figure \ref{fig:td3_scatter_ep_rewards}) but it exceeds 300 points with SAC (Figure \ref{fig:sac_scatter_ep_rewards}). Also, moving average points is also higher when SAC policy is used. 
+
+\begin{figure}[!ht]
+	\centering
+	\begin{subfigure}{.9\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{figures/bipedal/anim/ff_flat.png}
+		\caption{Flat Surface}
+		\label{fig:anim_rffnn_flat}
+	\end{subfigure}
+	\begin{subfigure}{.9\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{figures/bipedal/anim/ff_stairs.png}
+		\caption{Stairs}
+		\label{fig:anim_rffnn_stairs}
+	\end{subfigure}
+	\begin{subfigure}{.9\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{figures/bipedal/anim/ff_hurdle.png}
+		\caption{Hurdle}
+		\label{fig:anim_rffnn_hurdle}
+	\end{subfigure}
+	\begin{subfigure}{.9\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{figures/bipedal/anim/ff_pitfall.png}
+		\caption{Pitfall}
+		\label{fig:anim_rffnn_pitfall}
+	\end{subfigure}
+	\caption{Walking Simulation of RFFNN model at best version with TD3}
+	\label{fig:rffnn_simulation}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\begin{subfigure}{.9\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{figures/bipedal/anim/trsf_flat.png}
+		\caption{Flat Surface}
+		\label{fig:anim_trsf_flat}
+	\end{subfigure}
+	\begin{subfigure}{.9\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{figures/bipedal/anim/trsf_stairs.png}
+		\caption{Stairs}
+		\label{fig:anim_trsf_stairs}
+	\end{subfigure}
+	\begin{subfigure}{.9\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{figures/bipedal/anim/trsf_hurdle.png}
+		\caption{Hurdle}
+		\label{fig:anim_trsf_hurdle}
+	\end{subfigure}
+	\begin{subfigure}{.9\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{figures/bipedal/anim/trsf_pitfall.png}
+		\caption{Pitfall}
+		\label{fig:anim_trsf_pitfall}
+	\end{subfigure}
+	\caption{Walking Simulation of Transformer model at best version with TD3}
+	\label{fig:trsf_simulation}
+\end{figure}
 
 \section{Conclusion}
+
+For robot control by RL in real world, simulation is an important step. 
+Usually, models are pretrained in simulation environment before learning in reality due to safety and exploration reasons. 
+Today, RL is rarely used in real world applications due to such constraints. 
+
+In this thesis, bipedal robot walking is investigated by deep  reinforcement learning due to complex dynamics in OpenAI Gym's simulation environment. 
+TD3 and SAC algorthims are used since it is robust and well suited for continuous control. 
+Also, environment is slightly modified by reward shaping, halving simulation frequency, cancelling terminal state information at time limit so that learning becomes easier.  
+As stated in previous chapters, most of the real world environments are partially observable. 
+In BipedalWalker-Hardcore, the environment is also partially observable since agent cannot observe behind of it lacks of acceleration sensors which is better to have for controlling mechanical systems. 
+Therefore, we used Long Short Term Memory and Transformer Neural Networks to capture more information from past observations compared to Residual Feed Forward Neural Network (RFFNN) using single instant observation as input. 
+
+RFFNN model performed well thanks to carefully selected hyperparameters and modifications on the environment. 
+Since there is no major differences between sequential models (Transformer), the problem is mainly about rewards and exploration, not partial observability. 
+
+Although LSTM is used commonly for partially observed problems, results are the worst compared to other two models, but keeps learning slowly. 
+Without knowing exact reason, it is probably due to functional properties. 
+
+Transformer model worked with the best performance among all models. 
+It is surprising because it is not succesfully used in RL problems in general. 
+In natural language processing, this type of attention models completely replaced recurrent models, and our results seems promising for this in RL domain. 
+
+The environment was difficult for exploration. SAC performed better than TD3, handling exploration problem since they do not require hyperparameters for exploration, learn randomness during iterations. 
 
 \section{References}
 

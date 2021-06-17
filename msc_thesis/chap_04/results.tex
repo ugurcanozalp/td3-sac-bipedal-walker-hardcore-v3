@@ -4,26 +4,26 @@ For each episode, episode scores are calculated by summing up rewards of each ti
 In \figref{fig:td3_scatter_ep_rewards} and \figref{fig:sac_scatter_ep_rewards}, a scatter plot is visualized for each model's episode scores. 
 In \figref{fig:td3_std_ep_rewards} and \figref{fig:sac_std_ep_rewards}, moving average and standard deviation is visualized for each model's episode scores. 
 
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{figures/bipedal/SCATTER_TD3_RFFNN_LSTM_TRSF.png}
 	\caption{Scatter Plot with Moving Average for Episode Scores (TD3)}
 	\label{fig:td3_scatter_ep_rewards}
 \end{figure}
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{figures/bipedal/STD_TD3_RFFNN_LSTM_TRSF.png}
 	\caption{Moving Average and Standard Deviation for Episode Scores (TD3)}
 	\label{fig:td3_std_ep_rewards}
 \end{figure} 
 
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{figures/bipedal/SCATTER_SAC_RFFNN_LSTM_TRSF.png}
 	\caption{Scatter Plot with Moving Average for Episode Scores (SAC)}
 	\label{fig:sac_scatter_ep_rewards}
 \end{figure}
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{figures/bipedal/STD_SAC_RFFNN_LSTM_TRSF.png}
 	\caption{Moving Average and Standard Deviation for Episode Scores (SAC)}
@@ -49,7 +49,7 @@ In SAC simulations at best models, RFFNN and Transformer models do not exhibit a
 Also, SAC model performed better than TD3 in general. 
 Agent cannot exceed 280 points in any simulation with TD3 (\figref{fig:td3_scatter_ep_rewards}) but it exceeds 300 points with SAC (\figref{fig:sac_scatter_ep_rewards}). Also, moving average points is also higher when SAC policy is used. 
 
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
 	\begin{subfigure}{.9\textwidth}
 		\centering
@@ -79,7 +79,7 @@ Agent cannot exceed 280 points in any simulation with TD3 (\figref{fig:td3_scatt
 	\label{fig:rffnn_simulation}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
 	\begin{subfigure}{.9\textwidth}
 		\centering

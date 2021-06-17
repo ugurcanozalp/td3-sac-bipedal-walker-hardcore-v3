@@ -66,7 +66,6 @@ The robot has 2 legs with 2 joints at knee and hip. Torque provided to knee and 
 
 \textbf{Reward Function} is a bit complex. 
 The robot should run fast with little energy while not stumble and fall to ground. 
-Therefore reward is shaped accordingly. 
 Directly proportional to distance traveled forward, +300 points given if agent reaches end of path. 
 -10 points (-100 points in original version) if agent falls, 
 and small amount of negative reward proportional to applied motor torque (to prevent applying unnecessary torque). 

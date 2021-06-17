@@ -65,9 +65,9 @@ For deterministic policy,
 Bellman proved that optimal value function should satisfy following conditions~\cite{bellman_dynamic_2003}. 
 \begin{equation}
 \label{eqn:bellman_v}
-V^{*}(s) = \max_{a} \Big\{ R(s,a) + \gamma \sum_{s'} T(s',s,a) V^{*}(s') \Big\}
+V^{*}(s) = \max_{a} \Big\{ R(s,a) + \gamma \sum_{s'} T(s'|s,a) V^{*}(s') \Big\}
 \end{equation}
 \begin{equation}
 \label{eqn:bellman_q}
-Q^{*}(s,a) = R(s,a) + \gamma \max_{a'} \Big\{ \sum_{s'} T(s',s,a) Q^{*}(s',a') \Big\}
+Q^{*}(s,a) = R(s,a) + \gamma \max_{a'} \Big\{ \sum_{s'} T(s'|s,a) Q^{*}(s',a') \Big\}
 \end{equation}
