@@ -131,10 +131,10 @@ Therefore, following modifications are proposed.
 	\item Time resolution of simulation is halved (from 50 Hz to 25 Hz) by only observing last of each two consecutive frames using a custom wrapper function. 
 	Since there is not a high frequency dynamics, this allows nothing but speeding up the learning process.
 	\item In original implementation, an episode has time limit. 
-	Once this limit is reached, simulation stops with terminal flag. 
-	On the other hand, when agent fails before time limit, the episode ends with terminal flag too. 
-	In first case, the terminal flag causes instability since next step's value is not used in value update, since it is not a logical terminal, just time up indicator.
-	The environment changed such that terminal flag is not given in this case unless agent fails. 
+	Once this limit is reached, simulation stops with terminal state flag. 
+	On the other hand, when agent fails before time limit, the episode ends with terminal state flag too. 
+	In first case, the terminal state flag causes instability since next step's value is not used in value update, since it is not a logical terminal, just time up indicator.
+	The environment changed such that terminal state flag is not given in this case unless agent fails. 
 \end{itemize}
 
 
