@@ -7,9 +7,9 @@ A policy defines how the agent acts according to the state of the environment.
 It may be either deterministic or stochastic: 
 
 \begin{description}
-	\item[Deterministic Policy $\mu \colon \mathcal{S} \rightarrow \mathcal{A}$]. 
+	\item[Deterministic Policy $\mu \colon \mathcal{S} \rightarrow \mathcal{A}$] 
 	A mapping from states to actions.
-	\item[Stochastic Policy $\pi \colon \mathcal{S} \times \mathcal{A} \rightarrow \lbrack 0,1 \rbrack$]. 
+	\item[Stochastic Policy $\pi \colon \mathcal{S} \times \mathcal{A} \rightarrow \lbrack 0,1 \rbrack$] 
 	A mapping from state-action pair to a probability value.
 \end{description}
 
@@ -20,49 +20,52 @@ At time $t$, return $G_t$ is a cumulative sum of the future rewards scaled by th
 \label{eqn:return_dfn}
 G_t = \sum_{i=t}^{\infty} \gamma^{i-t} r_i = r_t + \gamma G_{t+1}.
 \end{equation}
-Since the return depends on future rewards, it also depends on the  policy of the agent as it affects future rewards.
+Since the return depends on future rewards, it also depends on the  policy of the agent as it affects the future rewards.
 
 \subsection{State Value Function}
 
-State Value Function $V^{\pi}$ is the expected return when policy $\pi$ is followed in future and it is defined by
+State Value Function $V^{\pi}$ is the expected return when policy $\pi$ is followed in the future and is defined by
 \begin{equation}
 V^{\pi}(s) = \mathbb{E}[G_t|s_t=s, \pi]. % \quad \forall t = 0,1, ...
 \end{equation}
-Optimal value function should return maximum expected return. 
-The behavior is controlled by the policy. In other words, 
+Optimal value function should return maximum expected return, where 
+the behavior is controlled by the policy. 
+In other words, 
 \begin{equation}
+\label{eqn:max_v}
 V^{*}(s) = \max_{\pi} V^{\pi}(s).
 \end{equation}
 
 \subsection{State-Action Value Function}
 
-State-Action Value Function $Q^{\pi}$ is again the expected return when policy $\pi$ is followed in future, 
+State-Action Value Function $Q^{\pi}$ is again the expected return when policy $\pi$ is followed in the future, 
 however, any action taken at the instant step:
 \begin{equation}
 Q^{\pi}(s,a) = \mathbb{E}[G_t|s_t=s, a_t=a, \pi]. %\quad \forall t = 0,1, ...
 \end{equation}
 Optimal state-action value function should yield maximum expected return for each state-action pair. Hence,
 \begin{equation}
+\label{eqn:max_q}
 Q^{*}(s,a) = \max_{\pi} Q^{\pi}(s,a).
 \end{equation}
-Similarly, the optimal policy $\pi^*$ can be obtained by $Q^{*}(s,a)$. For stochastic policy, it is defined as follows: 
+The optimal policy $\pi^*$ can be obtained by $Q^{*}(s,a)$. For stochastic policy, it is defined as  
 \begin{equation}
 \label{eqn:policy_stochastic_q}
 \pi^{*}(a|s) = 
 \begin{cases}
-1,   & \text{if  } a = \arg\max_{a} Q^{*}(s,a) \\
-0,   & \text{otherwise  }
+1,   & \text{if  } a = \arg\max_{a} Q^{*}(s,a), \\
+0,   & \text{otherwise  }.
 \end{cases} 
 \end{equation}
-For deterministic policy, 
+For deterministic policy, it is
 \begin{equation}
 \label{eqn:policy_deterministic_q}
-\mu^{*}(s) = \arg\max_{a} Q^{*}(s,a)
+\mu^{*}(s) = \arg\max_{a} Q^{*}(s,a).
 \end{equation}
 
 \subsection{Bellman Equation}
 
-Bellman proved that optimal value function should satisfy following conditions~\cite{bellman_dynamic_2003}. 
+Bellman proved that optimal value function should satisfy following conditions~\cite{bellman_dynamic_2003}: 
 \begin{equation}
 \label{eqn:bellman_v}
 V^{*}(s) = \max_{a} \Big\{ R(s,a) + \gamma \sum_{s'} T(s'|s,a) V^{*}(s') \Big\}
@@ -71,3 +74,5 @@ V^{*}(s) = \max_{a} \Big\{ R(s,a) + \gamma \sum_{s'} T(s'|s,a) V^{*}(s') \Big\}
 \label{eqn:bellman_q}
 Q^{*}(s,a) = R(s,a) + \gamma \max_{a'} \Big\{ \sum_{s'} T(s'|s,a) Q^{*}(s',a') \Big\}
 \end{equation}
+These equations can simply be derived from \eqref{eqn:max_v} and \eqref{eqn:max_q}. 
+Most of RL methods are build upon solving \eqref{eqn:bellman_q}, since there exist a direct relation between $Q$ and $\pi$ as in \eqref{eqn:policy_deterministic_q} and \eqref{eqn:policy_stochastic_q}.

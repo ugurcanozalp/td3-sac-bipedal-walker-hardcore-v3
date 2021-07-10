@@ -33,28 +33,28 @@ Snapshots for both environments are depicted in \figref{fig:bipedal_walkers}.
 
 Locomotion of the Bipedal Walker is a difficult control problem due to following reasons: 
 \begin{description}
-	\item[Nonlinearity]. The dynamics are nonlinear, unstable and multimodal. 
+	\item[Nonlinearity] The dynamics are nonlinear, unstable and multimodal. 
 	Dynamical behavior of robot changes for different situations 
 	like ground contact, single leg contact and double leg contact.
-	\item[Uncertainity]. The terrain where the robot walks also varies. 
+	\item[Uncertainity] The terrain where the robot walks also varies. 
 	Designing a controller for all types of terrain is difficult.
-	\item[Reward Sparsity]. Overcoming some obstacles requires a specific maneuver, which is hard to explore sometimes.	
-	\item[Partially Observability]. The robot observes 
+	\item[Reward Sparsity] Overcoming some obstacles requires a specific maneuver, which is hard to explore sometimes.	
+	\item[Partially Observability] The robot observes 
 	ahead with lidar measurements and cannot observe behind. 
 	In addition, it lacks of acceleration sensors.
 \end{description}
 
-These reasons make it hard to implement analytical methods for control tasks. 
-However, approach can easily overcome nonlinearity and uncertainity problems.
+These reasons make it also hard to implement analytical methods for control tasks. 
+However, DRL approach can easily overcome nonlinearity and uncertainity problems.
 
-On the other hand, reward sparsity problem brings local minimums to objective function of optimal control. It can be solved by a good exploration strategy and reward shaping. 
+On the other hand, reward sparsity problem brings local minimums to objective function of optimal control. However, this can be challenged by a good exploration strategy and reward shaping. 
 
 For the partial observability problem, more elegant solution is required. 
-This is achieved by creating a belief state from the past observations to inform the agent. 
+This is, in general, achieved by creating a belief state from the past observations to inform the agent. 
 Agent uses this belief state to choose how to act. 
-If belief state is evaluated sufficiently, 
+If the belief state is evaluated sufficiently, 
 this increases performance of the agent.
-However, relying on observations is also possible, 
+Relying on observations is also possible, 
 and this may be enough sometimes if advanced type of control is not required. 
 
 \subsection{Deep Learning Library: PyTorch}
@@ -62,4 +62,4 @@ and this may be enough sometimes if advanced type of control is not required.
 PyTorch is an open source library developed by Facebook's AI Research Lab (FAIR)~\cite{paszke_pytorch_2019}. 
 It is based on Torch library~\cite{collobert_torch7_2011} and has Python and C++ interface. 
 It is an automatic differentation library with accelerated mathematical operations backed by graphical processing units (GPUs). 
-The clean pythonic syntax made it most famous deep learning tool among researches. 
+The clean pythonic syntax made it one of the most famous deep learning tool among researches. 

@@ -3,18 +3,18 @@
 
 Model based methods are based on solving Bellman equation \eqref{eqn:bellman_v}, \eqref{eqn:bellman_q} with a given model $T$. 
 On the other hand, Model-Free Reinforcement Learning is suitable 
-if environment model is not available but the agent can experience environment by consequences of its actions. There are three main categories in model-free RL:  
+if environment model is not available but the agent can experience environment by the consequences of its actions. There are three main categories in model-free RL:  
 
 \begin{description}
-	\item[Value-Based Learning]. The value functions are learned, 
+	\item[Value-Based Learning] The value functions are learned, 
 	hence the policy arises naturally from the value function using  \eqref{eqn:policy_stochastic_q} and \eqref{eqn:policy_deterministic_q}. 
 	Since $\argmax$ operation is used, this type of learning is suitable for problems where action space is discrete. 
 	
-	\item[Policy-Based Learning]. The policy is learned directly, 
+	\item[Policy-Based Learning] The policy is learned directly, 
 	and return values are used instead of learning a value function. 
 	Unlike value-based methods, it is suitable when continuous action spaces are available in the environment. 
 	
-	\item[Actor-Critic Learning]. Both policy (actor) and value (critic) functions are learned simulatenously. 
+	\item[Actor-Critic Learning] Both policy (actor) and value (critic) functions are learned simulatenously. 
 	Thus, it is also suitable for continuous action spaces. 
 	
 \end{description}
@@ -29,35 +29,37 @@ Target $Q$ value is estimated by bootstrapping estimate,
 Y_t^Q = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta).
 \end{equation}
 At time $t$,  with state, action, reward, next state tuples ($s_t,a_t,r_t,s_{t+1}$), 
-$Q$ values are updated by minimizing difference between the target value and the estimated value, hence the loss 
+$Q$ values are updated by minimizing difference between the target value and the estimated value.
+Hence the loss 
 \begin{equation}
 \label{eqn:q_loss}
 \mathcal{L}_t(\theta) = \big( Y_t - Q(s_t,a_t;\theta) \big) ^ 2, 
 \end{equation}
-with respect to $\theta$ using numerical optimization methods. 
+is to be minimized with respect to $\theta$ using numerical optimization methods. 
 
 \subsubsection{Deep Q Learning}
-Deep Q Learning overcomes the instability problem arising in Q Learning, using Deep Q Network (DQN). 
-When a nonlinear approximator is used, learning is unstable in general. 
-Deep Q Learning introduces Target Network and Experience Replay \cite{mnih_human-level_2015, mnih_playing_2013}. 
+When a nonlinear approximator is used for $Q$ estimation, learning is unstable due to the correlation among recent observations, hence correlations between updated $Q$ function and observations.
+Deep Q Learning solves this problem by introducing Target Network and Experience Replay \cite{mnih_human-level_2015, mnih_playing_2013} along with using deep neural networks. 
 
 \textbf{Target Network} is parametrized by $\theta^-$. 
-It is used to evaluate target value and it is not updated by the loss minimization. 
+It is used to evaluate target value, but it is not updated by the loss minimization. 
 It is updated at each fixed number of update step by Q network parameter $\theta$. 
-Then, the target value is obtained by using $\theta^-$: 
+In this way, correlation between target value and observations are reduced.
+The target value is obtained by using $\theta^-$ as
 \begin{equation}
 \label{eqn:dqn_ntarget}
 Y_t^{DQN} = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta^-).
 \end{equation}
 
 \textbf{Experience Replay} stores experience tuples in the replay memory $\mathcal{D}$ as a queue with fixed buffer size $N_{replay}$. 
-At each iteration $i$, $\theta$ is updated by experiences uniformly subsampled from experience replay by minimizing the expected loss
+At each iteration $i$, $\theta$ is updated by experiences $(s,a,r,s')\sim U(\mathcal{D})$ uniformly subsampled from experience replay by minimizing the expected loss
 \begin{equation}
 \label{eqn:dqn_loss}
-\mathcal{L}_i(\theta_i) = \mathbb{E}_{s,a,r,s'\sim U(\mathcal{D})}\Big[\big( Y^{DQN} - Q(s,a;\theta_i) \big) ^ 2 \Big].
+\mathcal{L}_i(\theta_i) = \mathbb{E}_{(s,a,r,s')\sim U(\mathcal{D})}\Big[\big( Y^{DQN} - Q(s,a;\theta_i) \big) ^ 2 \Big].
 \end{equation}
-It allows agent to learn from experiences multiple times at different stages of learning. More importantly, sampled experiences are close to be independent and identically distributed if buffer size is large enough. 
-This makes learning process more stable. 
+It allows agent to learn from experiences multiple times at different stages of learning. 
+More importantly, sampled experiences are close to be independent and identically distributed if buffer size is large enough. 
+Again, this reduces correlation between recent observations and updated $Q$ value. This makes learning process more stable. 
 
 \textbf{Epsilon Greedy Exploration} is used to let agent explore environment. 
 In discrete action space (finite action space $\mathcal{A}$), this is 
@@ -71,8 +73,8 @@ During the learning process, a random action with probability $\epsilon$ is sele
 \frac{\epsilon}{|\mathcal{A}|-1},     & \text{otherwise}.
 \end{cases}
 \end{equation}
-
-The Deep Q Learning with Experience Replay Algorithm is summarized in Algorithm \ref{alg:dqn}. 
+where $|\mathcal{A}|$ denotes cardinality of $\mathcal{A}$. 
+In Algorithm~\ref{alg:dqn}, we summarize the Deep Q Learning with Experience Replay. 
 
 \begin{algorithm}[H]
 	\SetAlgoLined
@@ -101,49 +103,50 @@ The Deep Q Learning with Experience Replay Algorithm is summarized in Algorithm 
 \end{algorithm}
 
 \subsubsection{Double Deep Q Learning}
-In DQN, maximum operator is used to select and evaluate action on the same network as in \eqref{eqn:dqn_ntarget}. 
-This yields value overestimation in noisy environments. 
-Therefore, action selection and value estimation is decoupled in target evaluation 
-to overcome $Q$ function overestimation~\cite{van_hasselt_deep_2015} using Double Deep Q Network (DDQN). The target value in this approach is as follows:
+In DQN, maximum operator is used to both select and evaluate action on the same network as in \eqref{eqn:dqn_ntarget}. 
+This yields overestimation of $Q$ function in noisy environments. 
+Therefore, action selection and value estimation is decoupled in target evaluation to overcome $Q$ function overestimation~\cite{van_hasselt_deep_2015} using Double Deep Q Network (DDQN). 
+The target value in this approach can therefore be written as follows:
 \begin{equation}
 \label{eqn:ddqn_ntarget}
 Y_t^{DDQN} = r_t + \gamma Q(s_{t+1}, \arg\max_{a'} Q(s_{t+1}, a'; \theta_i );\theta^-).
 \end{equation}
-Meanwhile, the learning process is the same as in DQN except the target value. 
+Except the target value, the learning process is the same as in DQN. 
 
 \subsection{Actor-Critic Learning}
 
 Value-based methods are not suitable for continuous action spaces. 
 Therefore, policy should be explicitly defined instead of maximizing $Q$ function. 
-For such problems, actor-critic type learning methods uses both value and policy models seperately. 
+For such problems, actor-critic type learning methods use both value and policy models seperately. 
 
 In actor-critic learning, there exists two components~\cite{silver_deterministic_2014}:  
-First one is the actor, which is the policy function, either stochastic or deterministic, parametrized by $\theta^{\pi}$ or $\theta^{\mu}$. 
+First one is the actor, which is the policy function, either stochastic or deterministic, parametrized by $\theta^{\pi}$ or $\theta^{\mu}$, respectively. 
 For policy learning, an estimate of the value function is used instead of the true value function since it is already unknown. 
-Second one is critic, which is estimator of value, parametrized by $\theta^Q$. 
-Critic learning is achieved by minimizing the error obtained by several methods such as Monte Carlo sampling or Temporal Difference bootstrapping.
+Second one is the critic, which is an estimator of the $Q$ value, parametrized by $\theta^Q$. 
+Critic learning is achieved by minimizing the error obtained by either Monte Carlo sampling or Temporal Difference bootstrapping.
 Critic is what policy uses for value estimation. 
 
 The ultimate goal is to learn a policy maximizing the value function $V$ by selecting action which maximizes $Q$ value in \eqref{eqn:policy_deterministic_q}. 
-Therefore, value function is the criteria to be maximized by solving parameters $\theta^\mu$ given $\theta^Q$. At time $t$, the loss function for the policy is negative, that is,  
+Therefore, value function is the criteria to be maximized by solving parameters $\theta^\pi$ (or $\theta^\mu$) given $\theta^Q$. 
+At time $t$, the loss function for the policy is negative, that is,  
 \begin{equation}
 \label{eqn:ac_value_maximization}
 \mathcal{L}_t(\theta^\pi) = - Q(s_t, \widetilde{a}_t;\theta^Q), \quad \widetilde{a}_t \sim \pi(\cdot|s_t;\theta^\pi).
 \end{equation}
 
 In order to learn policy $\pi$, $Q$ function should also be learned simultaneously. 
-For $Q$ function approximation, the target value is parametrized by $\theta^Q$ and $\theta^\mu$,
+For $Q$ function approximation, the target value is parametrized by $\theta^Q$ and $\theta^\pi$,
 \begin{equation}
 \label{eqn:ac_target}
 Y_t^{AC} = r_t + \gamma Q(s_{t+1}, \widetilde{a}_{t+1});\theta^Q), \quad \widetilde{a}_{t+1} \sim \pi(\cdot|s_{t+1};\theta^{\pi}),
 \end{equation}
-and this target is used to learn $Q$ function by minimizing the following least squares loss,
+and this target is used to learn $Q$ function by minimizing the least squares loss (in general),
 \begin{equation}
 \label{eqn:ac_loss}
 \mathcal{L}_t(\theta^Q) = \big[ Y_t^{AC} - Q(s_t,a_t;\theta^Q) \big] ^ 2.
 \end{equation}
 
-Note that both the actor and the critic should be learned at the same time. Therefore, parameters are updated simultaneously during the iterations in learning process. 
+Note that both the actor and the critic should be learned at the same time. Therefore, parameters are updated simultaneously during the iterations in the learning process. 
 
 \subsubsection{Deep Deterministic Policy Gradient}
 DDPG is continuous complement of DQN using a deterministic policy~\cite{lillicrap_continuous_2019}. 
@@ -151,7 +154,7 @@ It also uses experience replay and target networks.
 Similar to Deep Q Learning, there are target networks parametrized by $\theta^{\mu^-}$ and $\theta^{Q^-}$ 
 along with the main networks parametrized by $\theta^{\mu}$ and $\theta^{Q}$. 
 
-While target networks are updated in fixed number of steps in DQN, 
+While target networks are updated in a fixed number of steps in DQN, 
 DDPG updates target network parameters at each step with Polyak averaging, 
 \begin{equation}
 \label{eqn:target_update}
@@ -166,12 +169,12 @@ Policy network parameters are learned by maximizing resulting expected value, or
 \end{equation} 
 Note that value network parameters are also assumed to be learned. 
 
-In addition, target networks are used to predict target value and the target is defined by: 
+In addition, target networks are used to predict target value and the target is defined by
 \begin{equation}
 \label{eqn:ddpg_target}
 Y_t^{DDPG} = r_t + \gamma Q(s_{t+1}, \mu(s_{t+1};\theta^{\mu^-});\theta^{Q^-}).
 \end{equation}
-In each iteration, this target is used to learn $Q$ function by minimizing the least squares loss: 
+In each iteration, this target is used to learn $Q$ function by minimizing the least squares loss 
 \begin{equation}
 \label{eqn:ddpg_loss}
 \mathcal{L}_i(\theta^Q_i) = \mathbb{E}_{s,a,r,s'\sim U(\mathcal{D})}\Big[\big( Y^{DDPG} - Q(s,a;\theta^Q_i) \big) ^ 2 \Big].
@@ -180,7 +183,7 @@ In each iteration, this target is used to learn $Q$ function by minimizing the l
 In DDPG, value and policy network parameters are learned simultaneously. 
 During the learning process, exploration noise is added to each selected action. 
 In ~\cite{lillicrap_continuous_2019}, authors proposed to use Ornstein-Uhlenbeck Noise~\cite{uhlenbeck_theory_1930} in order to have temporal correlation for efficiency. 
-However, a simple Gaussian noise or any other noise is also possible. 
+However, a simple Gaussian white noise or any other one is also possible. 
 
 DDPG is summarized in Algorithm \ref{alg:ddpg}. 
 
@@ -231,9 +234,9 @@ Two sample paths of the process are shown in  \figref{fig:ou_vs_gaussian} in ord
 
 \subsubsection{Twin Delayed Deep Deterministic Policy Gradient}
 TD3~\cite{fujimoto_addressing_2018} is an improved version of DDPG with higher stability and efficiency. 
-There are "three" main tricks upon DDPG: 
+There are three main tricks upon DDPG: 
 
-\textbf{Target Policy Smoothing} is to regularize the learning process by smoothing effects of actions on value. For target value assessing, actions are obtained from the target policy network in DDPG, while a clipped zero-centered Gaussian noise is added to actions in TD3 as follows,
+\textbf{Target Policy Smoothing} is to regularize the learning process by smoothing effects of actions on value. For target value assessing, actions are obtained from the target policy network in DDPG, while a clipped zero-centered Gaussian noise is added to actions in TD3 as follows: 
 \begin{equation}
 \label{eqn:td3_target_action}
 \widetilde{a}' = \mu(s';\theta^{\mu^-}) + \text{clip}(\epsilon, -c, c), \quad \epsilon \sim \mathcal{N}(0, \sigma).
@@ -241,7 +244,8 @@ There are "three" main tricks upon DDPG:
 
 \textbf{Clipped Double Q Learning} is to escape from $Q$ value overestimation. 
 There are two different value networks with their targets. 
-During learning, both are learned from single target value assessed by using whichever of the two networks give smaller. In other words, 
+During learning, both networks are trained by single target value assessed by using whichever of the two networks give smaller. 
+In other words, 
 \begin{equation}
 \label{eqn:td3_target}
 Y_t^{TD3} = r_t + \gamma \min_{k\in\{1,2\}} Q(s_{t+1}, ;\widetilde{a}_{j+1};\theta^{Q_k^-}).
@@ -252,7 +256,7 @@ On the other hand, the policy is learned by maximizing the output of the first v
 \mathcal{L}_i(\theta^\mu_i) = -\mathbb{E}_{s \sim U(\mathcal{D})} \Big[ Q(s, \mu(s;\theta^\mu_i);\theta^{Q_1}) \Big].
 \end{equation} 
 
-\textbf{Delayed Policy Updates} is for stable training. 
+\textbf{Delayed Policy Updates} is used for stable training. 
 During learning, policy network and target networks are updated less frequently (at each fixed number of steps) than the value network. 
 Since the policy network parameters are learned by maximizing the value network, they are learned slower.  
 
@@ -293,10 +297,10 @@ TD3 is summarized in Algorithm \ref{alg:td3}.
 \subsubsection{Soft Actor-Critic}
 SAC~\cite{haarnoja_soft_2018} is a stochastic actor-critic method and many characteristics are similar to TD3 and DDPG. Its main advantage is that it learns to maximize exploration with entropy regularization. 
 
-SAC is an entropy-regularized RL method. Such methods give bonus reward to the agent propotional to the policy entropy. Given state $s$, entropy of a policy is defined by the following: 
+SAC is an entropy-regularized RL method. Such methods give bonus reward to the agent propotional to the policy entropy: given state $s$, the entropy of a policy is defined by
 \begin{equation}
 \label{eqn:policy_entropy}
-H(\pi(\cdot|s)) = \mathbb{E}_{\widetilde{a}\sim\pi(\cdot|s)}[-\log(\pi(\widetilde{a}|s))]
+H(\pi(\cdot|s)) = \mathbb{E}_{\widetilde{a}\sim\pi(\cdot|s)}[-\log(\pi(\widetilde{a}|s))].
 \end{equation}
 
 Given the entropy coefficient $\alpha$, definition of state-action value function is redefined as follows: 
@@ -308,22 +312,26 @@ Q^{\pi}(s,a) = \mathbb{E}_{\substack{s'\sim T(\cdot|s,a)\\\widetilde{a}'\sim \pi
 This modification changes $Q$ value target definition,
 \begin{equation}
 \label{eqn:q_target_sac}
-Y_t^{SAC} = r_t + \gamma \Big(\min_{k\in\{1,2\}} Q(s_{t+1}, ;\widetilde{a}_{t+1};\theta^{Q_k^-}) -\alpha\log(\pi(\widetilde{a}_{t+1}|s_{t+1})) \Big), \quad \text{where} \quad \widetilde{a}_{t+1} \sim \pi(\cdot|s_{t+1}; \theta^{\pi}).
+Y_t^{SAC} = r_t + \gamma \Big(\min_{k\in\{1,2\}} Q(s_{t+1}, ;\widetilde{a}_{t+1};\theta^{Q_k^-}) -\alpha\log(\pi(\widetilde{a}_{t+1}|s_{t+1})) \Big),
 \end{equation}
-While the policy is updated according to first value network by \eqref{eqn:td3_policy_loss} in TD3, the policy is updated according to minimum value of both networks output along with entropy regularization, 
+where $\widetilde{a}_{t+1} \sim \pi(\cdot|s_{t+1}; \theta^{\pi})$.
+
+While the policy is updated according to first value network by \eqref{eqn:td3_policy_loss} in TD3, the policy is updated according to minimum value of both networks output along with the entropy regularization, 
 \begin{equation}
 \label{eqn:sac_policy_loss}
 \mathcal{L}_i(\theta^\pi_i) = - \mathbb{E}_{\substack{s \sim U(\mathcal{D})\\\widetilde{a} \sim \pi(\cdot|s)}} \Big[ \min_{k\in\{1,2\}} Q(s, \widetilde{a};\theta^{Q_k^-}) - \alpha\log(\pi(\widetilde{a}|s;\theta^\pi_i)) \Big].
 \end{equation}
 
 The policy function is stochastic in SAC, and in practice, it is a parametrized probability disribution. Most common one is 
-Squashed Gaussian policy to squash actions in $(-1,1)$ range by $\tanh$ function, which is parametrized by its mean and standart deviation, i.e., $\theta^{\pi}=(\theta^{\mu}, \theta^{\sigma})$. Actions are then sampled as follows: 
+Squashed Gaussian policy to squash actions in the range $(-1,1)$ by $\tanh$ function. 
+This is parametrized by its mean and standart deviation, i.e., $\theta^{\pi}=(\theta^{\mu}, \theta^{\sigma})$. Actions are then sampled as follows: 
 \begin{equation}
 \label{eqn:squashed_gp_sampling}
 a(s) = \tanh(\mu(s; \theta^{\mu}) + \eta \odot \sigma(s; \theta^{\sigma})), \quad \eta \sim \mathcal{N}(0, I). 
 \end{equation}
 
 Finally, we note that SAC method does not include policy delay, target policy smoothing and target policy network. 
+
 SAC is summarized in Algorithm \ref{alg:sac}.
 
 \begin{algorithm}[H]

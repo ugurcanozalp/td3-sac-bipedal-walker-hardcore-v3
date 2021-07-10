@@ -45,8 +45,8 @@ class StableTransformerEncoder(nn.Module):
         #x = x * self.embedding_scale
         x = self.pos_embedding(x)
         x = x.permute(1,0,2) # batch, seq, emb -> seq, batch, emb
-        x = self.encoder(x)  # 1, batch, emb
-        x = self.layn(x[0]) # remove sequential dimension and layernorm.
+        x = self.encoder(x)  # seq, batch, emb
+        x = self.layn(x[-1]) # remove sequential dimension and layernorm.
         return x
 
 class Critic(nn.Module):

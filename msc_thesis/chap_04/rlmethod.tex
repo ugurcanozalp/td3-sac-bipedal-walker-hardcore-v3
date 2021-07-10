@@ -6,11 +6,12 @@ Hyperparameters are selected by grid search and best performing values are used.
 
 In TD3, as exploration noise, Ornstein-Uhlenbeck noise is used, and standart deviation is multiplied  by $0.999$ at the end of each episode. 
 
-In SAC model, squashed gaussian policy is implemented. Therefore, along with layer giving mean actions, an additive layer is implemented for standart deviation along with it. 
+In SAC model, squashed gaussian policy is implemented. Therefore, along with layer giving mean actions, an additive layer is implemented for the standart deviation. 
 
-All hyperparameters are found after a trial-error process. They  are summarized in \tabref{table:hyperparams_td3} and \tabref{table:hyperparams_sac}. Unlisted ones have default values which PyTorch gives. 
+All hyperparameters are found after a trial-error process. They  are summarized in \tabref{table:hyperparams_td3} and \tabref{table:hyperparams_sac}.
 
 \begin{table}
+	\caption{Hyperparmeters and Exploration of Learning Processes for TD3}
 	\begin{tabular}{|l||*{3}{c|}}\hline
 		\backslashbox{Hyperparameter}{Model}
 		&\makebox[5em]{RFFNN}&\makebox[5em]{LSTM}&\makebox[5em]{Transformer}\\\hline\hline
@@ -24,12 +25,12 @@ All hyperparameters are found after a trial-error process. They  are summarized 
 		$\tau$ (Polyak parameter) &\multicolumn{3}{|c|}{$0.005$}\\\hline
 		Exploration &\multicolumn{3}{|c|}{$OU(\theta=4.0, \sigma=1.0)$}\\\hline
 	\end{tabular}
-	\caption{Hyperparmeters and Exploration of Learning Processes for TD3}
 	\label{table:hyperparams_td3}
 \end{table}
 \noindent
 
 \begin{table}
+	\caption{Hyperparmeters and Exploration of Learning Processes for SAC}
 	\begin{tabular}{|l||*{3}{c|}}\hline
 		\backslashbox{Hyperparameter}{Model}
 		&\makebox[5em]{RFFNN}&\makebox[5em]{LSTM}&\makebox[5em]{Transformer}\\\hline\hline
@@ -41,7 +42,6 @@ All hyperparameters are found after a trial-error process. They  are summarized 
 		$\tau$ (Polyak parameter) &\multicolumn{3}{|c|}{$0.005$}\\\hline
 		$\alpha$ (Entropy Temperature) &\multicolumn{3}{|c|}{$0.005$}\\\hline
 	\end{tabular}
-	\caption{Hyperparmeters and Exploration of Learning Processes for SAC}
 	\label{table:hyperparams_sac}
 \end{table}
 \noindent

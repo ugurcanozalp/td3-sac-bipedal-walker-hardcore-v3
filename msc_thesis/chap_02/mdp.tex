@@ -3,19 +3,19 @@
 
 Markov Decision Process (MDP) is a sequential decision making process with Markov property. 
 It is represented as a tuple $(\mathcal{S},\mathcal{A},T,R,\gamma)$. 
-Markov property means that the conditional probability distribution of the future state depends only on the instant state and action instead of the entire state/action history, so it is memoryless. 
+Markov property means that the conditional probability distribution of the future state depends only on the instant state and action instead of the entire state/action history, so it is regarded as memoryless. 
 In MDP setting, the system is fully observable which means that the states can be derived from instant observations; i.e., $s_t=f(o_t)$. 
-Therefore, agent can decide action based on only instant observation $o_t$ instead of what happened on previous times \cite{francois-lavet_introduction_2018}. MDP consists of the following:
+Therefore, agent can decide an action based on only instant observation $o_t$ instead of what happened at previous times \cite{francois-lavet_introduction_2018}. MDP consists of the following:
 
 \begin{description}
-	\item[State Space $\mathcal{S}$]. A set of all possible configurations of the system. 
+	\item[State Space $\mathcal{S}$] A set of all possible configurations of the system. 
 	
-	\item[Action Space $\mathcal{A}$].  A set of all possible actions of the agent. 
+	\item[Action Space $\mathcal{A}$]  A set of all possible actions of the agent. 
 	
-	\item[Model $T \colon \mathcal{S} \times \mathcal{S} \times \mathcal{A} \rightarrow \lbrack 0,1 \rbrack$]. A function of how environment evolves through time, representing transition probabilities as $T(s'|s,a) = p(s'|s,a)$ 
+	\item[Model $T \colon \mathcal{S} \times \mathcal{S} \times \mathcal{A} \rightarrow \lbrack 0,1 \rbrack$] A function of how environment evolves through time, representing transition probabilities as $T(s'|s,a) = p(s'|s,a)$ 
 	where $s' \in \mathcal{S}$ is the next state, $s \in \mathcal{S}$ is the instant state and $a \in \mathcal{A}$ is the action taken.
 	
-	\item[Reward Function $R \colon \mathcal{S} \times \mathcal{A} \mapsto \mathbb{R}$]. A function of rewards obtained from the environment. 
+	\item[Reward Function $R \colon \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}$] A function of rewards obtained from the environment. 
 	At each state transition $s_t \rightarrow s_{t+1}$, a reward $r_t$ is given to the agent. 
 	Rewards may be either deterministic or stochastic. 
 	Reward function is the expected value of reward given the state $s$ and the action taken $a$, defined by:
@@ -23,5 +23,5 @@ Therefore, agent can decide action based on only instant observation $o_t$ inste
 	R(s,a) = \mathbb{E}[r_t|s_t=s, a_t=a]. %\: \forall t = 0,1, ...
 	\end{equation}
 	
-	\item[Discount Factor $\gamma \in \lbrack 0,1 \rbrack$]. A measure of the importance of rewards in the future for the value function.
+	\item[Discount Factor $\gamma \in \lbrack 0,1 \rbrack$] A measure of the importance of rewards in the future for the value function.
 \end{description}

@@ -4,19 +4,19 @@
 Machine Learning is the ability of a computer program that allows 
 adaptation to new situations through experience, 
 without explicitly programmed~\cite{mitchell_machine_1997}. 
-There exist three main paradigms; 
+As shown in \figref{fig:sl_ul_rl}, there exist three main paradigms: 
 
 \textbf{Supervised Learning} is the task of learning a function $f \colon X \rightarrow Y$ 
 that maps an input to an output based on $N$ example input-output pairs $(x_i,y_i)$ 
-such that $ f(x_i) \approx y_i$, for all $i \in {1,2,...,N}$ 
+such that $ f(x_i) \approx y_i$, for all $i={1,2,...,N}$ 
 by minimizing error between predicted and target output. 
 Input $x$ can be thought as the state of an agent, and $y$ is the correct action at state $x$. 
 For supervised learning, both $x$ and $y$ should be available, 
 where the correct actions are provided by a friendly supervisor~\cite{russell_artificial_nodate}. 
 
-\textbf{Unsupervised Learning} is discovering structure on input examples without any label on it. 
+\textbf{Unsupervised Learning} discovers the structure on input examples without any label on them. 
 Based on $N$ example input $(x_i)$, 
-it is discovering function $f \colon X \rightarrow Y$, $ f(x_i) = y_i$, for all $i \in {1,2,...,N} $, 
+it discovers function $f \colon X \rightarrow Y$, $ f(x_i) = y_i$, for all $i={1,2,...,N} $, 
 where $y_i$ is discovered output. 
 This discovery is motivated by predefined objective. 
 This objective is maximization of a value which represents compactness of output representations. 
@@ -33,7 +33,7 @@ learn how to act in an environment~\cite{sutton_reinforcement_1998}.
 Each action of the agent is either rewarded or punished according to a reward function. 
 Therefore, reward function is mathematical representation of what to teach the agent. 
 The agent explores environment by taking various actions in different states to gain experience, based on trial-and-error. 
-Then it exploits experiences to get highest reward from the environment considering instant and future rewards over time. 
+Then it exploits experiences to get the highest reward from the environment considering instant and future rewards over time. 
 
 Formally, Reinforcement Learning is learning a policy function 
 $\pi \colon \mathcal{S} \rightarrow \mathcal{A}$ which maps 
@@ -44,7 +44,7 @@ However, the difference is that the value function $V^{\pi}(s)$ is not defined e
 It is also learned by interacting with the environment by taking all possible actions in all possible states. 
 
 In short, Reinforcement Learning is different from Supervised Learning because the correct actions are not provided. 
-It is also different from Unsupervised Learning because the agent is forced to learn a behaviour and the agent is evaluated at each time without supervision. 
+It is also different from Unsupervised Learning because the agent is forced to learn a specific behaviour and evaluated at each time step without supervision. 
 
 \begin{figure}
 	\centering

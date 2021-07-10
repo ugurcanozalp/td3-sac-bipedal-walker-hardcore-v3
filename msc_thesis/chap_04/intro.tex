@@ -3,7 +3,7 @@
 
 \section{Details of the Environment}
 
-\textit{BipedalWalker-v3} and \textit{BipedalWalker-Hardcore-v3} are simulation environments of a bipedal robot, 
+\textit{BipedalWalker-v3} and \textit{BipedalWalker-Hardcore-v3} are two simulation environments of a bipedal robot, 
 with relatively flat course and obstacle course respectively. 
 Dynamics of the robot are exactly identical in both environments. 
 Our task is to solve hardcore version where the agent is expected to learn to run and walk in different road conditions. 
@@ -19,7 +19,7 @@ Components of the hardcore environment is visualized in \figref{fig:bipedal_hard
 The robot has kinematic and lidar sensors. 
 It is modeled as Markov Decision Process with deterministic dynamics. 
 
-\textbf{Observation Space} contains hull angle, hull angular velocity, hull translational velocities, joint positions, joint angular speeds, leg ground concats and 10 lidar rangefinder measurements. Details are summarized in \tabref{table:bpw_obs_space}. 
+\textbf{Observation Space} contains hull angle, hull angular velocity, hull translational velocities, joint positions, joint angular speeds, leg ground concats and 10 lidar rangefinder measurements. Details and their constraints are summarized in \tabref{table:bpw_obs_space}. 
 
 \begin{table}%[h!]
 	\begin{center}
@@ -47,7 +47,7 @@ It is modeled as Markov Decision Process with deterministic dynamics.
 	\label{table:bpw_obs_space}
 \end{table}
 
-The robot has 2 legs with 2 joints at knee and hip. Torque provided to knee and pelvis joints of both legs. These 4 torque values forms  \textbf{Action Space}. Details are presented in \tabref{table:bpw_act_space}. 
+The robot has two legs with two joints at knee and hip. Torque is provided to knee and pelvis joints of both legs. These four torque values forms the \textbf{Action Space}, presented in \tabref{table:bpw_act_space} with their constraints. 
 
 \begin{table}%[h!]
 	\begin{center}
@@ -64,18 +64,17 @@ The robot has 2 legs with 2 joints at knee and hip. Torque provided to knee and 
 	\label{table:bpw_act_space}
 \end{table}
 
-\textbf{Reward Function} is a bit complex. 
-The robot should run fast with little energy while not stumble and fall to ground. 
-Directly proportional to distance traveled forward, +300 points given if agent reaches end of path. 
--10 points (-100 points in original version) if agent falls, 
-and small amount of negative reward proportional to applied motor torque (to prevent applying unnecessary torque). 
-Lastly, the robots gets negative reward propotional to absolute value of hull angle for reinforcing to keep hull straigth. 
+\textbf{Reward Function} is a bit complex in the sense that the robot should run fast with little energy while it should not stumble and fall to ground. 
+Directly proportional to distance traveled forward, +300 points given if agent reaches to end of the path. 
+However, -10 points (-100 points in the original version) if agent falls, 
+and small amount of negative reward proportional to the applied motor torque (to prevent applying unnecessary torque). 
+Lastly, the robots gets negative reward propotional to the absolute value of the hull angle for reinforcing to keep the hull straigth. 
 
 \subsection{Partial Observability}
 
 The environment is partially observable due to following reasons.
 \begin{itemize}
-	\item The agent is not able to track behind with lidar sensor. 
+	\item The agent is not able to track behind with the lidar sensor. 
 	Unless it has a memory, it cannot know whether a pitfall or hurdle behind. 
 	Illustration is shown in \figref{fig:partial_obs_pitfall}.
 	\item There is no accelerometer sensor. 
@@ -106,12 +105,12 @@ The environment is partially observable due to following reasons.
 \end{figure}
 
 In DRL, partial observability is handled by 2 ways in literature~ \cite{dulac-arnold_challenges_2019}. 
-First is incorporating fixed number of last observations while second way is updating hidden belief state using recurrent neural network at each time step. 
-Our approach is using fixed number of past observations into LSTM and Transformer based networks for both actor and critic networks. 
+The first is incorporating fixed number of last observations while the second way is updating hidden belief state using recurrent-like neural network at each time step. 
+Our approach is somewhere in between. We pass fixed number of past observations into LSTM and Transformer networks for both actor and critic. 
 
 \subsection{Reward Sparsity}
 
-Rewards given to the agent is sparse in some circumstances. 
+Rewards given to the agent is sparse in some circumstances, in the following sense:
 \begin{itemize}
 	\item Overcoming big hurdles requires a very specific move. 
 	The agent should explore many actions when faced with a big hurdle.
@@ -120,20 +119,20 @@ Rewards given to the agent is sparse in some circumstances.
 
 \subsection{Modifications on Original Envrionment}
 
-It is difficult to solve directly available environment as it is. 
-There are few works on the literature demonstrating a solution. 
-Therefore, following modifications are proposed.
+It is difficult to find an optimal policy directly with available setting. 
+There are few works on the literature demonstrating a solution for \textit{BipedalWalker-Hardcore-v3} . 
+The following modifications are proposed.
 
 \begin{itemize}
 	\item In original version, agent gets -100 points when its hull hits the floor. 
 	In order to make the robot more greedy, this is changed to -10 points. 
-	Otherwise, agent cannot explore environment since it gets too much punishment when failed.
+	Otherwise, agent cannot explore environment since it gets too much punishment when failed and learns to do nothing.
 	\item Time resolution of simulation is halved (from 50 Hz to 25 Hz) by only observing last of each two consecutive frames using a custom wrapper function. 
 	Since there is not a high frequency dynamics, this allows nothing but speeding up the learning process.
-	\item In original implementation, an episode has time limit. 
+	\item In original implementation, an episode has a time limit. 
 	Once this limit is reached, simulation stops with terminal state flag. 
-	On the other hand, when agent fails before time limit, the episode ends with terminal state flag too. 
-	In first case, the terminal state flag causes instability since next step's value is not used in value update, since it is not a logical terminal, just time up indicator.
+	On the other hand, when agent fails before the time limit, the episode ends with terminal state flag too. 
+	In the first case, the terminal state flag causes instability since next step's value is not used in value update, since it is not a logical terminal, just time up indicator.
 	The environment changed such that terminal state flag is not given in this case unless agent fails. 
 \end{itemize}
 

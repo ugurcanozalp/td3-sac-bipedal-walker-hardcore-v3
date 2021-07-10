@@ -6,48 +6,57 @@ In \figref{fig:td3_std_ep_rewards} and \figref{fig:sac_std_ep_rewards}, moving a
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{figures/bipedal/SCATTER_TD3_RFFNN_LSTM_TRSF.png}
-	\caption{Scatter Plot with Moving Average for Episode Scores (TD3)}
-	\label{fig:td3_scatter_ep_rewards}
+	\begin{subfigure}{.49\textwidth}
+		\centering
+		\includegraphics[width=0.99\textwidth]{figures/bipedal/SCATTER_TD3_RFFNN_LSTM_TRSF.png}
+		\caption{TD3}
+		\label{fig:td3_scatter_ep_rewards}
+	\end{subfigure}
+	\begin{subfigure}{.49\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/SCATTER_SAC_RFFNN_LSTM_TRSF.png}
+		\caption{SAC}
+		\label{fig:sac_scatter_ep_rewards}
+	\end{subfigure}
+	\caption{Scatter Plot with Moving Average for Episode Scores}
 \end{figure}
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{figures/bipedal/STD_TD3_RFFNN_LSTM_TRSF.png}
-	\caption{Moving Average and Standard Deviation for Episode Scores (TD3)}
-	\label{fig:td3_std_ep_rewards}
-\end{figure} 
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{figures/bipedal/SCATTER_SAC_RFFNN_LSTM_TRSF.png}
-	\caption{Scatter Plot with Moving Average for Episode Scores (SAC)}
-	\label{fig:sac_scatter_ep_rewards}
+	\begin{subfigure}{.49\textwidth}
+		\centering
+		\includegraphics[width=0.99\textwidth]{figures/bipedal/STD_TD3_RFFNN_LSTM_TRSF.png}
+		\caption{TD3}
+		\label{fig:td3_std_ep_rewards}
+	\end{subfigure}
+	\begin{subfigure}{.49\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/STD_SAC_RFFNN_LSTM_TRSF.png}
+		\caption{SAC}
+		\label{fig:sac_std_ep_rewards}
+	\end{subfigure}
+	\caption{Moving Average and Standard Deviation for Episode Scores}
 \end{figure}
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{figures/bipedal/STD_SAC_RFFNN_LSTM_TRSF.png}
-	\caption{Moving Average and Standard Deviation for Episode Scores (SAC)}
-	\label{fig:sac_std_ep_rewards}
-\end{figure} 
 
-First of all, none of our approaches solved the problem since 300 points required in 100 random simulations as solution. 
-However, our methods partially solved problems by exceeding 200 point limit, while some simulations yield around 280 points in all models. 
+Officially, 300 points in average required in random 100 simulations to say the environment is solved.
+Therefore, none of our approaches solved.
+However, they partially solved problems by exceeding 200 point limit, while some simulations yield around 280 points with all neural networks in TD3 and 300 points are reached with SAC. 
 
 RFFNN seems to be enough for solving the problem, although there exist partial observability in the environment. 
 That model reaches around 220 points in average with TD3 and 225 points with SAC. In addition, learning was unstable. 
 
-The robot was able to walk by LSTM model but yield worse results and cannot exceed 120 points in average with both models. 
+The robot was able to walk by LSTM model but yield worse results and cannot exceed 120 points in average with both TD3 and SAC. 
 
 Transformer model yield best results by reaching 230 points with TD3 and exceeds 250 points with SAC. 
 
 As Transformer and RFFNN are relatively succesfull, their behavior is visualized in \figref{fig:rffnn_simulation} and \figref{fig:trsf_simulation} for TD3 model. 
-The main behavior difference is when the agent faces with a big hurdle. 
+The main behavioral difference is when the agent faces a big hurdle. 
 First model passes it by jumping while other does by taking a very big step, shown in \figref{fig:anim_rffnn_hurdle} and \figref{fig:anim_trsf_hurdle}.
 
-In SAC simulations at best models, RFFNN and Transformer models do not exhibit a noteworthy difference.
+In SAC results, RFFNN and Transformer agents do not exhibit a noteworthy difference.
 
-Also, SAC model performed better than TD3 in general. 
-Agent cannot exceed 280 points in any simulation with TD3 (\figref{fig:td3_scatter_ep_rewards}) but it exceeds 300 points with SAC (\figref{fig:sac_scatter_ep_rewards}). Also, moving average points is also higher when SAC policy is used. 
+Also, SAC model performes better than TD3 in general. 
+Agent cannot exceed 280 points in any simulation with TD3 (\figref{fig:td3_scatter_ep_rewards}) but it exceeds 300 points with SAC (\figref{fig:sac_scatter_ep_rewards}). Also, as seen from the moving average points, SAC agents are superior (\figref{fig:td3_std_ep_rewards},\figref{fig:sac_std_ep_rewards}).
 
 \begin{figure}[!ht]
 	\centering

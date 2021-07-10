@@ -1,14 +1,14 @@
 \section{Challenges}
 \label{sec:chal}
 
-The Reinforcement Learning Environment poses a variety of obstacles 
+The reinforcement learning environment poses a variety of obstacles 
 that we need to address and potentially make trade-offs among them~\cite{dulac-arnold_challenges_2019, sutton_reinforcement_1998}.
 
 \subsection{Exploration Exploitation Dilemma}
 
 A RL agent is supposed to maximize rewards (exploitation of knowledge) by observing the environment (exploration of environment). 
 This gives rise to the exploration-exploitation dilemma which is an inevitable trade-off. 
-Exploration means taking a range of acts to benefit about the consequences, which typically results in low immediate rewards but high rewards for the future. 
+Exploration means taking a range of acts to benefit from the consequences, which typically results in low immediate rewards but high rewards for the future. 
 Exploitation means taking action that has been learned, and typically results in high immediate rewards but low rewards in the future. 
 
 \subsection{Generalization and Curse of Dimensionality}
@@ -36,5 +36,5 @@ This problem is usually tackled by incorporating observation history from the ag
 
 Mechanical agents can kill or degrade themselves and their surroundings during the learning process. 
 This safety problem is important on both exploration stage and full operation. 
-In addition, it is difficult to analyze an RL agent's policy, meaning that it is uncertain what the agent do in unseen situation. 
-Simulation of environment is a good way to train the agent with safety but this causes an incomplete learning due to inaccuracy compared to the real environment. 
+In addition, it is difficult to analyze an RL agent's policy, that is, it is uncertain what the agent do in unseen situation. 
+Simulation of environment is a good way to train the agent with safety, however, this causes an incomplete learning due to inaccuracy compared to the real environment. 

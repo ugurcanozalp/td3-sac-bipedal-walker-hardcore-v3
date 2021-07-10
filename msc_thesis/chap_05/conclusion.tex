@@ -5,23 +5,24 @@
 \label{sec:conclusion}
 For robot control by RL in real world, simulation is an important step. 
 Usually, models are pretrained in simulation environment before learning in reality due to safety and exploration reasons. 
-Today, RL is rarely used in real world applications due to such constraints. 
+Today, RL is rarely used in real world applications due to safety and sample inefficiency problems. 
 
 In this thesis, bipedal robot walking is investigated by deep  reinforcement learning due to complex dynamics in OpenAI Gym's simulation environment. 
-TD3 and SAC algorthims are used since it is robust and well suited for continuous control. 
-Also, environment is slightly modified by reward shaping, halving simulation frequency, cancelling terminal state information at time limit so that learning becomes easier.  
+TD3 and SAC algorthims are used since they are robust and well suited for continuous control. 
+Also, environment is slightly modified by reward shaping, halving simulation frequency, cancelling terminal state information at time limit so that learning becomes easier.
+  
 As stated in previous chapters, most of the real world environments are partially observable. 
-In BipedalWalker-Hardcore, the environment is also partially observable since agent cannot observe behind of it lacks of acceleration sensors which is better to have for controlling mechanical systems. 
-Therefore, we used Long Short Term Memory and Transformer Neural Networks to capture more information from past observations compared to Residual Feed Forward Neural Network (RFFNN) using single instant observation as input. 
+In BipedalWalker-Hardcore, the environment is also partially observable since agent cannot observe behind and it lacks of acceleration sensors, which is better to have for controlling mechanical systems. 
+Therefore, we propose to use Long Short Term Memory and Transformer Neural Networks to capture more information from past observations unlike Residual Feed Forward Neural Network (RFFNN) using a single instant observation as input. 
 
 RFFNN model performed well thanks to carefully selected hyperparameters and modifications on the environment. 
-Since there is no major differences between sequential models (Transformer), the problem is mainly about rewards and exploration, not partial observability. 
+Since there is no major differences between sequential models (Transformer), the problem seems mainly about the rewards and exploration, not the partial observability. 
 
-Although LSTM is used commonly for partially observed problems, results are the worst compared to other two models, but keeps learning slowly. 
-Without knowing exact reason, it is probably due to functional properties. 
+Although LSTM is used commonly for partially observed problems, results are the worst in this problem compared to other two models. Nonetheless, it keeps learning slowly. 
+Although we cannot exactly detect what the reason is, it is probably due to functional properties of LSTM. 
 
-Transformer model worked with the best performance among all models. 
+Transformer model worked with the best performance among all models we applied in this work. 
 It is surprising because it is not succesfully used in RL problems in general. 
-In natural language processing, this type of attention models completely replaced recurrent models, and our results seems promising for this in RL domain. 
+In natural language processing, this type of attention models completely replace recurrent models recently, and our results seems promising for this in RL domain. 
 
-The environment was difficult for exploration. SAC performed better than TD3, handling exploration problem since they do not require hyperparameters for exploration, learn randomness during iterations. 
+The environment was difficult for exploration. SAC performed better than TD3 in handling exploration problem. SAC learns randomness during learning iterations. 

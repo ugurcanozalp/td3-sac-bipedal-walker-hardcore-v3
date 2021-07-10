@@ -6,18 +6,18 @@ Learning is the process of updating weights to give desired behavior.
 This behavior is represented in a loss function. Thus, learning is nothing but minimization of loss by numerical optimization methods. 
 
 In order to minimize a loss function, its gradient with respect to weight parameters needs to be calculated. 
-These gradients are obtained by chain rule from simple calculus. 
+These gradients are obtained by chain rule of basic calculus. 
 Therefore, gradient information propagates backward, and this process is called backpropagation. 
 
 \subsection{Stochastic Gradient Descent Optimization}
 
-Gradient Descent minimizes the loss function $\mathcal{L}$ by updating the weight parameters $\theta$ to inverse of gradient direction with a predefined learning rate $\eta$, 
+Gradient descent minimizes the loss function $\mathcal{L}$ by updating the weight parameters, say, $\theta$ to opposide of gradient direction with a predefined learning rate $\eta$, 
 \begin{equation}
 \label{eq: grad_desc}
 \theta \leftarrow \theta - \eta \nabla \mathcal{L}(\theta).
 \end{equation}
 
-In machine learning problems, loss functions have usually summed form of sample losses, 
+In machine learning problems, loss functions have usually summed form of sample losses $\mathcal{L}_i$: 
 \begin{equation}
 \label{eqn:summed_loss}
 \mathcal{L}(\theta) = \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}_i(\theta).
@@ -45,8 +45,8 @@ Adam~\cite{kingma_adam_2017}  (short for Adaptive Moment Estimation) is a varian
 It scales the learning rate using second moment of gradients as in RMSprop and uses momentum estimation for both first and second moment of gradients. 
 
 It is one of mostly used optimization method in deep learning nowadays. 
-Adam adjusts learning rate based on training data to overcome issues arised due to stochastic updates in order to accelerate training and make it robust to learning rate. 
-It is summarized in \ref{alg:adam}. 
+Adam adjusts step length based on training data to overcome issues arised due to stochastic updates in order to accelerate training and make it robust. 
+It is summarized in Algortihm~\ref{alg:adam}. 
 
 \begin{algorithm}[H]
 	\SetAlgoLined
@@ -55,7 +55,7 @@ It is summarized in \ref{alg:adam}.
 	Initial Model parameters $\theta_0$ \\
 	Initial first and second moment of gradients $m \leftarrow 0$, $v \leftarrow 0$ \\
 	Initial step $j \leftarrow 0$ \\
-	\While{$\theta_j$ not converged}{
+	\While{$\theta_j$ \text{not converged}}{
 		$j \leftarrow j+1$ \\
 		$g_j \leftarrow \nabla \mathcal{L}_j(\theta)$ (Obtain gradient) \\
 		$m_j \leftarrow \beta_1 m_{j-1} + (1-\beta_1) g_j$ (Update first moment estimate) \\
