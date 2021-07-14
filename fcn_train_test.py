@@ -54,14 +54,14 @@ def train(env, agent, n_episodes=5000, model_type='unk', env_type='unk', score_l
 
     return np.array(scores).transpose(), np.array(test_scores).transpose()
 
-def test(env, agent, render=True, max_t_step=1000):
+def test(env, agent, render=True, max_t_step=1000, explore=False):
     state = env.reset()
     score = 0
     done=False
     t = int(0)
     while not done and t < max_t_step:
         t += int(1)
-        action = agent.get_action(state, explore=False)
+        action = agent.get_action(state, explore=explore)
         action = action.clip(min=env.action_space.low, max=env.action_space.high)
         #print(action)
         next_state, reward, done, info = env.step(action)

@@ -8,7 +8,7 @@ from itertools import chain
 class SACAgent():
     rl_type = 'sac'
     def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(1),
-            lr=1e-3, weight_decay=0, gamma=0.98, alpha=0.01, tau=0.005, batch_size=128, buffer_size=int(5e5)):
+            lr=1e-3, weight_decay=0, gamma=0.98, alpha=0.005, tau=0.005, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -72,6 +72,7 @@ class SACAgent():
 
         self.critic_1_optim.zero_grad()
         critic_1_loss.backward()
+        torch.nn.utils.clip_grad_norm_(self.train_critic_1.parameters(), 1)
         self.critic_1_optim.step()
 
         Q_expected_2 = self.train_critic_2(states, actions)   
@@ -80,6 +81,7 @@ class SACAgent():
         
         self.critic_2_optim.zero_grad()
         critic_2_loss.backward()
+        torch.nn.utils.clip_grad_norm_(self.train_critic_2.parameters(), 1)
         self.critic_2_optim.step()
 
         #update actor
@@ -89,6 +91,7 @@ class SACAgent():
         
         self.actor_optim.zero_grad()
         actor_loss.backward()
+        torch.nn.utils.clip_grad_norm_(self.train_actor.parameters(), 1)
         self.actor_optim.step()
 
         if self.learn_call % self.update_freq == 0:

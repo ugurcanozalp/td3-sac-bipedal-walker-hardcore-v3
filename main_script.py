@@ -13,19 +13,20 @@ import argparse
 import os
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f", "--flag", type=str, choices=['train', 'test', 'test-record'],
+parser.add_argument("-f", "--flag", type=str, choices=['train', 'test', 'test-record', 'test-exp'],
                     default='train', help="train or test?")
 parser.add_argument("-e", "--env", type=str, choices=['classic', 'hardcore'],
                     default='hardcore', help="environment type, classic or hardcore?")
 parser.add_argument("-m", "--model_type", type=str, choices=['ff','mlp','lstm','bilstm','trsf'],
                     default='ff', help="model type")
-parser.add_argument("-r", "--rl_type", type=str, choices=['ddpg', 'td3', 'sac'], default='td3', help='RL method')
+parser.add_argument("-r", "--rl_type", type=str, choices=['ddpg', 'td3', 'sac'], default='sac', help='RL method')
 parser.add_argument("-l", "--lr", type=float, default=1e-3, help='Learning Rate')
 parser.add_argument("-w", "--wd", type=float, default=0, help='Weight Decay')
 parser.add_argument("-c", "--ckpt", type=str, default='seed', help='checkpoint to start with')
 parser.add_argument("-x", "--explore_episode", type=int, default=30, help='number of exploration steps')
 parser.add_argument("-g", "--gamma", type=float, default=0.98, help='discount rate')
-parser.add_argument("-a", "--alpha", type=float, default=0.01, help='entropy regularization term in SAC')
+parser.add_argument("-a", "--alpha", type=float, default=0.005, help='entropy regularization term in SAC')
+parser.add_argument("-hl", "--history_length", type=int, default=12, help='history length for sequential models')
 
 args = parser.parse_args()
 
@@ -50,7 +51,11 @@ elif args.env == 'hardcore':
     env = MyWalkerWrapper(env, skip=2)
     
 if args.model_type in ['lstm', 'bilstm','trsf']:
-    env = BoxToHistoryBox(env, h=4)
+    env = BoxToHistoryBox(env, h=args.history_length)
+    env_type = args.env + "-" + str(args.history_length)
+else:
+    env_type = args.env
+
 
 if args.rl_type=='ddpg':
     agent = DDPGAgent(Actor, Critic, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1], lr=args.lr, weight_decay=args.wd, gamma=args.gamma)
@@ -62,7 +67,7 @@ elif args.rl_type=='sac':
 else:
     print('Wrong learning algorithm type!'); exit(0);
 
-agent.load_ckpt(args.model_type, args.env, args.ckpt)
+agent.load_ckpt(args.model_type, env_type, args.ckpt)
 
 print("Action dimension : ",env.action_space.shape)
 print("State  dimension : ",env.observation_space.shape)
@@ -71,7 +76,7 @@ print("State sample  : \n ",env.reset())
 
 if args.flag == 'train':
     agent.train_mode()   
-    scores, test_scores = train(env, agent, model_type=args.model_type, env_type=args.env, explore_episode=args.explore_episode)
+    scores, test_scores = train(env, agent, model_type=args.model_type, env_type=env_type, explore_episode=args.explore_episode)
     # Generate Figure
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -85,13 +90,14 @@ if args.flag == 'train':
     fig.savefig(os.path.join("results", args.model_type+'-'+args.rl_type+'.png'))
     fig.show()
     env.close()
-    np.savetxt(os.path.join("results", "train"+"-"+args.env+'-'+args.model_type+'-'+args.rl_type+'.txt'), scores, fmt="%.6e")
-    np.savetxt(os.path.join("results", "test"+"-"+args.env+'-'+args.model_type+'-'+args.rl_type+'.txt'), test_scores, fmt="%.6e")
+    np.savetxt(os.path.join("results", "train"+"-"+env_type+'-'+args.model_type+'-'+args.rl_type+'.txt'), scores, fmt="%.6e")
+    np.savetxt(os.path.join("results", "test"+"-"+env_type+'-'+args.model_type+'-'+args.rl_type+'.txt'), test_scores, fmt="%.6e")
 
-elif args.flag == 'test':
+elif args.flag == 'test' or args.flag == 'test-exp':
     agent.eval_mode()
     #env.seed(0)
-    scores = test(env, agent)
+    explore = (args.flag == 'test-exp')
+    scores = test(env, agent, explore=explore)
     env.close()
 
 elif args.flag == 'test-record':

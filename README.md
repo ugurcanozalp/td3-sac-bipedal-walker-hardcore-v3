@@ -1,22 +1,20 @@
-# Bipedal Walker Hardcore (and Classic) with TD3 and SAC
+# Bipedal Walker Hardcore (and Classic) with SAC
 
 Bipedal Walker environments of GYM are difficult problems to solve by reinforcement learning. 
 
-In this repository, my thesis work is available. Various neural network architectures and RL methods implementations for solving BipedalWalker-v3 and BipedalWalkerHardcore-v3 of GYM on PyTorch using Soft Actor Critic (SAC) and Twin Delayed DDPG (TD3). 
+In this repository, my thesis work is available. Various neural network architectures and RL methods implementations for solving BipedalWalker-v3 and BipedalWalkerHardcore-v3 of GYM on PyTorch using Soft Actor Critic (SAC). 
 
 ## Neural Nets
-- [x] Feed Forward Neural Network with Residual connection
-- [x] Long Short Term Memory (4 last observations)
-- [x] Bidirectional Long Short Term Memory (4 last observations)
-- [x] Transformer (4 last observations)
+- [x] Feed Forward Neural Network 
+- [x] Long Short Term Memory 
+- [x] Transformer 
 
-Only Hardcore environment is solved by TD3 and SAC algorithms. Reward is manipulated and frame rate is halved. 
+Only Hardcore environment is solved by SAC algorithm. Reward is manipulated and frame rate is halved. 
 
-
-#### Feed Forward Neural Network with Residual connection (TD3) (Episode 4000)
+#### Feed Forward Neural Network with Residual connection (SAC) (Episode 5000)
 ![FeedForward](results/video/ff-td3-slow.gif)
 
-#### Transformer (TD3) (Episode 4600)
+#### Transformer (SAC) (Episode 5000)
 ![Transformer](results/video/trsf-td3-slow.gif)
 
 # How to

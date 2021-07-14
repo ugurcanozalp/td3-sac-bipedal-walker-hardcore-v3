@@ -44,9 +44,8 @@ class StableTransformerEncoder(nn.Module):
         x = self.inp_embedding(x)
         #x = x * self.embedding_scale
         x = self.pos_embedding(x)
-        x = x.permute(1,0,2) # batch, seq, emb -> seq, batch, emb
-        x = self.encoder(x)  # seq, batch, emb
-        x = self.layn(x[-1]) # remove sequential dimension and layernorm.
+        x = self.encoder(x)  # batch, seq, emb
+        x = self.layn(x[:, -1]) # remove sequential dimension and layernorm.
         return x
 
 class Critic(nn.Module):
@@ -63,7 +62,7 @@ class Critic(nn.Module):
         self.action_dim = action_dim
         
         self.state_encoder = StableTransformerEncoder(d_in=self.state_dim,
-            d_model=96, nhead=4, dim_feedforward=192, dropout=0.0)
+            d_model=96, nhead=4, dim_feedforward=256, dropout=0.0)
 
         self.fc2 = nn.Linear(96 + self.action_dim, 128)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
@@ -133,7 +132,6 @@ class Actor(nn.Module):
             log_stds = self.log_std(s)
             log_stds = torch.clamp(log_stds, min=-10.0, max=2.0)
             stds = log_stds.exp()
-            #print(stds)
             dists = Normal(means, stds)
             if explore:
                 x = dists.rsample()

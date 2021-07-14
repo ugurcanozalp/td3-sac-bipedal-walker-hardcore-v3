@@ -43,7 +43,7 @@ class TD3Agent():
         self.critic_2_optim = optim.AdamW(self.train_critic_2.parameters(), lr=lr, weight_decay=weight_decay)
         print(f'Number of paramters of Single Critic Net: {sum(p.numel() for p in self.train_critic_2.parameters())}')
 
-        self.noise_generator = DecayingOrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=4.0, sigma=1.0, dt=0.04, sigma_decay=0.999)
+        self.noise_generator = DecayingOrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=4.0, sigma=1.2, dt=0.04, sigma_decay=0.999)
         self.target_noise = GaussianNoise(mu=np.zeros(action_size), sigma=0.2, clip=0.4)
         
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \
@@ -79,6 +79,7 @@ class TD3Agent():
 
         self.critic_1_optim.zero_grad()
         critic_1_loss.backward()
+        torch.nn.utils.clip_grad_norm_(self.train_critic_1.parameters(), 1)
         self.critic_1_optim.step()
 
         Q_expected_2 = self.train_critic_2(states, actions)   
@@ -87,6 +88,7 @@ class TD3Agent():
         
         self.critic_2_optim.zero_grad()
         critic_2_loss.backward()
+        torch.nn.utils.clip_grad_norm_(self.train_critic_2.parameters(), 1)
         self.critic_2_optim.step()
         
         if self.learn_call % self.update_freq == 0:
@@ -97,6 +99,7 @@ class TD3Agent():
             
             self.actor_optim.zero_grad()
             actor_loss.backward()
+            torch.nn.utils.clip_grad_norm_(self.train_actor.parameters(), 1)
             self.actor_optim.step()
         
             #using soft upates

@@ -4,6 +4,7 @@ from torch import nn
 from torch.nn.init import xavier_uniform_
 from torch.autograd import Variable
 import torch.nn.functional as F
+from .mha import MultiHeadAttention
 
 class PositionalEncoding(nn.Module):
     def __init__(self, d_model, seq_len=16):
@@ -40,9 +41,7 @@ class StableTransformerLayer(nn.Module):
         super(StableTransformerLayer,self).__init__()
         self.only_last_state = only_last_state
 
-        self.self_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
-        self.self_attn.in_proj_weight.data = 2*torch.cat([torch.eye(d_model), torch.eye(d_model), torch.eye(d_model)])
-        self.self_attn.out_proj.weight.data = 2*torch.eye(d_model)
+        self.self_attn = MultiHeadAttention(d_model, nhead)
         self.linear1 = nn.Linear(d_model, dim_feedforward)
         nn.init.xavier_uniform_(self.linear1.weight, gain=1.0)
         self.dropout = nn.Dropout(dropout)
@@ -57,7 +56,7 @@ class StableTransformerLayer(nn.Module):
         self.activation = nn.GELU()
         self.relu = nn.GELU()
 
-    def forward(self, src, src_mask=None, src_key_padding_mask=None):
+    def forward(self, src):
         '''
         #ORIGINAL TRANSFORMER
         src2 = self.self_attn(src, src, src, attn_mask=src_mask,
@@ -71,15 +70,13 @@ class StableTransformerLayer(nn.Module):
 
         src2 = self.norm1(src)
         if self.only_last_state:
-            src2 = self.self_attn(src2[-1:], src2, src2, attn_mask=src_mask,
-                                key_padding_mask=src_key_padding_mask)[0]
+            src2 = self.self_attn(src2[:, -1:], src2, src2)[0]
         else:
-            src2 = self.self_attn(src2, src2, src2, attn_mask=src_mask,
-                                key_padding_mask=src_key_padding_mask)[0]
+            src2 = self.self_attn(src2, src2, src2)[0]
 
 
         if self.only_last_state:
-            src2 = src[-1:] + self.dropout1(src2)
+            src2 = src[:, -1:] + self.dropout1(src2)
         else:
             src2 = src + self.dropout1(src2) # src2 = src + self.relu(self.dropout1(src2))
         

@@ -62,6 +62,7 @@ class DDPGAgent():
 
         self.critic_optim.zero_grad()
         critic_loss.backward()
+        torch.nn.utils.clip_grad_norm_(self.train_critic.parameters(), 1)
         self.critic_optim.step()
         
         #update actor
@@ -70,6 +71,7 @@ class DDPGAgent():
         
         self.actor_optim.zero_grad()
         actor_loss.backward()
+        torch.nn.utils.clip_grad_norm_(self.train_actor.parameters(), 1)
         self.actor_optim.step()
         
         #using soft upates
