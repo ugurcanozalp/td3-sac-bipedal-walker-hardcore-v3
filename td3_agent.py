@@ -79,7 +79,7 @@ class TD3Agent():
 
         self.critic_1_optim.zero_grad()
         critic_1_loss.backward()
-        torch.nn.utils.clip_grad_norm_(self.train_critic_1.parameters(), 1)
+        #torch.nn.utils.clip_grad_norm_(self.train_critic_1.parameters(), 1)
         self.critic_1_optim.step()
 
         Q_expected_2 = self.train_critic_2(states, actions)   
@@ -88,7 +88,7 @@ class TD3Agent():
         
         self.critic_2_optim.zero_grad()
         critic_2_loss.backward()
-        torch.nn.utils.clip_grad_norm_(self.train_critic_2.parameters(), 1)
+        #torch.nn.utils.clip_grad_norm_(self.train_critic_2.parameters(), 1)
         self.critic_2_optim.step()
         
         if self.learn_call % self.update_freq == 0:
@@ -99,7 +99,7 @@ class TD3Agent():
             
             self.actor_optim.zero_grad()
             actor_loss.backward()
-            torch.nn.utils.clip_grad_norm_(self.train_actor.parameters(), 1)
+            #torch.nn.utils.clip_grad_norm_(self.train_actor.parameters(), 1)
             self.actor_optim.step()
         
             #using soft upates

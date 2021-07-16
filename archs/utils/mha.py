@@ -20,10 +20,10 @@ class MultiHeadAttention(nn.Module):
         #self.key.weight.data = torch.eye(d_model)
         #self.value.weight.data = torch.eye(d_model)
         #self.dense.weight.data = torch.eye(d_model)
-        nn.init.orthogonal_(self.query.weight)
-        nn.init.orthogonal_(self.key.weight)
-        nn.init.orthogonal_(self.value.weight)
-        nn.init.orthogonal_(self.dense.weight)
+        nn.init.eye_(self.query.weight)
+        nn.init.eye_(self.key.weight)
+        nn.init.eye_(self.value.weight)
+        nn.init.eye_(self.dense.weight)
 
     def transpose_for_scores(self, x):
         new_x_shape = x.size()[:-1] + (self.num_attention_heads, self.attention_head_size)
