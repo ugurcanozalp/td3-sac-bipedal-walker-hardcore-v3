@@ -5,11 +5,12 @@ import os
 from replay_buffer import ReplayBuffer
 from noise import OrnsteinUhlenbeckNoise
 from itertools import chain
+from get_optimizer import get_optimizer
 
 class DDPGAgent():
     rl_type = 'ddpg'
     def __init__(self, Actor, Critic, state_size=24, action_size=4, 
-            lr=1e-3, weight_decay=0, gamma=0.98, tau=0.001, batch_size=128, buffer_size=int(5e5)):
+            lr=5e-4, weight_decay=0, gamma=0.98, tau=0.001, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -23,13 +24,13 @@ class DDPGAgent():
         self.train_actor = Actor().to(self.device)
         self.target_actor= Actor().to(self.device).eval()
         self.hard_update(self.train_actor, self.target_actor)
-        self.actor_optim = optim.AdamW(self.train_actor.parameters(), lr=0.5*lr, weight_decay=0)
+        self.actor_optim = get_optimizer(self.train_actor, lr, weight_decay)
         print(f'Number of paramters of Actor Net: {sum(p.numel() for p in self.train_actor.parameters())}')
         
         self.train_critic = Critic().to(self.device)
         self.target_critic= Critic().to(self.device).eval()
         self.hard_update(self.train_critic, self.target_critic)
-        self.critic_optim = optim.AdamW(self.train_critic.parameters(), lr=lr, weight_decay=weight_decay)
+        self.critic_optim = get_optimizer(self.train_critic, lr, weight_decay)
         print(f'Number of paramters of Critic Net: {sum(p.numel() for p in self.train_critic.parameters())}')
 
         self.noise_generator = OrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=3.0, sigma=0.9, dt=0.04) # #theta=1.2, sigma=0.55
