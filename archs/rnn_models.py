@@ -48,7 +48,7 @@ class Critic(nn.Module):
         nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
         self.fc_out.bias.data.fill_(0.0)
 
-        self.act = nn.PReLU(128)
+        self.act = nn.GELU()
 
     def forward(self, state, action):
         """

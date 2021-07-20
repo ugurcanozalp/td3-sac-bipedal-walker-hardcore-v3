@@ -53,7 +53,7 @@ class StableTransformerLayer(nn.Module):
         self.dropout1 = nn.Dropout(dropout)
         self.dropout2 = nn.Dropout(dropout)
 
-        self.activation = nn.PReLU(dim_feedforward)
+        self.activation = nn.GELU()
 
     def forward(self, src):
         '''
