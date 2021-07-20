@@ -10,7 +10,7 @@ from get_optimizer import get_optimizer
 class TD3Agent():
     rl_type = 'td3'
     def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(2),
-            lr=2e-4, weight_decay=0, gamma=0.98, tau=0.005, batch_size=128, buffer_size=int(5e5)):
+            lr=2e-4, weight_decay=0, gamma=0.98, tau=0.005, batch_size=64, buffer_size=int(1e6)):
         
         self.state_size = state_size
         self.action_size = action_size
