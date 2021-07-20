@@ -4,11 +4,6 @@ Bipedal Walker environments of GYM are difficult problems to solve by reinforcem
 
 In this repository, my thesis work is available. Various neural network architectures and RL methods implementations for solving BipedalWalker-v3 and BipedalWalkerHardcore-v3 of GYM on PyTorch using Soft Actor Critic (SAC) and Twin Delayed Deep Deterministic Policy Gradient (TD3). 
 
-## Neural Nets
-- [x] Feed Forward Neural Network 
-- [x] Long Short Term Memory 
-- [x] Transformer (pre-layer normalized)
-
 Only Hardcore environment is solved by SAC and TD3 algorithm. Reward is manipulated and frame rate is halved. 
 
 # How to
@@ -22,19 +17,9 @@ pip install -r requirements.txt
 
 Train your model via following commands.
 
-Train Feed Forward NN with SAC
+Train R. Feed Forward NN with SAC
 ```bash
-python main_script.py -f train -r sac -m mlp
-```
-
-Train LSTM (6 obs hist) with SAC
-```bash
-python main_script.py -f train -r sac -m lstm -hl 6
-```
-
-Train LSTM (12 obs hist) with SAC
-```bash
-python main_script.py -f train -r sac -m lstm -hl 12
+python main_script.py -f train -r sac -m ff
 ```
 
 Train Transformer (6 obs hist) with SAC
@@ -49,19 +34,9 @@ python main_script.py -f train -r sac -m trsf -hl 12
 
 -----------------------------------------------------------------------
 
-Train Feed Forward NN with TD3
+Train R. Feed Forward NN with TD3
 ```bash
-python main_script.py -f train -r td3 -m mlp
-```
-
-Train LSTM (6 obs hist) with TD3
-```bash
-python main_script.py -f train -r td3 -m lstm -hl 6
-```
-
-Train LSTM (12 obs hist) with TD3
-```bash
-python main_script.py -f train -r td3 -m lstm -hl 12
+python main_script.py -f train -r td3 -m ff
 ```
 
 Train Transformer (6 obs hist) with TD3
@@ -81,15 +56,11 @@ https://drive.google.com/drive/folders/1BtqZXrJyuoBiyeE9IduWj7IkFN-urw6y?usp=sha
 Then run one of the following commands,
 
 ```bash
-python main_script.py -f test -m mlp -c ep4000
+python main_script.py -f test -m ff -c ep4000
 ```
 
 ```bash
-python main_script.py -f test -m trsf -h 12 -c ep4600
-```
-
-```bash
-python main_script.py -f test -m lstm -h 12 -c ep4900
+python main_script.py -f test -m trsf -h 12 -c ep4000
 ```
 
 # Author

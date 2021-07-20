@@ -9,7 +9,7 @@ from get_optimizer import get_optimizer
 class SACAgent():
     rl_type = 'sac'
     def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(1),
-            lr=5e-4, weight_decay=0, gamma=0.98, alpha=0.005, tau=0.005, batch_size=128, buffer_size=int(5e5)):
+            lr=2e-4, weight_decay=0, gamma=0.98, alpha=0.005, tau=0.005, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -44,6 +44,8 @@ class SACAgent():
         
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \
             batch_size= self.batch_size, device=self.device)
+
+        self.mse_loss = torch.nn.MSELoss()
         
     def learn_with_batches(self, state, action, reward, next_state, done):
         self.memory.add(state, action, reward, next_state, done)
@@ -66,21 +68,21 @@ class SACAgent():
             Q_targets_next = torch.min(Q_targets_next_1, Q_targets_next_2) + self.alpha * next_entropies
             Q_targets = rewards + (self.gamma * Q_targets_next * (1-done))
             #Q_targets = rewards + (self.gamma * Q_targets_next)
-        
-        Q_expected_1 = self.train_critic_1(states, actions)
-        critic_1_loss = torch.nn.MSELoss()(Q_expected_1, Q_targets)
-        #critic_1_loss = torch.nn.SmoothL1Loss()(Q_expected_1, Q_targets)
 
-        self.critic_1_optim.zero_grad()
+        Q_expected_1 = self.train_critic_1(states, actions)
+        critic_1_loss = self.mse_loss(Q_expected_1, Q_targets)
+        #critic_1_loss = torch.nn.SmoothL1Loss()(Q_expected_1, Q_targets)
+        
+        self.critic_1_optim.zero_grad(set_to_none=True)
         critic_1_loss.backward()
         #torch.nn.utils.clip_grad_norm_(self.train_critic_1.parameters(), 1)
         self.critic_1_optim.step()
 
         Q_expected_2 = self.train_critic_2(states, actions)   
-        critic_2_loss = torch.nn.MSELoss()(Q_expected_2, Q_targets)
+        critic_2_loss = self.mse_loss(Q_expected_2, Q_targets)
         #critic_2_loss = torch.nn.SmoothL1Loss()(Q_expected_2, Q_targets)
         
-        self.critic_2_optim.zero_grad()
+        self.critic_2_optim.zero_grad(set_to_none=True)
         critic_2_loss.backward()
         #torch.nn.utils.clip_grad_norm_(self.train_critic_2.parameters(), 1)
         self.critic_2_optim.step()
@@ -90,7 +92,7 @@ class SACAgent():
         Q_pi = torch.min(self.train_critic_1(states, actions_pred), self.train_critic_2(states, actions_pred))
         actor_loss = -(Q_pi + self.alpha * entropies_pred).mean()
         
-        self.actor_optim.zero_grad()
+        self.actor_optim.zero_grad(set_to_none=True)
         actor_loss.backward()
         #torch.nn.utils.clip_grad_norm_(self.train_actor.parameters(), 1)
         self.actor_optim.step()
@@ -100,7 +102,7 @@ class SACAgent():
             #using soft upates
             self.soft_update(self.train_critic_1, self.target_critic_1)
             self.soft_update(self.train_critic_2, self.target_critic_2)
-        
+
     @torch.no_grad()        
     def get_action(self, state, explore=True):
         #self.train_actor.eval()

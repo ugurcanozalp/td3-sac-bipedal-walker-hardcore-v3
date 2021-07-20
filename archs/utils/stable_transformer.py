@@ -7,7 +7,7 @@ import torch.nn.functional as F
 from .mha import MultiHeadAttention
 
 class PositionalEncoding(nn.Module):
-    def __init__(self, d_model, seq_len=16):
+    def __init__(self, d_model, seq_len=18):
         super(PositionalEncoding, self).__init__()
         self.embedding_scale = d_model**0.5
         pe = torch.zeros(seq_len, d_model)
@@ -27,7 +27,7 @@ class PositionalEncoding(nn.Module):
         return x
 
 class LearnablePositionalEncoding(nn.Module):
-    def __init__(self, d_model, seq_len=16):
+    def __init__(self, d_model, seq_len=18):
         super(LearnablePositionalEncoding, self).__init__()
         self.embedding = nn.Parameter(torch.zeros(seq_len, d_model))
         torch.nn.init.orthogonal_(self.embedding, gain=1.0)
@@ -70,9 +70,9 @@ class StableTransformerLayer(nn.Module):
 
         src2 = self.norm1(src)
         if self.only_last_state:
-            src2 = self.self_attn(src2[:, -1:], src2, src2)[0]
+            src2 = self.self_attn(src2[:, -1:], src2, src2)
         else:
-            src2 = self.self_attn(src2, src2, src2)[0]
+            src2 = self.self_attn(src2, src2, src2)
 
 
         if self.only_last_state:

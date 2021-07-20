@@ -10,7 +10,7 @@ from get_optimizer import get_optimizer
 class DDPGAgent():
     rl_type = 'ddpg'
     def __init__(self, Actor, Critic, state_size=24, action_size=4, 
-            lr=5e-4, weight_decay=0, gamma=0.98, tau=0.001, batch_size=128, buffer_size=int(5e5)):
+            lr=2e-4, weight_decay=0, gamma=0.98, tau=0.001, batch_size=128, buffer_size=int(5e5)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -38,6 +38,8 @@ class DDPGAgent():
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \
             batch_size= self.batch_size, device=self.device)
         
+        self.mse_loss = torch.nn.MSELoss()
+
     def learn_with_batches(self, state, action, reward, next_state, done):
         self.memory.add(state, action, reward, next_state, done)
         self.learn_one_step()
@@ -58,10 +60,10 @@ class DDPGAgent():
         
         Q_expected = self.train_critic(states, actions)
         
-        critic_loss = torch.nn.MSELoss()(Q_expected, Q_targets)
+        critic_loss = self.mse_loss(Q_expected, Q_targets)
         #critic_loss = torch.nn.SmoothL1Loss()(Q_expected, Q_targets)
 
-        self.critic_optim.zero_grad()
+        self.critic_optim.zero_grad(set_to_none=True)
         critic_loss.backward()
         #torch.nn.utils.clip_grad_norm_(self.train_critic.parameters(), 1)
         self.critic_optim.step()
@@ -70,7 +72,7 @@ class DDPGAgent():
         actions_pred = self.train_actor(states)
         actor_loss = -self.train_critic(states, actions_pred).mean()
         
-        self.actor_optim.zero_grad()
+        self.actor_optim.zero_grad(set_to_none=True)
         actor_loss.backward()
         #torch.nn.utils.clip_grad_norm_(self.train_actor.parameters(), 1)
         self.actor_optim.step()

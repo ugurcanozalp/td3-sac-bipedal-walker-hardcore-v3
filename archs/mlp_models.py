@@ -7,8 +7,6 @@ import gym
 import random
 from torch.distributions import Normal
 
-# https://github.com/vy007vikas/PyTorch-ActorCriticRL
-
 EPS = 0.003
 
 class MLPEncoder(nn.Module):
@@ -17,6 +15,7 @@ class MLPEncoder(nn.Module):
         self.lin1 = nn.Linear(input_size, hidden_size)
         nn.init.xavier_uniform_(self.lin1.weight, gain=nn.init.calculate_gain('tanh'))
         self.layn = nn.LayerNorm(hidden_size)
+        self.layn2 = nn.LayerNorm(hidden_size)
         self.lin2 = nn.Linear(hidden_size, ff_size)
         nn.init.xavier_uniform_(self.lin2.weight, gain=nn.init.calculate_gain('relu'))
         self.lin3 = nn.Linear(ff_size, hidden_size)
@@ -27,10 +26,10 @@ class MLPEncoder(nn.Module):
 
     def forward(self, x):
         x = self.tanh(self.layn(self.lin1(x)))
+        x = self.layn2(x)
         # No Residual Residual connection starts
         xx = self.lin3(self.act(self.lin2(x)))
-        o = self.layernorm(xx)
-        return o 
+        return xx
 
 
 class Critic(nn.Module):
@@ -51,10 +50,10 @@ class Critic(nn.Module):
         self.fc2 = nn.Linear(96 + self.action_dim, 128)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
-        self.fc_out = nn.Linear(128, 1, bias=False)
+        self.fc_out = nn.Linear(128, 1, bias=True)
         #nn.init.xavier_uniform_(self.fc_out.weight)
         nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
-        #self.fc_out.bias.data.fill_(0.0)
+        self.fc_out.bias.data.fill_(0.0)
 
         self.act = nn.GELU()
 

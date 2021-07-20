@@ -1,4 +1,3 @@
-#https://www.researchgate.net/publication/320296763_Recurrent_Network-based_Deterministic_Policy_Gradient_for_Solving_Bipedal_Walking_Challenge_on_Rugged_Terrains
 import numpy as np
 import torch
 import torch.nn as nn
@@ -8,39 +7,23 @@ import gym
 import random
 from torch.distributions import Normal
 
-# https://github.com/vy007vikas/PyTorch-ActorCriticRL
-
 EPS = 0.003
 
-class LastStatePooler(nn.Module):
-    def forward(self,x):
-        return x[:, -1]
-
-class MaxPooler(nn.Module):
-    def forward(self,x):
-        x, _ = x.max(axis=-2) # -2 -> sequence dimension
-        return x 
-
-class NormalizedLSTM(nn.Module):
-    def __init__(self, input_size, hidden_size=96, batch_first=True, dropout=0.1):
-        super(NormalizedLSTM, self).__init__()
-        self.embedding = nn.Sequential(nn.Linear(input_size, hidden_size), nn.LayerNorm(hidden_size), nn.Tanh())
-        nn.init.xavier_uniform_(self.embedding[0].weight, gain=nn.init.calculate_gain('tanh'))
-        nn.init.zeros_(self.embedding[0].bias)
-        self.dropout = nn.Dropout(dropout)
-        self.lstm = nn.LSTM(hidden_size, hidden_size=hidden_size, batch_first=batch_first, bidirectional=False, num_layers=1, dropout=dropout)
-        self.lstm.bias_hh_l0.data.fill_(-0.1) # force lstm to output to depend more on last state at the initialization.
-        self.pooler = LastStatePooler()
+class RNNEncoder(nn.Module):
+    def __init__(self, input_size, hidden_size):
+        super(RNNEncoder, self).__init__()
+        self.lin1 = nn.Linear(input_size, hidden_size)
+        nn.init.xavier_uniform_(self.lin1.weight, gain=nn.init.calculate_gain('tanh'))
+        self.layn = nn.LayerNorm(hidden_size)
+        self.tanh = nn.Tanh()
+        self.rnn = nn.RNN(input_size=hidden_size, hidden_size=hidden_size, nonlinearity="tanh", batch_first=True, num_layers=2)
 
     def forward(self, x):
-        x = self.embedding(x)
-        #h = x[:,0].unsqueeze(0).contiguous()
-        #c = torch.zeros_like(h).contiguous()
-        #x, (_, _) = self.lstm(x, (h, c))
-        x = self.dropout(x)
-        x, (_, _) = self.lstm(x)
-        x = self.pooler(x)
-        return x
+        x = self.tanh(self.layn(self.lin1(x)))
+        o, _ = self.rnn(x)
+        out = o[:, -1] # return last hidden state
+        return out
+
 
 class Critic(nn.Module):
 
@@ -55,7 +38,7 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, batch_first=True, dropout=0.0)
+        self.state_encoder = RNNEncoder(self.state_dim, 96)
 
         self.fc2 = nn.Linear(96 + self.action_dim, 128)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
@@ -96,7 +79,7 @@ class Actor(nn.Module):
         self.action_dim = action_dim
         self.stochastic = stochastic
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, batch_first=True, dropout=0.0)
+        self.state_encoder = RNNEncoder(self.state_dim, 96)
 
         self.fc = nn.Linear(96,action_dim)
         nn.init.uniform_(self.fc.weight, -0.003,+0.003)
@@ -108,6 +91,7 @@ class Actor(nn.Module):
             nn.init.zeros_(self.log_std.bias)  
 
         self.tanh = nn.Tanh()
+
 
     def forward(self, state, explore=True):
         """
@@ -124,7 +108,6 @@ class Actor(nn.Module):
             log_stds = self.log_std(s)
             log_stds = torch.clamp(log_stds, min=-10.0, max=2.0)
             stds = log_stds.exp()
-            #print(stds)
             dists = Normal(means, stds)
             if explore:
                 x = dists.rsample()

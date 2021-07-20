@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt
 from collections import deque
 
-def train(env, agent, n_episodes=5000, model_type='unk', env_type='unk', score_limit=300.0, explore_episode=30, test_f=100, max_t_step=500):
+def train(env, agent, n_episodes=5000, model_type='unk', env_type='unk', score_limit=300.0, explore_episode=50, test_f=100, max_t_step=500):
     scores_deque = deque(maxlen=100)
     scores = []
     test_scores = []
@@ -18,13 +18,9 @@ def train(env, agent, n_episodes=5000, model_type='unk', env_type='unk', score_l
         t = int(0)
         while not done and t < max_t_step:    
             t += int(1)
-            if i_episode>explore_episode:
-                action = agent.get_action(state, explore=True)
-                action = action.clip(min=env.action_space.low, max=env.action_space.high)
-                #env.render()
-            else:
-                action = env.action_space.sample()
-
+            action = agent.get_action(state, explore=True)
+            action = action.clip(min=env.action_space.low, max=env.action_space.high)
+            #env.render()
             next_state, reward, done, info = env.step(action)
             agent.memory.add(state, action, reward, next_state, info["dead"])
 

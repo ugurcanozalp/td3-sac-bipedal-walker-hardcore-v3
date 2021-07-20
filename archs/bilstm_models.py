@@ -8,8 +8,6 @@ import gym
 import random
 from torch.distributions import Normal
 
-# https://github.com/vy007vikas/PyTorch-ActorCriticRL
-
 EPS = 0.003
 
 class LastStatePooler(nn.Module):
@@ -62,10 +60,10 @@ class Critic(nn.Module):
         self.fc2 = nn.Linear(72 + self.action_dim, 128)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
-        self.fc_out = nn.Linear(128, 1, bias=False)
+        self.fc_out = nn.Linear(128, 1, bias=True)
         #nn.init.xavier_uniform_(self.fc_out.weight)
         nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
-        #self.fc_out.bias.data.fill_(0.0)
+        self.fc_out.bias.data.fill_(0.0)
 
         self.act = nn.GELU()
 

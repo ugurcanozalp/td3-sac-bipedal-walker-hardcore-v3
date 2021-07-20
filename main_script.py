@@ -17,13 +17,13 @@ parser.add_argument("-f", "--flag", type=str, choices=['train', 'test', 'test-re
                     default='train', help="train or test?")
 parser.add_argument("-e", "--env", type=str, choices=['classic', 'hardcore'],
                     default='hardcore', help="environment type, classic or hardcore?")
-parser.add_argument("-m", "--model_type", type=str, choices=['ff','mlp','lstm','bilstm','trsf'],
+parser.add_argument("-m", "--model_type", type=str, choices=['ff','mlp','rnn','lstm','bilstm','trsf'],
                     default='ff', help="model type")
 parser.add_argument("-r", "--rl_type", type=str, choices=['ddpg', 'td3', 'sac'], default='sac', help='RL method')
-parser.add_argument("-l", "--lr", type=float, default=5e-4, help='Learning Rate')
+parser.add_argument("-l", "--lr", type=float, default=2e-4, help='Learning Rate')
 parser.add_argument("-w", "--wd", type=float, default=0, help='Weight Decay')
 parser.add_argument("-c", "--ckpt", type=str, default='seed', help='checkpoint to start with')
-parser.add_argument("-x", "--explore_episode", type=int, default=30, help='number of exploration steps')
+parser.add_argument("-x", "--explore_episode", type=int, default=50, help='number of exploration steps')
 parser.add_argument("-g", "--gamma", type=float, default=0.98, help='discount rate')
 parser.add_argument("-a", "--alpha", type=float, default=0.005, help='entropy regularization term in SAC')
 parser.add_argument("-hl", "--history_length", type=int, default=12, help='history length for sequential models')
@@ -32,14 +32,16 @@ args = parser.parse_args()
 
 if args.model_type=='ff':
     from archs.ff_models import Actor, Critic
+elif args.model_type=='trsf':
+    from archs.trsf_models import Actor, Critic
 elif args.model_type=='mlp':
     from archs.mlp_models import Actor, Critic
+elif args.model_type=='rnn':
+    from archs.rnn_models import Actor, Critic
 elif args.model_type=='lstm':
     from archs.lstm_models import Actor, Critic
 elif args.model_type=='bilstm':
     from archs.bilstm_models import Actor, Critic
-elif args.model_type=='trsf':
-    from archs.trsf_models import Actor, Critic
 else:
     print('Wrong model type!'); exit(0);
 
@@ -50,7 +52,7 @@ elif args.env == 'hardcore':
     env = gym.make('BipedalWalkerHardcore-v3')
     env = MyWalkerWrapper(env, skip=2)
     
-if args.model_type in ['lstm', 'bilstm','trsf']:
+if args.model_type in ['rnn', 'lstm', 'bilstm', 'trsf']:
     env = BoxToHistoryBox(env, h=args.history_length)
     env_type = args.env + "-" + str(args.history_length)
 else:
@@ -63,7 +65,6 @@ elif args.rl_type=='td3':
     agent = TD3Agent(Actor, Critic, clip_low=-1, clip_high=+1, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1],lr=args.lr, weight_decay=args.wd, gamma=args.gamma)
 elif args.rl_type=='sac':
     agent = SACAgent(Actor, Critic, clip_low=-1, clip_high=+1, state_size = env.observation_space.shape[-1], action_size=env.action_space.shape[-1],lr=args.lr, weight_decay=args.wd, gamma=args.gamma, alpha=args.alpha)
-
 else:
     print('Wrong learning algorithm type!'); exit(0);
 

@@ -9,19 +9,7 @@ import random
 from .utils.stable_transformer import PositionalEncoding, LearnablePositionalEncoding, StableTransformerLayer, TransformerEncoder
 from torch.distributions import Normal
 
-# https://github.com/vy007vikas/PyTorch-ActorCriticRL
-
 EPS = 0.003
-
-class WeightedMeanPooling(nn.Module):
-    def __init__(self, seq_len):
-        super(WeightedMeanPooling,self).__init__()
-        self.eps = torch.finfo(torch.float).eps
-        w_tensor = (1e-3)*torch.ones(seq_len, dtype=torch.float); w_tensor[-1]=1.0
-        self.w = nn.Parameter(w_tensor, requires_grad=True)
-
-    def forward(self, x):
-        return x.permute(0,2,1)@(self.w*self.w)
 
 class StableTransformerEncoder(nn.Module):
 
@@ -37,7 +25,6 @@ class StableTransformerEncoder(nn.Module):
         #    StableTransformerLayer(d_model, nhead, dim_feedforward, dropout), 
         #    StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, only_last_state=True)
         #)
-        self.layn = nn.LayerNorm(d_model)
 
     def forward(self, src):
         x = src
@@ -45,7 +32,7 @@ class StableTransformerEncoder(nn.Module):
         #x = x * self.embedding_scale
         x = self.pos_embedding(x)
         x = self.encoder(x)  # batch, seq, emb
-        x = self.layn(x[:, -1]) # remove sequential dimension and layernorm.
+        x = x[:, -1]
         return x
 
 class Critic(nn.Module):
@@ -67,10 +54,10 @@ class Critic(nn.Module):
         self.fc2 = nn.Linear(96 + self.action_dim, 128)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
-        self.fc_out = nn.Linear(128,1, bias=False)
+        self.fc_out = nn.Linear(128,1, bias=True)
         #nn.init.xavier_uniform_(self.fc_out.weight)
         nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
-        #self.fc_out.bias.data.fill_(0.0)
+        self.fc_out.bias.data.fill_(0.0)
 
         self.act = nn.GELU()
 
