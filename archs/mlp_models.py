@@ -21,7 +21,7 @@ class MLPEncoder(nn.Module):
         self.lin3 = nn.Linear(ff_size, hidden_size)
         nn.init.xavier_uniform_(self.lin3.weight, gain=nn.init.calculate_gain('relu'))
         self.tanh = nn.Tanh()
-        self.act = nn.GELU()
+        self.act = nn.PReLU(ff_size)
         self.layernorm = nn.LayerNorm(hidden_size)
 
     def forward(self, x):
@@ -55,7 +55,7 @@ class Critic(nn.Module):
         nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
         self.fc_out.bias.data.fill_(0.0)
 
-        self.act = nn.GELU()
+        self.act = nn.PReLU(128)
 
     def forward(self, state, action):
         """
