@@ -48,7 +48,7 @@ class MyWalkerWrapper(gym.Wrapper):
         for i in range(self._skip):
             obs, reward, done, info = self.env.step(action)
             if self.env.game_over:
-                reward = -20.0
+                reward = -10.0
                 info["dead"] = True
             else:
             	info["dead"] = False

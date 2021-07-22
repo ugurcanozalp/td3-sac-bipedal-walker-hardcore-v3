@@ -12,24 +12,15 @@ EPS = 0.003
 class MLPEncoder(nn.Module):
     def __init__(self, input_size, hidden_size, ff_size):
         super(MLPEncoder, self).__init__()
-        self.lin1 = nn.Linear(input_size, hidden_size)
-        nn.init.xavier_uniform_(self.lin1.weight, gain=nn.init.calculate_gain('tanh'))
-        self.layn = nn.LayerNorm(hidden_size)
-        self.layn2 = nn.LayerNorm(hidden_size)
-        self.lin2 = nn.Linear(hidden_size, ff_size)
-        nn.init.xavier_uniform_(self.lin2.weight, gain=nn.init.calculate_gain('relu'))
-        self.lin3 = nn.Linear(ff_size, hidden_size)
-        nn.init.xavier_uniform_(self.lin3.weight, gain=nn.init.calculate_gain('relu'))
-        self.tanh = nn.Tanh()
-        self.act = nn.GELU()
-        self.layernorm = nn.LayerNorm(hidden_size)
+        self.embedding = nn.Linear(input_size, hidden_size)
+        nn.init.xavier_uniform_(self.embedding.weight)
+        nn.init.zeros_(self.embedding.bias)
+        self.block = nn.Sequential(nn.LayerNorm(hidden_size), nn.Linear(hidden_size, ff_size), nn.GELU(), nn.Linear(ff_size, hidden_size))
 
     def forward(self, x):
-        x = self.tanh(self.layn(self.lin1(x)))
-        x = self.layn2(x)
-        # No Residual Residual connection starts
-        xx = self.lin3(self.act(self.lin2(x)))
-        return xx
+        x = self.embedding(x)
+        x = self.block(x)
+        return x
 
 
 class Critic(nn.Module):
@@ -50,12 +41,10 @@ class Critic(nn.Module):
         self.fc2 = nn.Linear(96 + self.action_dim, 128)
         nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
         
-        self.fc_out = nn.Linear(128, 1, bias=True)
-        #nn.init.xavier_uniform_(self.fc_out.weight)
+        self.fc_out = nn.Linear(128, 1, bias=False)
         nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
-        self.fc_out.bias.data.fill_(0.0)
 
-        self.act = nn.GELU()
+        self.act = nn.Tanh()
 
     def forward(self, state, action):
         """
@@ -88,14 +77,14 @@ class Actor(nn.Module):
 
         self.state_encoder = MLPEncoder(self.state_dim, 96, 192)
 
-        self.fc = nn.Linear(96,action_dim)
-        nn.init.uniform_(self.fc.weight, -0.003,+0.003)
-        nn.init.zeros_(self.fc.bias)
+        self.fc = nn.Linear(96, action_dim, bias=False)
+        nn.init.uniform_(self.fc.weight, -0.003, +0.003)
+        #nn.init.zeros_(self.fc.bias)
 
         if self.stochastic:
-            self.log_std = nn.Linear(96, action_dim)
-            nn.init.uniform_(self.log_std.weight, -0.003,+0.003)
-            nn.init.zeros_(self.log_std.bias)  
+            self.log_std = nn.Linear(96, action_dim, bias=False)
+            nn.init.uniform_(self.log_std.weight, -0.003, +0.003)
+            #nn.init.zeros_(self.log_std.bias)  
 
         self.tanh = nn.Tanh()
 

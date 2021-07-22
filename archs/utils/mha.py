@@ -4,25 +4,22 @@ import torch.nn as nn
 import math
 
 class MultiHeadAttention(nn.Module):
-    def __init__(self, hidden_size, num_of_attention_heads):
+    def __init__(self, input_size, hidden_size, num_of_attention_heads):
         super().__init__()
         assert (hidden_size % num_of_attention_heads) == 0, "The hidden size is not a multiple of the number of attention heads"
 
         self.num_attention_heads = num_of_attention_heads
+        self.hidden_size = hidden_size
         self.attention_head_size = int(hidden_size / num_of_attention_heads)
-        self.all_head_size = self.num_attention_heads * self.attention_head_size
 
-        self.query = nn.Linear(hidden_size, self.all_head_size, bias=False)
-        self.key = nn.Linear(hidden_size, self.all_head_size, bias=False)
-        self.value = nn.Linear(hidden_size, self.all_head_size, bias=False)
-        self.dense = nn.Linear(hidden_size, hidden_size, bias=False)
-        #self.query.weight.data = torch.eye(d_model)
-        #self.key.weight.data = torch.eye(d_model)
-        #self.value.weight.data = torch.eye(d_model)
-        #self.dense.weight.data = torch.eye(d_model)
-        nn.init.eye_(self.query.weight)
-        nn.init.eye_(self.key.weight)
-        nn.init.eye_(self.value.weight)
+        self.query = nn.Linear(input_size, hidden_size, bias=False)
+        self.key = nn.Linear(input_size, hidden_size, bias=False)
+        self.value = nn.Linear(input_size, hidden_size, bias=False)
+        self.dense = nn.Linear(hidden_size, input_size, bias=False)
+
+        nn.init.orthogonal_(self.query.weight)
+        nn.init.orthogonal_(self.key.weight)
+        nn.init.orthogonal_(self.value.weight)
         nn.init.eye_(self.dense.weight)
 
     def transpose_for_scores(self, x):
@@ -52,7 +49,7 @@ class MultiHeadAttention(nn.Module):
         context_layer = context_layer.permute(0, 2, 1,
                                               3).contiguous()  # [Batch_size x Query_Seq_length x Num_of_heads x Head_size]
         new_context_layer_shape = context_layer.size()[:-2] + (
-        self.all_head_size,)  # [Batch_size x Query_Seq_length x Hidden_size]
+        self.hidden_size, )  # [Batch_size x Query_Seq_length x Hidden_size]
         context_layer = context_layer.view(*new_context_layer_shape)  # [Batch_size x Query_Seq_length x Hidden_size]
 
         output = self.dense(context_layer)

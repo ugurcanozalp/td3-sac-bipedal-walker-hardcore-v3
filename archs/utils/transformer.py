@@ -19,29 +19,30 @@ class PositionalEncoding(nn.Module):
         pe[:, 0::2] = torch.sin(position * div_term)
         pe[:, 1::2] = torch.cos(position * div_term)
         pe = pe.unsqueeze(0)
+        pe = torch.flip(pe, dims=[1]) / self.embedding_scale
         self.register_buffer('pe', pe)
 
     def forward(self, x):
-        x = x + torch.flip(self.pe[:, :x.size(1), :], dims=[1]) / self.embedding_scale
+        x = x + self.pe[:, -x.size(1):, :]
         #x = x + self.pe[:, :x.size(1), :] / self.embedding_scale
         return x
 
 class LearnablePositionalEncoding(nn.Module):
     def __init__(self, d_model, seq_len=18):
         super(LearnablePositionalEncoding, self).__init__()
-        self.embedding = nn.Parameter(torch.zeros(seq_len, d_model))
+        self.embedding = nn.Parameter(torch.zeros(1, seq_len, d_model))
         torch.nn.init.orthogonal_(self.embedding, gain=1.0)
     def forward(self, x):
-        return x + self.embedding[:x.size(1)].unsqueeze(0)
+        return x + self.embedding[:x.size(1)]
     
-class StableTransformerLayer(nn.Module):
-    def __init__(self, d_model, nhead, dim_feedforward=2048, dropout=0.1, only_last_state=False):
+class TransformerLayer(nn.Module):
+    def __init__(self, d_model, d_attention, nhead, dim_feedforward=2048, dropout=0.0, only_last_state=False):
         #fill in reordering of operations as done in https://arxiv.org/pdf/1910.06764.pdf
         #d_model: dimension of embedding for each input
-        super(StableTransformerLayer,self).__init__()
+        super(TransformerLayer,self).__init__()
         self.only_last_state = only_last_state
 
-        self.self_attn = MultiHeadAttention(d_model, nhead)
+        self.self_attn = MultiHeadAttention(d_model, d_attention, nhead)
         self.linear1 = nn.Linear(d_model, dim_feedforward)
         nn.init.xavier_uniform_(self.linear1.weight, gain=1.0)
         self.dropout = nn.Dropout(dropout)

@@ -5,12 +5,11 @@ import os
 from replay_buffer import ReplayBuffer
 from noise import OrnsteinUhlenbeckNoise, DecayingOrnsteinUhlenbeckNoise, GaussianNoise, DecayingGaussianNoise, DecayingRandomNoise
 from itertools import chain
-from get_optimizer import get_optimizer
 
 class TD3Agent():
     rl_type = 'td3'
     def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(2),
-            lr=5e-4, weight_decay=0, gamma=0.98, tau=0.005, batch_size=64, buffer_size=int(1e6)):
+            lr=7e-4, weight_decay=0, gamma=0.98, tau=0.005, batch_size=64, buffer_size=int(1e6)):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -30,18 +29,18 @@ class TD3Agent():
         self.train_actor = Actor().to(self.device)
         self.target_actor= Actor().to(self.device).eval()
         self.hard_update(self.train_actor, self.target_actor) # hard update at the beginning
-        self.actor_optim = get_optimizer(self.train_actor, lr, weight_decay)
+        self.actor_optim = torch.optim.AdamW(self.train_actor.parameters(), lr=lr, weight_decay=weight_decay, amsgrad=True)
         print(f'Number of paramters of Actor Net: {sum(p.numel() for p in self.train_actor.parameters())}')
         
         self.train_critic_1 = Critic().to(self.device)
         self.target_critic_1 = Critic().to(self.device).eval()
         self.hard_update(self.train_critic_1, self.target_critic_1) # hard update at the beginning
-        self.critic_1_optim = get_optimizer(self.train_critic_1, lr, weight_decay)
+        self.critic_1_optim = torch.optim.AdamW(self.train_critic_1.parameters(), lr=lr, weight_decay=weight_decay, amsgrad=True)
 
         self.train_critic_2 = Critic().to(self.device)
         self.target_critic_2 = Critic().to(self.device).eval()
         self.hard_update(self.train_critic_2, self.target_critic_2) # hard update at the beginning
-        self.critic_2_optim = get_optimizer(self.train_critic_2, lr, weight_decay)
+        self.critic_2_optim = torch.optim.AdamW(self.train_critic_2.parameters(), lr=lr, weight_decay=weight_decay, amsgrad=True)
         print(f'Number of paramters of Single Critic Net: {sum(p.numel() for p in self.train_critic_2.parameters())}')
 
         self.noise_generator = DecayingOrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=4.0, sigma=1.2, dt=0.04, sigma_decay=0.9995)
