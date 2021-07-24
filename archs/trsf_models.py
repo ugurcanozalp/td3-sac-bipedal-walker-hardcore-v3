@@ -50,10 +50,10 @@ class Critic(nn.Module):
         self.state_encoder = TransformerEncoder(d_in=self.state_dim,
             d_model=96, d_attention=32, nhead=4, dim_feedforward=192)
 
-        self.fc2 = nn.Linear(96 + self.action_dim, 128)
-        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
+        self.fc2 = nn.Linear(96 + self.action_dim, 192)
+        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('tanh'))
         
-        self.fc_out = nn.Linear(128, 1, bias=False)
+        self.fc_out = nn.Linear(192, 1, bias=False)
         nn.init.uniform_(self.fc_out.weight, -0.003, +0.003)
 
         self.act = nn.Tanh()
