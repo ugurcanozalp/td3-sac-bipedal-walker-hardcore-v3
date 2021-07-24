@@ -9,7 +9,7 @@ from itertools import chain
 class DDPGAgent():
     rl_type = 'ddpg'
     def __init__(self, Actor, Critic, state_size=24, action_size=4, 
-            lr=7e-4, weight_decay=0, gamma=0.98, tau=0.001, batch_size=64, buffer_size=int(1e6)):
+            lr=5e-4, weight_decay=0, gamma=0.98, tau=0.001, batch_size=64, buffer_size=int(750000)):
         
         self.state_size = state_size
         self.action_size = action_size
