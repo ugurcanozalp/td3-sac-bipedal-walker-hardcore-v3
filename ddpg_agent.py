@@ -9,7 +9,7 @@ from itertools import chain
 class DDPGAgent():
     rl_type = 'ddpg'
     def __init__(self, Actor, Critic, state_size=24, action_size=4, 
-            lr=5e-4, weight_decay=0, gamma=0.98, tau=0.001, batch_size=64, buffer_size=int(750000)):
+            lr=1e-3, weight_decay=0, gamma=0.98, tau=0.001, batch_size=128, buffer_size=int(750000), device=None):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -18,8 +18,11 @@ class DDPGAgent():
         self.tau = tau
         self.batch_size = batch_size
 
-        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") 
-        
+        if device is None:
+            self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") 
+        else:
+            self.device = torch.device(device)
+
         self.train_actor = Actor().to(self.device)
         self.target_actor= Actor().to(self.device).eval()
         self.hard_update(self.train_actor, self.target_actor)

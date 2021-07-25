@@ -9,7 +9,7 @@ from itertools import chain
 class TD3Agent():
     rl_type = 'td3'
     def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(2),
-            lr=5e-4, weight_decay=0, gamma=0.98, tau=0.005, batch_size=64, buffer_size=int(750000)):
+            lr=1e-3, weight_decay=0, gamma=0.98, tau=0.005, batch_size=128, buffer_size=int(750000), device=None):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -21,8 +21,11 @@ class TD3Agent():
         self.tau = tau
         self.batch_size = batch_size
 
-        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") 
-        
+        if device is None:
+            self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") 
+        else:
+            self.device = torch.device(device)
+
         self.clip_low = torch.tensor(clip_low)
         self.clip_high = torch.tensor(clip_high)
 
