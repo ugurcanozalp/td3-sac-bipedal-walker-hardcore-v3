@@ -20,13 +20,13 @@ parser.add_argument("-e", "--env", type=str, choices=['classic', 'hardcore'],
 parser.add_argument("-m", "--model_type", type=str, choices=['ff','mlp','rnn','lstm','bilstm','trsf'],
                     default='ff', help="model type")
 parser.add_argument("-r", "--rl_type", type=str, choices=['ddpg', 'td3', 'sac'], default='sac', help='RL method')
-parser.add_argument("-l", "--lr", type=float, default=1e-3, help='Learning Rate')
+parser.add_argument("-l", "--lr", type=float, default=4e-4, help='Learning Rate')
 parser.add_argument("-w", "--wd", type=float, default=0, help='Weight Decay')
-parser.add_argument("-b", "--batch_size", type=int, default=128, help='batch size')
+parser.add_argument("-b", "--batch_size", type=int, default=64, help='batch size')
 parser.add_argument("-c", "--ckpt", type=str, default='seed', help='checkpoint to start with')
 parser.add_argument("-x", "--explore_episode", type=int, default=50, help='number of exploration steps')
 parser.add_argument("-g", "--gamma", type=float, default=0.98, help='discount rate')
-parser.add_argument("-a", "--alpha", type=float, default=0.005, help='entropy regularization term in SAC')
+parser.add_argument("-a", "--alpha", type=float, default=0.01, help='entropy regularization term in SAC')
 parser.add_argument("-hl", "--history_length", type=int, default=12, help='history length for sequential models')
 parser.add_argument("-d", "--device", type=str, default=None, help='device to train on')
 
