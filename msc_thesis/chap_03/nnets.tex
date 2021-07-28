@@ -13,25 +13,26 @@ Neural layers are stacked to construct deep feed forward neural network.
 It defines a nonlinear mapping $y=\phi(x;\theta)$ between input $x$ and output $y$, parametrized by $\theta$ that includes (learnable) parameters like weights, bias and possibly others if defined.
 
 Assuming input signal is $x \in \mathbb{R}^{1 \times d_x}$ (output of previous layer), 
-activation value of the layer ($h \in \mathbb{R}^{1 \times d_h}$) is calculated by linear transformation (weight $W$ and bias $b$) followed by nonlinear activation $f$, 
+activation value of the layer ($h \in \mathbb{R}^{1 \times d_h}$) is calculated by linear transformation (weight $W$ and bias $b$) followed by nonlinear activation $\phi$, 
 \begin{equation}
 \label{eqn:mlpact}
 h = \phi(x W + b),
 \end{equation}
-where activation $f$ is applied elementwise.
+where $\phi$ is applied elementwise.
 
 \subsection{Residual Feed Forward Neural Networks}
 
 As Feed Forward Networks becomes deeper, optimizing weights gets difficult. 
 Therefore, people come with the idea of residual connections~\cite{he_deep_2015}. 
-For a fixed number of stacked layers (usually 2), input and output of the stack is summed up for next calculations. 
+For a fixed number of stacked layers (usually 2 which is single skip), input and output of the stack is summed up for next calculations. 
 Replacing feed forward layers with other types yield different kind of residual network. 
 The difference is demonstrated in \figref{fig:rffnn_ffnn}. 
+Yellow blocks are layers where $\phi$ indicates layer has activation while empty ones are linear layers.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.5\textwidth]{figures/ml_theory/rffnn_ffnn.png}
-	\caption{Deep Feed Forward (left) and Deep Residual Feed Forward Network (right)}
+	\includegraphics[width=0.5\textwidth]{figures/ml_theory/rffnn_vs_ffnn.png}
+	\caption{Deep Feed Forward (left) and Deep Residual Feed Forward Network with single skip connection (right)}
 	\label{fig:rffnn_ffnn}
 \end{figure}
 
@@ -56,8 +57,8 @@ To begin with, the initial output $h_0$ can be either parametrized or assigned t
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.5\textwidth]{figures/ml_theory/rnn_vs_ffnn_layer.png}
-	\caption{Recurrent Layer (left) and Feed Forward Layer (right) illustration~\cite{olah_understanding_2015}}
+	\includegraphics[width=0.5\textwidth]{figures/ml_theory/ffnn_vs_rnn.png}
+	\caption{Feed Forward Layer (left) and Recurrent Layer (right) illustration~\cite{olah_understanding_2015}}
 	\label{fig:rnn_vs_ffnn}
 \end{figure}
 
@@ -76,7 +77,7 @@ Information flow is controlled by three gates.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.98\textwidth]{figures/ml_theory/lstm/lstm_module.png}
+	\includegraphics[width=0.98\textwidth]{figures/ml_theory/lstm_cell.png}
 	\caption{LSTM Cell~\cite{olah_understanding_2015}}
 	\label{fig:lstm_cell}
 \end{figure}
@@ -180,7 +181,7 @@ Scaled dot-product attention and Multi-Head attention are demonstrated in \figre
 	\label{fig:att_and_mha}
 \end{figure}
 
-Both encoder and decoder contains \textbf{Feed Forward Layer}, containing two linear transformations ($W_1, b_1$ and $W_2, b_2$) with ReLU activation.
+A transformer layer contains \textbf{Feed Forward Layer}, containing two linear transformations ($W_1, b_1$ and $W_2, b_2$) with ReLU-like activation.
 \begin{equation}
 \mathrm{FFN}(x) = \text{ReLU}(x W_1 + b_1) W_2 + b_2
 \end{equation}
@@ -192,22 +193,16 @@ Both sublayers are employed with resudial connection with layer normalization.
 In other words, summation of layer input and output is passed through layer normalization. 
 \begin{equation}
 \begin{split}
-a = & \mathrm{LN}(x + \mathrm{MHA}(x,x,x)) \\
-y = & \mathrm{LN}(a + \mathrm{FFN}(a))
+a = & \mathrm{LN}(x + \mathrm{MHA}(x,x,x)), \\
+y = & \mathrm{LN}(a + \mathrm{FFN}(a)).
 \end{split}
 \end{equation}
 
-\textbf{Decoder Layer} has also self-attention and feed forward layers similar to encoder layer. 
-In addition, there is another attention layer which is over encoder outputs. 
-Same as encoder, all sublayers have residual connection with layer normalization. 
-Let the encoded sequence $e \in \mathbb{R}^{T \times d_m}$ and the decoded sequence be $d \in \mathbb{R}^{T \times d_m}$ (masked). 
-Assume that the sequence decoded up to the $t$th point in the sequence, which is $d_{1:t} \in \mathbb{R}^{t \times d_m}$.
-Then, $d_{t+1} \in \mathbb{R}^{1 \times d_m}$ is calculated as follows. 
+Apart from encoder layers; query, key and value inputs may vary depending on design. In general,
 \begin{equation}
 \begin{split}
-a = & \mathrm{LN}(d_{1:t}+\mathrm{MHA}(d_{1:t},d_{1:t},d_{1:t})) \\
-s = & \mathrm{LN}(a + \mathrm{MHA}(a,e,e)) \\
-d_{t+1} = & \mathrm{LN}(s+ \mathrm{FFN}(s))
+a = & \mathrm{LN}(x + \mathrm{MHA}(q,k,v)), \\
+y = & \mathrm{LN}(a + \mathrm{FFN}(a)).
 \end{split}
 \end{equation}
 
@@ -240,22 +235,12 @@ a = & x+ \mathrm{MHA}(\mathrm{LN}(x),\mathrm{LN}(x),\mathrm{LN}(x)) \\
 y = & a + \mathrm{FFN}(\mathrm{LN}(a))
 \end{split}.
 \end{equation}
-The difference between post-layer and pre-layer transformer encoders are visualized in \figref{fig:post_pre_trsf}
+
+A simple pre-layer normalized transformer encoder layer is demonstrated in \figref{fig:pre_trsf}.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.7\textwidth]{figures/ml_theory/post_pre_trsf.png}
-	\caption{(a) Post-LN Transformer layer, (b) Pre-LN Transformer
-		layer~\cite{xiong_layer_2020}}
-	\label{fig:post_pre_trsf}
+	\includegraphics[width=0.3\textwidth]{figures/ml_theory/transformer_block.png}
+	\caption{Pre-LN Transformer encoder layer with GELU activation}
+	\label{fig:pre_trsf}
 \end{figure}
-
-%Decoder equations are as follows.
-%\begin{equation}
-%\begin{split}
-%att = & %d_{1:t}+\mathrm{MHA}(\mathrm{LN}(d_{1:t}),\mathrm{LN}(d_{1:t}),\mathrm%{LN}(d_{1:t})) \\
-%dec = & att+ \mathrm{MHA}(\mathrm{LN}(att),\mathrm{LN}(att),\mathrm{LN}(att)) \\
-%d_{t+1} = & dec+ \mathrm{FFN}(\mathrm{LN}(dec))
-%\end{split}
-%\end{equation}
-

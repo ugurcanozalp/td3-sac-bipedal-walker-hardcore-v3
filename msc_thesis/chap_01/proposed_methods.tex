@@ -8,14 +8,14 @@ the robot under fully observability assumption due to the fact that no memory is
 Then, the environment is assumed to be partially observable. 
 In order to recover belief states, Long Short Term Memory (LSTM) and 
 Transformer neural networks are proposed using fixed number of 
-past observations (4 in our case) during decision making. 
+past observations (6 and 12 in our case) during decision making. 
 
 LSTM is used in many deep learning applications including sequential data. 
 It is a variant of Recurrent Neural Networks (RNN) and a good candidate for RL algorithms to be applied in partially observable environments. 
 
 Transformer is developed to handle sequential data as RNN models do. 
 However, it processes the whole sequence at the same time, while RNN processes the sequence in order. 
-Transformers are commonly used in Natural Language Processing (NLP) thanks to major performance improvements, however, this is not the case for Reinforcement Learning, yet.
+Transformers are commonly used in Natural Language Processing (NLP) thanks to major performance improvements over RNN variants, but this is not the case for Reinforcement Learning, yet.
 
 In order to handle the reward sparsity problem, reward function is reshaped in this thesis. Also, a exploration strategy is formed so that the agent both explores and learns sufficiently well. 
 

@@ -4,7 +4,7 @@
 TD3 and SAC is used as RL algorithm. 
 Hyperparameters are selected by grid search and best performing values are used. Adam optimizer is used for optimization. 
 
-In TD3, as exploration noise, Ornstein-Uhlenbeck noise is used, and standart deviation is multiplied  by $0.999$ at the end of each episode. 
+In TD3, as exploration noise, Ornstein-Uhlenbeck noise is used, and standart deviation is multiplied  by $0.9995$ at the end of each episode. 
 
 In SAC model, squashed gaussian policy is implemented. Therefore, along with layer giving mean actions, an additive layer is implemented for the standart deviation. 
 
@@ -15,14 +15,14 @@ All hyperparameters are found after a trial-error process. They  are summarized 
 	\begin{tabular}{|l||*{3}{c|}}\hline
 		\backslashbox{Hyperparameter}{Model}
 		&\makebox[5em]{RFFNN}&\makebox[5em]{LSTM}&\makebox[5em]{Transformer}\\\hline\hline
-		$\eta$ (Learning Rate) & $1.0\times10^{-3}$ & $7.0\times10^{-4}$ & $1.0\times10^{-3}$\\\hline
+		$\eta$ (Learning Rate) & \multicolumn{3}{|c|}{$4.0\times10^{-4}$}\\\hline
 		$\beta$ (Momentum) & \multicolumn{3}{|c|}{$(0.9, 0.999)$}\\\hline
 		$\gamma$ (Discount Factor) & \multicolumn{3}{|c|}{$0.98$} \\\hline
 		$N_{replay}$ (Replay Buffer Size) &\multicolumn{3}{|c|}{$500000$} \\\hline
-		$N$ (Batch Size) &\multicolumn{3}{|c|}{$128$}\\\hline
+		$N$ (Batch Size) &\multicolumn{3}{|c|}{$64$}\\\hline
 		$d$ (Policy Delay) &\multicolumn{3}{|c|}{$2$}\\\hline
 		$\sigma$ (Policy smoothing std) &\multicolumn{3}{|c|}{$0.2$}\\\hline
-		$\tau$ (Polyak parameter) &\multicolumn{3}{|c|}{$0.005$}\\\hline
+		$\tau$ (Polyak parameter) &\multicolumn{3}{|c|}{$0.01$}\\\hline
 		Exploration &\multicolumn{3}{|c|}{$OU(\theta=4.0, \sigma=1.0)$}\\\hline
 	\end{tabular}
 	\label{table:hyperparams_td3}
@@ -34,13 +34,13 @@ All hyperparameters are found after a trial-error process. They  are summarized 
 	\begin{tabular}{|l||*{3}{c|}}\hline
 		\backslashbox{Hyperparameter}{Model}
 		&\makebox[5em]{RFFNN}&\makebox[5em]{LSTM}&\makebox[5em]{Transformer}\\\hline\hline
-		$\eta$ (Learning Rate) & $1.0\times10^{-3}$ & $7.0\times10^{-4}$ & $7.0\times10^{-4}$\\\hline
+		$\eta$ (Learning Rate) & \multicolumn{3}{|c|}{$4.0\times10^{-4}$}\\\hline
 		$\beta$ (Momentum) & \multicolumn{3}{|c|}{$(0.9, 0.999)$}\\\hline
 		$\gamma$ (Discount Factor) & \multicolumn{3}{|c|}{$0.98$} \\\hline
 		$N_{replay}$ (Replay Buffer Size) &\multicolumn{3}{|c|}{$500000$} \\\hline
-		$N$ (Batch Size) &\multicolumn{3}{|c|}{$128$}\\\hline
-		$\tau$ (Polyak parameter) &\multicolumn{3}{|c|}{$0.005$}\\\hline
-		$\alpha$ (Entropy Temperature) &\multicolumn{3}{|c|}{$0.005$}\\\hline
+		$N$ (Batch Size) &\multicolumn{3}{|c|}{$64$}\\\hline
+		$\tau$ (Polyak parameter) &\multicolumn{3}{|c|}{$0.01$}\\\hline
+		$\alpha$ (Entropy Temperature) &\multicolumn{3}{|c|}{$0.01$}\\\hline
 	\end{tabular}
 	\label{table:hyperparams_sac}
 \end{table}

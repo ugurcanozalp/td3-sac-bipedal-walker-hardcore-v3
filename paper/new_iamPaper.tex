@@ -214,7 +214,7 @@ This is, in general, achieved by creating a belief state from the past observati
 Agent uses this belief state to choose how to act. 
 If the belief state is evaluated sufficiently, 
 this increases performance of the agent.
-Relying on observations is also possible, 
+Relying on instant observations is also possible, 
 and this may be enough sometimes if advanced type of control is not required. 
 
 \section{Reinforcement Learning}
@@ -441,17 +441,18 @@ The following modifications are proposed.
 
 Varying neural backbones used to encode state information from observations for both actor and critic networks. 
 In critic network, actions are concatenated by state information coming from backbones. 
-Then, this concatenated vector is passed through feed forward layer with GELU activation then through a linear layer with single output. 
-Before feeding observations to backbone, they are passed through a layer with layer normalization with tanh activation to 96 dimensional output. 
+Then, this concatenated vector is passed through feed forward layer with hyperbolic tangent activation then through a linear layer with single output. 
+Before feeding observations to backbone, they are passed through a linear layer with 96 dimensional output. 
+However, for only LSTM backbones, this layer is not used and observations are passed to LSTM backbone as it is. 
 In actor network, backbone is followed by a single layer with tanh activation for action estimation. 
-Again, observations are passed through a layer with layer normalization with tanh activation to 96 dimensional output before feeding to the backbone. 
+Again, observations are passed through a linear layer with 96 dimensional output, and this is not valid for LSTM.
 Critic and Actor networks are illustrated in Figure \ref{fig:nets} 
 
 \begin{figure}
 	\centering
 	\begin{subfigure}{.35\textwidth}
 		\centering
-		\includegraphics[width=0.9\linewidth]{figures/nets/critic2.png}
+		\includegraphics[width=0.9\linewidth]{figures/nets/critic.png}
 		\caption{Critic Architecture}
 		\label{fig:critic_net}
 	\end{subfigure}
@@ -471,19 +472,20 @@ As backbones, following networks are proposed.
 
 As Feed Forward Networks becomes deeper, optimizing weights gets difficult. 
 Therefore, people come with the idea of residual connections~\cite{he_deep_2015}. 
-For a fixed number of stacked layers (usually 2), input and output of the stack is summed up for next calculations. 
+For a fixed number of stacked layers (usually 2 which is single skip), input and output of the stack is summed up for next calculations. 
 Replacing feed forward layers with other types yield different kind of residual network. 
-The difference is demonstrated in Figure \ref{fig:rffnn_ffnn}. 
+The difference is demonstrated in Figure \ref{fig:rffnn_ffnn}.
+Yellow blocks are layers where $\phi$ indicates layer has activation while empty ones are linear layers.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.5\textwidth]{figures/ml_theory/rffnn_ffnn.png}
-	\caption{Deep Feed Forward (left) and Deep Residual Feed Forward Network (right)}
+	\includegraphics[width=0.5\textwidth]{figures/ml_theory/rffnn_vs_ffnn.png}
+	\caption{Deep Feed Forward (left) and Deep Residual Feed Forward Network with single skip connection (right)}
 	\label{fig:rffnn_ffnn}
 \end{figure}
 
-In our application, incoming vector is passed through 2 layers with 192 dimensional hidden size and 96 dimensional output, where there is GELU activation between 2 layers. 
-Output these layers is summed with initial incoming vector and this is lastly passed through layer normalization. 
+In our application, incoming vector is passed through 2 layers with 192 dimensional hidden size and 96 dimensional output with single skip connection, where there is GELU activation between first 2 layers. 
+ 
 \subsubsection{Long Short Term Memory}
 
 Long Short Term Memory (LSTM)~\cite{hochreiter_long_1997} is a special type of Recurrent Neural Network. 
@@ -494,13 +496,13 @@ Information flow is controlled by 3 gates.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.85\textwidth]{figures/ml_theory/lstm/lstm_module.png}
+	\includegraphics[width=0.85\textwidth]{figures/ml_theory/lstm_cell.png}
 	\caption{LSTM Cell~\cite{olah_understanding_2015}}
 	\label{fig:lstm_cell}
 \end{figure}
 
 In our application, sequence of incoming vectors is passed though single vanilla LSTM layer with 96 dimensional hidden state. 
-Output at last time step is considered as belief state.
+Output at last time step is considered as belief state. 
 
 \subsubsection{Transformer (Pre-layer Normalized)}
 
@@ -510,26 +512,26 @@ However, original transformer architecture includes layer normalization operatio
 It is unstable since the values of gradients of output layers are high, so Pre-Layer Normalized transformer is proposed by \cite{xiong_layer_2020} by carrying layer normalization operation to in front of attention and feed-forward layers. 
 Moreover, Parisotto et al. Xiong et al.~ \cite{parisotto_stabilizing_2019} proposed gated transformer which also includes layer normalizations before attention and feedforward layer. 
 They also stated that although gated architecture improves many RL tasks drastically, non-gated pre-layer normalized transformer are good enough. 
-The difference between post-layer and pre-layer transformer encoders are visualized in Figure \ref{fig:post_pre_trsf}.
+A simple pre-layer normalized transformer encoder layer is demonstrated in Figure \ref{fig:pre_trsf}.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.5\textwidth]{figures/ml_theory/post_pre_trsf.png}
-	\caption{(a) Post-LN Transformer layer, (b) Pre-LN Transformer
-		layer~\cite{xiong_layer_2020}}
-	\label{fig:post_pre_trsf}
+	\includegraphics[width=0.3\textwidth]{figures/ml_theory/transformer_block.png}
+	\caption{Pre-LN Transformer encoder layer with GELU activation}
+	\label{fig:pre_trsf}
 \end{figure}
 
 In our application, sequence of incoming vectors is passed through single pre-layer normalized transformer layer with 192 dimensional feed forward layer with GELU activation. 
-The output is lastly passed through layer normalization. 
-During multi-head attention, only the last observation is fed as query so that attentions are calculated only for last state. 
+In multi-head attention, 4 head is used and size of queris, keys and values are 8 for each head.
+During multi-head attention, only the last observation is fed as query so that attentions are calculated only for last state.  
 Its output is considered as belief state.
+Note that excluding multi-head attention for this network gives our residual feed-forward neural network.
 
 \subsection{Algorithm Settings}
 TD3 and SAC is used as RL algorithm. 
 Hyperparameters are selected by grid search and best performing values are used. Adam optimizer is used for optimization. 
 
-In TD3, as exploration noise, Ornstein-Uhlenbeck noise is used, and standart deviation is multiplied  by $0.999$ at the end of each episode. 
+In TD3, as exploration noise, Ornstein-Uhlenbeck noise is used, and standart deviation is multiplied  by $0.9995$ at the end of each episode. 
 
 In SAC model, squashed gaussian policy is implemented. Therefore, along with layer giving mean actions, an additive layer is implemented for standart deviation along with it. 
 
