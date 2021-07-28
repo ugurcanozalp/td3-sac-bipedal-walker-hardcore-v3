@@ -327,8 +327,9 @@ Squashed Gaussian policy to squash actions in the range $(-1,1)$ by $\tanh$ func
 This is parametrized by its mean and standart deviation, i.e., $\theta^{\pi}=(\theta^{\mu}, \theta^{\sigma})$. Actions are then sampled as follows: 
 \begin{equation}
 \label{eqn:squashed_gp_sampling}
-a(s) = \tanh(\mu(s; \theta^{\mu}) + \eta \odot \sigma(s; \theta^{\sigma})), \quad \eta \sim \mathcal{N}(0, I). 
+a(s) = \tanh(\mu(s; \theta^{\mu}) + \eta \odot \sigma(s; \theta^{\sigma})), \quad \eta \sim \mathcal{N}(0, I), 
 \end{equation}
+where $\odot$ is elementwise multiplication.
 
 Finally, we note that SAC method does not include policy delay, target policy smoothing and target policy network. 
 

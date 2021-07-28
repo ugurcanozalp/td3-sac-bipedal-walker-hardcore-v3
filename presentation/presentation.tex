@@ -486,7 +486,7 @@ Main critic and actor architectures are as follows.
 \begin{figure}
 	\begin{subfigure}{.45\textwidth}
 		\centering
-		\includegraphics[width=0.65\linewidth]{figures/nets/critic2.png}
+		\includegraphics[width=0.65\linewidth]{figures/nets/critic.png}
 		\caption{Critic Architecture}
 		\label{fig:critic_net}
 	\end{subfigure}
@@ -505,7 +505,25 @@ Main critic and actor architectures are as follows.
 
 \begin{frame}
 \frametitle{Residual Feed Forward Neural Network}
-Residual Feed Forward Neural Network
+\begin{columns}[onlytextwidth]
+	\begin{column}{.49\textwidth}
+		\begin{itemize}
+			\item As Feed Forward Networks becomes deeper, optimizing weights gets difficult. 
+			\item For a 2 stacked layer (single skip connection), input and output of the stack is summed up for next calculations. 
+			\item We have 2 layers with 192 dimensional hidden size and 96 dimensional output (single skip connection), 
+			\item GELU as activation function.
+			\item In our work, only last observation is feeded. 
+		\end{itemize}
+	\end{column}
+	\begin{column}{.49\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.6\textwidth]{figures/ml_theory/rffnn_vs_ffnn.png}
+			\caption{Deep Feed Forward (left) and Deep Residual Feed Forward Network with single skip connection (right)}
+			\label{fig:rffnn_ffnn}
+		\end{figure}
+	\end{column}
+\end{columns}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -513,15 +531,62 @@ Residual Feed Forward Neural Network
 \subsection{Long Short Term Memory}
 \begin{frame}
 \frametitle{Long Short Term Memory}
-Long Short Term Memory
+\begin{columns}[onlytextwidth]
+	\begin{column}{.49\textwidth}
+		\begin{itemize}
+			\item Recurrent type of neural network
+			\item Explicitly designed to allow learning long-term dependencies
+			\item In our work, last 6 and 12 observations are feeded. 			
+		\end{itemize}
+	\end{column}
+	\begin{column}{.49\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.95\textwidth]{figures/ml_theory/lstm_cell.png}
+			\caption{LSTM Cell}
+			\label{fig:lstm_cell}
+		\end{figure}
+	\end{column}
+\end{columns}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
 
-\subsection{Transformer}
+\subsection{Transformer (Pre-layer Normalized)}
 \begin{frame}
 \frametitle{Transformer}
-Transformer
+\begin{columns}[onlytextwidth]
+	\begin{column}{.49\textwidth}
+		\begin{itemize}
+			\item Attention based neural network
+			\item Processes whole sequence at the same time.
+			\item Uses positional encodings to encode order information.
+			\item In our work, last 6 and 12 observations are feeded. 			
+		\end{itemize}
+	\end{column}
+	\begin{column}{.49\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.4\textwidth]{figures/ml_theory/transformer_block.png}
+			\caption{Pre-LN Transformer encoder layer with GELU activation}
+			\label{fig:pre_trsf}
+		\end{figure}
+	\end{column}
+\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+
+\section{Algorithm Settings}
+\begin{frame}
+\frametitle{Algorithm Settings}
+\begin{itemize}
+	\item Hyperparameters are selected by grid search and best performing values are used. 
+	\item Adam optimizer is used for optimization. 
+	\item In TD3, as exploration noise, Ornstein-Uhlenbeck noise is used, and standart deviation is multiplied  by $0.9995$ at the end of each episode. 
+	\item In SAC model, squashed gaussian policy is implemented. Therefore, along with layer giving mean actions, an additive layer is implemented for standart deviation along with it. 
+\end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%

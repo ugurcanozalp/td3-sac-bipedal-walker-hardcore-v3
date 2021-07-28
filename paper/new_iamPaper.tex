@@ -410,8 +410,9 @@ Squashed Gaussian policy to squash actions in the range $(-1,1)$ by $\tanh$ func
 This is parametrized by its mean and standart deviation, i.e., $\theta^{\pi}=(\theta^{\mu}, \theta^{\sigma})$. Actions are then sampled as follows: 
 \begin{equation}
 \label{eqn:squashed_gp_sampling}
-a(s) = \tanh(\mu(s; \theta^{\mu}) + \eta \odot \sigma(s; \theta^{\sigma})), \quad \eta \sim \mathcal{N}(0, I). 
+a(s) = \tanh(\mu(s; \theta^{\mu}) + \eta \odot \sigma(s; \theta^{\sigma})), \quad \eta \sim \mathcal{N}(0, I), 
 \end{equation}
+where $\odot$ is elementwise multiplication.
 
 Finally, we note that SAC method does not include policy delay, target policy smoothing and target policy network. 
 
@@ -484,7 +485,7 @@ Yellow blocks are layers where $\phi$ indicates layer has activation while empty
 	\label{fig:rffnn_ffnn}
 \end{figure}
 
-In our application, incoming vector is passed through 2 layers with 192 dimensional hidden size and 96 dimensional output with single skip connection, where there is GELU activation between first 2 layers. 
+In our application, incoming vector is passed through 2 layers with 192 dimensional hidden size and 96 dimensional output with single skip connection, where there is GELU activation at first layer. 
  
 \subsubsection{Long Short Term Memory}
 
@@ -497,7 +498,7 @@ Information flow is controlled by 3 gates.
 \begin{figure}
 	\centering
 	\includegraphics[width=0.85\textwidth]{figures/ml_theory/lstm_cell.png}
-	\caption{LSTM Cell~\cite{olah_understanding_2015}}
+	\caption{LSTM Cell}
 	\label{fig:lstm_cell}
 \end{figure}
 

@@ -106,7 +106,7 @@ Once what are to be forgotten and added decided, cell state is updated according
 \label{eqn:lstm_cellstupt}
 C_t = f_t \odot C_{t-1} + i_t \odot \hat{C}_t.
 \end{equation}
-using input gate and forget gate outputs.
+using input gate and forget gate outputs. Note that $\odot$ is elementwise multiplication.
 
 \textbf{Output Gate} controls which part of new cell state to be output: 
 \begin{equation}
