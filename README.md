@@ -13,12 +13,6 @@ Only Hardcore environment is solved by SAC and TD3 algorithm. Reward is manipula
 
 Only Hardcore environment is solved by TD3 and SAC algorithms. Reward is manipulated and frame rate is halved. 
 
-#### Feed Forward Neural Network with Residual connection (SAC) (Episode 8000)
-
-#### Transformer (pre-layer normalized) (6 obs history (SAC) (Episode 8000)
-
-#### LSTM (6 obs history) (SAC) (Episode 8000)
-
 # How to
 Create new python environment and First install requirements. (python 3.6)
 
@@ -79,28 +73,44 @@ https://drive.google.com/drive/folders/1BtqZXrJyuoBiyeE9IduWj7IkFN-urw6y?usp=sha
 Then run one of the following commands for best checkpoints,
 
 ```bash
-python main_script.py -f test -r sac -m ff -c ep8000
+python main_script.py -f test -r sac -m ff -c ep7600
 ```
+![ff_sac](results/video/ff-sac.gif)
 
 ```bash
-python main_script.py -f test -r sac -m trsf -h 6 -c ep8000
+python main_script.py -f test -r sac -m trsf -hl 6 -c ep6800
 ```
+![trsf_6_sac](results/video/trsf-6-sac.gif)
 
 ```bash
-python main_script.py -f test -r sac -m lstm -h 6 -c ep8000
+python main_script.py -f test -r sac -m lstm -hl 6 -c ep7600
 ```
+![lstm_6_sac](results/video/lstm-6-sac.gif)
 
 ```bash
-python main_script.py -f test -r td3 -m ff -c ep8000
+python main_script.py -f test -r sac -m trsf -hl 12 -c ep6000
 ```
+![trsf_12_sac](results/video/lstm-12-sac.gif)
 
 ```bash
-python main_script.py -f test -r td3 -m trsf -h 6 -c ep8000
+python main_script.py -f test -r sac -m lstm -hl 12 -c ep7200
 ```
+![lstm_12_sac](results/video/lstm-12-sac.gif)
 
 ```bash
-python main_script.py -f test -r td3 -m lstm -h 6 -c ep8000
+python main_script.py -f test -r td3 -m ff -c ep6600
 ```
+![ff_td3](results/video/ff-td3.gif)
+
+```bash
+python main_script.py -f test -r td3 -m trsf -hl 6 -c ep6400
+```
+![trsf_6_td3](results/video/trsf-6-td3.gif)
+
+```bash
+python main_script.py -f test -r td3 -m lstm -hl 6 -c ep7000
+```
+![lstm_6_td3](results/video/lstm-6-td3.gif)
 
 # Author
 

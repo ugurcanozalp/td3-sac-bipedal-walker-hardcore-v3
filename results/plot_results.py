@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from scipy.ndimage import uniform_filter1d
 import os
 
-def plot_result(file_names, model_types, rl_type, plot_type=0):
+def plot_result(file_names, model_types, rl_type, plot_type=0, ma_length=200):
     if not isinstance(file_names, list):
         file_names = [file_names]
 
@@ -20,9 +20,9 @@ def plot_result(file_names, model_types, rl_type, plot_type=0):
         results = np.loadtxt(file_name)
         episodes = results[0]
         cum_rewards = results[1]
-        avg_rewards = uniform_filter1d(cum_rewards, 100, origin=49) #
-        datarep = np.tile(cum_rewards, (100, 1))
-        for i in range(1, 100):
+        avg_rewards = uniform_filter1d(cum_rewards, ma_length, origin=49) #
+        datarep = np.tile(cum_rewards, (ma_length, 1))
+        for i in range(1, ma_length):
           datarep[i, i:] = datarep[i, :-i]
 
         stds = np.sqrt(np.mean(np.square(datarep - avg_rewards[None, :]), 0))
