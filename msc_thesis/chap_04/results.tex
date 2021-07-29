@@ -8,13 +8,13 @@ In \figref{fig:td3_std_ep_rewards} and \figref{fig:sac_std_ep_rewards}, moving a
 	\centering
 	\begin{subfigure}{.49\textwidth}
 		\centering
-		\includegraphics[width=0.99\textwidth]{figures/bipedal/SCATTER_TD3_RFFNN_LSTM_TRSF.png}
+		\includegraphics[width=0.99\textwidth]{figures/bipedal/SCT_TD3_RFFNN_LSTM-6_TRSF-6.png}
 		\caption{TD3}
 		\label{fig:td3_scatter_ep_rewards}
 	\end{subfigure}
 	\begin{subfigure}{.49\textwidth}
 		\centering
-		\includegraphics[width=0.95\textwidth]{figures/bipedal/SCATTER_SAC_RFFNN_LSTM_TRSF.png}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/SCT_SAC_RFFNN_LSTM-6_TRSF-6_LSTM-12_TRSF-12.png}
 		\caption{SAC}
 		\label{fig:sac_scatter_ep_rewards}
 	\end{subfigure}
@@ -25,13 +25,13 @@ In \figref{fig:td3_std_ep_rewards} and \figref{fig:sac_std_ep_rewards}, moving a
 	\centering
 	\begin{subfigure}{.49\textwidth}
 		\centering
-		\includegraphics[width=0.99\textwidth]{figures/bipedal/STD_TD3_RFFNN_LSTM_TRSF.png}
+		\includegraphics[width=0.99\textwidth]{figures/bipedal/STD_TD3_RFFNN_LSTM-6_TRSF-6.png}
 		\caption{TD3}
 		\label{fig:td3_std_ep_rewards}
 	\end{subfigure}
 	\begin{subfigure}{.49\textwidth}
 		\centering
-		\includegraphics[width=0.95\textwidth]{figures/bipedal/STD_SAC_RFFNN_LSTM_TRSF.png}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/STD_SAC_RFFNN_LSTM-6_TRSF-6_LSTM-12_TRSF-12.png}
 		\caption{SAC}
 		\label{fig:sac_std_ep_rewards}
 	\end{subfigure}
@@ -60,60 +60,72 @@ Agent cannot exceed 280 points in any simulation with TD3 (\figref{fig:td3_scatt
 
 \begin{figure}[!ht]
 	\centering
-	\begin{subfigure}{.9\textwidth}
+	\begin{subfigure}{.95\textwidth}
 		\centering
-		\includegraphics[width=0.99\textwidth]{figures/bipedal/anim/ff_flat.png}
-		\caption{Flat Surface}
-		\label{fig:anim_rffnn_flat}
-	\end{subfigure}
-	\begin{subfigure}{.9\textwidth}
-		\centering
-		\includegraphics[width=0.99\textwidth]{figures/bipedal/anim/ff_stairs.png}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/ff-stairs.png}
 		\caption{Stairs}
 		\label{fig:anim_rffnn_stairs}
 	\end{subfigure}
-	\begin{subfigure}{.9\textwidth}
+	\begin{subfigure}{.95\textwidth}
 		\centering
-		\includegraphics[width=0.99\textwidth]{figures/bipedal/anim/ff_hurdle.png}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/ff-hurdle.png}
 		\caption{Hurdle}
 		\label{fig:anim_rffnn_hurdle}
 	\end{subfigure}
-	\begin{subfigure}{.9\textwidth}
+	\begin{subfigure}{.95\textwidth}
 		\centering
-		\includegraphics[width=0.99\textwidth]{figures/bipedal/anim/ff_pitfall.png}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/ff-pitfall.png}
 		\caption{Pitfall}
 		\label{fig:anim_rffnn_pitfall}
 	\end{subfigure}
-	\caption{Walking Simulation of RFFNN model at best version with TD3}
+	\caption{Walking Simulation of RFFNN model at best version with SAC}
 	\label{fig:rffnn_simulation}
 \end{figure}
 
 \begin{figure}[!ht]
 	\centering
-	\begin{subfigure}{.9\textwidth}
+	\begin{subfigure}{.95\textwidth}
 		\centering
-		\includegraphics[width=0.99\textwidth]{figures/bipedal/anim/trsf_flat.png}
-		\caption{Flat Surface}
-		\label{fig:anim_trsf_flat}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/lstm-12-stairs.png}
+		\caption{Stairs}
+		\label{fig:anim_lstm_stairs}
 	\end{subfigure}
-	\begin{subfigure}{.9\textwidth}
+	\begin{subfigure}{.95\textwidth}
 		\centering
-		\includegraphics[width=0.99\textwidth]{figures/bipedal/anim/trsf_stairs.png}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/lstm-12-hurdle.png}
+		\caption{Hurdle}
+		\label{fig:anim_lstm_hurdle}
+	\end{subfigure}
+	\begin{subfigure}{.95\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/lstm-12-pitfall.png}
+		\caption{Pitfall}
+		\label{fig:anim_lstm_pitfall}
+	\end{subfigure}
+	\caption{Walking Simulation of LSTM-12 model at best version with SAC}
+	\label{fig:lstm_simulation}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\begin{subfigure}{.95\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/trsf-12-stairs.png}
 		\caption{Stairs}
 		\label{fig:anim_trsf_stairs}
 	\end{subfigure}
-	\begin{subfigure}{.9\textwidth}
+	\begin{subfigure}{.95\textwidth}
 		\centering
-		\includegraphics[width=0.99\textwidth]{figures/bipedal/anim/trsf_hurdle.png}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/trsf-12-hurdle.png}
 		\caption{Hurdle}
 		\label{fig:anim_trsf_hurdle}
 	\end{subfigure}
-	\begin{subfigure}{.9\textwidth}
+	\begin{subfigure}{.95\textwidth}
 		\centering
-		\includegraphics[width=0.99\textwidth]{figures/bipedal/anim/trsf_pitfall.png}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/trsf-12-pitfall.png}
 		\caption{Pitfall}
 		\label{fig:anim_trsf_pitfall}
 	\end{subfigure}
-	\caption{Walking Simulation of Transformer model at best version with TD3}
+	\caption{Walking Simulation of Transformer-12 model at best version with SAC}
 	\label{fig:trsf_simulation}
 \end{figure}
