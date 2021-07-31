@@ -90,7 +90,7 @@ python main_script.py -f test -r sac -m lstm -hl 6 -c ep7600
 ```bash
 python main_script.py -f test -r sac -m trsf -hl 12 -c ep6000
 ```
-![trsf_12_sac](results/video/lstm-12-sac.gif)
+![trsf_12_sac](results/video/trsf-12-sac.gif)
 
 ```bash
 python main_script.py -f test -r sac -m lstm -hl 12 -c ep7200
@@ -111,6 +111,13 @@ python main_script.py -f test -r td3 -m trsf -hl 6 -c ep6400
 python main_script.py -f test -r td3 -m lstm -hl 6 -c ep7000
 ```
 ![lstm_6_td3](results/video/lstm-6-td3.gif)
+
+# Evaluation
+To run a 100 episode gym evaluation with trained model, run following command
+
+```bash
+python main_script.py -f test-100 -r sac -m lstm -hl 12 -c ep7200
+```
 
 # Author
 

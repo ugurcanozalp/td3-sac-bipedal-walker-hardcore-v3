@@ -531,49 +531,87 @@ Note that excluding multi-head attention for this network gives our residual fee
 \subsection{Algorithm Settings}
 TD3 and SAC is used as RL algorithm. 
 Hyperparameters are selected by grid search and best performing values are used. Adam optimizer is used for optimization. 
+For all models, agents are trained by 8000 episodes.
 
-In TD3, as exploration noise, Ornstein-Uhlenbeck noise is used, and standart deviation is multiplied  by $0.9995$ at the end of each episode. 
+In TD3, as exploration noise, Ornstein-Uhlenbeck noise is used, and standart deviation is multiplied  by $0.9995$ at the end of each episode. For LSTM and Transformer, last 6 observations are used to train agent. 
 
-In SAC model, squashed gaussian policy is implemented. Therefore, along with layer giving mean actions, an additive layer is implemented for standart deviation along with it. 
+In SAC model, squashed gaussian policy is implemented. 
+Therefore, along with layer giving mean actions, an additive layer is implemented for standart deviation along with it. 
+For LSTM and Transformer, last 6 obsevations and 12 observations are used to train agent. 
+
+Training sessions are run by multiple times to make comparison fair among models since some training sessions failed to converge and some yield worse results.
 
 \subsection{Results}
 
 For each episode, episode scores are calculated by summing up rewards of each time step. 
 In Figure \ref{fig:td3_std_ep_rewards} and Figure \ref{fig:sac_std_ep_rewards}, moving average and standard deviation is visualized for each model's episode scores. 
 
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.8\textwidth]{figures/bipedal/STD_TD3_RFFNN_LSTM-6_TRSF-6.png}
-	\caption{Moving Average and Standard Deviation for Episode Scores (TD3)}
-	\label{fig:td3_std_ep_rewards}
-\end{figure} 
+	\begin{subfigure}{.49\textwidth}
+		\centering
+		\includegraphics[width=0.99\textwidth]{figures/bipedal/STD_TD3_RFFNN_LSTM-6_TRSF-6.png}
+		\caption{TD3}
+		\label{fig:td3_std_ep_rewards}
+	\end{subfigure}
+	\begin{subfigure}{.49\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/STD_SAC_RFFNN_LSTM-6_TRSF-6_LSTM-12_TRSF-12.png}
+		\caption{SAC}
+		\label{fig:sac_std_ep_rewards}
+	\end{subfigure}
+	\caption{Moving Average and Standard Deviation for Episode Scores (Window length: 200 episodes) for TD3}
+\end{figure}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\textwidth]{figures/bipedal/STD_SAC_RFFNN_LSTM-6_TRSF-6_LSTM-12_TRSF-12.png}
-	\caption{Moving Average and Standard Deviation for Episode Scores (SAC)}
-	\label{fig:sac_std_ep_rewards}
-\end{figure} 
+RFFNN seems enough to make agent walk, although there exist partial observability in the environment. 
+That model reaches around 221 points in average with TD3 and 245 points with SAC. 
 
-Officially, 300 points in average required in random 100 simulations to say the environment is solved.
-Therefore, none of our approaches solved.
-However, they partially solved problems by exceeding 200 point limit, while some simulations yield around 280 points with all neural networks in TD3 and 300 points are reached with SAC.  
+Transformer models yield better performance compared to RFFNN. 249 points are reached by TD3 and 262 points reached by SAC model when 6 last observations are fed to model. 266 points are obtained when last 12 observations are fed to model with SAC.
 
-RFFNN seems to be enough for solving the problem, although there exist partial observability in the environment. 
-That model reaches around 220 points in average with TD3 and 225 points with SAC. In addition, learning was unstable. 
+LSTM model yield best results by reaching 264 points with TD3 and exceeds 280 points with SAC when 6 last observations are fed to model. 287 points are obtained when last 12 observations are fed to model with SAC. 
 
-The robot was able to walk by LSTM model but yield worse results and cannot exceed 120 points in average with both TD3 and SAC. 
+These scores are maximum obtained average scores of concurrent 200 episodes during training. 
+However, while traning, model changes and agent still tries to explore envrionment. 
+Officially, 300 points in average required in random 100 simulations to say the environment is solved~\cite{noauthor_gymleaderboard_2021}.
+Therefore, best checkpoints are evaluated for 100 concurrent simulations without exploration. 
+Results are summarized in Table \ref{table:ckpt_performance}.
 
-Transformer model yield best results by reaching 230 points with TD3 and exceeds 250 points with SAC. 
+\begin{table}
+	\begin{center}
+		\caption{Best checkpoint performances with 100 test simulations}
+		\begin{tabular}{||c c c c||} 
+			\hline
+			RL Method & Model & Episode & Avg. Score \\ [0.5ex] 
+			\hline\hline
+			TD3 & RFFNN & 6600 & 207 \\ 
+			\hline
+			SAC & RFFNN & 7600 & 219 \\
+			\hline
+			TD3 & TRSF-6 & 6400 & 222 \\
+			\hline
+			SAC & TRSF-6 & 6800 & 254 \\
+			\hline
+			SAC & TRSF-12 & 6000 & 270 \\
+			\hline
+			TD3 & LSTM-6 & 7000 & 242 \\
+			\hline
+			SAC & LSTM-6 & 7600 & 268 \\
+			\hline
+			SAC & LSTM-12 & 7200 & 298 \\ [1ex] 
+			\hline
+		\end{tabular}
+		\label{table:ckpt_performance}
+	\end{center}
+\end{table}
 
-As Transformer and RFFNN are relatively succesfull, their behavior is visualized in Figure \ref{fig:rffnn_simulation} and Figure \ref{fig:trsf_simulation} for TD3 model. 
-The main behavioral difference is when the agent faces a big hurdle. 
-First model passes it by jumping while other does by taking a very big step, shown in Figure \ref{fig:anim_rffnn_hurdle} and Figure \ref{fig:anim_trsf_hurdle}.
+None of our models exceed 300 point limit, but LSTM-12 model with SAC almost reaches to the limit Figure \ref{table:ckpt_performance}. 
+However, all models partially solved problems by exceeding 200 point limit, while some simulations exceed 300 points with both TD3 (Figure \ref{fig:td3_stdr_ep_rewards}) and SAC (Figure \ref{fig:sac_std_ep_rewards}). 
 
-In SAC simulations, RFFNN and Transformer models do not exhibit a noteworthy difference.
+Behaviour of agents are visualized in Figure \ref{fig:rffnn_simulation}, Figure \ref{fig:lstm_simulation} and Figure \ref{fig:trsf_simulation} for SAC models. 
+All of 3 models exhibit similar walking characteriscis.
 
-Also, SAC model performed better than TD3 in general. 
-Agent cannot exceed 280 points in any simulation with TD3 (Figure \ref{fig:td3_scatter_ep_rewards}) but it exceeds 300 points with SAC (Figure \ref{fig:sac_scatter_ep_rewards}). Also, as seen from the moving average points, SAC agents are superior (Figure \ref{fig:td3_std_ep_rewards}, \ref{fig:sac_std_ep_rewards}).
+SAC model performes better than TD3 in general, as seen in Figure \ref{fig:td3_std_ep_rewards} and Figure \ref{fig:sac_std_ep_rewards}. 
+In addition, as seen from the moving average points, SAC agents are superior (Figure \ref{fig:td3_std_ep_rewards},Figure \ref{fig:sac_std_ep_rewards}).
 
 \begin{figure}[!ht]
 	\centering
@@ -659,19 +697,19 @@ Also, environment is slightly modified by reward shaping, halving simulation fre
 
 As stated in previous chapters, most of the real world environments are partially observable. 
 In BipedalWalker-Hardcore, the environment is also partially observable since agent cannot observe behind and it lacks of acceleration sensors, which is better to have for controlling mechanical systems. 
-Therefore, we propose to use Long Short Term Memory and Transformer Neural Networks to capture more information from past observations unlike Residual Feed Forward Neural Network (RFFNN) using a single instant observation as input. 
+Therefore, we propose to use Long Short Term Memory (LSTM) and Transformer Neural Networks to capture more information from past observations unlike Residual Feed Forward Neural Network (RFFNN) using a single instant observation as input. 
 
 RFFNN model performed well thanks to carefully selected hyperparameters and modifications on the environment. 
-Since there is no major differences between sequential models (Transformer), the problem seems mainly about the rewards and exploration, not the partial observability. 
+However, sequential models performed much better indicating partial observability is an important issue for our environment. 
+Among sequential models, LSTM performed better compared to Transformer agents. 
 
-Although LSTM is used commonly for partially observed problems, results are the worst in this problem compared to other two models. Nonetheless, it keeps learning slowly. 
-Although we cannot exactly detect what the reason is, it is probably due to functional properties of LSTM. 
+Another conclusion is that transformer model worked enough to say it can be used in DRL problems. 
+It is surprising because it is not succesfully used in DRL problems in general except recent architectural developments~\cite{parisotto_stabilizing_2019}. 
+In natural language processing, this type of attention models completely replace recurrent models recently, and our results seems promising for this in DRL domain. 
 
-Transformer model worked with the best performance among all models we applied in this work. 
-It is surprising because it is not succesfully used in RL problems in general. 
-In natural language processing, this type of attention models completely replace recurrent models recently, and our results seems promising for this in RL domain. 
-
-The environment was difficult for exploration. SAC performed better than TD3 in handling exploration problem. SAC learns randomness during learning iterations.  
+The environment was difficult for exploration. 
+Especially handling big hurdles requires very much exploration.
+In our results, SAC agents performed better than TD3 since it handles exploration problem by learning how much to explore for a particular state. 
 
 \section{References}
 

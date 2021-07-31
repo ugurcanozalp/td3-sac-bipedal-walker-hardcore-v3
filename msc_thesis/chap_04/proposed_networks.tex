@@ -41,7 +41,7 @@ Output at last time step is considered as belief state.
 \subsection{Transformer (Pre-layer Normalized)}
 
 Sequence of incoming vectors is passed through single pre-layer normalized transformer layer with 192 dimensional feed forward layer with GELU activation. 
-In multi-head attention, 4 head is used and size of queris, keys and values are 8 for each head.
+In multi-head attention, 4 head is used and size of queries, keys and values are 8 for each head.
 During multi-head attention, only the last observation is fed as query so that attentions are calculated only for last state.  
 Its output is considered as belief state.
 Note that excluding multi-head attention for this network gives our residual feed-forward neural network.

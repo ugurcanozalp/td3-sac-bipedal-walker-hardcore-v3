@@ -13,7 +13,7 @@ import argparse
 import os
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f", "--flag", type=str, choices=['train', 'test', 'test-record', 'test-exp'],
+parser.add_argument("-f", "--flag", type=str, choices=['train', 'test', 'test-record', 'test-exp', 'test-100'],
                     default='train', help="train or test?")
 parser.add_argument("-e", "--env", type=str, choices=['classic', 'hardcore'],
                     default='hardcore', help="environment type, classic or hardcore?")
@@ -110,6 +110,11 @@ elif args.flag == 'test-record':
     env = Monitor(env, os.path.join('.', 'results', 'video'), force=False)
     scores = test(env, agent)
     env.close()
+
+elif args.flag == 'test-100':
+    agent.eval_mode()
+    #env.seed(0)
+    scores = test(env, agent, render=False, explore=False, n_times=100)
 
 else:
     print('Wrong flag!')
