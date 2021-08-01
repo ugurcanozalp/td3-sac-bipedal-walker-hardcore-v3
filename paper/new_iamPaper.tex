@@ -530,7 +530,7 @@ Note that excluding multi-head attention for this network gives our residual fee
 
 \subsection{Algorithm Settings}
 TD3 and SAC is used as RL algorithm. 
-Hyperparameters are selected by grid search and best performing values are used. Adam optimizer is used for optimization. 
+All hyperparameters are found after a trial-error process considering literature. Adam optimizer is used for optimization. 
 For all models, agents are trained by 8000 episodes.
 
 In TD3, as exploration noise, Ornstein-Uhlenbeck noise is used, and standart deviation is multiplied  by $0.9995$ at the end of each episode. For LSTM and Transformer, last 6 observations are used to train agent. 
@@ -541,7 +541,7 @@ For LSTM and Transformer, last 6 obsevations and 12 observations are used to tra
 
 Training sessions are run by multiple times to make comparison fair among models since some training sessions failed to converge and some yield worse results.
 
-\subsection{Results}
+\subsection{Results and Discussion}
 
 For each episode, episode scores are calculated by summing up rewards of each time step. 
 In Figure \ref{fig:td3_std_ep_rewards} and Figure \ref{fig:sac_std_ep_rewards}, moving average and standard deviation is visualized for each model's episode scores. 
@@ -684,6 +684,34 @@ In addition, as seen from the moving average points, SAC agents are superior (Fi
 	\caption{Walking Simulation of Transformer-12 model at best version with SAC}
 	\label{fig:trsf_simulation}
 \end{figure}
+
+%%% DISCUSSION %%%
+%%%%%%%%%%%%%%%%%%
+We believe that these results are not enough to conclude on a superior neural network for all RL problems, because there are other factors such as DRL algorithm, number of episodes, network size etc. 
+However, networks are designed to have similar sizes and good model requires to converge in less episodes. 
+As a result, LSTM is superior to Transformer for our environment. 
+In addition, it is possible to conclude that Transformers can be on aoption for partially observed RL problems, thanks to incorprating observation history. 
+Note that this is valid where layer normalization is applied before multihead attention and feed-forward layers \cite{xiong_layer_2020} as opposed to vanilla transformer proposed in \cite{vaswani_attention_2017}. 
+
+Another result is that incorprating past observations did improve performance significantly since environment is partially observable.
+Especially increasing history length keep increasing performance for both LSTM and Transformer models. 
+
+The environment is a difficult one. 
+There are really few available models which gets close to a solution. 
+Apart from neural networks, there are other factors affecting performance such as RL algorithm, rewarding, exploration etc. 
+In this work, all of them are adjusted such that the environment becomes solvable. 
+Time frequency is reduced for sample efficiency and speed. 
+Also, the agent is not informed for the terminal state when it reaches time limit. 
+Those modifications seems to be behind getting close to a solution. 
+Lastly, punishment of failing reduced, so the agent is allowed to learn by mistakes. 
+We believe that those modifications are also source of our high performance. 
+
+As RL algorithm, TD3 is selected first, since it is a good choice for continuous RL. 
+Ornstein-Uhlenbeck noise is used for better exploration since it has momentum, and its variance is reduced by time to make agent learn small actions well in later episodes. 
+In addition, SAC is used for learning along with TD3. 
+Results are better compared to those of TD3. 
+SAC policy maximizes randomness (entropy) if agent cannot get sufficient reward and this allows the agent to decide where/when to explore more or less. 
+This way, SAC handles the sparse rewards from the environment better than TD3. 
 
 \section{Conclusion}
 
