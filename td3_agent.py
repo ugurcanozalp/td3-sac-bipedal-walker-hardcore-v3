@@ -9,7 +9,7 @@ from itertools import chain
 class TD3Agent():
     rl_type = 'td3'
     def __init__(self, Actor, Critic, clip_low, clip_high, state_size=24, action_size=4, update_freq=int(2),
-            lr=1e-3, weight_decay=0, gamma=0.98, tau=0.005, batch_size=128, buffer_size=int(5e5)):
+            lr=4e-4, weight_decay=0, gamma=0.98, tau=0.01, batch_size=64, buffer_size=int(500000), device=None):
         
         self.state_size = state_size
         self.action_size = action_size
@@ -21,33 +21,38 @@ class TD3Agent():
         self.tau = tau
         self.batch_size = batch_size
 
-        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") 
-        
+        if device is None:
+            self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") 
+        else:
+            self.device = torch.device(device)
+
         self.clip_low = torch.tensor(clip_low)
         self.clip_high = torch.tensor(clip_high)
 
         self.train_actor = Actor().to(self.device)
         self.target_actor= Actor().to(self.device).eval()
         self.hard_update(self.train_actor, self.target_actor) # hard update at the beginning
-        self.actor_optim = optim.AdamW(self.train_actor.parameters(), lr=lr, weight_decay=0) 
+        self.actor_optim = torch.optim.AdamW(self.train_actor.parameters(), lr=lr, weight_decay=weight_decay, amsgrad=True)
         print(f'Number of paramters of Actor Net: {sum(p.numel() for p in self.train_actor.parameters())}')
         
         self.train_critic_1 = Critic().to(self.device)
         self.target_critic_1 = Critic().to(self.device).eval()
         self.hard_update(self.train_critic_1, self.target_critic_1) # hard update at the beginning
-        self.critic_1_optim = optim.AdamW(self.train_critic_1.parameters(), lr=lr, weight_decay=weight_decay)
+        self.critic_1_optim = torch.optim.AdamW(self.train_critic_1.parameters(), lr=lr, weight_decay=weight_decay, amsgrad=True)
 
         self.train_critic_2 = Critic().to(self.device)
         self.target_critic_2 = Critic().to(self.device).eval()
         self.hard_update(self.train_critic_2, self.target_critic_2) # hard update at the beginning
-        self.critic_2_optim = optim.AdamW(self.train_critic_2.parameters(), lr=lr, weight_decay=weight_decay)
+        self.critic_2_optim = torch.optim.AdamW(self.train_critic_2.parameters(), lr=lr, weight_decay=weight_decay, amsgrad=True)
         print(f'Number of paramters of Single Critic Net: {sum(p.numel() for p in self.train_critic_2.parameters())}')
 
-        self.noise_generator = DecayingOrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=4.0, sigma=1.0, dt=0.04, sigma_decay=0.999)
+        self.noise_generator = DecayingOrnsteinUhlenbeckNoise(mu=np.zeros(action_size), theta=4.0, sigma=1.2, dt=0.04, sigma_decay=0.9995)
         self.target_noise = GaussianNoise(mu=np.zeros(action_size), sigma=0.2, clip=0.4)
         
         self.memory= ReplayBuffer(action_size= action_size, buffer_size= buffer_size, \
             batch_size= self.batch_size, device=self.device)
+        
+        self.mse_loss = torch.nn.MSELoss()
         
     def learn_with_batches(self, state, action, reward, next_state, done):
         self.memory.add(state, action, reward, next_state, done)
@@ -74,19 +79,21 @@ class TD3Agent():
             #Q_targets = rewards + (self.gamma * Q_targets_next)
         
         Q_expected_1 = self.train_critic_1(states, actions)
-        critic_1_loss = torch.nn.MSELoss()(Q_expected_1, Q_targets)
+        critic_1_loss = self.mse_loss(Q_expected_1, Q_targets)
         #critic_1_loss = torch.nn.SmoothL1Loss()(Q_expected_1, Q_targets)
 
-        self.critic_1_optim.zero_grad()
+        self.critic_1_optim.zero_grad(set_to_none=True)
         critic_1_loss.backward()
+        #torch.nn.utils.clip_grad_norm_(self.train_critic_1.parameters(), 1)
         self.critic_1_optim.step()
 
         Q_expected_2 = self.train_critic_2(states, actions)   
-        critic_2_loss = torch.nn.MSELoss()(Q_expected_2, Q_targets)
+        critic_2_loss = self.mse_loss(Q_expected_2, Q_targets)
         #critic_2_loss = torch.nn.SmoothL1Loss()(Q_expected_2, Q_targets)
         
-        self.critic_2_optim.zero_grad()
+        self.critic_2_optim.zero_grad(set_to_none=True)
         critic_2_loss.backward()
+        #torch.nn.utils.clip_grad_norm_(self.train_critic_2.parameters(), 1)
         self.critic_2_optim.step()
         
         if self.learn_call % self.update_freq == 0:
@@ -95,8 +102,9 @@ class TD3Agent():
             actions_pred = self.train_actor(states)
             actor_loss = -self.train_critic_1(states, actions_pred).mean()
             
-            self.actor_optim.zero_grad()
+            self.actor_optim.zero_grad(set_to_none=True)
             actor_loss.backward()
+            #torch.nn.utils.clip_grad_norm_(self.train_actor.parameters(), 1)
             self.actor_optim.step()
         
             #using soft upates

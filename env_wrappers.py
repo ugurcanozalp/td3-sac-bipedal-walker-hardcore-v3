@@ -42,7 +42,8 @@ class MyWalkerWrapper(gym.Wrapper):
         super().__init__(env)
         self._obs_buffer = deque(maxlen=skip)
         self._skip = skip
-
+        self._max_episode_steps = 750
+        
     def step(self, action):
         total_reward = 0
         for i in range(self._skip):

@@ -13,16 +13,16 @@ Also, environment is slightly modified by reward shaping, halving simulation fre
   
 As stated in previous chapters, most of the real world environments are partially observable. 
 In BipedalWalker-Hardcore, the environment is also partially observable since agent cannot observe behind and it lacks of acceleration sensors, which is better to have for controlling mechanical systems. 
-Therefore, we propose to use Long Short Term Memory and Transformer Neural Networks to capture more information from past observations unlike Residual Feed Forward Neural Network (RFFNN) using a single instant observation as input. 
+Therefore, we propose to use Long Short Term Memory (LSTM) and Transformer Neural Networks to capture more information from past observations unlike Residual Feed Forward Neural Network (RFFNN) using a single instant observation as input. 
 
 RFFNN model performed well thanks to carefully selected hyperparameters and modifications on the environment. 
-Since there is no major differences between sequential models (Transformer), the problem seems mainly about the rewards and exploration, not the partial observability. 
+However, sequential models performed much better indicating partial observability is an important issue for our environment. 
+Among sequential models, LSTM performed better compared to Transformer agents. 
 
-Although LSTM is used commonly for partially observed problems, results are the worst in this problem compared to other two models. Nonetheless, it keeps learning slowly. 
-Although we cannot exactly detect what the reason is, it is probably due to functional properties of LSTM. 
+Another conclusion is that Transformer model worked enough to say it can be used in DRL problems. 
+It is surprising because it is not succesfully used in DRL problems in general except recent architectural developments~\cite{parisotto_stabilizing_2019}. 
+In natural language processing, this type of attention models completely replace recurrent models recently, and our results seems promising for this in DRL domain. 
 
-Transformer model worked with the best performance among all models we applied in this work. 
-It is surprising because it is not succesfully used in RL problems in general. 
-In natural language processing, this type of attention models completely replace recurrent models recently, and our results seems promising for this in RL domain. 
-
-The environment was difficult for exploration. SAC performed better than TD3 in handling exploration problem. SAC learns randomness during learning iterations. 
+The environment was difficult for exploration. 
+Especially handling big hurdles requires very much exploration.
+In our results, SAC agents performed better than TD3 since it handles exploration problem by learning how much to explore for a particular state. 

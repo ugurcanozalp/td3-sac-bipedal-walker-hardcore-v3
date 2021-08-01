@@ -6,47 +6,32 @@ import torch.nn.functional as F
 import torch.optim as optim
 import gym
 import random
-from .utils.stable_transformer import PositionalEncoding, LearnablePositionalEncoding, StableTransformerLayer, TransformerEncoder
+from .utils.transformer import PositionalEncoding, LearnablePositionalEncoding, TransformerLayer
 from torch.distributions import Normal
-
-# https://github.com/vy007vikas/PyTorch-ActorCriticRL
 
 EPS = 0.003
 
-class WeightedMeanPooling(nn.Module):
-    def __init__(self, seq_len):
-        super(WeightedMeanPooling,self).__init__()
-        self.eps = torch.finfo(torch.float).eps
-        w_tensor = (1e-3)*torch.ones(seq_len, dtype=torch.float); w_tensor[-1]=1.0
-        self.w = nn.Parameter(w_tensor, requires_grad=True)
+class TransformerEncoder(nn.Module):
 
-    def forward(self, x):
-        return x.permute(0,2,1)@(self.w*self.w)
-
-class StableTransformerEncoder(nn.Module):
-
-    def __init__(self, d_in, d_model, nhead, dim_feedforward=192, dropout=0.1, seq_len=16):
-        super(StableTransformerEncoder,self).__init__()
-        #self.embedding_scale = d_model**0.5
-        self.inp_embedding = nn.Sequential(nn.Linear(d_in, d_model), nn.LayerNorm(d_model), nn.Tanh()) # 
-        nn.init.xavier_uniform_(self.inp_embedding[0].weight, gain=nn.init.calculate_gain('tanh')) #
-        nn.init.zeros_(self.inp_embedding[0].bias) 
+    def __init__(self, d_in, d_model, d_attention, nhead, dim_feedforward, seq_len=18):
+        super(TransformerEncoder,self).__init__()
+        self.inp_embedding = nn.Linear(d_in, d_model)
+        nn.init.xavier_uniform_(self.inp_embedding.weight)
+        nn.init.zeros_(self.inp_embedding.bias) 
         self.pos_embedding = PositionalEncoding(d_model, seq_len=seq_len)
-        self.encoder = StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, only_last_state=True)
+        self.encoder = TransformerLayer(d_model, d_attention, nhead, dim_feedforward, dropout=0.0, only_last_state=True)
         #self.encoder = nn.Sequential(
         #    StableTransformerLayer(d_model, nhead, dim_feedforward, dropout), 
         #    StableTransformerLayer(d_model, nhead, dim_feedforward, dropout, only_last_state=True)
         #)
-        self.layn = nn.LayerNorm(d_model)
 
     def forward(self, src):
         x = src
         x = self.inp_embedding(x)
         #x = x * self.embedding_scale
         x = self.pos_embedding(x)
-        x = x.permute(1,0,2) # batch, seq, emb -> seq, batch, emb
-        x = self.encoder(x)  # seq, batch, emb
-        x = self.layn(x[-1]) # remove sequential dimension and layernorm.
+        x = self.encoder(x)  # batch, seq, emb
+        x = x[:, -1]
         return x
 
 class Critic(nn.Module):
@@ -62,18 +47,16 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
         
-        self.state_encoder = StableTransformerEncoder(d_in=self.state_dim,
-            d_model=96, nhead=4, dim_feedforward=192, dropout=0.0)
+        self.state_encoder = TransformerEncoder(d_in=self.state_dim,
+            d_model=96, d_attention=32, nhead=4, dim_feedforward=192)
 
-        self.fc2 = nn.Linear(96 + self.action_dim, 128)
-        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
+        self.fc2 = nn.Linear(96 + self.action_dim, 192)
+        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('tanh'))
         
-        self.fc_out = nn.Linear(128,1, bias=False)
-        #nn.init.xavier_uniform_(self.fc_out.weight)
-        nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
-        #self.fc_out.bias.data.fill_(0.0)
+        self.fc_out = nn.Linear(192, 1, bias=False)
+        nn.init.uniform_(self.fc_out.weight, -0.003, +0.003)
 
-        self.act = nn.GELU()
+        self.act = nn.Tanh()
 
     def forward(self, state, action):
         """
@@ -104,17 +87,17 @@ class Actor(nn.Module):
         self.action_dim = action_dim
         self.stochastic = stochastic
         
-        self.state_encoder = StableTransformerEncoder(d_in=self.state_dim,
-            d_model=96, nhead=4, dim_feedforward=192, dropout=0.0)
+        self.state_encoder = TransformerEncoder(d_in=self.state_dim,
+            d_model=96, d_attention=32, nhead=4, dim_feedforward=192)
 
-        self.fc = nn.Linear(96,action_dim)
+        self.fc = nn.Linear(96, action_dim, bias=False)
         nn.init.uniform_(self.fc.weight, -0.003,+0.003)
-        nn.init.zeros_(self.fc.bias)
+        #nn.init.zeros_(self.fc.bias)
 
         if self.stochastic:
-            self.log_std = nn.Linear(96, action_dim)
+            self.log_std = nn.Linear(96, action_dim, bias=False)
             nn.init.uniform_(self.log_std.weight, -0.003,+0.003)
-            nn.init.zeros_(self.log_std.bias)  
+            #nn.init.zeros_(self.log_std.bias)  
             
         self.tanh = nn.Tanh()
 
@@ -133,7 +116,6 @@ class Actor(nn.Module):
             log_stds = self.log_std(s)
             log_stds = torch.clamp(log_stds, min=-10.0, max=2.0)
             stds = log_stds.exp()
-            #print(stds)
             dists = Normal(means, stds)
             if explore:
                 x = dists.rsample()

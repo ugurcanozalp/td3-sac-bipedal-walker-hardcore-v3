@@ -479,14 +479,14 @@ In addition, original \textit{BipedalWalker-Hardcore-v3} environment is modified
 
 \begin{frame}
 \frametitle{Network Architectures}
-Varing neural backbones used to encode state information from observations for both actor and critic networks. 
+Varying neural backbones used to encode state information from observations for both actor and critic networks. 
 
 Main critic and actor architectures are as follows. 
 
 \begin{figure}
 	\begin{subfigure}{.45\textwidth}
 		\centering
-		\includegraphics[width=0.65\linewidth]{figures/nets/critic2.png}
+		\includegraphics[width=0.65\linewidth]{figures/nets/critic.png}
 		\caption{Critic Architecture}
 		\label{fig:critic_net}
 	\end{subfigure}
@@ -505,7 +505,25 @@ Main critic and actor architectures are as follows.
 
 \begin{frame}
 \frametitle{Residual Feed Forward Neural Network}
-Residual Feed Forward Neural Network
+\begin{columns}[onlytextwidth]
+	\begin{column}{.49\textwidth}
+		\begin{itemize}
+			\item As Feed Forward Networks becomes deeper, optimizing weights gets difficult. 
+			\item For a 2 stacked layer (single skip connection), input and output of the stack is summed up for next calculations. 
+			\item We have 2 layers with 192 dimensional hidden size and 96 dimensional output (single skip connection), 
+			\item GELU as activation function.
+			\item In our work, only last observation is feeded. 
+		\end{itemize}
+	\end{column}
+	\begin{column}{.49\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.6\textwidth]{figures/ml_theory/rffnn_vs_ffnn.png}
+			\caption{Deep Feed Forward (left) and Deep Residual Feed Forward Network with single skip connection (right)}
+			\label{fig:rffnn_ffnn}
+		\end{figure}
+	\end{column}
+\end{columns}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -513,15 +531,64 @@ Residual Feed Forward Neural Network
 \subsection{Long Short Term Memory}
 \begin{frame}
 \frametitle{Long Short Term Memory}
-Long Short Term Memory
+\begin{columns}[onlytextwidth]
+	\begin{column}{.49\textwidth}
+		\begin{itemize}
+			\item Recurrent type of neural network.
+			\item Explicitly designed to allow learning long-term dependencies.
+			\item In our work, last 6 and 12 (only for SAC) observations are feeded. 
+		\end{itemize}
+	\end{column}
+	\begin{column}{.49\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.95\textwidth]{figures/ml_theory/lstm_cell.png}
+			\caption{LSTM Cell}
+			\label{fig:lstm_cell}
+		\end{figure}
+	\end{column}
+\end{columns}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
 
-\subsection{Transformer}
+\subsection{Transformer (Pre-layer Normalized)}
 \begin{frame}
 \frametitle{Transformer}
-Transformer
+\begin{columns}[onlytextwidth]
+	\begin{column}{.49\textwidth}
+		\begin{itemize}
+			\item Attention based neural network.
+			\item Processes whole sequence at the same time.
+			\item Uses positional encodings to encode order information.
+			\item In our work, last 6 and 12 (only for SAC) observations are feeded. 			
+		\end{itemize}
+	\end{column}
+	\begin{column}{.49\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.4\textwidth]{figures/ml_theory/transformer_block.png}
+			\caption{Pre-LN Transformer encoder layer with GELU activation}
+			\label{fig:pre_trsf}
+		\end{figure}
+	\end{column}
+\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+
+\section{Algorithm Settings}
+\begin{frame}
+\frametitle{Algorithm Settings}
+\begin{itemize}
+	\item Hyperparameters are selected after a trial-error process considering literature. 
+	\item Adam optimizer is used for optimization. 
+	\item In TD3, as exploration noise, Ornstein-Uhlenbeck noise is used, and standart deviation is multiplied  by $0.9995$ at the end of each episode. 
+	\item In SAC model, squashed gaussian policy is implemented. Therefore, along with layer giving mean actions, an additive layer is implemented for standart deviation along with it. 
+	\item 8000 episodes for each training session. 
+	\item Training sessions are run by multiple times to make comparison fair among models since some training sessions failed to converge and some yield worse results.
+\end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -535,16 +602,16 @@ Transformer
 	\begin{column}{.49\textwidth}
 		\begin{figure}[!ht]
 			\centering
-			\includegraphics[width=0.99\textwidth]{figures/bipedal/SCATTER_TD3_RFFNN_LSTM_TRSF.png}
-			\caption{Scatter Plot with Moving Average for Episode Scores (TD3)}
+			\includegraphics[width=0.99\textwidth]{figures/bipedal/SCT_TD3_RFFNN_LSTM-6_TRSF-6.png}
+			\caption{Scatter Plot with Moving Average for Episode Scores (Window length: 200 episodes) for TD3}
 			\label{fig:td3_scatter_ep_rewards}
 		\end{figure}
 	\end{column}
 	\begin{column}{.49\textwidth}
 		\begin{figure}[!ht]
 			\centering
-			\includegraphics[width=0.99\textwidth]{figures/bipedal/STD_TD3_RFFNN_LSTM_TRSF.png}
-			\caption{Moving Average and Standard Deviation for Episode Scores (TD3)}
+			\includegraphics[width=0.99\textwidth]{figures/bipedal/STD_TD3_RFFNN_LSTM-6_TRSF-6.png}
+			\caption{Moving Average and Standard Deviation for Episode Scores (Window length: 200 episodes) for TD3}
 			\label{fig:td3_std_ep_rewards}
 		\end{figure} 
 	\end{column}
@@ -557,16 +624,16 @@ Transformer
 	\begin{column}{.49\textwidth}
 		\begin{figure}[!ht]
 			\centering
-			\includegraphics[width=0.95\textwidth]{figures/bipedal/SCATTER_SAC_RFFNN_LSTM_TRSF.png}
-			\caption{Scatter Plot with Moving Average for Episode Scores (SAC)}
+			\includegraphics[width=0.95\textwidth]{figures/bipedal/SCT_SAC_RFFNN_LSTM-6_TRSF-6_LSTM-12_TRSF-12.png}
+			\caption{Scatter Plot with Moving Average for Episode Scores (Window length: 200 episodes) for SAC}
 			\label{fig:sac_scatter_ep_rewards}
 		\end{figure}
 	\end{column}
 	\begin{column}{.49\textwidth}
 		\begin{figure}[!ht]
 			\centering
-			\includegraphics[width=0.95\textwidth]{figures/bipedal/STD_SAC_RFFNN_LSTM_TRSF.png}
-			\caption{Moving Average and Standard Deviation for Episode Scores (SAC)}
+			\includegraphics[width=0.95\textwidth]{figures/bipedal/STD_SAC_RFFNN_LSTM-6_TRSF-6_LSTM-12_TRSF-12.png}
+			\caption{Moving Average and Standard Deviation for Episode Scores (Window length: 200 episodes) for SAC}
 			\label{fig:sac_std_ep_rewards}
 		\end{figure} 
 	\end{column}
@@ -574,67 +641,123 @@ Transformer
 \end{frame}
 
 \begin{frame}
-\frametitle{RFFNN Agent with TD3}
+\frametitle{Test Performances of Best Checkpoints}
+\begin{table}
+	\begin{center}
+		\caption{Best checkpoint performances with 100 test simulations}
+		\begin{tabular}{||c c c c||} 
+			\hline
+			RL Method & Model & Episode & Avg. Score \\ [0.5ex] 
+			\hline\hline
+			TD3 & RFFNN & 6600 & 207 \\ 
+			\hline
+			SAC & RFFNN & 7600 & 219 \\
+			\hline
+			TD3 & TRSF-6 & 6400 & 222 \\
+			\hline
+			SAC & TRSF-6 & 6800 & 254 \\
+			\hline
+			SAC & TRSF-12 & 6000 & 270 \\
+			\hline
+			TD3 & LSTM-6 & 7000 & 242 \\
+			\hline
+			SAC & LSTM-6 & 7600 & 268 \\
+			\hline
+			SAC & LSTM-12 & 7200 & 298 \\ [1ex] 
+			\hline
+		\end{tabular}
+		\label{table:ckpt_performance}
+	\end{center}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{RFFNN Agent with SAC}
 \begin{figure}[!ht]
 	\centering
-	\begin{subfigure}{.9\textwidth}
+	\begin{subfigure}{.95\textwidth}
 		\centering
-		\includegraphics[width=0.9\textwidth]{figures/bipedal/anim/ff_flat.png}
-		\label{fig:anim_rffnn_flat}
-	\end{subfigure}
-	\begin{subfigure}{.9\textwidth}
-		\centering
-		\includegraphics[width=0.9\textwidth]{figures/bipedal/anim/ff_stairs.png}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/ff-stairs.png}
 		\label{fig:anim_rffnn_stairs}
 	\end{subfigure}
-	\begin{subfigure}{.9\textwidth}
+	\begin{subfigure}{.95\textwidth}
 		\centering
-		\includegraphics[width=0.9\textwidth]{figures/bipedal/anim/ff_hurdle.png}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/ff-hurdle.png}
 		\label{fig:anim_rffnn_hurdle}
 	\end{subfigure}
-	\begin{subfigure}{.9\textwidth}
+	\begin{subfigure}{.95\textwidth}
 		\centering
-		\includegraphics[width=0.9\textwidth]{figures/bipedal/anim/ff_pitfall.png}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/ff-pitfall.png}
 		\label{fig:anim_rffnn_pitfall}
 	\end{subfigure}
+	\caption{Walking Simulation of RFFNN model at best version with SAC}
 	\label{fig:rffnn_simulation}
 \end{figure}
 \end{frame}
 
 \begin{frame}
-\frametitle{Transformer Agent with TD3}
+\frametitle{LSTM-12 Agent with SAC}
 \begin{figure}[!ht]
 	\centering
-	\begin{subfigure}{.9\textwidth}
+	\begin{subfigure}{.95\textwidth}
 		\centering
-		\includegraphics[width=0.9\textwidth]{figures/bipedal/anim/trsf_flat.png}
-		\label{fig:anim_trsf_flat}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/lstm-12-stairs.png}
+		\label{fig:anim_lstm_stairs}
 	\end{subfigure}
-	\begin{subfigure}{.9\textwidth}
+	\begin{subfigure}{.95\textwidth}
 		\centering
-		\includegraphics[width=0.9\textwidth]{figures/bipedal/anim/trsf_stairs.png}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/lstm-12-hurdle.png}
+		\label{fig:anim_lstm_hurdle}
+	\end{subfigure}
+	\begin{subfigure}{.95\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/lstm-12-pitfall.png}
+		\label{fig:anim_lstm_pitfall}
+	\end{subfigure}
+	\caption{Walking Simulation of LSTM-12 model at best version with SAC}
+	\label{fig:lstm_simulation}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Transformer-12 Agent with SAC}
+\begin{figure}[!ht]
+	\centering
+	\begin{subfigure}{.95\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/trsf-12-stairs.png}
 		\label{fig:anim_trsf_stairs}
 	\end{subfigure}
-	\begin{subfigure}{.9\textwidth}
+	\begin{subfigure}{.95\textwidth}
 		\centering
-		\includegraphics[width=0.9\textwidth]{figures/bipedal/anim/trsf_hurdle.png}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/trsf-12-hurdle.png}
 		\label{fig:anim_trsf_hurdle}
 	\end{subfigure}
-	\begin{subfigure}{.9\textwidth}
+	\begin{subfigure}{.95\textwidth}
 		\centering
-		\includegraphics[width=0.9\textwidth]{figures/bipedal/anim/trsf_pitfall.png}
+		\includegraphics[width=0.95\textwidth]{figures/bipedal/anim/trsf-12-pitfall.png}
 		\label{fig:anim_trsf_pitfall}
 	\end{subfigure}
+	\caption{Walking Simulation of Transformer-12 model at best version with SAC}
 	\label{fig:trsf_simulation}
 \end{figure}
-
 \end{frame}
 
 \section{Conclusion}
 \begin{frame}
+\frametitle{Conclusion}
 \begin{itemize}
-	\item conclusion
+	\item LSTM is better than Transformers at least for our environment.
+	\item Transformer can be used for RL problems.
+	\item Using observation history improved performance.
+	\item Environment modifications (rewarding, done signal etc.) are also source of such performance. 
+	\item SAC is superior to TD3 for our environment thanks to better exploration logic.
 \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\centering \Huge
+\emph{Thank You}
 \end{frame}
 
 % All of the following is optional and typically not needed.

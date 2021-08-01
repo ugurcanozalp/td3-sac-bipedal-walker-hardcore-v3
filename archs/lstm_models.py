@@ -12,34 +12,15 @@ from torch.distributions import Normal
 
 EPS = 0.003
 
-class LastStatePooler(nn.Module):
-    def forward(self,x):
-        return x[:, -1]
-
-class MaxPooler(nn.Module):
-    def forward(self,x):
-        x, _ = x.max(axis=-2) # -2 -> sequence dimension
-        return x 
-
-class NormalizedLSTM(nn.Module):
-    def __init__(self, input_size, hidden_size=96, batch_first=True, dropout=0.1):
-        super(NormalizedLSTM, self).__init__()
-        self.embedding = nn.Sequential(nn.Linear(input_size, hidden_size), nn.LayerNorm(hidden_size), nn.Tanh())
-        nn.init.xavier_uniform_(self.embedding[0].weight, gain=nn.init.calculate_gain('tanh'))
-        nn.init.zeros_(self.embedding[0].bias)
-        self.dropout = nn.Dropout(dropout)
-        self.lstm = nn.LSTM(hidden_size, hidden_size=hidden_size, batch_first=batch_first, bidirectional=False, num_layers=1, dropout=dropout)
-        self.lstm.bias_hh_l0.data.fill_(-0.1) # force lstm to output to depend more on last state at the initialization.
-        self.pooler = LastStatePooler()
+class MyLSTM(nn.Module):
+    def __init__(self, input_size, hidden_size=96, batch_first=True):
+        super(MyLSTM, self).__init__()
+        self.lstm = nn.LSTM(input_size, hidden_size=hidden_size, batch_first=batch_first, bidirectional=False, num_layers=1, dropout=0)
+        self.lstm.bias_hh_l0.data.fill_(-0.2) # force lstm to output to depend more on last state at the initialization.
 
     def forward(self, x):
-        x = self.embedding(x)
-        #h = x[:,0].unsqueeze(0).contiguous()
-        #c = torch.zeros_like(h).contiguous()
-        #x, (_, _) = self.lstm(x, (h, c))
-        x = self.dropout(x)
         x, (_, _) = self.lstm(x)
-        x = self.pooler(x)
+        x = x[:, -1]
         return x
 
 class Critic(nn.Module):
@@ -55,17 +36,15 @@ class Critic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, batch_first=True, dropout=0.0)
+        self.state_encoder = MyLSTM(input_size=self.state_dim, hidden_size=96, batch_first=True)
 
-        self.fc2 = nn.Linear(96 + self.action_dim, 128)
-        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('relu'))
+        self.fc2 = nn.Linear(96 + self.action_dim, 192)
+        nn.init.xavier_uniform_(self.fc2.weight, gain=nn.init.calculate_gain('tanh'))
         
-        self.fc_out = nn.Linear(128, 1, bias=False)
-        #nn.init.xavier_uniform_(self.fc_out.weight)
+        self.fc_out = nn.Linear(192, 1, bias=False)
         nn.init.uniform_(self.fc_out.weight, -0.003,+0.003)
-        #self.fc_out.bias.data.fill_(0.0)
 
-        self.act = nn.GELU()
+        self.act = nn.Tanh()
 
     def forward(self, state, action):
         """
@@ -96,16 +75,16 @@ class Actor(nn.Module):
         self.action_dim = action_dim
         self.stochastic = stochastic
 
-        self.state_encoder = NormalizedLSTM(input_size=self.state_dim, hidden_size=96, batch_first=True, dropout=0.0)
+        self.state_encoder = MyLSTM(input_size=self.state_dim, hidden_size=96, batch_first=True)
 
-        self.fc = nn.Linear(96,action_dim)
+        self.fc = nn.Linear(96, action_dim, bias=False)
         nn.init.uniform_(self.fc.weight, -0.003,+0.003)
-        nn.init.zeros_(self.fc.bias)
+        #nn.init.zeros_(self.fc.bias)
 
         if self.stochastic:
-            self.log_std = nn.Linear(96, action_dim)
+            self.log_std = nn.Linear(96, action_dim, bias=False)
             nn.init.uniform_(self.log_std.weight, -0.003,+0.003)
-            nn.init.zeros_(self.log_std.bias)  
+            #nn.init.zeros_(self.log_std.bias)  
 
         self.tanh = nn.Tanh()
 
