@@ -4,7 +4,7 @@
 \subsection{Perceptron}
 
 Perceptron is a binary classifier model. 
-In order to allocate input $x \in \mathbb{R}^{1 \times d_x}$ into a class, a linear model is generated with linear transformation weights $W \in \mathbb{R}^{d_k}$ and bias $b \in \mathbb{R}$ as 
+In order to allocate input $x \in \mathbb{R}^{1 \times d_x}$ into a class, a linear model is generated with linear transformation weights $W \in \mathbb{R}^{d_x}$ and bias $b \in \mathbb{R}$ as 
 \begin{equation}
 \label{eqn:perceptron1}
 y = \phi(x W + b).
@@ -17,7 +17,7 @@ For perceptron, it is defined as step function,
 \begin{cases}
 1,   & \text{if } a\geq 0,\\
 0,   & \text{otherwise},
-\end{cases},
+\end{cases}
 \end{equation}
 while other functions like sigmoid, hyperbolic tangent or ReLU can also be defined. 
 
@@ -85,7 +85,7 @@ Resulting vectors elements sum up to 1.
 It is defined as,
 \begin{equation}
 \label{eqn:softmax_fcn}
-\text{softmax}(x)_i = \frac{\exp(x_i)}{\sum_j \exp(x_j)},
+\text{softmax}(x)_i = \frac{\exp(x_i)}{\sum_j \exp(x_j)}.
 \end{equation}
 
 \subsection{Layer Normalization}

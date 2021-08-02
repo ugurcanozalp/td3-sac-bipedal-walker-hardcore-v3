@@ -1,14 +1,14 @@
 \section{Proposed Neural Networks}
 \label{sec:proposed_networks}
 
-Varying neural backbones used to encode state information from observations for both actor and critic networks. 
+Varying neural backbones are used to encode state information from observations for both actor and critic networks. 
 In critic network, actions are concatenated by state information coming from backbones. 
 Then, this concatenated vector is passed through feed forward layer with hyperbolic tangent activation then through a linear layer with single output. 
 Before feeding observations to backbone, they are passed through a linear layer with 96 dimensional output. 
 However, for only LSTM backbones, this layer is not used and observations are passed to LSTM backbone as it is. 
 In actor network, backbone is followed by a single layer with tanh activation for action estimation. 
 Again, observations are passed through a linear layer with 96 dimensional output, and this is not valid for LSTM.
-Critic and Actor networks are illustrated in \figref{fig:nets} 
+Critic and Actor networks are illustrated in \figref{fig:nets}.
 
 \begin{figure}
 	\begin{subfigure}{.5\textwidth}

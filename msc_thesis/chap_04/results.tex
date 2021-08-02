@@ -41,9 +41,9 @@ In \figref{fig:td3_std_ep_rewards} and \figref{fig:sac_std_ep_rewards}, moving a
 RFFNN seems enough to make agent walk, although there exist partial observability in the environment. 
 That model reaches around 221 points in average with TD3 and 245 points with SAC. 
 
-Transformer models yield better performance compared to RFFNN. 249 points are reached by TD3 and 262 points reached by SAC model when 6 last observations are fed to model. 266 points are obtained when last 12 observations are fed to model with SAC.
+Transformer models yield better performance compared to RFFNN. 249 points are reached by TD3 and 262 points reached by SAC model when 6 last observations are fed to the model. 266 points are obtained when last 12 observations are fed to model with SAC.
 
-LSTM model yield best results by reaching 264 points with TD3 and exceeds 280 points with SAC when 6 last observations are fed to model. 287 points are obtained when last 12 observations are fed to model with SAC. 
+LSTM model yield the best results by reaching 264 points with TD3 and exceeds 280 points with SAC when 6 last observations are fed to model. 287 points are obtained when last 12 observations are fed to the model with SAC. 
 
 These scores are maximum obtained average scores of concurrent 200 episodes during training. 
 However, while traning, model changes and agent still tries to explore envrionment. 
@@ -86,7 +86,7 @@ Behaviour of agents are visualized in \figref{fig:rffnn_simulation}, \figref{fig
 All of 3 models exhibit similar walking characteriscis.
 
 SAC model performes better than TD3 in general, as seen in \figref{fig:td3_scatter_ep_rewards} and \figref{fig:sac_scatter_ep_rewards}. 
-In addition, as seen from the moving average points, SAC agents are superior (\figref{fig:td3_std_ep_rewards},\figref{fig:sac_std_ep_rewards}).
+In addition, as seen from the moving average points, SAC agents are superior (\figref{fig:td3_std_ep_rewards}, \figref{fig:sac_std_ep_rewards}).
 
 \begin{figure}[!ht]
 	\centering

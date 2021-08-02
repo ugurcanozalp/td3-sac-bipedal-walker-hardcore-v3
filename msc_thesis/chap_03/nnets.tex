@@ -52,7 +52,7 @@ Given an input sequence $x \in \mathbb{R}^{T \times d_x}$ with time length $T$, 
 \label{eqn:rnnact}
 h_t = \phi(h_{t-1} \tilde{W} + x_t W + b),
 \end{equation}
-where nonlinear activation $\phi$ applied element-wise as in \ref{eqn:mlpact} again. 
+where nonlinear activation $\phi$ applied element-wise as in \eqref{eqn:mlpact} again. 
 To begin with, the initial output $h_0$ can be either parametrized or assigned to a zero vector. A comparison between FFNN and RNN layer is visualized in \figref{fig:rnn_vs_ffnn}.
 
 \begin{figure}
@@ -130,9 +130,7 @@ The context vector is calculated using weight the vector $\alpha \in \mathbb{R}^
 \begin{equation}
 \mathrm{Attention}(q, h) = \alpha h. %\sum_{\tau=1}^{T} \alpha_{\tau} h_{\tau}.
 \label{eq:attention_generic}
-\end{equation}
-
-If attention weight $\alpha \in \mathbb{R}^{1 \times T}$ is  
+\end{equation}  
 
 Attention weight $\alpha \in \mathbb{R}^{T}$ is calculated using hidden sequence
 $h \in \mathbb{R}^{T \times d_H}$ and query $q \in \mathbb{R}^{1 \times d_Q}$ with a predefined a arbitrary function $\phi$ depending on choice. 
@@ -181,16 +179,16 @@ Scaled dot-product attention and Multi-Head attention are demonstrated in \figre
 	\label{fig:att_and_mha}
 \end{figure}
 
-A transformer layer contains \textbf{Feed Forward Layer}, containing two linear transformations ($W_1, b_1$ and $W_2, b_2$) with ReLU-like activation.
+A transformer layer contains \textbf{Feed Forward Layer}, containing two linear transformations ($W_1, b_1$ and $W_2, b_2$) with ReLU-like activation:
 \begin{equation}
-\mathrm{FFN}(x) = \text{ReLU}(x W_1 + b_1) W_2 + b_2
+\mathrm{FFN}(x) = \text{ReLU}(x W_1 + b_1) W_2 + b_2.
 \end{equation}
 
 \textbf{Encoder Layer} starts with a residual self attention layer. 
 Self attention means that query, key and value are the same vectors. 
 This is followed by feed forward neural layer. 
 Both sublayers are employed with resudial connection with layer normalization.
-In other words, summation of layer input and output is passed through layer normalization. 
+In other words, summation of layer input and output is passed through layer normalization: 
 \begin{equation}
 \begin{split}
 a = & \mathrm{LN}(x + \mathrm{MHA}(x,x,x)), \\
@@ -209,8 +207,8 @@ y = & \mathrm{LN}(a + \mathrm{FFN}(a)).
 Since there are no recurrent or convolutional architecture in the model, sequential information needs to be embedded. 
 For this purpose, \textbf{Positional encoding}s are used. 
 They have same dimension with as the input $x$, so that input embeddings can be added to at the beginning of encoder or decoder stacks. 
-Let the positional encoding $\mathrm{PE} \in {T \times d_m}$.
-For $t$th position in time, and $i$th position in embedding axis ($i \in \mathbb{N}$), $PE$ is defined as follows: 
+Let the positional encoding $\mathrm{PE} \in \mathbb{R}^{T \times d_m}$.
+For $t$th position in time, and $i$th position in embedding axis ($i \in \mathbb{N}$), $\mathrm{PE}$ is defined as follows: 
 \begin{equation}
 \mathrm{PE}_{t,i} = 
 \begin{cases}
@@ -218,7 +216,7 @@ For $t$th position in time, and $i$th position in embedding axis ($i \in \mathbb
 \cos(t/10000^{(i-1)/d_m}),   & \text{if } i \equiv 1 \pmod 2 ,
 \end{cases}
 \end{equation}
-as proposed in the original paper. 
+as proposed in the original paper \cite{vaswani_attention_2017}. 
 
 \subsubsection{Pre-Layer Normalized Transformer}
 
@@ -226,7 +224,7 @@ Original transformer architecture includes layer normalization operations after 
 It is unstable since the values of gradients of output layers are high. 
 So Pre-Layer Normalized transformer is proposed by \cite{xiong_layer_2020} by carrying layer normalization operation to in front of attention and feed-forward layers. 
 Moreover, Parisotto et al. Xiong et al.~ \cite{parisotto_stabilizing_2019} propose gated transformer which also includes layer normalizations before attention and feedforward layer. 
-They also state that although gated architecture improves many Reinforcement Learning (RL) tasks drastically, and non-gated pre-layer normalized transformer are also much better than vanilla transformer. 
+They also state that although gated architecture improves many reinforcement learning (RL) tasks drastically, and non-gated pre-layer normalized transformer are also much better than vanilla transformer. 
 
 In pre-layer normalized transformer, encoder equations are: 
 \begin{equation}
@@ -236,7 +234,8 @@ y = & a + \mathrm{FFN}(\mathrm{LN}(a))
 \end{split}.
 \end{equation}
 
-A simple pre-layer normalized transformer encoder layer is demonstrated in \figref{fig:pre_trsf}.
+A simple pre-layer normalized transformer encoder layer is demonstrated in \figref{fig:pre_trsf}. 
+The difference between post-layer and pre-layer transformer encoders are also visualized in \figref{fig:post_pre_trsf}
 
 \begin{figure}
 	\centering
@@ -244,8 +243,6 @@ A simple pre-layer normalized transformer encoder layer is demonstrated in \figr
 	\caption{Pre-LN Transformer encoder layer with GELU activation}
 	\label{fig:pre_trsf}
 \end{figure}
-
-The difference between post-layer and pre-layer transformer encoders are also visualized in \figref{fig:post_pre_trsf}
 
 \begin{figure}
 	\centering

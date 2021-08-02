@@ -70,7 +70,7 @@ During the learning process, a random action with probability $\epsilon$ is sele
 \pi(a|s) = 
 \begin{cases}
 1-\epsilon,   & \text{if } a = \argmax_{a} Q(s, a), \\
-\frac{\epsilon}{|\mathcal{A}|-1},     & \text{otherwise}.
+\frac{\epsilon}{|\mathcal{A}|-1},     & \text{otherwise},
 \end{cases}
 \end{equation}
 where $|\mathcal{A}|$ denotes cardinality of $\mathcal{A}$. 
@@ -89,9 +89,9 @@ In Algorithm~\ref{alg:dqn}, we summarize the Deep Q Learning with Experience Rep
 			Store experience tuple $e_t = (s_t, a_t, r_t, s_{t+1})$ to $\mathcal{D}$ ; \\
 			Sample random batch $\mathcal{D}_{r}$ ($|\mathcal{D}_{r}|=N$) from $\mathcal{D}$; \\
 			$Y_j = \begin{cases}
-			r_j & \text{if } s_{j+1} \text{ terminal, } \\
-			r_j + \gamma \max_{a'} Q(s_{j+1},a';\theta^-) & \text{otherwise, } 
-			\end{cases}$, $\forall e_j \in \mathcal{D}_{r}$\\
+			r_j & \text{if } s_{j+1} \text{ terminal } \\
+			r_j + \gamma \max_{a'} Q(s_{j+1},a';\theta^-) & \text{otherwise } 
+			\end{cases}$ \qquad $\forall e_j \in \mathcal{D}_{r}$\\
 			Update $\theta$ by minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big[ Y_j - Q(s_j,a_j;\theta) \big] ^ 2$ for a single step; \\
 			\lIf{$t \mod d$}{
 				Update target network: $\theta^- \leftarrow \theta$;
@@ -200,9 +200,9 @@ DDPG is summarized in Algorithm \ref{alg:ddpg}.
 			Store experience tuple $e_t = (s_t, a_t, r_t, s_{t+1})$ to $\mathcal{D}$ ; \\
 			Sample random batch $\mathcal{D}_{r}$ ($|\mathcal{D}_{r}|=N$) from $\mathcal{D}$; \\
 			$Y_j = \begin{cases}
-			r_j & \text{if } s_{j+1} \text{ terminal, } \\
-			r_j + \gamma Q(s_{j+1},\mu(s_{j+1}; \theta^{\mu^-}); \theta^{Q^-}) & \text{otherwise, }
-			\end{cases}$, $\forall e_j \in \mathcal{D}_{r}$ \\
+			r_j & \text{if } s_{j+1} \text{ terminal } \\
+			r_j + \gamma Q(s_{j+1},\mu(s_{j+1}; \theta^{\mu^-}); \theta^{Q^-}) & \text{otherwise }
+			\end{cases}$ \qquad $\forall e_j \in \mathcal{D}_{r}$ \\
 			Update $\theta^Q$ by minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big( Y_j - Q(s_j,a_j;\theta^Q) \big) ^ 2$ for a single step; \\
 			Update $\theta^{\mu}$ by maximizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} Q(s_j,a_j;\theta^Q)$ for a single step; \\
 			Update target networks: \\
@@ -239,7 +239,7 @@ There are three main tricks upon DDPG:
 \textbf{Target Policy Smoothing} is to regularize the learning process by smoothing effects of actions on value. For target value assessing, actions are obtained from the target policy network in DDPG, while a clipped zero-centered Gaussian noise is added to actions in TD3 as follows: 
 \begin{equation}
 \label{eqn:td3_target_action}
-\widetilde{a}' = \mu(s';\theta^{\mu^-}) + \text{clip}(\epsilon, -c, c), \quad \epsilon \sim \mathcal{N}(0, \sigma).
+\widetilde{a}' = \mu(s';\theta^{\mu^-}) + \text{clip}(\epsilon, -c, c), \quad \epsilon \sim \mathcal{N}(0, \sigma^2).
 \end{equation}
 
 \textbf{Clipped Double Q Learning} is to escape from $Q$ value overestimation. 
@@ -275,11 +275,11 @@ TD3 is summarized in Algorithm \ref{alg:td3}.
 			Store experience tuple $e_t = (s_t, a_t, r_t, s_{t+1})$ to $\mathcal{D}$ ; \\
 			Sample random batch $\mathcal{D}_{r}$ ($|\mathcal{D}_{r}|=N$) from $\mathcal{D}$; \\
 			Sample target actions for value target,
-			$\widetilde{a}_{j+1} = \mu(s_{j+1};\theta^{\mu^-}) + \text{clip}(\epsilon, -c, c), \quad \epsilon \sim \mathcal{N}(0, \sigma) \quad \forall e_j \in \mathcal{D}_{r}$; \\
+			$\widetilde{a}_{j+1} = \mu(s_{j+1};\theta^{\mu^-}) + \text{clip}(\epsilon, -c, c), \quad \epsilon \sim \mathcal{N}(0, \sigma^2) \quad \forall e_j \in \mathcal{D}_{r}$; \\
 			$Y_{jk} = \begin{cases}
-			r_j & \text{if } s_{j+1} \text{ terminal, } \\
-			r_j + \gamma Q(s_{j+1},\widetilde{a}_{j+1}); \theta^{Q^-}_k) & \text{otherwise, } 
-			\end{cases}$, $\forall e_j \in \mathcal{D}_{r}$, $\forall k \in \{1,2\}$ \\
+			r_j & \text{if } s_{j+1} \text{ terminal } \\
+			r_j + \gamma Q(s_{j+1},\widetilde{a}_{j+1}); \theta^{Q^-}_k) & \text{otherwise } 
+			\end{cases}$ \qquad $\forall e_j \in \mathcal{D}_{r}$, $\forall k \in \{1,2\}$ \\
 			$Y_j = \min(Y_{j1}, Y_{j2})$; \\
 			Update $\theta^Q_1$ $\theta^Q_2$ by seperately minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big( Y_j - Q(s_j,a_j;\theta^Q_k) \big) ^ 2 \quad \forall k \in \{1,2\}$ for a single step; \\
 			\uIf{$t \mod d$}{
@@ -350,9 +350,9 @@ SAC is summarized in Algorithm \ref{alg:sac}.
 			Sample next actions for value target
 			$\widetilde{a}_{j+1} \sim \pi(\cdot|s_{j+1};\theta^{\pi}) \quad \forall e_j \in \mathcal{D}_{r}$; \\
 			$Y_{jk} = \begin{cases}
-			r_j & \text{if } s_{j+1} \text{ terminal, } \\
-			r_j + \gamma \Big(Q(s_{j+1},\widetilde{a}_{j+1}; \theta^{Q^-}_k) - \alpha\log(\widetilde{a}_{j+1} | s_{j+1}; \theta^\pi)\Big) &  \text{otherwise, }
-			\end{cases}$, $\forall e_j \in \mathcal{D}_{r}$, $\forall k \in \{1,2\}$ \\
+			r_j & \text{if } s_{j+1} \text{ terminal } \\
+			r_j + \gamma \Big(Q(s_{j+1},\widetilde{a}_{j+1}; \theta^{Q^-}_k) - \alpha\log(\widetilde{a}_{j+1} | s_{j+1}; \theta^\pi)\Big) &  \text{otherwise }
+			\end{cases}$ \qquad $\forall e_j \in \mathcal{D}_{r}$ $\forall k \in \{1,2\}$ \\
 			$Y_j = \min(Y_{j1}, Y_{j2})$; \\	
 			Update $\theta^Q_1$ $\theta^Q_2$ by seperately minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big( Y_j - Q(s_j,a_j;\theta^Q_k) \big) ^ 2 \quad \forall k \in \{1,2\}$ for a single step; \\
 			Sample actions for policy update,

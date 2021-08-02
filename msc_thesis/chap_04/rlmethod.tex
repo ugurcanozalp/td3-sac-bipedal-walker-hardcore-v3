@@ -9,10 +9,10 @@ In TD3, as exploration noise, Ornstein-Uhlenbeck noise is used, and standart dev
 
 In SAC model, squashed gaussian policy is implemented. 
 Therefore, along with layer giving mean actions, an additive layer is implemented for the standart deviation. 
-For LSTM and Transformer, last 6 obsevations and 12 observations are used to train agent. 
+For LSTM and Transformer, last 6 observations and 12 observations are used to train agent. 
 
-All hyperparameters are found after a trial-error process considering literature. They  are summarized in \tabref{table:hyperparams_td3} and \tabref{table:hyperparams_sac}. 
-Training sessions are run by multiple times to make comparison fair among models since some training sessions failed to converge and some yield worse results.
+All hyperparameters are found after a trial-error process considering the literature. They  are summarized in \tabref{table:hyperparams_td3} and \tabref{table:hyperparams_sac}. 
+Training sessions are run by multiple times to make comparison fair among models since some training sessions fail to converge and some yield worse results.
 
 \begin{table}
 	\caption{Hyperparmeters and Exploration of Learning Processes for TD3}

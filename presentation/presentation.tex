@@ -253,7 +253,7 @@ by maximizing expected cumulative sum of future rewards, i.e. state-action value
 Q^{\pi}(s,a) = \mathbb{E}\bigg[\sum_{i=t}^{\infty} \gamma^{i-t} r_i|s_t=s, a_t=a, \pi\bigg]. %\quad \forall t = 0,1, ...
 \end{equation}
 for given any state and actions. \\
-Optimal policy $\pi^*$ and $Q^{\pi^*}$ function should satisfy following Bellman Equation;
+For a given model $T$, optimal policy $\pi^*$ and $Q^{\pi^*}$ function should satisfy following Bellman Equation;
 \begin{equation}
 \label{eqn:bellman_q}
 Q^{\pi^*}(s,a) = \mathbb{E}[r|s,a] + \gamma \max_{a'} \Big\{ \sum_{s'} T(s'|s,a) Q^{\pi^*}(s',a') \Big\}
@@ -335,9 +335,9 @@ Continuous complement of DQN using a deterministic policy~\cite{lillicrap_contin
 			Store experience tuple $e_t = (s_t, a_t, r_t, s_{t+1})$ to $\mathcal{D}$ ; \\
 			Sample random batch $\mathcal{D}_{r}$ ($|\mathcal{D}_{r}|=N$) from $\mathcal{D}$; \\
 			$Y_j = \begin{cases}
-			r_j & \text{if } s_{j+1} \text{ terminal, } \\
-			r_j + \gamma Q(s_{j+1},\mu(s_{j+1}; \theta^{\mu^-}); \theta^{Q^-}) & \text{otherwise, }
-			\end{cases}$, $\forall e_j \in \mathcal{D}_{r}$ \\
+			r_j & \text{if } s_{j+1} \text{ terminal } \\
+			r_j + \gamma Q(s_{j+1},\mu(s_{j+1}; \theta^{\mu^-}); \theta^{Q^-}) & \text{otherwise }
+			\end{cases}$ \qquad $\forall e_j \in \mathcal{D}_{r}$ \\
 			Update $\theta^Q$ by minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big( Y_j - Q(s_j,a_j;\theta^Q) \big) ^ 2$ for a single step; \\
 			Update $\theta^{\mu}$ by maximizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} Q(s_j,a_j;\theta^Q)$ for a single step; \\
 			Update target networks: \\
@@ -361,7 +361,7 @@ Upon DDPG, it introduces;
 	\item Target Policy Smoothing to regularize network,
 	\begin{equation}
 	\label{eqn:td3_target_action}
-	\widetilde{a}' = \mu(s';\theta^{\mu^-}) + \text{clip}(\epsilon, -c, c), \quad \epsilon \sim \mathcal{N}(0, \sigma).
+	\widetilde{a}' = \mu(s';\theta^{\mu^-}) + \text{clip}(\epsilon, -c, c), \quad \epsilon \sim \mathcal{N}(0, \sigma^2).
 	\end{equation}
 	\item Clipped Double Q Learning to prevent Q value overestimation,
 	\begin{equation}
@@ -386,11 +386,11 @@ Upon DDPG, it introduces;
 			Store experience tuple $e_t = (s_t, a_t, r_t, s_{t+1})$ to $\mathcal{D}$ ; \\
 			Sample random batch $\mathcal{D}_{r}$ ($|\mathcal{D}_{r}|=N$) from $\mathcal{D}$; \\
 			Sample target actions for value target,
-			$\widetilde{a}_{j+1} = \mu(s_{j+1};\theta^{\mu^-}) + \text{clip}(\epsilon, -c, c), \quad \epsilon \sim \mathcal{N}(0, \sigma) \quad \forall e_j \in \mathcal{D}_{r}$; \\
+			$\widetilde{a}_{j+1} = \mu(s_{j+1};\theta^{\mu^-}) + \text{clip}(\epsilon, -c, c), \quad \epsilon \sim \mathcal{N}(0, \sigma^2) \quad \forall e_j \in \mathcal{D}_{r}$; \\
 			$Y_{jk} = \begin{cases}
-			r_j & \text{if } s_{j+1} \text{ terminal, } \\
-			r_j + \gamma Q(s_{j+1},\widetilde{a}_{j+1}); \theta^{Q^-}_k) & \text{otherwise, } 
-			\end{cases}$, $\forall e_j \in \mathcal{D}_{r}$, $\forall k \in \{1,2\}$ \\
+			r_j & \text{if } s_{j+1} \text{ terminal } \\
+			r_j + \gamma Q(s_{j+1},\widetilde{a}_{j+1}); \theta^{Q^-}_k) & \text{otherwise } 
+			\end{cases}$ \qquad $\forall e_j \in \mathcal{D}_{r}$, $\forall k \in \{1,2\}$ \\
 			$Y_j = \min(Y_{j1}, Y_{j2})$; \\
 			Update $\theta^Q_1$ $\theta^Q_2$ by seperately minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big( Y_j - Q(s_j,a_j;\theta^Q_k) \big) ^ 2 \quad \forall k \in \{1,2\}$ for a single step; \\
 			\uIf{$t \mod d$}{
@@ -443,9 +443,9 @@ Unlike DDPG and TD3, Soft Actor-Critic is entropy regularized RL method.
 			Sample next actions for value target
 			$\widetilde{a}_{j+1} \sim \pi(\cdot|s_{j+1};\theta^{\pi}) \quad \forall e_j \in \mathcal{D}_{r}$; \\
 			$Y_{jk} = \begin{cases}
-			r_j & \text{if } s_{j+1} \text{ terminal, } \\
-			r_j + \gamma \Big(Q(s_{j+1},\widetilde{a}_{j+1}; \theta^{Q^-}_k) - \alpha\log(\widetilde{a}_{j+1} | s_{j+1}; \theta^\pi)\Big) &  \text{otherwise, }
-			\end{cases}$, $\forall e_j \in \mathcal{D}_{r}$, $\forall k \in \{1,2\}$ \\
+			r_j & \text{if } s_{j+1} \text{ terminal } \\
+			r_j + \gamma \Big(Q(s_{j+1},\widetilde{a}_{j+1}; \theta^{Q^-}_k) - \alpha\log(\widetilde{a}_{j+1} | s_{j+1}; \theta^\pi)\Big) &  \text{otherwise }
+			\end{cases}$ \qquad $\forall e_j \in \mathcal{D}_{r}$ $\forall k \in \{1,2\}$ \\
 			$Y_j = \min(Y_{j1}, Y_{j2})$; \\	
 			Update $\theta^Q_1$ $\theta^Q_2$ by seperately minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big( Y_j - Q(s_j,a_j;\theta^Q_k) \big) ^ 2 \quad \forall k \in \{1,2\}$ for a single step; \\
 			Sample actions for policy update,
