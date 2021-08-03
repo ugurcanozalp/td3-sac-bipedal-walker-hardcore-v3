@@ -138,7 +138,7 @@ In order to learn policy $\pi$, $Q$ function should also be learned simultaneous
 For $Q$ function approximation, the target value is parametrized by $\theta^Q$ and $\theta^\pi$,
 \begin{equation}
 \label{eqn:ac_target}
-Y_t^{AC} = r_t + \gamma Q(s_{t+1}, \widetilde{a}_{t+1});\theta^Q), \quad \widetilde{a}_{t+1} \sim \pi(\cdot|s_{t+1};\theta^{\pi}),
+Y_t^{AC} = r_t + \gamma Q(s_{t+1}, \widetilde{a}_{t+1};\theta^Q), \quad \widetilde{a}_{t+1} \sim \pi(\cdot|s_{t+1};\theta^{\pi}),
 \end{equation}
 and this target is used to learn $Q$ function by minimizing the least squares loss (in general),
 \begin{equation}
@@ -160,7 +160,7 @@ DDPG updates target network parameters at each step with Polyak averaging,
 \label{eqn:target_update}
 \theta^- \leftarrow \tau \theta + (1-\tau) \theta^- .
 \end{equation}
-The $\tau$ is an hyperparameter indicating how slow the target network is updated and it is usually close to zero. 
+The $\tau$ is an hyperparameter indicating how fast the target network is updated and it is usually close to zero. 
 
 Policy network parameters are learned by maximizing resulting expected value, or minimizing its negative,
 \begin{equation}
@@ -181,7 +181,7 @@ In each iteration, this target is used to learn $Q$ function by minimizing the l
 \end{equation}
 
 In DDPG, value and policy network parameters are learned simultaneously. 
-During the learning process, exploration noise is added to each selected action. 
+During the learning process, exploration noise is added to each selected action, sampled by a process $\mathcal{X}$. 
 In ~\cite{lillicrap_continuous_2019}, authors proposed to use Ornstein-Uhlenbeck Noise~\cite{uhlenbeck_theory_1930} in order to have temporal correlation for efficiency. 
 However, a simple Gaussian white noise or any other one is also possible. 
 
@@ -297,7 +297,7 @@ TD3 is summarized in Algorithm \ref{alg:td3}.
 \subsubsection{Soft Actor-Critic}
 SAC~\cite{haarnoja_soft_2018} is a stochastic actor-critic method and many characteristics are similar to TD3 and DDPG. Its main advantage is that it learns to maximize exploration with entropy regularization. 
 
-SAC is an entropy-regularized RL method. Such methods give bonus reward to the agent propotional to the policy entropy: given state $s$, the entropy of a policy is defined by
+SAC is an entropy-regularized RL method. Such methods give bonus reward to the agent propotional to the policy entropy: given state $s$, the entropy of a policy $\pi$ is defined by
 \begin{equation}
 \label{eqn:policy_entropy}
 H(\pi(\cdot|s)) = \mathbb{E}_{\widetilde{a}\sim\pi(\cdot|s)}[-\log(\pi(\widetilde{a}|s))].

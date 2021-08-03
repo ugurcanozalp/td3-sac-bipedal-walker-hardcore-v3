@@ -324,7 +324,7 @@ DDPG updates target network parameters at each step with Polyak averaging,
 \label{eqn:target_update}
 \theta^- \leftarrow \tau \theta + (1-\tau) \theta^- .
 \end{equation}
-The $\tau$ is an hyperparameter indicating how slow the target network is updated and it is usually close to zero. 
+The $\tau$ is an hyperparameter indicating how fast the target network is updated and it is usually close to zero. 
 
 Policy network parameters are learned by maximizing resulting expected value, or minimizing its negative,
 \begin{equation}
@@ -345,7 +345,7 @@ In each iteration, this target is used to learn $Q$ function by minimizing the l
 \end{equation}
 
 In DDPG, value and policy network parameters are learned simultaneously. 
-During the learning process, exploration noise is added to each selected action. 
+During the learning process, exploration noise is added to each selected action, sampled by a process $\mathcal{X}$. 
 In ~\cite{lillicrap_continuous_2019}, authors proposed to use Ornstein-Uhlenbeck Noise~\cite{uhlenbeck_theory_1930} in order to have temporal correlation for efficiency. 
 However, a simple Gaussian white noise or any other one is also possible. 
 
@@ -380,7 +380,7 @@ Since the policy network parameters are learned by maximizing the value network,
 \subsection{Soft Actor-Critic}
 SAC~\cite{haarnoja_soft_2018} is a stochastic actor-critic method and many characteristics are similar to TD3 and DDPG. Its main advantage is that it learns to maximize exploration with entropy regularization. 
 
-SAC is an entropy-regularized RL method. Such methods give bonus reward to the agent propotional to the policy entropy: given state $s$, the entropy of a policy is defined by
+SAC is an entropy-regularized RL method. Such methods give bonus reward to the agent propotional to the policy entropy: given state $s$, the entropy of a policy $\pi$ is defined by
 \begin{equation}
 \label{eqn:policy_entropy}
 H(\pi(\cdot|s)) = \mathbb{E}_{\widetilde{a}\sim\pi(\cdot|s)}[-\log(\pi(\widetilde{a}|s))]
@@ -510,7 +510,7 @@ Output at last time step is considered as belief state.
 The Transformer was proposed in Attention is All You Need~ \cite{vaswani_attention_2017} paper. 
 Unlike recurrent networks, this architecture is solely builded on attention layers. 
 However, original transformer architecture includes layer normalization operations after attention and feed-forward layers. 
-It is unstable since the values of gradients of output layers are high, so Pre-Layer Normalized transformer is proposed by \cite{xiong_layer_2020} by carrying layer normalization operation to in front of attention and feed-forward layers. 
+It is unstable since the values of gradients of output layers are high. Pre-Layer Normalized Transformer is proposed by \cite{xiong_layer_2020} by carrying layer normalization operation to in front of attention and feed-forward layers. 
 Moreover, Parisotto et al. Xiong et al.~ \cite{parisotto_stabilizing_2019} proposed gated transformer which also includes layer normalizations before attention and feedforward layer. 
 They also stated that although gated architecture improves many RL tasks drastically, non-gated pre-layer normalized transformer are good enough. 
 A simple pre-layer normalized transformer encoder layer is demonstrated in Figure \ref{fig:pre_trsf}.
@@ -522,7 +522,7 @@ A simple pre-layer normalized transformer encoder layer is demonstrated in Figur
 	\label{fig:pre_trsf}
 \end{figure}
 
-In our application, sequence of incoming vectors is passed through single pre-layer normalized transformer layer with 192 dimensional feed forward layer with GELU activation. 
+In our application, sequence of incoming vectors is passed through single pre-layer normalized transformer layer with 192 dimensional feed forward layer with GELU activation after addition of positional encodings. 
 In multi-head attention, 4 head is used and size of queris, keys and values are 8 for each head.
 During multi-head attention, only the last observation is fed as query so that attentions are calculated only for last state.  
 Its output is considered as belief state.
@@ -690,24 +690,24 @@ In addition, as seen from the moving average points, SAC agents are superior (Fi
 We believe that these results are not enough to conclude on a superior neural network for all RL problems, because there are other factors such as DRL algorithm, number of episodes, network size etc. 
 However, networks are designed to have similar sizes and good model requires to converge in less episodes. 
 As a result, LSTM is superior to Transformer for our environment. 
-In addition, it is possible to conclude that Transformers can be on aoption for partially observed RL problems, thanks to incorprating observation history. 
+In addition, it is possible to conclude that Transformers can be an option for partially observed RL problems, thanks to incorprating observation history. 
 Note that this is valid where layer normalization is applied before multihead attention and feed-forward layers \cite{xiong_layer_2020} as opposed to vanilla transformer proposed in \cite{vaswani_attention_2017}. 
 
 Another result is that incorprating past observations did improve performance significantly since environment is partially observable.
-Especially increasing history length keep increasing performance for both LSTM and Transformer models. 
+Especially increasing history length keeps increasing performance for both LSTM and Transformer models. 
 
 The environment is a difficult one. 
-There are really few available models which gets close to a solution. 
+There are really few available models which gets close to a solution~\cite{noauthor_gymleaderboard_2021}. 
 Apart from neural networks, there are other factors affecting performance such as RL algorithm, rewarding, exploration etc. 
 In this work, all of them are adjusted such that the environment becomes solvable. 
 Time frequency is reduced for sample efficiency and speed. 
 Also, the agent is not informed for the terminal state when it reaches time limit. 
-Those modifications seems to be behind getting close to a solution. 
-Lastly, punishment of failing reduced, so the agent is allowed to learn by mistakes. 
+Lastly, punishment of falling reduced, so the agent is allowed to learn by mistakes. 
 We believe that those modifications are also source of our high performance. 
 
 As RL algorithm, TD3 is selected first, since it is a good choice for continuous RL. 
 Ornstein-Uhlenbeck noise is used for better exploration since it has momentum, and its variance is reduced by time to make agent learn small actions well in later episodes. 
+However, we cannot feed 12 observation history to sequential models since TD3 failed to learn in that case.
 In addition, SAC is used for learning along with TD3. 
 Results are better compared to those of TD3. 
 SAC policy maximizes randomness (entropy) if agent cannot get sufficient reward and this allows the agent to decide where/when to explore more or less. 

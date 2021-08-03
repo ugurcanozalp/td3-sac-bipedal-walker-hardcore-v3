@@ -52,7 +52,7 @@ Given an input sequence $x \in \mathbb{R}^{T \times d_x}$ with time length $T$, 
 \label{eqn:rnnact}
 h_t = \phi(h_{t-1} \tilde{W} + x_t W + b),
 \end{equation}
-where nonlinear activation $\phi$ applied element-wise as in \eqref{eqn:mlpact} again. 
+where nonlinear activation $\phi$ applied elementwise as in \eqref{eqn:mlpact} again. 
 To begin with, the initial output $h_0$ can be either parametrized or assigned to a zero vector. A comparison between FFNN and RNN layer is visualized in \figref{fig:rnn_vs_ffnn}.
 
 \begin{figure}
@@ -66,7 +66,7 @@ To begin with, the initial output $h_0$ can be either parametrized or assigned t
 
 Conventional RNNs have, in general, the problem with vanishing/exploding gradient \cite{olah_understanding_2015}. 
 As the sequence gets longer, effect of initial inputs in sequence decreases. 
-This causes a long term dependence problem; furthermre if information from initial inputs required, gradients either vanish or explode. 
+This causes a long term dependence problem. Furthermore, if information from initial inputs required, gradients either vanish or explode. 
 In order to overcome this problem another architecture is developed: Long Short Term Memory (LSTM)~\cite{hochreiter_long_1997}. 
 
 LSTM is a special type of RNN. 
@@ -222,7 +222,7 @@ as proposed in the original paper \cite{vaswani_attention_2017}.
 
 Original transformer architecture includes layer normalization operations after attention and feed-forward layers. 
 It is unstable since the values of gradients of output layers are high. 
-So Pre-Layer Normalized transformer is proposed by \cite{xiong_layer_2020} by carrying layer normalization operation to in front of attention and feed-forward layers. 
+Pre-Layer Normalized Transformer is proposed by \cite{xiong_layer_2020} by carrying layer normalization operation to in front of attention and feed-forward layers. 
 Moreover, Parisotto et al. Xiong et al.~ \cite{parisotto_stabilizing_2019} propose gated transformer which also includes layer normalizations before attention and feedforward layer. 
 They also state that although gated architecture improves many reinforcement learning (RL) tasks drastically, and non-gated pre-layer normalized transformer are also much better than vanilla transformer. 
 
