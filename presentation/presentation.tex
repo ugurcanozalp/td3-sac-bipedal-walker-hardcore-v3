@@ -198,6 +198,31 @@ However, walking is a hard control problem due to following reasons.
 \end{figure}
 \end{frame}
 
+\begin{frame}
+\begin{figure}
+	\begin{subfigure}{.32\textwidth}
+		\centering
+		\includegraphics[width=0.99\linewidth]{figures/bipedal/po/lidarcover.png}
+		\caption{Perspective}
+		\label{fig:lidar_cover}
+	\end{subfigure}
+	\begin{subfigure}{.32\textwidth}
+		\centering
+		\includegraphics[width=0.99\linewidth]{figures/bipedal/po/pitfall_behind.png}
+		\caption{Pitfall Behind}
+		\label{fig:pitfall_behind}
+	\end{subfigure}
+	\begin{subfigure}{.32\textwidth}
+		\centering
+		\includegraphics[width=0.99\linewidth]{figures/bipedal/po/no_pitfall_behind.png}
+		\caption{No Pitfall Behind}
+		\label{fig:no_pitfall_behind}
+	\end{subfigure}
+	\caption{Perspective of agent and possible realities}
+	\label{fig:partial_obs_pitfall}
+\end{figure}
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
 
@@ -479,6 +504,16 @@ In addition, original \textit{BipedalWalker-Hardcore-v3} environment is modified
 \end{frame}
 
 \begin{frame}
+\frametitle{Handling Partial Observability}
+\begin{itemize}
+	\item Observation history is used to create a belief state. 
+	\item Agent uses belief state to choose how to act. 
+	\item If the belief state is evaluated sufficiently, this increases performance of the agent. 
+	\item Relying on instant observations is also possible, and this may be enough sometimes if advanced type of control is not required.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
 \frametitle{Network Architectures}
 Varying neural backbones used to encode state information from observations for both actor and critic networks. 
 
@@ -674,6 +709,7 @@ Main critic and actor architectures are as follows.
 
 \begin{frame}
 \frametitle{RFFNN Agent with SAC}
+\movie[externalviewer]{Animation}{video/ff-sac.mp4}
 \begin{figure}[!ht]
 	\centering
 	\begin{subfigure}{.95\textwidth}
@@ -698,6 +734,7 @@ Main critic and actor architectures are as follows.
 
 \begin{frame}
 \frametitle{LSTM-12 Agent with SAC}
+\movie[externalviewer]{Animation}{video/lstm-12-sac.mp4}
 \begin{figure}[!ht]
 	\centering
 	\begin{subfigure}{.95\textwidth}
@@ -722,6 +759,7 @@ Main critic and actor architectures are as follows.
 
 \begin{frame}
 \frametitle{Transformer-12 Agent with SAC}
+\movie[externalviewer]{Animation}{video/trsf-12-sac.mp4}
 \begin{figure}[!ht]
 	\centering
 	\begin{subfigure}{.95\textwidth}
@@ -744,34 +782,13 @@ Main critic and actor architectures are as follows.
 \end{figure}
 \end{frame}
 
-\begin{frame}
-\frametitle{RFFNN Agent with SAC}
-\begin{center}
-\movie[height = 0.6\textwidth, width = 0.8\textwidth, poster, showcontrols] {}{video/ff-sac.mp4}
-\end{center} 
-\end{frame}
-
-\begin{frame}
-\frametitle{LSTM-12 Agent with SAC}
-\begin{center}
-\movie[height = 0.6\textwidth, width = 0.8\textwidth, poster, showcontrols] {}{video/lstm-12-sac.mp4}
-\end{center} 
-\end{frame}
-
-\begin{frame}
-\frametitle{Transformer-12 Agent with SAC}
-\begin{center}
-\movie[height = 0.6\textwidth, width = 0.8\textwidth, poster, showcontrols] {}{video/trsf-12-sac.mp4}
-\end{center} 
-\end{frame}
-
 \section{Conclusion}
 \begin{frame}
 \frametitle{Conclusion}
 \begin{itemize}
 	\item LSTM is better than Transformers at least for our environment.
 	\item Transformer can be used for RL problems.
-	\item Using observation history improved performance.
+	\item Using observation history improved performance since environment is partially observable.
 	\item Environment modifications (rewarding, done signal etc.) are also source of such performance. 
 	\item SAC is superior to TD3 for our environment thanks to better exploration logic.
 \end{itemize}
