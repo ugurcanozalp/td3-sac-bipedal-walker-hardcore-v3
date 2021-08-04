@@ -6,7 +6,7 @@ Hyperparameters are selected by grid search and best performing values are used.
 For all models, agents are trained by 8000 episodes.
 
 In TD3, as exploration noise, Ornstein-Uhlenbeck noise is used, and standart deviation is multiplied  by $0.9995$ at the end of each episode. For LSTM and Transformer, last 6 observations are used to train agent. 
-More than 6 observations made TD3 algorithm to diverge. 
+More than 6 observations made TD3 algorithm diverge. 
 
 In SAC model, squashed gaussian policy is implemented. 
 Therefore, along with layer giving mean actions, an additive layer is implemented for the standart deviation. 
