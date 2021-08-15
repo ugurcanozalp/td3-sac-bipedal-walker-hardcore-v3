@@ -160,8 +160,9 @@
 \frametitle{Introduction}
 In this thesis, we investigate;
 \begin{itemize}
-	\item Performance of varying Neural Network architectures
-	\item Deep Reinforcement Learning methods
+	\item Performance of varying neural network architectures
+	\item Performance of sequential models on partially observable environments
+	\item Deep Reinforcement Learning on continious action space
 	\item Environmental settings
 \end{itemize}
 for bipedal robot walking on \textit{BipedalWalker-Hardcore-v3}~ \cite{noauthor_bipedalwalkerhardcore-v2_2021} environment from open source Gym~\cite{brockman_openai_2016} library of OpenAI.
@@ -174,18 +175,17 @@ for bipedal robot walking on \textit{BipedalWalker-Hardcore-v3}~ \cite{noauthor_
 
 \begin{frame}
 \frametitle{BipedalWalker-Hardcore-v3}
-\textit{BipedalWalker-Hardcore-v3} environment is;
+In \textit{BipedalWalker-Hardcore-v3} environment;
 \begin{itemize}
 	\item Agent has deterministic dynamics, but terrain is randomly generated.
 	\item Observation space consists of kinematic observations and lidar rangefinders.
-	\item Action space has torque actions from knee and joints.
+	\item Action space has torque actions from knees and joints.
 \end{itemize}
 However, walking is a hard control problem due to following reasons.
 \begin{itemize}
-	\item The dynamics are nonlinear, unstable and multimodal. The terrain where the robot walks also varies. 
+	\item The dynamics are nonlinear, unstable and multimodal. 
 	\item Overcoming some obstacles requires a specific maneuver, which is hard to explore sometimes (Sparse Rewards).
-	\item The robot observes ahead with lidar measurements and cannot observe behind (Partial observability).
-	Also, it lacks of acceleration sensors. 
+	\item The robot observes ahead but not behind. Also, there is no acceleration sensor (Partial observability).
 \end{itemize}
 \end{frame}
 
@@ -231,7 +231,7 @@ However, walking is a hard control problem due to following reasons.
 \begin{frame}
 \frametitle{Reinforcement Learning}
 The closest kind of learning demonstrated by humans and animals. 
-Unline other learning paradigms, a RL agent must;
+Unlike other learning paradigms, a RL agent must;
 \begin{itemize}
 	\item learn in dynamic environment
 	\item gather data itself
