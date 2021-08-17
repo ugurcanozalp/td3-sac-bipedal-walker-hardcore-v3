@@ -158,20 +158,35 @@
 
 \begin{frame}
 \frametitle{Introduction}
-In this thesis, we investigate;
+We investigate;
 \begin{itemize}
 	\item Performance of varying neural network architectures
-	\item Performance of sequential models on partially observable environments
 	\item Deep Reinforcement Learning on continious action space
 	\item Environmental settings
 \end{itemize}
-for bipedal robot walking on \textit{BipedalWalker-Hardcore-v3}~ \cite{noauthor_bipedalwalkerhardcore-v2_2021} environment from open source Gym~\cite{brockman_openai_2016} library of OpenAI.
+by solving \textit{BipedalWalker-Hardcore-v3}~ \cite{noauthor_bipedalwalkerhardcore-v2_2021} environment from Gym~\cite{brockman_openai_2016} library of OpenAI.
+
+Research questions are;
+\begin{itemize}
+	\item Performance of deep sequential models (LSTM and Transformer) on partially observable environments 
+	\item Usability of Transformer architecture for RL (not widely used yet in literature)	
+\end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
 
 \section{Environment}
+
+\begin{frame}
+\frametitle{BipedalWalker-Hardcore-v3}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.95\textwidth]{figures/bipedal/bpedal_annotated.png}
+	\caption{Bipedal Walker Hardcore Components~\cite{noauthor_bipedalwalkerhardcore-v2_2021}}
+	\label{fig:bipedal_hardcore_components}
+\end{figure}
+\end{frame}
 
 \begin{frame}
 \frametitle{BipedalWalker-Hardcore-v3}
@@ -187,15 +202,6 @@ However, walking is a hard control problem due to following reasons.
 	\item Overcoming some obstacles requires a specific maneuver, which is hard to explore sometimes (Sparse Rewards).
 	\item The robot observes ahead but not behind. Also, there is no acceleration sensor (Partial observability).
 \end{itemize}
-\end{frame}
-
-\begin{frame}
-\begin{figure}
-\centering
-\includegraphics[width=0.95\textwidth]{figures/bipedal/bpedal_annotated.png}
-\caption{Bipedal Walker Hardcore Components~\cite{noauthor_bipedalwalkerhardcore-v2_2021}}
-\label{fig:bipedal_hardcore_components}
-\end{figure}
 \end{frame}
 
 \begin{frame}
@@ -286,10 +292,6 @@ Q^{\pi^*}(s,a) = \mathbb{E}[r|s,a] + \gamma \max_{a'} \Big\{ \sum_{s'} T(s'|s,a)
 \end{equation}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Deep Q Learning}
-
 \begin{frame}
 \frametitle{Q Learning}
 Optimizing $Q$ function using Bellman Equation \ref{eqn:bellman_q}.\\
@@ -305,6 +307,22 @@ Minimize difference between the target value and the estimated value, hence the 
 \mathcal{L}_t(\theta) = \big( Y_t - Q(s_t,a_t;\theta) \big) ^ 2.
 \end{equation}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+
+\section{Deep Reinforcement Learning}
+\begin{frame}
+\frametitle{Deep Reinforcement Learning}
+\begin{itemize}
+	\item It is usage of neural networks as function approximators of value, policy etc.
+	\item Neural network is a parametrized function, consisted of nodes with specific architecture. 
+	\item Standard RL algorithms (like Q-learning) are unstable once nonlinear function approximators (neural nets) are used. 
+	\item Unstability is mainly due to sequential correlation of observations.
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
 \frametitle{Deep Q Learning}
@@ -332,12 +350,16 @@ In order to stabilize learning, Deep Q Learning~\cite{mnih_human-level_2015, mni
 \end{itemize}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%
-\subsection{Deep Deterministic Policy Gradient}
+
 \begin{frame}
 \frametitle{Deep Deterministic Policy Gradient}
 Continuous complement of DQN using a deterministic policy~\cite{lillicrap_continuous_2019}. It is;
 \begin{itemize}
 	\item Actor critic algorithm (both value and policy parametrized), $\theta^{\mu}$ and $\theta^{Q}$, with target networks $\theta^{\mu^-}$ and $\theta^{Q^-}$. 
+	\begin{equation}
+	\label{eqn:ddpg_target}
+	Y_t^{DDPG} = r_t + \gamma Q(s_{t+1}, \mu(s_{t+1};\theta^{\mu^-});\theta^{Q^-}).
+	\end{equation}
 	\item Target networks are updated by Polyak averaging ($\tau \in (0,1)$),
 	\begin{equation}
 	\label{eqn:target_update}
@@ -378,7 +400,6 @@ Continuous complement of DQN using a deterministic policy~\cite{lillicrap_contin
 
 %%%%%%%%%%%%%%%%%%%%
 
-\subsection{Twin Delayed Deterministic Policy Gradient}
 \begin{frame}
 \frametitle{Twin Delayed Deep Deterministic Policy Gradient}
 Improved version of Deep Deterministic Policy Gradient \cite{fujimoto_addressing_2018}.
@@ -434,7 +455,6 @@ Upon DDPG, it introduces;
 
 %%%%%%%%%%%%%%%%%%%%
 
-\subsection{Soft Actor-Critic}
 \begin{frame}
 \frametitle{Soft Actor-Critic}
 Unlike DDPG and TD3, Soft Actor-Critic is entropy regularized RL method. 
@@ -537,7 +557,7 @@ Main critic and actor architectures are as follows.
 \end{figure}
 \end{frame}
 
-\subsection{Residual Feed Forward Neural Network}
+%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
 \frametitle{Residual Feed Forward Neural Network}
@@ -564,7 +584,6 @@ Main critic and actor architectures are as follows.
 
 %%%%%%%%%%%%%%%%%%%%
 
-\subsection{Long Short Term Memory}
 \begin{frame}
 \frametitle{Long Short Term Memory}
 \begin{columns}[onlytextwidth]
@@ -588,9 +607,8 @@ Main critic and actor architectures are as follows.
 
 %%%%%%%%%%%%%%%%%%%%
 
-\subsection{Transformer (Pre-layer Normalized)}
 \begin{frame}
-\frametitle{Transformer}
+\frametitle{Transformer (Pre-layer Normalized)}
 \begin{columns}[onlytextwidth]
 	\begin{column}{.49\textwidth}
 		\begin{itemize}
