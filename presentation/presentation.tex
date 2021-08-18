@@ -113,8 +113,7 @@
 % - Use the \inst command only if there are several affiliations.
 % - Keep it simple, no one is interested in your street address.
 
-\date[Thesis Presentation]{Thesis Presentation\\
-\today}
+\date[MSc Thesis Defense]{August 27, 2021}
 % - Either use conference name or its abbreviation.
 % - Not really informative to the audience, more for people (including
 %   yourself) who are reading the slides online
@@ -229,6 +228,11 @@ However, walking is a hard control problem due to following reasons.
 \end{figure}
 \end{frame}
 
+\begin{frame}
+\frametitle{Literature Review}
+Literature review?
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
 
@@ -237,7 +241,7 @@ However, walking is a hard control problem due to following reasons.
 \begin{frame}
 \frametitle{Reinforcement Learning}
 The closest kind of learning demonstrated by humans and animals. 
-Unlike other learning paradigms, a RL agent must;
+Unlike other learning paradigms, an agent in RL framework must;
 \begin{itemize}
 	\item learn in dynamic environment
 	\item gather data itself
@@ -275,7 +279,7 @@ Unlike other learning paradigms, a RL agent must;
 
 \begin{frame}
 \frametitle{Learning}
-Learning is obtaining either;
+Learning is described by finding optimal policy, which is either;
 \begin{itemize}
 	\item stochastic policy: $\pi: \mathcal{S}\times\mathcal{A} \rightarrow [0,1]$, or
 	\item deterministic policy: $\mu: \mathcal{S}\rightarrow\mathcal{A}$
@@ -295,13 +299,13 @@ Q^{\pi^*}(s,a) = \mathbb{E}[r|s,a] + \gamma \max_{a'} \Big\{ \sum_{s'} T(s'|s,a)
 \begin{frame}
 \frametitle{Q Learning}
 Optimizing $Q$ function using Bellman Equation \ref{eqn:bellman_q}.\\
-Assume that $Q$ is parametrized function by $\theta$.
+Assume that $Q$ is parametrized by $\theta$.
 Target $Q$ value is estimated by bootstrapping estimate, 
 \begin{equation}
 \label{eqn:q_target}
 Y_t^Q = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta).
 \end{equation}
-Minimize difference between the target value and the estimated value, hence the following loss,
+The loss function is then described as the difference between the target value and the estimated value:
 \begin{equation}
 \label{eqn:q_loss}
 \mathcal{L}_t(\theta) = \big( Y_t - Q(s_t,a_t;\theta) \big) ^ 2.
@@ -365,37 +369,8 @@ Continuous complement of DQN using a deterministic policy~\cite{lillicrap_contin
 	\label{eqn:target_update}
 	\theta^- \leftarrow \tau \theta + (1-\tau) \theta^- .
 	\end{equation}
-	\item For exploration, a random process $\mathcal{X}$ noise added to policy. Typically Ornstein-Uhlenbeck Process (AR(1) process) \cite{uhlenbeck_theory_1930} or Gaussian White Noise is used.
+	\item For exploration, a random noise added to policy. Typically Ornstein-Uhlenbeck Process (AR(1) process) \cite{uhlenbeck_theory_1930} or Gaussian White Noise is used for this purpose.
 \end{itemize}
-\end{frame}
-
-\begin{frame}
-\begin{algorithm}[H]
-	\SetAlgoLined
-	\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
-	Initialize: $\mathcal{D}$, $N$, $N_{replay}$, $\theta^{\mu}$, $\theta^Q$, $\mathcal{X}$ \\
-	$\theta^{\mu^-} \leftarrow \theta^{\mu}$, $\theta^{Q^-} \leftarrow \theta^{Q}$ \\
-	\For{$\text{episode} = 1, M $}{
-		Recieve initial state $s_1$; \\
-		\For{$t = 1, T$}{
-			Select action $a_t = \mu(s_t; \theta^{\mu}) + \epsilon$ where $\epsilon \sim \mathcal{X}$; \\
-			Execute action $a_t$ and recieve reward $r_t$ and next state $s_{t+1}$; \\
-			Store experience tuple $e_t = (s_t, a_t, r_t, s_{t+1})$ to $\mathcal{D}$ ; \\
-			Sample random batch $\mathcal{D}_{r}$ ($|\mathcal{D}_{r}|=N$) from $\mathcal{D}$; \\
-			$Y_j = \begin{cases}
-			r_j & \text{if } s_{j+1} \text{ terminal } \\
-			r_j + \gamma Q(s_{j+1},\mu(s_{j+1}; \theta^{\mu^-}); \theta^{Q^-}) & \text{otherwise }
-			\end{cases}$ \qquad $\forall e_j \in \mathcal{D}_{r}$ \\
-			Update $\theta^Q$ by minimizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} \big( Y_j - Q(s_j,a_j;\theta^Q) \big) ^ 2$ for a single step; \\
-			Update $\theta^{\mu}$ by maximizing $ \frac{1}{N}\sum_{e_j \in \mathcal{D}_{r}} Q(s_j,a_j;\theta^Q)$ for a single step; \\
-			Update target networks: \\
-			$\theta^{\mu^-} \leftarrow \tau \theta^{\mu} + (1-\tau) \theta^{\mu^-}$ and \\
-			$\theta^{Q^-} \leftarrow \tau \theta^{Q} + (1-\tau) \theta^{Q^-}$;
-		}
-	}
-	\caption{Deep Deterministic Policy Gradient}
-	\label{alg:ddpg}
-\end{algorithm}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -428,7 +403,7 @@ Upon DDPG, it introduces;
 	\For{$\text{episode} = 1, M $}{
 		Recieve initial state $s_1$; \\
 		\For{$t = 1, T$}{
-			Select action $a_t = \mu(s_t; \theta^{\mu}) + \epsilon$ where $\epsilon \sim \mathcal{X}$
+			Select action $a_t = \mu(s_t; \theta^{\mu}) + \epsilon$ where $\epsilon \sim \mathcal{X}$ \\
 			Execute action $a_t$ and recieve reward $r_t$ and next state $s_{t+1}$; \\
 			Store experience tuple $e_t = (s_t, a_t, r_t, s_{t+1})$ to $\mathcal{D}$ ; \\
 			Sample random batch $\mathcal{D}_{r}$ ($|\mathcal{D}_{r}|=N$) from $\mathcal{D}$; \\
@@ -482,7 +457,7 @@ Unlike DDPG and TD3, Soft Actor-Critic is entropy regularized RL method.
 	\For{$\text{episode} = 1, M $}{
 		Recieve initial state $s_1$; \\
 		\For{$t = 1, T$}{
-			Select action $a_t \sim \pi(\cdot|s_t; \theta^\pi)$
+			Select action $a_t \sim \pi(\cdot|s_t; \theta^\pi)$ \\
 			Execute action $a_t$ and recieve reward $r_t$ and next state $s_{t+1}$; \\
 			Store experience tuple $e_t = (s_t, a_t, r_t, s_{t+1})$ to $\mathcal{D}$ ; \\
 			Sample random batch with $N$ transitions from $\mathcal{D}$ as $\mathcal{D}_{r}$; \\
@@ -809,6 +784,16 @@ Main critic and actor architectures are as follows.
 	\item Using observation history improved performance since environment is partially observable.
 	\item Environment modifications (rewarding, done signal etc.) are also source of such performance. 
 	\item SAC is superior to TD3 for our environment thanks to better exploration logic.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Future Work}
+Possible improvements upon this work may be:
+\begin{itemize}
+	\item Increasing history length for LSTM \& Transformer (but unstability may occur)
+	\item Different exploration strategies like Parameter Space Exploration~\cite{plappert_parameter_2018} can be used. 
+	\item Advanced neural networks and RL algorithms (specificly designed for environment) may be designed by incorprating domain knowledge. 
 \end{itemize}
 \end{frame}
 
