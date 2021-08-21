@@ -10,9 +10,13 @@ Today, RL is rarely used in real world applications due to safety and sample ine
 In this thesis, bipedal robot walking is investigated by deep  reinforcement learning due to complex dynamics in OpenAI Gym's simulation environment. 
 TD3 and SAC algorthims are used since they are robust and well suited for continuous control. 
 Also, environment is slightly modified by reward shaping, halving simulation frequency, cancelling terminal state information at time limit so that learning becomes easier.
+
+The environment was difficult for exploration. 
+Especially handling big hurdles requires very much exploration.
+In our results, SAC agents performed better than TD3 since it handles exploration problem by learning how much to explore for a particular state. 
   
 As stated in previous chapters, most of the real world environments are partially observable. 
-In BipedalWalker-Hardcore, the environment is also partially observable since agent cannot observe behind and it lacks of acceleration sensors, which is better to have for controlling mechanical systems. 
+In \textit{BipedalWalker-Hardcore-v3}, the environment is also partially observable since agent cannot observe behind and it lacks of acceleration sensors, which is better to have for controlling mechanical systems. 
 Therefore, we propose to use Long Short Term Memory (LSTM) and Transformer Neural Networks to capture more information from past observations unlike Residual Feed Forward Neural Network (RFFNN) using a single instant observation as input. 
 
 RFFNN model performed well thanks to carefully selected hyperparameters and modifications on the environment. 
@@ -23,6 +27,6 @@ Another conclusion is that Transformer model worked enough to say it can be used
 It is surprising because it is not succesfully used in DRL problems in general except recent architectural developments~\cite{parisotto_stabilizing_2019}. 
 In natural language processing, this type of attention models completely replace recurrent models recently, and our results seems promising for this in DRL domain. 
 
-The environment was difficult for exploration. 
-Especially handling big hurdles requires very much exploration.
-In our results, SAC agents performed better than TD3 since it handles exploration problem by learning how much to explore for a particular state. 
+Today, all subfields of Deep Learning suffers from lack of analytical methods to design neural networks. 
+It is mostly based on mathematical \& logical intuition. 
+Until such methods are developed, it seems that we need to try out several neural networks to get better models, which is the case in our work. 

@@ -204,6 +204,7 @@ However, walking is a hard control problem due to following reasons.
 \end{frame}
 
 \begin{frame}
+\frametitle{Demonstration of Partial Observability}
 \begin{figure}
 	\begin{subfigure}{.32\textwidth}
 		\centering
@@ -230,7 +231,11 @@ However, walking is a hard control problem due to following reasons.
 
 \begin{frame}
 \frametitle{Literature Review}
-Literature review?
+\begin{itemize}
+	\item RL is used on many mechanical systems for control; like aircrafts, self-driving cars.  
+	\item For partially observable systems, sequential models are successfully implemented. 
+	\item People usually train agents on simulation environment to transfer knowledge to real systems due to safety concerns. 
+\end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -322,7 +327,7 @@ The loss function is then described as the difference between the target value a
 	\item It is usage of neural networks as function approximators of value, policy etc.
 	\item Neural network is a parametrized function, consisted of nodes with specific architecture. 
 	\item Standard RL algorithms (like Q-learning) are unstable once nonlinear function approximators (neural nets) are used. 
-	\item Unstability is mainly due to sequential correlation of observations.
+	\item The reason is dead end loop of among observations/actions and updated policy.
 \end{itemize}
 \end{frame}
 
@@ -539,11 +544,10 @@ Main critic and actor architectures are as follows.
 \begin{columns}[onlytextwidth]
 	\begin{column}{.49\textwidth}
 		\begin{itemize}
-			\item As Feed Forward Networks becomes deeper, optimizing weights gets difficult. 
 			\item For a 2 stacked layer (single skip connection), input and output of the stack is summed up for next calculations. 
 			\item We have 2 layers with 192 dimensional hidden size and 96 dimensional output (single skip connection), 
-			\item GELU as activation function.
-			\item In our work, only last observation is feeded. 
+			\item GELU as activation function, Layer Normalization before that.
+			\item Only last observation is feeded. 
 		\end{itemize}
 	\end{column}
 	\begin{column}{.49\textwidth}
@@ -780,10 +784,10 @@ Main critic and actor architectures are as follows.
 \frametitle{Conclusion}
 \begin{itemize}
 	\item LSTM is better than Transformers at least for our environment.
-	\item Transformer can be used for RL problems.
-	\item Using observation history improved performance since environment is partially observable.
+	\item Transformer can be used for RL problems, while this is not widely applied on literature.
+	\item Using observation history with sequential model improved performance since environment is partially observable. 
 	\item Environment modifications (rewarding, done signal etc.) are also source of such performance. 
-	\item SAC is superior to TD3 for our environment thanks to better exploration logic.
+	\item SAC is superior to TD3 for our environment thanks to better exploration logic. 
 \end{itemize}
 \end{frame}
 

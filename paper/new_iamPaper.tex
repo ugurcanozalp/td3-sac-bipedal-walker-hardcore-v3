@@ -714,7 +714,7 @@ Results are better compared to those of TD3.
 SAC policy maximizes randomness (entropy) if agent cannot get sufficient reward and this allows the agent to decide where/when to explore more or less. 
 This way, SAC handles the sparse rewards from the environment better than TD3. 
 
-\section{Conclusion}
+\section{Conclusion \& Future Work}
 
 For robot control by RL in real world, simulation is an important step. 
 Usually, models are pretrained in simulation environment before learning in reality due to safety and exploration reasons. 
@@ -724,8 +724,12 @@ In this thesis, bipedal robot walking is investigated by deep  reinforcement lea
 TD3 and SAC algorthims are used since they are robust and well suited for continuous control. 
 Also, environment is slightly modified by reward shaping, halving simulation frequency, cancelling terminal state information at time limit so that learning becomes easier.
 
+The environment was difficult for exploration. 
+Especially handling big hurdles requires very much exploration.
+In our results, SAC agents performed better than TD3 since it handles exploration problem by learning how much to explore for a particular state. 
+
 As stated in previous chapters, most of the real world environments are partially observable. 
-In BipedalWalker-Hardcore, the environment is also partially observable since agent cannot observe behind and it lacks of acceleration sensors, which is better to have for controlling mechanical systems. 
+In \textit{BipedalWalker-Hardcore-v3}, the environment is also partially observable since agent cannot observe behind and it lacks of acceleration sensors, which is better to have for controlling mechanical systems. 
 Therefore, we propose to use Long Short Term Memory (LSTM) and Transformer Neural Networks to capture more information from past observations unlike Residual Feed Forward Neural Network (RFFNN) using a single instant observation as input. 
 
 RFFNN model performed well thanks to carefully selected hyperparameters and modifications on the environment. 
@@ -736,9 +740,16 @@ Another conclusion is that transformer model worked enough to say it can be used
 It is surprising because it is not succesfully used in DRL problems in general except recent architectural developments~\cite{parisotto_stabilizing_2019}. 
 In natural language processing, this type of attention models completely replace recurrent models recently, and our results seems promising for this in DRL domain. 
 
-The environment was difficult for exploration. 
-Especially handling big hurdles requires very much exploration.
-In our results, SAC agents performed better than TD3 since it handles exploration problem by learning how much to explore for a particular state. 
+Today, all subfields of Deep Learning suffers from lack of analytical methods to design neural networks. 
+It is mostly based on mathematical \& logical intuition. 
+Until such methods are developed, it seems that we need to try out several neural networks to get better models, which is the case in our work. 
+
+There might be a few possible ways to improve this work. 
+First of all, longer observation history can be used to handle partial observability for LSTM and Transformer models. 
+However, this makes learning slower and difficult and requires more stable RL algorithms and fine tuning on hyperparameters. 
+Secondly, different exploration strategies might be followed. 
+Especially parameter space exploration \cite{plappert_parameter_2018} may perform better since it works better for environments with sparse reward like our environment. 
+Lastly, advanced neural networks and RL algorithms (specificly designed for environment) may be designed by incorprating domain knowledge. 
 
 \section{References}
 
