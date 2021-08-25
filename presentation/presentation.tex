@@ -192,8 +192,8 @@ Research questions are;
 In \textit{BipedalWalker-Hardcore-v3} environment;
 \begin{itemize}
 	\item Agent has deterministic dynamics, but terrain is randomly generated.
-	\item Observation space consists of kinematic observations and lidar rangefinders.
-	\item Action space has torque actions from knees and joints.
+	\item Observation space consists of kinematics of components and lidar rangefinders.
+	\item Action space has torque actions from knees and hips.
 \end{itemize}
 However, walking is a hard control problem due to following reasons.
 \begin{itemize}
@@ -327,7 +327,7 @@ The loss function is then described as the difference between the target value a
 	\item It is usage of neural networks as function approximators of value, policy etc.
 	\item Neural network is a parametrized function, consisted of nodes with specific architecture. 
 	\item Standard RL algorithms (like Q-learning) are unstable once nonlinear function approximators (neural nets) are used. 
-	\item The reason is dead end loop of among observations/actions and updated policy.
+	\item This unstability is due to the correlation among recent observations, which updates policy. 
 \end{itemize}
 \end{frame}
 
@@ -807,14 +807,14 @@ Possible improvements upon this work may be:
 \end{frame}
 
 % All of the following is optional and typically not needed.
-\appendix
+%\appendix
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
-\section<presentation>*{\appendixname}
-\subsection<presentation>*{For Further Reading}
-\begin{frame}
+%\section<presentation>*{\appendixname}
+%\subsection<presentation>*{For Further Reading}
+%\begin{frame}
 
-\end{frame}
+%\end{frame}
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
 \section[References]{References}
