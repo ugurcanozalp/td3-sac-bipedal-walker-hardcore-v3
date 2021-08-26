@@ -68,6 +68,15 @@ Directly proportional to distance traveled forward, +300 points given if agent r
 However, -10 points (-100 points in the original version) if agent falls, 
 and small amount of negative reward proportional to the applied motor torque (to prevent applying unnecessary torque). 
 Lastly, the robots gets negative reward propotional to the absolute value of the hull angle for reinforcing to keep the hull straigth. 
+Mathematically, reward is;
+\begin{equation}
+\label{eqn:reward_fcn}
+R = 
+\begin{cases}
+-10,   & \text{if falls} ,\\
+130 \Delta x -5 |\theta_{hull}| - 0.00035 \tau,   & \text{otherwise}.
+\end{cases}
+\end{equation}
 
 \subsection{Partial Observability}
 

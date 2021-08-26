@@ -497,9 +497,17 @@ Unlike DDPG and TD3, Soft Actor-Critic is entropy regularized RL method.
 Both TD3 and SAC algorithms are used. Hyperparameters are selected by trial-error process. \\
 In addition, original \textit{BipedalWalker-Hardcore-v3} environment is modified.\\
 \begin{itemize}
-	\item When the robot's hull hits the floor; it gets -100 points (original), -10 points (modified). 
 	\item Time resolution is 50 Hz (original), 25 Hz (modified).
 	\item Terminal state flag for RL algorithm raised on time limit break (original), not raised on time limit break (modified). 
+	\item When the robot's hull hits the floor; it gets -100 points (original), -10 points (modified). 
+	\begin{equation}
+	\label{eqn:reward_fcn}
+	R = 
+	\begin{cases}
+	-10,   & \text{if falls} ,\\
+	130 \Delta x -5 |\theta_{hull}| - 0.00035 \tau,   & \text{otherwise}.
+	\end{cases}
+	\end{equation}
 \end{itemize}
 \end{frame}
 
