@@ -22,8 +22,19 @@ if environment model is not available but the agent can experience environment b
 \subsection{Q Learning}
 Q Learning is a value-based type of learning. 
 It is based on optimizing $Q$ function using Bellman Equation \eqref{eqn:bellman_q}~\cite{watkins_technical_1992}. 
+
+In optimal policy context, state-value function maximizes itself adjusting policy. Therefore, there is a direct relation between it and state-action value function,
+\begin{equation}
+\label{eqn:v_q_relation}
+V^{*}(s) = \max_{a} Q^{*}(s,a).
+\end{equation}
+Then, plugging this definition into \eqref{eqn:q_def} for next state-action pairs by assuming we have optimal policy, we obtain, 
+\begin{equation}
+\label{eqn:q_learning_drv}
+Q^{*}(s,a) = R(s,a) + \gamma \max_{a'} Q^{*}(s',a').
+\end{equation}
 In this learning strategy, $Q$ function is assumed to be parametrized by $\theta$. 
-Target $Q$ value is estimated by bootstrapping estimate, 
+Target $Q$ value ($Y^Q$) is estimated by bootstrapping current model ($\theta$) for each time $t$, 
 \begin{equation}
 \label{eqn:q_target}
 Y_t^Q = r_t + \gamma \max_{a'} Q(s_{t+1},a';\theta).
@@ -69,8 +80,8 @@ During the learning process, a random action with probability $\epsilon$ is sele
 \label{eqn:egreedy_policy}
 \pi(a|s) = 
 \begin{cases}
-1-\epsilon,   & \text{if } a = \argmax_{a} Q(s, a), \\
-\frac{\epsilon}{|\mathcal{A}|-1},     & \text{otherwise},
+1-\epsilon,   & \text{if } a = \arg \max_{a} Q(s, a), \\
+\displaystyle\frac{\epsilon}{|\mathcal{A}|-1},     & \text{otherwise},
 \end{cases}
 \end{equation}
 where $|\mathcal{A}|$ denotes cardinality of $\mathcal{A}$. 
@@ -295,9 +306,8 @@ TD3 is summarized in Algorithm \ref{alg:td3}.
 \end{algorithm}
 
 \subsubsection{Soft Actor-Critic}
-SAC~\cite{haarnoja_soft_2018} is a stochastic actor-critic method and many characteristics are similar to TD3 and DDPG. Its main advantage is that it learns to maximize exploration with entropy regularization. 
-
-SAC is an entropy-regularized RL method. Such methods give bonus reward to the agent propotional to the policy entropy: given state $s$, the entropy of a policy $\pi$ is defined by
+SAC~\cite{haarnoja_soft_2018} is a stochastic actor-critic method and many characteristics are similar to TD3 and DDPG. 
+It is an entropy-regularized RL method. Such methods give bonus reward to the agent propotional to the policy entropy: given state $s$, the entropy of a policy $\pi$ is defined by
 \begin{equation}
 \label{eqn:policy_entropy}
 H(\pi(\cdot|s)) = \mathbb{E}_{\widetilde{a}\sim\pi(\cdot|s)}[-\log(\pi(\widetilde{a}|s))].

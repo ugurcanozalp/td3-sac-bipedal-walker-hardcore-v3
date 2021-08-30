@@ -17,7 +17,9 @@ Transformer is developed to handle sequential data as RNN models do.
 However, it processes the whole sequence at the same time, while RNN processes the sequence in order. 
 Transformers are commonly used in Natural Language Processing (NLP) thanks to major performance improvements over RNN variants, but this is not the case for Reinforcement Learning, yet.
 
-In order to handle the reward sparsity problem, reward function is reshaped in this thesis. Also, a exploration strategy is formed so that the agent both explores and learns sufficiently well. 
+In order to handle the reward sparsity problem, reward function is redesigned in this thesis. Also, an exploration strategy is formed so that the agent both explores and learns sufficiently well. 
 
-In this thesis, as a RL algorithm, Twin Delayed Deep Deterministic Policy Gradient (TD3) and Soft Actor Critic (SAC) are chosen. 
-TD3 is an improved version of Deep Deterministic Policy Gradient (DDPG) algorithm while SAC is a stochastic type of RL methods and lets the agent to learn how much to explore depending on observations.
+In this thesis, Twin Delayed Deep Deterministic Policy Gradient (TD3) and Soft Actor Critic (SAC) are used to solve our environment as RL algorithm. 
+TD3 is a deterministic RL method with additive exploration noise, and it is improved version of Deep Deterministic Policy Gradient (DDPG).
+SAC is a stochastic type of RL method with adaptive exploration. 
+It adjusts how much to explore depending on observations and rewards.

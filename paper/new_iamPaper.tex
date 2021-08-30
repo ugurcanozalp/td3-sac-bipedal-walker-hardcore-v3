@@ -316,7 +316,7 @@ In order to construct policy:
 \pi(a|s) = 
 \begin{cases}
 1-\epsilon,   & \text{if } a = \arg \max_{a} Q(s, a), \\
-\frac{\epsilon}{|\mathcal{A}|-1},     & \text{otherwise},
+\displaystyle\frac{\epsilon}{|\mathcal{A}|-1},     & \text{otherwise},
 \end{cases}
 \end{equation}
 where $|\mathcal{A}|$ denotes cardinality of $\mathcal{A}$. 
@@ -387,9 +387,8 @@ During learning, policy network and target networks are updated less frequently 
 Since the policy network parameters are learned by maximizing the value network, they are learned slower.  
 
 \subsection{Soft Actor-Critic}
-SAC~\cite{haarnoja_soft_2018} is a stochastic actor-critic method and many characteristics are similar to TD3 and DDPG. Its main advantage is that it learns to maximize exploration with entropy regularization. 
-
-SAC is an entropy-regularized RL method. Such methods give bonus reward to the agent propotional to the policy entropy: given state $s$, the entropy of a policy $\pi$ is defined by
+SAC~\cite{haarnoja_soft_2018} is a stochastic actor-critic method and many characteristics are similar to TD3 and DDPG. 
+It is an entropy-regularized RL method. Such methods give bonus reward to the agent propotional to the policy entropy: given state $s$, the entropy of a policy $\pi$ is defined by
 \begin{equation}
 \label{eqn:policy_entropy}
 H(\pi(\cdot|s)) = \mathbb{E}_{\widetilde{a}\sim\pi(\cdot|s)}[-\log(\pi(\widetilde{a}|s))]
@@ -486,8 +485,7 @@ As Feed Forward Networks becomes deeper, optimizing weights gets difficult.
 Therefore, people come with the idea of residual connections~\cite{he_deep_2015}. 
 For a fixed number of stacked layers (usually 2 which is single skip), input and output of the stack is summed up for next calculations. 
 Replacing feed forward layers with other types yield different kind of residual network. 
-The difference is demonstrated in Figure \ref{fig:rffnn_ffnn}.
-Yellow blocks are layers where $\phi$ indicates layer has activation while empty ones are linear layers.
+The difference is demonstrated in Figure \ref{fig:rffnn_ffnn}, where $\phi$ corresponds to activation and yellow block means no activation. 
 
 \begin{figure}
 	\centering
@@ -727,7 +725,7 @@ This way, SAC handles the sparse rewards from the environment better than TD3.
 
 \section{Conclusion \& Future Work}
 
-For robot control by RL in real world, simulation is an important step. 
+In RL context, learning in a simulation is an important step for mechanical control. 
 Usually, models are pretrained in simulation environment before learning in reality due to safety and exploration reasons. 
 Today, RL is rarely used in real world applications due to safety and sample inefficiency problems. 
 
@@ -747,7 +745,7 @@ RFFNN model performed well thanks to carefully selected hyperparameters and modi
 However, sequential models performed much better indicating partial observability is an important issue for our environment. 
 Among sequential models, LSTM performed better compared to Transformer agents. 
 
-Another conclusion is that transformer model worked enough to say it can be used in DRL problems. 
+Another conclusion is that transformer model performed well enough to say it can be used in DRL problems. 
 It is surprising because it is not succesfully used in DRL problems in general except recent architectural developments~\cite{parisotto_stabilizing_2019}. 
 In natural language processing, this type of attention models completely replace recurrent models recently, and our results seems promising for this in DRL domain. 
 

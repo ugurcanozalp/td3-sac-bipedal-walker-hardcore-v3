@@ -26,6 +26,7 @@ Since the return depends on future rewards, it also depends on the  policy of th
 
 State Value Function $V^{\pi}$ is the expected return when policy $\pi$ is followed in the future and is defined by
 \begin{equation}
+\label{eqn:v_def}
 V^{\pi}(s) = \mathbb{E}[G_t|s_t=s, \pi]. % \quad \forall t = 0,1, ...
 \end{equation}
 Optimal value function should return maximum expected return, where 
@@ -41,7 +42,8 @@ V^{*}(s) = \max_{\pi} V^{\pi}(s).
 State-Action Value Function $Q^{\pi}$ is again the expected return when policy $\pi$ is followed in the future, 
 however, any action taken at the instant step:
 \begin{equation}
-Q^{\pi}(s,a) = \mathbb{E}[G_t|s_t=s, a_t=a, \pi]. %\quad \forall t = 0,1, ...
+\label{eqn:q_def}
+Q^{\pi}(s,a) = \mathbb{E}[G_t|s_t=s, a_t=a, \pi] = R(s,a) + \gamma V^{\pi}(s'). %\quad \forall t = 0,1, ...
 \end{equation}
 Optimal state-action value function should yield maximum expected return for each state-action pair. Hence,
 \begin{equation}
@@ -65,7 +67,7 @@ For deterministic policy, it is
 
 \subsection{Bellman Equation}
 
-Bellman proved that optimal value function, for a model $T$, should satisfy following conditions~\cite{bellman_dynamic_2003}: 
+Bellman proved that optimal value function, for a model $T$, must satisfy following conditions~\cite{bellman_dynamic_2003}: 
 \begin{equation}
 \label{eqn:bellman_v}
 V^{*}(s) = \max_{a} \Big\{ R(s,a) + \gamma \sum_{s'} T(s'|s,a) V^{*}(s') \Big\}

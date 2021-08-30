@@ -1,8 +1,9 @@
 \section{Partially Observed Markov Decision Process}
 \label{sec:pomdp}
 
-In MDP, agent observes states as it is. 
+In MDP, agent can recover full state from observations, i.e., $s_t=f(o_t)$. 
 However, observation space is not enough to represent all information (states) about the environment sometimes. 
+That means one needs more observations from the history, i.e., $s_t=f(o_t, o_{t-1}, o_{t-2}, ...)$.
 In such cases, past and instant observations are used to filter out a belief state. 
 It is represented as a tuple $(\mathcal{S},\mathcal{A},T,R,\mathcal{O},O,\gamma)$. 
 In addition to MDP, it introduces observation space $\mathcal{O}$ and observation model $O$ \cite{francois-lavet_introduction_2018}: 
