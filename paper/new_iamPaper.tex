@@ -144,7 +144,7 @@ The robot has 2 legs with 2 joints at knee and hip. Torque provided to knee and 
 The robot should run fast with little energy while not stumble and fall to ground. 
 Directly proportional to distance traveled forward, +300 points given if agent reaches end of path. 
 -10 points (-100 points in original version) if agent falls, 
-and small amount of negative reward proportional to applied motor torque  (to prevent applying unnecessary torque). 
+and small amount of negative reward proportional to absolute value of applied motor torque $\tau$ (to prevent applying unnecessary torque). 
 Lastly, the robots gets negative reward propotional to absolute value of hull angle $\theta_{hull}$ for reinforcing to keep hull straigth. 
 Mathematically, reward is;
 \begin{equation}
@@ -152,7 +152,7 @@ Mathematically, reward is;
 R = 
 \begin{cases}
 -10,   & \text{if falls} ,\\
-130 \Delta x -5 |\theta_{hull}| - 0.00035 \tau,   & \text{otherwise},
+130 \Delta x -5 |\theta_{hull}| - 0.00035 |\tau|,   & \text{otherwise},
 \end{cases}
 \end{equation}
 
