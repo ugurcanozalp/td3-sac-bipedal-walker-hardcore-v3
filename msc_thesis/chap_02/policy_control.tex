@@ -43,8 +43,9 @@ State-Action Value Function $Q^{\pi}$ is again the expected return when policy $
 however, any action taken at the instant step:
 \begin{equation}
 \label{eqn:q_def}
-Q^{\pi}(s,a) = \mathbb{E}[G_t|s_t=s, a_t=a, \pi] = R(s,a) + \gamma V^{\pi}(s'). %\quad \forall t = 0,1, ...
+Q^{\pi}(s,a) = \mathbb{E}[G_t|s_t=s, a_t=a, \pi] = R(s,a) + \gamma V^{\pi}(s'), %\quad \forall t = 0,1, ...
 \end{equation}
+where $s'$ is the next state resulting from action $a$.
 Optimal state-action value function should yield maximum expected return for each state-action pair. Hence,
 \begin{equation}
 \label{eqn:max_q}

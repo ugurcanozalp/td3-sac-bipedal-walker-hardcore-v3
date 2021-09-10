@@ -1,8 +1,6 @@
 \chapter{CONCLUSION AND FUTURE WORK}
 \label{chap:conclusion_future_work}
 
-\section{Conclusion}
-\label{sec:conclusion}
 In RL context, learning in a simulation is an important step for mechanical control. 
 Usually, models are pretrained in simulation environment before learning in reality due to safety and exploration reasons. 
 Today, RL is rarely used in real world applications due to safety and sample inefficiency problems. 
@@ -30,3 +28,10 @@ In natural language processing, this type of attention models completely replace
 Today, all subfields of Deep Learning suffers from lack of analytical methods to design neural networks. 
 It is mostly based on mathematical \& logical intuition. 
 Until such methods are developed, it seems that we need to try out several neural networks to get better models, which is the case in our work. 
+
+There might be a few possible ways to improve this work. 
+First of all, longer observation history can be used to handle partial observability for LSTM and Transformer models. 
+However, this makes learning slower and difficult and requires more stable RL algorithms and fine tuning on hyperparameters. 
+Secondly, different exploration strategies might be followed. 
+Especially parameter space exploration \cite{plappert_parameter_2018} may perform better since it works better for environments with sparse reward like our environment. 
+Lastly, advanced neural networks and RL algorithms (specificly designed for environment) may be designed by incorprating domain knowledge. 
