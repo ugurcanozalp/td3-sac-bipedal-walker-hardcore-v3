@@ -45,3 +45,29 @@ In multi-head attention, 4 head is used and size of queries, keys and values are
 During multi-head attention, only the last observation is fed as query so that attentions are calculated only for last state.  
 Its output is considered as belief state.
 Note that excluding multi-head attention for this network gives our residual feed-forward neural network.
+
+\subsection{Summary of Networks}
+
+The designed networks have close number of parameters to make fair comparison among them. 
+Number of trainable parameters for designed networks are summarized in \tabref{table:net_parameters}.
+
+In addition, we designed transformer network to be same as residual feed forward network once multi-head attention and preceeding layer normalization is removed. 
+It can be easily demonstrated by looking at \figref{fig:rffnn_ffnn} (left one, layer normalization is added in the implementation) and \figref{fig:pre_trsf}.
+
+\begin{table}
+	\begin{center}
+		\caption{Number of trainable parameters of neural networks}
+		\begin{tabular}{||c c c||} 
+			\hline
+			Network & Actor Parameters & Critic Parameters \\ [0.5ex] 
+			\hline\hline
+			RFFNN & 40512 & 59328 \\ 
+			\hline
+			LSTM & 47616 & 66432 \\
+			\hline
+			TRSF & 52992 & 71808 \\
+			\hline
+		\end{tabular}
+		\label{table:net_parameters}
+	\end{center}
+\end{table}

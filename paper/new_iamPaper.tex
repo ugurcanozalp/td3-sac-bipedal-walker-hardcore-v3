@@ -131,10 +131,9 @@ Our contributions are as follows:
 
 \textit{BipedalWalker} environments~\cite{noauthor_bipedalwalker-v2_2021, noauthor_bipedalwalkerhardcore-v2_2021} are parts of Gym environment library. 
 One of them is classical where the terrain is relatively smooth, while other is a hardcore version containing ladders, stumps and pitfalls in terrain. 
-However, terrain is randomly generated at the beginning of each episode.
+Robot has deterministic dynamics but terrain is randomly generated at the beginning of each episode.
 Dynamics of the robot are exactly identical in both environments. 
 The robot has kinematic and lidar sensors. 
-It is modeled as Markov Decision Process with deterministic dynamics.
 
 Those environments have continuous action and observation space. 
 \textbf{Observation Space} contains hull angle, hull angular velocity, hull translational velocities, joint positions, joint angular speeds, leg ground concats and ten lidar rangefinder measurements.
@@ -490,7 +489,7 @@ The difference is demonstrated in Figure \ref{fig:rffnn_ffnn}, where $\phi$ corr
 \begin{figure}
 	\centering
 	\includegraphics[width=0.5\textwidth]{figures/ml_theory/rffnn_vs_ffnn.png}
-	\caption{Deep Feed Forward (left) and Deep Residual Feed Forward Network with single skip connection (right)}
+	\caption{Deep Residual Feed Forward Network with single skip connection (left) and Deep Feed Forward Network (right)}
 	\label{fig:rffnn_ffnn}
 \end{figure}
 
@@ -536,6 +535,32 @@ In multi-head attention, 4 head is used and size of queris, keys and values are 
 During multi-head attention, only the last observation is fed as query so that attentions are calculated only for last state.  
 Its output is considered as belief state.
 Note that excluding multi-head attention for this network gives our residual feed-forward neural network.
+
+\subsection{Summary of Networks}
+
+The designed networks have close number of parameters to make fair comparison among them. 
+Number of trainable parameters for designed networks are summarized in Table \ref{table:net_parameters}.
+
+In addition, we designed transformer network to be same as residual feed forward network once multi-head attention and preceeding layer normalization is removed. 
+It can be easily demonstrated by looking at Figure \ref{fig:rffnn_ffnn} (left one, layer normalization is added in the implementation) and Figure \ref{fig:pre_trsf}.
+
+\begin{table}
+	\begin{center}
+		\caption{Number of trainable parameters of neural networks}
+		\begin{tabular}{||c c c||} 
+			\hline
+			Network & Actor Parameters & Critic Parameters \\ [0.5ex] 
+			\hline\hline
+			RFFNN & 40512 & 59328 \\ 
+			\hline
+			LSTM & 47616 & 66432 \\
+			\hline
+			TRSF & 52992 & 71808 \\
+			\hline
+		\end{tabular}
+		\label{table:net_parameters}
+	\end{center}
+\end{table}
 
 \subsection{Algorithm Settings}
 TD3 and SAC is used as RL algorithm. 
@@ -705,6 +730,8 @@ Note that this is valid where layer normalization is applied before multihead at
 
 Another result is that incorprating past observations did improve performance significantly since environment is partially observable.
 Especially increasing history length keeps increasing performance for both LSTM and Transformer models. 
+To address this issue better, we designed Transformer and RFFNN networks to be almost same once multi-head attention layer is removed. 
+We observed significant performance gains as observation history is used as input to controller. 
 
 The environment is a difficult one. 
 There are really few available models with solution~\cite{noauthor_gymleaderboard_2021}. 
@@ -744,6 +771,9 @@ Therefore, we propose to use Long Short Term Memory (LSTM) and Transformer Neura
 RFFNN model performed well thanks to carefully selected hyperparameters and modifications on the environment. 
 However, sequential models performed much better indicating partial observability is an important issue for our environment. 
 Among sequential models, LSTM performed better compared to Transformer agents. 
+However, note that simple multi-head attention layer added to RFFNN lets Transformer model emerge. 
+Deciding to use observation history with simple attention layer resulted in significant performance gains. 
+This means that input-output design may be more important than neural network design.  
 
 Another conclusion is that transformer model performed well enough to say it can be used in DRL problems. 
 It is surprising because it is not succesfully used in DRL problems in general except recent architectural developments~\cite{parisotto_stabilizing_2019}. 

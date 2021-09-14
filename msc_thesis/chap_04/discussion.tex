@@ -7,6 +7,8 @@ Note that this is valid where layer normalization is applied before multihead at
 
 Another result is that incorprating past observations did improve performance significantly since environment is partially observable.
 Especially increasing history length keeps increasing performance for both LSTM and Transformer models. 
+To address this issue better, we designed Transformer and RFFNN networks to be almost same once multi-head attention layer is removed. 
+We observed significant performance gains as observation history is used as input to controller. 
 
 The environment is a difficult one. 
 There are really few available models with solution~\cite{noauthor_gymleaderboard_2021}. 

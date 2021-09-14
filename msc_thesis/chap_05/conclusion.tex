@@ -20,6 +20,10 @@ Therefore, we propose to use Long Short Term Memory (LSTM) and Transformer Neura
 RFFNN model performed well thanks to carefully selected hyperparameters and modifications on the environment. 
 However, sequential models performed much better indicating partial observability is an important issue for our environment. 
 Among sequential models, LSTM performed better compared to Transformer agents. 
+However, note that simple multi-head attention layer added to RFFNN lets Transformer model emerge. 
+Deciding to use observation history with simple attention layer resulted in significant performance gains. 
+This means that input-output design may be more important than neural network design. 
+
 
 Another conclusion is that Transformer model performed well enough to say it can be used in DRL problems. 
 It is surprising because it is not succesfully used in DRL problems in general except recent architectural developments~\cite{parisotto_stabilizing_2019}. 
